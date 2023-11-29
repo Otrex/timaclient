@@ -1,0 +1,37 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/tailwindcss": "^6.10.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "@types/uuid": "^9.0.7",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "nuxt": "^3.8.2",
+    "typescript": "^5.3.2",
+    "vite-plugin-mock-data": "^4.0.0",
+    "vite-plugin-svg-icons": "^2.0.1",
+    "vue": "^3.3.8",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@healerlab/vue3-simple-otp-input": "^0.0.9",
+    "@nuxt/image": "^1.1.0",
+    "@pinia/nuxt": "^0.5.1",
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
+    "@vueuse/core": "^10.6.1",
+    "@vueuse/nuxt": "^10.6.1",
+    "mitt": "^3.0.1",
+    "pinia": "^2.1.7",
+    "uuid": "^9.0.1"
+  }
+}

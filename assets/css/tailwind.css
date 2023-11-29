@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/REGULAR.OTF") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/MEDIUM.OTF") format("opentype");
+  font-weight: medium;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/BOLD.OTF") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/SEMIBOLDITALIC.OTF")
+    format("opentype");
+  font-weight: semibold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/HEAVYITALIC.OTF") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/BLACKITALIC.OTF") format("opentype");
+  font-weight: bolder;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/THINITALIC.OTF") format("opentype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/ULTRALIGHTITALIC.OTF")
+    format("opentype");
+  font-weight: thin;
+  font-style: italic;
+}
+
+/* https://tailwindcss.com/docs/adding-custom-styles */
+@layer base {
+  * {
+    font-family: "SF-pro", san-serif;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+}
