@@ -58,10 +58,12 @@ function handleChange(otpCode) {
 <style scoped>
 .otp-input {
   display: inline-flex;
+  gap: 35px;
   gap: v-bind("props.gap");
 }
 .otp-input :deep(input) {
   outline: none;
+  width: 70px;
   width: v-bind("props.size");
   aspect-ratio: 1/1;
   border: none;

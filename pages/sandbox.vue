@@ -34,8 +34,13 @@
         <h2>Inputs</h2>
         <p>All inputs are inline-flex or block elem$event</p>
 
-        <UiInputOtpInput v-model="t.h" /><br />
-        <UiInputOtpInput size="20px" gap="10px" />
+        <UiInputOtp v-model="t.h" /><br />
+        <UiInputOtp size="20px" gap="10px" />
+
+        <UiInputPhone v-model="t.h" />
+        Upload
+
+        <UiInputUpload placeholder="Select an Image" />
       </div>
     </div>
   </div>
