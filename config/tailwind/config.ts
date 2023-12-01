@@ -15,13 +15,6 @@ export const config: Partial<Config> = {
     'content/**/*.md'
   ],
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      'blue': '#1fb6ff',
-      'pink': '#ff49db',
-      'orange': '#ff7849',
-    },
     fontFamily: {
       sans: ['SP-Pro', 'sans-serif'],
       serif: ['Times New Roman', 'serif'],
@@ -33,7 +26,14 @@ export const config: Partial<Config> = {
       },
       borderRadius: {
         '4xl': '2rem',
-      }
+      },
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        'blue': '#1fb6ff',
+        'pink': '#ff49db',
+        'orange': '#ff7849',
+      },
     },
   },
 }

@@ -1,22 +1,35 @@
 <template>
   <div class="inline-block min-w-[100px]">
-    <label
-      class="w-full flex p-[6px] items-center justify-between outline outline-[#BBBBBB] min-h-[47px] !rounded-[40px]"
+    <div
+      @click="open"
+      class="w-full flex items-center gap-[10px] justify-between outline p-[6px] outline-[#BBBBBB] !rounded-[40px]"
     >
-      <span class="text-[#BBBBBB]">{{ fileName || props.placeholder }}</span>
-      <input
-        v-bind="$attrs"
-        :multiple="multi"
-        type="file"
-        class="hidden"
-        @change="change"
-      />
-      <button
-        class="!rounded-[40px] bg-[#F59594] text-[#fff] h-full min-w-[70px]"
-      >
-        Upload
-      </button>
-    </label>
+      <div>
+        <span class="text-[#BBBBBB] text-[19px] pl-[12px] w-full">{{
+          fileName || props.placeholder
+        }}</span>
+      </div>
+      <div>
+        <button
+          @click="open"
+          class="!rounded-[40px] bg-[#F59594] text-[19px] px-[50px] py-[4px] text-[#fff] min-w-[70px]"
+        >
+          Upload
+        </button>
+      </div>
+    </div>
+
+    <UtModal v-model:state="modalState">
+      <div class="model-wrapper">
+        <div class="px-[48px] py-[35px] bg-white rounded-[30px]">
+          <h4 class="text-[28px] text-center">UPLOAD FILES</h4>
+
+          <div
+            class="outline rounded-[8px] outline-dashed outline-[#999999] pt-[20px] pb-[29px]"
+          ></div>
+        </div>
+      </div>
+    </UtModal>
   </div>
 </template>
 
@@ -29,6 +42,7 @@ interface IProps {
 
 const emit = defineEmits(["update:modelValue"]);
 const props = defineProps<IProps>();
+const modalState = ref(false);
 
 const fileName = ref<string>();
 
@@ -40,6 +54,10 @@ function change(e: any) {
     emit("update:modelValue", e.target.files[0]);
     fileName.value = e.target.files[0]?.name;
   }
+}
+
+function open() {
+  modalState.value = true;
 }
 </script>
 

@@ -37,10 +37,10 @@
         <UiInputOtp v-model="t.h" /><br />
         <UiInputOtp size="20px" gap="10px" />
 
-        <UiInputPhone v-model="t.h" />
-        Upload
-
-        <UiInputUpload placeholder="Select an Image" />
+        <div>
+          <UiInputPhone v-model="t.h" />
+          <UiInputUpload placeholder="Select an Image" />
+        </div>
       </div>
     </div>
   </div>
