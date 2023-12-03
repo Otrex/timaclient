@@ -1,5 +1,5 @@
 import plugin from "tailwindcss/plugin";
-import { config } from "./config";
+import { config } from "../../tailwind.config";
 
 export default plugin(function ({ addComponents, theme }) {
   addComponents({
