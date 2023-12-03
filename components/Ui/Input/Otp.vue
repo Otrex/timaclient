@@ -1,12 +1,12 @@
 <template>
   <HOtpInput
-    :length="6"
+    :length="props.length"
     :type="props.type"
     :value="modelValue"
     @on-finish="handleFinish"
     @on-change="handleChange"
     wrapperClassName="otp-input"
-    :inputClassName="inputClass"
+    :inputClassName="[inputClass, 'tm-input']"
     :outlined="true"
     ref="otpInput"
     :only-number="true"
@@ -22,6 +22,10 @@ const props = defineProps({
   size: {
     default: "70px",
     type: String,
+  },
+  length: {
+    type: Number,
+    default: 4,
   },
   gap: {
     default: "35px",
@@ -62,11 +66,12 @@ function handleChange(otpCode) {
   gap: v-bind("props.gap");
 }
 .otp-input :deep(input) {
-  outline: none;
+  /* outline: none; */
+  border: 1px solid black !important;
   width: 70px;
   width: v-bind("props.size");
   aspect-ratio: 1/1;
-  border: none;
+  /* border: none; */
   text-align: center;
 }
 .otp-input :deep(input):active {

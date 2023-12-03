@@ -1,6 +1,6 @@
 <template>
   <div class="pt-[100px]">
-    <div class="text-center mx-auto max-w-[598px]">
+    <div class="text-center tm__box-598px">
       <UtSvg name="logo/tima" class="max-w-[98px]" />
       <div class="mb-[36px]">
         <h1 class="text-[39px] mb-[12px]">Welcome</h1>
@@ -13,7 +13,7 @@
             type="single"
             name="join"
             v-model="joinAs"
-            value="influencer"
+            :value="constants.INFLUENCER"
             class="w-full"
             label="An Influencer/ Affiliate"
           />
@@ -23,7 +23,7 @@
             type="single"
             name="join"
             v-model="joinAs"
-            value="agency"
+            :value="constants.AGENCY"
             class="w-full"
             label="A Brand/ Agency"
           />
@@ -33,7 +33,7 @@
       <div>
         <UiButtonDefault
           :disabled="!joinAs"
-          @click="navigateTo('/auth/sign-up/' + joinAs)"
+          @click="navigateTo('/sign-up/' + joinAs + '?tab=basic-details')"
           label="Continue"
           variant="primary"
           class="py-[14px] w-full"

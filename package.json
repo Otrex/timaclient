@@ -25,6 +25,7 @@
   "dependencies": {
     "@healerlab/vue3-simple-otp-input": "^0.0.9",
     "@nuxt/image": "^1.1.0",
+    "@nuxtjs/color-mode": "^3.3.2",
     "@pinia/nuxt": "^0.5.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",

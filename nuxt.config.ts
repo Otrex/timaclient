@@ -1,11 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import mockData from 'vite-plugin-mock-data';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import tailwindPluginConfig from "./config/tailwind/plugin";
-import tailwindPluginForm from "@tailwindcss/forms"
 import path from 'path'
-import * as flowbite from "flowbite"
-
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -16,15 +12,8 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       title: "TIMA",
-      // script: [{ src: "/js/support.js", type: "text/javascript" }],
-      link: [
-        // { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-        // { rel: "icon", type: "image/png", href: "/favicon-32x32.png" },
-        // { rel: "icon", type: "image/png", href: "/favicon-16x16.png" },
-        // { rel: "manifest", href: "/site.webmanifest" },
-        // { rel: "preconnect", href: "https://rsms.me/" },
-        // { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
-      ],
+      script: [],
+      link: [],
     },
   },
 
@@ -33,12 +22,14 @@ export default defineNuxtConfig({
     { path: '~/components/Ui', prefix: 'Ui' },
     { path: '~/components/Data', prefix: 'Dt' },
     { path: '~/components/Utility', prefix: 'Ut' },
+    '~/components'
   ],
 
   modules: [
     '@nuxt/image',
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/color-mode',
   ],
 
   image: {},
@@ -63,15 +54,12 @@ export default defineNuxtConfig({
       storesDirs: ['./stores/**'],
     },
   }),
+  colorMode: {
+    classSuffix: ''
+  },
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
-    config: {
-      plugins: [
-        tailwindPluginConfig,
-        tailwindPluginForm,
-        flowbite
-      ]
-    }
+    configPath: '~/tailwind.config.ts'
   },
   runtimeConfig: {
     public: {

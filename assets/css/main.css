@@ -8,3 +8,7 @@
 p {
   @apply text-[19px];
 }
+
+.tm__box-598px {
+  @apply mx-auto max-w-[calc(598px_+_40px)] px-[calc(40px_/_2)];
+}

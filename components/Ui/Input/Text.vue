@@ -1,11 +1,22 @@
 <template>
-  <input v-bind="$attrs" :class="[$attrs.class]" />
+  <input
+    v-bind="$attrs"
+    @input="update"
+    :value="props.modelValue"
+    :class="[
+      $attrs.class,
+      'px-[24px] py-[12px] rounded-[40px] text-[19px] placeholder:text-[#999999]',
+    ]"
+  />
 </template>
+<script lang="ts" setup>
+const props = defineProps<{
+  modelValue: string;
+}>();
 
-<script setup lang="ts">
-interface IProps {}
+const emits = defineEmits(["update:modelValue"]);
 
-const props = defineProps<IProps>();
+function update(e: any) {
+  emits("update:modelValue", e.target.value);
+}
 </script>
-
-<style scoped></style>

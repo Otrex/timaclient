@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import tailwindPluginForm from "@tailwindcss/forms";
+import flowbitePlugin from "flowbite/plugin";
 
 export const config: Partial<Config> = {
   darkMode: 'class',
@@ -36,4 +38,8 @@ export const config: Partial<Config> = {
       },
     },
   },
+  plugins: [
+    tailwindPluginForm,
+    flowbitePlugin
+  ],
 }

@@ -10,7 +10,7 @@
       <div
         :class="[
           'p-[11px] rounded-[40px] border border-solid border-[#111111]',
-          isActive && (props.activeClass || 'ring ring-4 ring-slate-300'),
+          isActive && (props.activeClass || 'ring-4 ring-slate-300'),
         ]"
       >
         <p>{{ props.label }}</p>
