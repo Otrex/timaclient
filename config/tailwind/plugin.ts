@@ -8,6 +8,6 @@ export default plugin(function ({ addComponents, theme }) {
       borderRadius: theme('borderRadius.lg'),
       padding: theme('spacing.6'),
       boxShadow: theme('boxShadow.xl'),
-    }
+    },
   })
 }, config)

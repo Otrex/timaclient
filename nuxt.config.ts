@@ -4,6 +4,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import tailwindPluginConfig from "./config/tailwind/plugin";
 import tailwindPluginForm from "@tailwindcss/forms"
 import path from 'path'
+import * as flowbite from "flowbite"
 
 
 export default defineNuxtConfig({
@@ -68,6 +69,7 @@ export default defineNuxtConfig({
       plugins: [
         tailwindPluginConfig,
         tailwindPluginForm,
+        flowbite
       ]
     }
   },

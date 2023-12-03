@@ -1,5 +1,13 @@
 {
-  "cSpell.words": ["defu", "healerlab", "nuxtjs", "TIMA", "uuidv", "vuelidate"],
+  "cSpell.words": [
+    "defu",
+    "flowbite",
+    "healerlab",
+    "nuxtjs",
+    "TIMA",
+    "uuidv",
+    "vuelidate"
+  ],
   "[snippets]": {
     "Pinia Options Store Boilerplate": {
       "scope": "javascript,typescript",

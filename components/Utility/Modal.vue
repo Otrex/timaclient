@@ -2,9 +2,10 @@
   <transition name="fade-in-out" mode="out-in">
     <div
       :class="[
-        'fixed top-0 backdrop-blur backdrop-color flex left-0 w-full h-screen z-[70000000]',
+        'fixed top-0 backdrop-color flex left-0 w-full h-screen z-[70000000]',
         position,
       ]"
+      :style="backdropColor"
       v-show="backdropState"
       @click.stop="backdropClose"
     >
@@ -13,7 +14,7 @@
           v-show="contentState"
           :class="[
             contentState && 'fade-in-from-top',
-            'max-w-[60rem] w-full m-auto',
+            'max-w w-full m-auto',
             props.contentClass,
           ]"
         >
@@ -34,6 +35,10 @@ const props = defineProps({
   state: {
     type: Boolean,
     default: false,
+  },
+  mWidth: {
+    type: String,
+    default: "60rem",
   },
   x: {
     type: String,
@@ -80,12 +85,15 @@ watch(
         backdropState.value = state;
       }, 300);
     }
-  },
+  }
 );
 
 const emit = defineEmits(["update:state", "close:state"]);
 </script>
 <style scoped>
+.max-w {
+  max-width: v-bind("props.mWidth");
+}
 @keyframes fade-out-to-top {
   0% {
     opacity: 1;
@@ -128,9 +136,7 @@ const emit = defineEmits(["update:state", "close:state"]);
 
 .fade-in-top-enter-active,
 .fade-in-top-leave-active {
-  transition:
-    opacity 0.35s,
-    transform 0.35s;
+  transition: opacity 0.35s, transform 0.35s;
 }
 
 .fade-in-top-enter,
@@ -145,9 +151,7 @@ const emit = defineEmits(["update:state", "close:state"]);
 }
 
 .fade-in-from-top-enter-active {
-  transition:
-    opacity 0.35s,
-    transform 0.35s;
+  transition: opacity 0.35s, transform 0.35s;
 }
 
 .fade-in-from-top-enter-from {

@@ -1,5 +1,5 @@
 <template>
-  <svg v-bind="$attrs" aria-hidden="true">
+  <svg v-bind="$attrs" :class="'inline-block'" aria-hidden="true">
     <use v-bind="attrs" />
   </svg>
 </template>

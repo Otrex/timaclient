@@ -19,14 +19,37 @@
       </div>
     </div>
 
-    <UtModal v-model:state="modalState">
-      <div class="model-wrapper">
-        <div class="px-[48px] py-[35px] bg-white rounded-[30px]">
-          <h4 class="text-[28px] text-center">UPLOAD FILES</h4>
+    <UtModal
+      v-model:state="modalState"
+      m-width="500px"
+      backdrop-color="rgba(0,0,0,.3)"
+    >
+      <div class="model-wrapper relative">
+        <div class="absolute top-[32px] right-[32px]">
+          <button @click="modalState = false">
+            <UtSvg name="close" class="w-[18px] h-[18px]" />
+          </button>
+        </div>
+        <div class="px-[48px] text-center py-[35px] bg-white rounded-[30px]">
+          <h4 class="text-[28px] mb-[40px]">UPLOAD FILES</h4>
 
           <div
-            class="outline rounded-[8px] outline-dashed outline-[#999999] pt-[20px] pb-[29px]"
-          ></div>
+            class="outline rounded-[8px] mb-[24px] outline-dashed outline-[#999999] pt-[20px] pb-[29px]"
+          >
+            <UtSvg name="upload" class="inline-block w-[72px] h-[72px]" />
+
+            <h4 class="text-[24px]">Drag & Drop</h4>
+            <p class="text-[#777777]">Your files here or browse to upload</p>
+            <p class="text-[#0077D3]">
+              Only jpeg & png files with max size of 15mb
+            </p>
+          </div>
+
+          <button
+            class="bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white py-[14px] max-w-[200px] text-[29px] rounded-[29px] w-full"
+          >
+            Save
+          </button>
         </div>
       </div>
     </UtModal>
