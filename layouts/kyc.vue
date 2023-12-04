@@ -23,5 +23,5 @@
   </div>
 </template>
 <script lang="ts" setup>
-const props = defineProps<{ prev?: string }>();
+const props = defineProps<{ prev?: string | object }>();
 </script>

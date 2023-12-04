@@ -17,20 +17,10 @@ p {
 
 .page-enter-active,
 .page-leave-active {
-  transition: all var(--page-transition, 0.4s);
+  transition: all 0.4s;
 }
-
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
-  filter: blur(0.7rem);
-}
-
-.fade-left-enter-active,
-.fade-left-leave-active {
-  transition: all 0.5s;
-}
-
-.fade-left-enter, .fade-left-leave-to /* .fade-left-leave-active in <2.1.8 */ {
-  opacity: 0;
+  filter: blur(1rem);
 }

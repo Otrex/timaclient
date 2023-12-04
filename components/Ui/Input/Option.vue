@@ -24,8 +24,8 @@ interface IProps {
   type: "multi" | "single";
   label: string;
   name: string;
-  value: string | number;
-  modelValue: string | number | string[] | number[];
+  value?: string | number;
+  modelValue?: string | number | string[] | number[];
   activeClass?: string;
 }
 const props = defineProps<IProps>();
@@ -47,7 +47,7 @@ function update() {
     if (index >= 0) {
       newArray.splice(index, 1);
     } else {
-      newArray.push(props.value);
+      newArray.push(props.value!);
     }
     return emits("update:modelValue", newArray);
   }

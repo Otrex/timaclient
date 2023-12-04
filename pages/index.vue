@@ -33,7 +33,7 @@
       <div>
         <UiButtonDefault
           :disabled="!joinAs"
-          @click="navigateTo('/sign-up/' + joinAs + '?tab=basic-details')"
+          @click="signUp"
           label="Continue"
           variant="primary"
           class="py-[14px] w-full"
@@ -50,6 +50,13 @@ definePageMeta({
 });
 
 const joinAs = ref();
+
+function signUp() {
+  navigateTo({
+    path: `/sign-up/${joinAs.value}`,
+    query: { tab: constants.BASIC_DETAILS },
+  });
+}
 </script>
 
 <style></style>
