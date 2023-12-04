@@ -9,7 +9,7 @@
       />
       <div
         :class="[
-          'p-[11px] rounded-[40px] border border-solid border-[#111111]',
+          'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[#111111]',
           isActive && (props.activeClass || 'ring-4 ring-slate-300'),
         ]"
       >

@@ -1,13 +1,13 @@
 <template>
-  <div class="inline-block !rounded-[40px]">
+  <div class="inline-block !rounded-[2.5rem]">
     <vue3-reactive-tel-input
       divInputClass="w-full outline-none"
-      class="outline outline-[#BBBBBB] !rounded-[40px] !border-none"
+      class="outline outline-[#BBBBBB] !rounded-[2.5rem] !border-none"
       :inputClass="[
         inputClass,
-        'focus:border-none !rounded-tr-[40px] w-full text-[19px] p-[12px] !rounded-br-[40px]',
+        'focus:border-none !rounded-tr-[2.5rem] w-full text-[1.1875rem] p-[0.75rem] !rounded-br-[2.5rem]',
       ]"
-      dropdownStyle="border-radius: 40px 0px 0px 40px; padding: 0px 20px"
+      dropdownStyle="border-radius: 2.5rem 0px 0px 2.5rem; padding: 0px 1.25rem"
       v-bind="$attrs"
     />
   </div>

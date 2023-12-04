@@ -1,14 +1,14 @@
 <template>
-  <div class="pt-[100px]">
+  <div class="pt-[6.25rem]">
     <div class="text-center tm__box-598px">
-      <UtSvg name="logo/tima" class="max-w-[98px]" />
-      <div class="mb-[36px]">
-        <h1 class="text-[39px] mb-[12px]">Welcome</h1>
+      <UtSvg name="logo/tima" class="max-w-[6.125rem]" />
+      <div class="mb-[2.25rem]">
+        <h1 class="text-[2.4375rem] mb-[0.75rem]">Welcome</h1>
         <p>Join the world of influencer marketing as:</p>
       </div>
 
-      <div class="mb-[57px]">
-        <div class="mb-[17px]">
+      <div class="mb-[3.5625rem]">
+        <div class="mb-[1.0625rem]">
           <UiInputOption
             type="single"
             name="join"
@@ -36,7 +36,7 @@
           @click="signUp"
           label="Continue"
           variant="primary"
-          class="py-[14px] w-full"
+          class="py-[0.875rem] w-full"
         />
       </div>
     </div>

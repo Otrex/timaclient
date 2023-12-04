@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="mb-[30px]">
-      <h1 class="text-[39px] mb-[24px]">Sign Up</h1>
+    <div class="mb-[1.875rem]">
+      <h1 class="text-[2.4375rem] mb-[1.5rem]">Sign Up</h1>
       <p>
         Discover top influencers, track metrics, and activate campaigns. Sign up
         now to simplify your influencer marketing journey.
       </p>
     </div>
 
-    <div class="flex flex-col gap-[16px]">
+    <div class="flex flex-col gap-[1rem]">
       <UiInputText
         type="text"
         class="w-full"
@@ -27,13 +27,13 @@
         v-model="form.password"
         placeholder="Password"
       />
-      <div class="flex items-center gap-[10px] mb-[37px]">
+      <div class="flex items-center gap-[0.625rem] mb-[2.3125rem]">
         <input
           type="checkbox"
           v-model="form.agreed"
-          class="rounded-full w-[20px] h-[20px]"
+          class="rounded-full w-[1.25rem] h-[1.25rem]"
         />
-        <span class="text-[14px]">
+        <span class="text-[0.875rem]">
           I have read and understood the terms and conditions
         </span>
       </div>
@@ -42,7 +42,7 @@
         label="Continue"
         variant="primary"
         @click="proceed"
-        class="w-full py-[14px]"
+        class="w-full py-[0.875rem]"
       />
     </div>
   </div>

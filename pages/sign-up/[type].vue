@@ -2,49 +2,49 @@
   <NuxtLayout :prev="previousTab(currentTab)" name="kyc">
     <template #sidebar>
       <ul>
-        <li class="mb-[48px]">
+        <li class="mb-[3rem]">
           <NavSignUpStep
             title="Basic details"
             desc="Please provide your name and details"
             :active="tab(constants.BASIC_DETAILS, constants.EMAIL_VERIFY)"
           />
         </li>
-        <li v-if="route.params.type === constants.AGENCY" class="mb-[48px]">
+        <li v-if="route.params.type === constants.AGENCY" class="mb-[3rem]">
           <NavSignUpStep
             title="Basic information"
             desc="Provide company name & phone number"
             :active="tab(constants.BASIC_INFORMATION)"
           />
         </li>
-        <li v-if="route.params.type === constants.INFLUENCER" class="mb-[48px]">
+        <li v-if="route.params.type === constants.INFLUENCER" class="mb-[3rem]">
           <NavSignUpStep
             title="Complete Profile"
             desc="Please provide your name and details"
             :active="tab(constants.COMPLETE_PROFILE)"
           />
         </li>
-        <li class="mb-[48px]">
+        <li class="mb-[3rem]">
           <NavSignUpStep
             title="Address & documentation"
             desc="Provide address & necessary documentation"
             :active="tab(constants.ADDRESS_DOCUMENTATION)"
           />
         </li>
-        <li v-if="route.params.type === constants.AGENCY" class="mb-[48px]">
+        <li v-if="route.params.type === constants.AGENCY" class="mb-[3rem]">
           <NavSignUpStep
             title="Industry selection"
             desc="Select the industry that best describes your Brand (max. of 2)"
             :active="tab(constants.INDUSTRY_SELECTION)"
           />
         </li>
-        <li v-if="route.params.type === constants.INFLUENCER" class="mb-[48px]">
+        <li v-if="route.params.type === constants.INFLUENCER" class="mb-[3rem]">
           <NavSignUpStep
             title="Bank Details"
             desc="Provide bank details"
             :active="tab(constants.BANK_DETAILS)"
           />
         </li>
-        <li v-if="route.params.type === constants.INFLUENCER" class="mb-[48px]">
+        <li v-if="route.params.type === constants.INFLUENCER" class="mb-[3rem]">
           <NavSignUpStep
             title="Content Category"
             desc="Select the industry that best describes your Brand (max. of 2)"
@@ -61,7 +61,7 @@
         <span
           >Already have an account?
           <NuxtLink
-            class="text-red-600 text-[19px] underline underline-offset-2"
+            class="text-red-600 text-[1.1875rem] underline underline-offset-2"
             >Log In</NuxtLink
           ></span
         >
@@ -71,7 +71,7 @@
       <div class="text-center tm__box-598px">
         <UtSvg
           name="logo/tima"
-          class="max-w-[98px] h-[39px] mb-[57px] mt-[10px]"
+          class="max-w-[6.125rem] h-[2.4375rem] mb-[3.5625rem] mt-[0.625rem]"
         />
         <transition name="page" mode="out-in">
           <PartialSignUpBasicDetails

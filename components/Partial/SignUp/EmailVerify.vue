@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="mb-[30px]">
-      <h1 class="text-[39px] mb-[24px]">Check your email for a code</h1>
+    <div class="mb-[1.875rem]">
+      <h1 class="text-[2.4375rem] mb-[1.5rem]">Check your email for a code</h1>
       <p>
         Check your email at yowa@gmail.com for the confirmation code. Enter it
         soon, before it expires. Welcome aboard!
@@ -12,9 +12,9 @@
       <UiInputOtp :length="6" v-model="form.code" @finish="sendCode" />
       <p
         v-show="form.loading"
-        class="flex gap-[10px] justify-center mt-[24px] items-center"
+        class="flex gap-[0.625rem] justify-center mt-[1.5rem] items-center"
       >
-        <UtSvg name="sunshine" class="spinner w-[24px] h-[24px]" />
+        <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
         Checking the code
       </p>
     </div>

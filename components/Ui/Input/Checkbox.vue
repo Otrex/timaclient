@@ -3,7 +3,7 @@
     <input
       type="checkbox"
       v-bind="$attrs"
-      :class="[shapeMap[props.shape || 'circle'], ' w-[20px] h-[20px]']"
+      :class="[shapeMap[props.shape || 'circle'], ' w-[1.25rem] h-[1.25rem]']"
     />
   </div>
 </template>
@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const shapeMap = {
   circle: "rounded-full",
-  square: "rounded-[5px]",
+  square: "rounded-[0.3125rem]",
 };
 </script>
 

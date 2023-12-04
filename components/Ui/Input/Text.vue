@@ -5,7 +5,7 @@
     :value="props.modelValue"
     :class="[
       $attrs.class,
-      'px-[24px] py-[12px] rounded-[40px] text-[19px] placeholder:text-[#999999]',
+      'px-[1.5rem] py-[0.75rem] rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
     ]"
   />
 </template>

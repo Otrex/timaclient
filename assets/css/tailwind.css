@@ -60,8 +60,30 @@
   font-style: italic;
 }
 
-/* https://tailwindcss.com/docs/adding-custom-styles */
+/**
+* NOTE: The rems are calculated with relative to 16px. 
+* This is due to the request to scale the sizes down by Mr Bobai
+* ---------------------------------------------------
+* https://tailwindcss.com/docs/adding-custom-styles
+**/
 @layer base {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 1.1875rem; /* 19px */
+  }
+
+  @media screen and (max-width: 40rem) {
+    html {
+      font-size: 10px;
+    }
+  }
   * {
     font-family: "SF-pro", san-serif;
   }
@@ -70,5 +92,9 @@
   }
   h2 {
     @apply text-xl;
+  }
+
+  p {
+    font-size: 1.1875rem; /* 19px */
   }
 }

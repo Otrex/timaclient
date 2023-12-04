@@ -1,18 +1,18 @@
 <template>
-  <div class="inline-block min-w-[100px]">
+  <div class="inline-block min-w-[6.25rem]">
     <div
       @click="open"
-      class="w-full flex items-center gap-[10px] justify-between outline p-[6px] outline-[#BBBBBB] !rounded-[40px]"
+      class="w-full flex items-center gap-[0.625rem] justify-between outline p-[0.375rem] outline-[#BBBBBB] !rounded-[2.5rem]"
     >
       <div>
-        <span class="text-[#BBBBBB] text-[19px] pl-[12px] w-full">{{
+        <span class="text-[#BBBBBB] text-[1.1875rem] pl-[0.75rem] w-full">{{
           fileName || props.placeholder
         }}</span>
       </div>
       <div>
         <button
           @click="open"
-          class="!rounded-[40px] bg-[#F59594] text-[19px] px-[50px] py-[4px] text-[#fff] min-w-[70px]"
+          class="!rounded-[2.5rem] bg-[#F59594] text-[19px] px-[3.125rem] py-[0.25rem] text-[#fff] min-w-[4.375rem]"
         >
           Upload
         </button>
@@ -21,24 +21,26 @@
 
     <UtModal
       v-model:state="modalState"
-      m-width="500px"
+      m-width="31.25rem"
       backdrop-color="rgba(0,0,0,.3)"
     >
       <div class="model-wrapper relative">
-        <div class="absolute top-[32px] right-[32px]">
+        <div class="absolute top-[2rem] right-[2rem]">
           <button @click="modalState = false">
-            <UtSvg name="close" class="w-[18px] h-[18px]" />
+            <UtSvg name="close" class="w-[1.125rem] h-[1.125rem]" />
           </button>
         </div>
-        <div class="px-[48px] text-center py-[35px] bg-white rounded-[30px]">
-          <h4 class="text-[28px] mb-[40px]">UPLOAD FILES</h4>
+        <div
+          class="px-[3rem] text-center py-[2.1875rem] bg-white rounded-[1.875rem]"
+        >
+          <h4 class="text-[1.75rem] mb-[2.5rem]">UPLOAD FILES</h4>
 
           <div
-            class="outline rounded-[8px] mb-[24px] outline-dashed outline-[#999999] pt-[20px] pb-[29px]"
+            class="rounded-[0.5rem] mb-[1.5rem] outline-dashed outline-[#999999] pt-[1.25rem] pb-[1.8125rem]"
           >
-            <UtSvg name="upload" class="inline-block w-[72px] h-[72px]" />
+            <UtSvg name="upload" class="inline-block w-[4.5rem] h-[4.5rem]" />
 
-            <h4 class="text-[24px]">Drag & Drop</h4>
+            <h4 class="text-[1.5rem]">Drag & Drop</h4>
             <p class="text-[#777777]">Your files here or browse to upload</p>
             <p class="text-[#0077D3]">
               Only jpeg & png files with max size of 15mb
@@ -46,7 +48,7 @@
           </div>
 
           <button
-            class="bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white py-[14px] max-w-[200px] text-[29px] rounded-[29px] w-full"
+            class="bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
           >
             Save
           </button>

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="mb-[60px]">
-      <h1 class="text-[39px] mb-[24px]">Basic Information</h1>
+    <div class="mb-[3.75rem]">
+      <h1 class="text-[2.4375rem] mb-[1.5rem]">Basic Information</h1>
       <p>Provide company name & phone number</p>
     </div>
 
-    <div class="flex flex-col gap-[16px]">
+    <div class="flex flex-col gap-[1rem]">
       <UiInputText
         type="text"
         class="w-full"
@@ -19,7 +19,7 @@
       />
       <UiInputText
         type="text"
-        class="w-full mb-[50px]"
+        class="w-full mb-[3.125rem]"
         v-model="form.website"
         placeholder="Website (If available)"
       />
@@ -28,7 +28,7 @@
         :disabled="true"
         label="Continue"
         variant="primary"
-        class="w-full py-[14px]"
+        class="w-full py-[0.875rem]"
       />
     </div>
   </div>

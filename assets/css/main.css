@@ -5,12 +5,8 @@
   outline: 1px solid rgba(255, 0, 0, 0.3);
 }
 
-p {
-  @apply text-[19px];
-}
-
 .tm__box-598px {
-  @apply mx-auto max-w-[calc(598px_+_40px)] px-[calc(40px_/_2)];
+  @apply mx-auto max-w-[calc(37.375rem_+_2.5rem)] px-[calc(2.5rem_/_2)];
 }
 
 /* TRANSITIONS & ANIMATIONS */

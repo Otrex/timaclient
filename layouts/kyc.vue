@@ -1,21 +1,21 @@
 <template>
   <div class="w-full h-screen flex flex-row">
-    <div class="flex-1 bg-[#F3FAFF] pt-[120px] px-[60px] max-w-[480px]">
+    <div class="flex-1 bg-[#F3FAFF] pt-[7.5rem] px-[3.75rem] max-w-[30rem]">
       <div>
         <slot name="sidebar"></slot>
       </div>
     </div>
     <div class="flex-1 dark:bg-black dark:text-white">
       <div>
-        <div class="p-[40px] flex flex-row items-center pt-[35px]">
+        <div class="p-[2.5rem] flex flex-row items-center pt-[2.1875rem]">
           <NuxtLink :to="props.prev || '/'">
-            <UtSvg name="long-back" class="w-[24px] h-[12px]" />
+            <UtSvg name="long-back" class="w-[1.5rem] h-[0.75rem]" />
           </NuxtLink>
           <div class="w-full">
             <slot name="topnav"></slot>
           </div>
         </div>
-        <div class="px-[40px]">
+        <div class="px-[2.5rem]">
           <slot></slot>
         </div>
       </div>

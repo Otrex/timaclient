@@ -20,7 +20,7 @@ import { HOtpInput } from "@healerlab/vue3-simple-otp-input";
 const otpInput = ref();
 const props = defineProps({
   size: {
-    default: "70px",
+    default: "4.375rem",
     type: String,
   },
   length: {
@@ -28,7 +28,7 @@ const props = defineProps({
     default: 4,
   },
   gap: {
-    default: "35px",
+    default: "2.1875rem",
     type: String,
   },
   type: {
@@ -62,20 +62,20 @@ function handleChange(otpCode) {
 <style scoped>
 .otp-input {
   display: inline-flex;
-  gap: 35px;
+  gap: 2.1875rem;
   gap: v-bind("props.gap");
 }
 .otp-input :deep(input) {
   /* outline: none; */
-  border: 1px solid black !important;
-  width: 70px;
+  border: 0.0625rem solid black !important;
+  width: 4.375rem;
   width: v-bind("props.size");
   aspect-ratio: 1/1;
   /* border: none; */
   text-align: center;
 }
 .otp-input :deep(input):active {
-  outline: 1px solid black;
+  outline: 0.0625rem solid black;
 }
 .otp-input :deep(input):first-child {
   margin-left: 0;
@@ -84,7 +84,7 @@ function handleChange(otpCode) {
   outline: none;
 }
 .otp-input :deep(span) {
-  padding: 0 0px 0 10px;
-  font-size: 30px;
+  padding: 0 0rem 0 0.625rem;
+  font-size: 1.875rem;
 }
 </style>
