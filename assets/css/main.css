@@ -13,8 +13,18 @@ p {
   @apply mx-auto max-w-[calc(598px_+_40px)] px-[calc(40px_/_2)];
 }
 
-/* TRANSITIONS */
-
+/* TRANSITIONS & ANIMATIONS */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  animation: spin 2s linear infinite;
+}
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;

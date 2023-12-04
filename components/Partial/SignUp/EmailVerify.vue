@@ -9,12 +9,13 @@
     </div>
 
     <div>
-      <UiInputOtp :length="6" v-model="code" @finish="sendCode" />
+      <UiInputOtp :length="6" v-model="form.code" @finish="sendCode" />
       <p
         v-show="form.loading"
         class="flex gap-[10px] justify-center mt-[24px] items-center"
       >
-        <UtSvg name="sunshine" class="w-[24px] h-[24px]" />Checking the code
+        <UtSvg name="sunshine" class="spinner w-[24px] h-[24px]" />
+        Checking the code
       </p>
     </div>
   </div>
