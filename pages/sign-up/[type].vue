@@ -6,7 +6,7 @@
           <NavSignUpStep
             title="Basic details"
             desc="Please provide your name and details"
-            :active="tab(constants.BASIC_DETAILS, constants.EMAIL_VERIFY)"
+            :active="tab(constants.BASIC_DETAILS)"
           />
         </li>
         <li v-if="route.params.type === constants.AGENCY" class="mb-[3rem]">
@@ -99,8 +99,11 @@ definePageMeta({
 
 const route = useRoute();
 
-function tab(...names: string[]): boolean {
-  return names.includes(currentTab.value);
+function tab(...names: any[]): boolean {
+  return (
+    names.includes(currentTab.value) ||
+    (tabMap[currentTab.value].activeOthers as any).includes(names[0])
+  );
 }
 
 const currentTab = computed(
@@ -108,12 +111,42 @@ const currentTab = computed(
 );
 
 const tabMap = {
-  [constants.BASIC_DETAILS]: { name: "index" },
-  [constants.BASIC_INFORMATION]: { query: { tab: constants.BASIC_DETAILS } },
+  [constants.BASIC_DETAILS]: {
+    prev: { name: "index" },
+    activeOthers: [constants.EMAIL_VERIFY],
+  },
+  [constants.EMAIL_VERIFY]: {
+    prev: { name: "index" },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
+  [constants.BASIC_INFORMATION]: {
+    prev: { query: { tab: constants.BASIC_DETAILS } },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
+  [constants.COMPLETE_PROFILE]: {
+    prev: { query: { tab: constants.BASIC_DETAILS } },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
+  [constants.ADDRESS_DOCUMENTATION]: {
+    prev: { query: { tab: constants.COMPLETE_PROFILE } },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
+  [constants.INDUSTRY_SELECTION]: {
+    prev: { query: { tab: constants.ADDRESS_DOCUMENTATION } },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
+  [constants.BANK_DETAILS]: {
+    prev: { query: { tab: constants.INDUSTRY_SELECTION } },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
+  [constants.CONTENT_CATEGORY]: {
+    prev: { query: { tab: constants.INDUSTRY_SELECTION } },
+    activeOthers: [constants.BASIC_DETAILS],
+  },
 };
 
 function previousTab(tab: keyof typeof tabMap) {
-  return tabMap[tab] || { query: { tab: constants.BASIC_DETAILS } };
+  return tabMap[tab].prev || { query: { tab: constants.BASIC_DETAILS } };
 }
 </script>
 
