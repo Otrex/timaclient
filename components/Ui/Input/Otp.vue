@@ -15,7 +15,8 @@
 </template>
 
 <script setup>
-import { HOtpInput } from "@healerlab/vue3-simple-otp-input";
+import pkg from "@healerlab/vue3-simple-otp-input";
+const { HOtpInput } = pkg;
 
 const otpInput = ref();
 const props = defineProps({

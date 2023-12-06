@@ -3,5 +3,5 @@ export default defineAppConfig({
     persist: [
       "auth"
     ]
-  }
+  },
 })
