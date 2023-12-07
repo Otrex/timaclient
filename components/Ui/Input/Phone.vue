@@ -2,7 +2,7 @@
   <div class="inline-block !rounded-[2.5rem]">
     <vue3-reactive-tel-input
       divInputClass="w-full outline-none"
-      class="outline outline-[#BBBBBB] !rounded-[2.5rem] !border-none"
+      class="!border !border-[#6B7280] !rounded-[2.5rem]"
       :inputClass="[
         inputClass,
         'focus:border-none !rounded-tr-[2.5rem] w-full text-[1.1875rem] p-[0.75rem] !rounded-br-[2.5rem]',

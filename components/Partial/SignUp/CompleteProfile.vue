@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tm__box-598px">
     <div class="mb-[3.75rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Complete profile</h1>
       <p>Provide influencer name & phone number</p>
@@ -25,7 +25,7 @@
         placeholder="Last name"
       />
       <UiInputPhone
-        class="w-full mb-[6.25rem]"
+        class="w-full mb-[3.25rem]"
         v-model="form.phone"
         placeholder="234 803 443 3833"
       />
@@ -48,7 +48,13 @@ const form = reactive({
   phone: "",
 });
 
-function proceed() {}
+function proceed() {
+  navigateTo({
+    query: {
+      tab: constants.ADDRESS_DOCUMENTATION_INFLUENCER,
+    },
+  });
+}
 </script>
 
 <style></style>

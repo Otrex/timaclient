@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tm__box-598px">
     <div class="mb-[3.75rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Basic Information</h1>
       <p>Provide company name & phone number</p>
@@ -25,9 +25,10 @@
       />
 
       <UiButtonDefault
-        :disabled="true"
+        :disabled="!isReady"
         label="Continue"
         variant="primary"
+        @click="proceed"
         class="w-full py-[0.875rem]"
       />
     </div>
@@ -39,6 +40,18 @@ const form = reactive({
   companyName: "",
   website: "",
   phone: "",
+});
+
+function proceed() {
+  navigateTo({
+    query: {
+      tab: constants.ADDRESS_DOCUMENTATION,
+    },
+  });
+}
+
+const isReady = computed(() => {
+  return form.website && form.phone && form.companyName;
 });
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tm__box-598px">
     <div class="mb-[1.875rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Check your email for a code</h1>
       <p>
@@ -34,13 +34,13 @@ function sendCode(otp: string) {
     if (route.params.type === "influencer") {
       navigateTo({
         query: {
-          tab: "complete-profile",
+          tab: constants.COMPLETE_PROFILE,
         },
       });
     } else {
       navigateTo({
         query: {
-          tab: "basic-information",
+          tab: constants.BASIC_INFORMATION,
         },
       });
     }

@@ -9,11 +9,12 @@
       />
       <div
         :class="[
-          'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[#111111]',
-          isActive && (props.activeClass || 'ring-4 ring-slate-300'),
+          'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[#111111] hover:ring-4 hover:ring-slate-300',
+          isActive &&
+            (props.activeClass || variantActiveCSS[props.variant || 'primary']),
         ]"
       >
-        <p>{{ props.label }}</p>
+        <p :class="$attrs.class">{{ props.label }}</p>
       </div>
     </label>
   </div>
@@ -22,6 +23,7 @@
 <script setup lang="ts">
 interface IProps {
   type: "multi" | "single";
+  variant?: "primary";
   label: string;
   name: string;
   value?: string | number;
@@ -38,6 +40,10 @@ const isActive = computed(() => {
 const typeMap = {
   multi: "checkbox",
   single: "radio",
+};
+
+const variantActiveCSS = {
+  primary: "border border-red-600 border-solid text-red-600",
 };
 
 function update() {

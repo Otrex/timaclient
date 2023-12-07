@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tm__box-598px">
     <div class="mb-[1.875rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Sign Up</h1>
       <p>

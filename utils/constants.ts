@@ -1,4 +1,5 @@
 export default Object.freeze({
+  ADDRESS_DOCUMENTATION_INFLUENCER: "address-documentation-v2",
   ADDRESS_DOCUMENTATION: "address-documentation",
   INDUSTRY_SELECTION: "industry-selection",
   BASIC_INFORMATION: "basic-information",
@@ -8,5 +9,6 @@ export default Object.freeze({
   EMAIL_VERIFY: "email-verify",
   BANK_DETAILS: "bank-details",
   INFLUENCER: "influencer",
+  REVIEW: "review",
   AGENCY: "agency",
 });
