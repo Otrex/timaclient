@@ -15,9 +15,10 @@
           </div>
         </div>
 
-        <div>
+        <div class="mb-[1.875rem]">
           <UiButtonDefault
-            label="Continue"
+            @click="login"
+            label="Login"
             variant="primary"
             class="w-full py-[0.875rem]"
           />
@@ -27,6 +28,10 @@
   </NuxtLayout>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+function login() {
+  navigateTo("/dashboard");
+}
+</script>
 
 <style></style>

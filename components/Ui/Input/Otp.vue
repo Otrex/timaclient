@@ -6,7 +6,7 @@
     @on-finish="handleFinish"
     @on-change="handleChange"
     wrapperClassName="otp-input"
-    :inputClassName="[inputClass, 'tm-input']"
+    :inputClassName="`${props.inputClass} tm-input`"
     :outlined="true"
     ref="otpInput"
     :only-number="true"

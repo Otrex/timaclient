@@ -1,11 +1,11 @@
 <template>
   <NuxtLayout :prev="currentView.prev" name="kyc">
     <template #sidebar>
-      <PartialSignUpNavbarAgency
+      <SignUpNavigatorAgency
         v-if="type(constants.AGENCY)"
         :activeTabs="activeTabs"
       />
-      <PartialSignUpNavbarInfluencer
+      <SignUpNavigatorInfluencer
         v-if="type(constants.INFLUENCER)"
         :activeTabs="activeTabs"
       />
@@ -48,19 +48,19 @@ const route = useRoute();
 
 const tabMap = {
   [constants.BASIC_DETAILS]: {
-    component: resolveComponent("LazyPartialSignUpBasicDetails"),
+    component: resolveComponent("LazySignUpBasicDetails"),
     prev: { name: "index" },
     activeOthers: [constants.EMAIL_VERIFY],
     hideFrom: [],
   },
   [constants.EMAIL_VERIFY]: {
-    component: resolveComponent("LazyPartialSignUpEmailVerify"),
+    component: resolveComponent("LazySignUpEmailVerify"),
     prev: { name: "index" },
     activeOthers: [constants.BASIC_DETAILS],
     hideFrom: [],
   },
   [constants.BASIC_INFORMATION]: {
-    component: resolveComponent("LazyPartialSignUpBasicInformation"),
+    component: resolveComponent("LazySignUpBasicInformation"),
     prev: {
       query: {
         tab: constants.BASIC_DETAILS,
@@ -70,7 +70,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.ADDRESS_DOCUMENTATION]: {
-    component: resolveComponent("LazyPartialSignUpAddressAndDocumentation"),
+    component: resolveComponent("LazySignUpAddressAndDocumentation"),
     prev: {
       query: {
         tab: constants.BASIC_INFORMATION,
@@ -80,7 +80,7 @@ const tabMap = {
     hideFrom: [],
   },
   [constants.INDUSTRY_SELECTION]: {
-    component: resolveComponent("LazyPartialSignUpIndustrySelection"),
+    component: resolveComponent("LazySignUpIndustrySelection"),
     prev: {
       query: {
         tab: constants.ADDRESS_DOCUMENTATION,
@@ -94,7 +94,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.COMPLETE_PROFILE]: {
-    component: resolveComponent("LazyPartialSignUpCompleteProfile"),
+    component: resolveComponent("LazySignUpCompleteProfile"),
     prev: {
       query: {
         tab: constants.BASIC_DETAILS,
@@ -104,7 +104,7 @@ const tabMap = {
     hideFrom: [constants.AGENCY],
   },
   [constants.BANK_DETAILS]: {
-    component: resolveComponent("LazyPartialSignUpBankDetails"),
+    component: resolveComponent("LazySignUpBankDetails"),
     prev: {
       query: {
         tab: constants.ADDRESS_DOCUMENTATION_INFLUENCER,
@@ -118,7 +118,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.CONTENT_CATEGORY]: {
-    component: resolveComponent("LazyPartialSignUpContentCategory"),
+    component: resolveComponent("LazySignUpContentCategory"),
     prev: {
       query: {
         tab: constants.BANK_DETAILS,
@@ -133,9 +133,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.ADDRESS_DOCUMENTATION_INFLUENCER]: {
-    component: resolveComponent(
-      "LazyPartialSignUpAddressAndDocumentationInfluencer"
-    ),
+    component: resolveComponent("LazySignUpAddressAndDocumentationInfluencer"),
     prev: {
       query: {
         tab: constants.COMPLETE_PROFILE,
@@ -150,6 +148,10 @@ const currentTab = computed(
   () => (route.query.tab || "basic-details") as keyof typeof tabMap
 );
 
+const userType = computed(
+  () => (route.params.type || "influencer") as string //
+);
+
 const currentView = computed(() => tabMap[currentTab.value]);
 
 const activeTabs = computed(() => [
@@ -157,7 +159,16 @@ const activeTabs = computed(() => [
   ...tabMap[currentTab.value].activeOthers,
 ]);
 
-const { isType: type, show } = useSignupTabController(tabMap);
+const show = (tab: keyof typeof tabMap) => {
+  return (
+    currentTab.value === tab &&
+    !(tabMap[tab].hideFrom as string[]).includes(userType.value)
+  );
+};
+
+const type = (type: string) => {
+  return userType.value === type;
+};
 </script>
 
 <style></style>

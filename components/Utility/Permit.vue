@@ -13,7 +13,7 @@ export interface IPermitProps {
 }
 
 const props = withDefaults(defineProps<IPermitProps>(), {
-  allow: () => [],
+  allow: () => ["*"],
   type: "*",
 });
 

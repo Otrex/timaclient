@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-screen flex flex-row">
     <div
-      class="flex-1 overflow-auto h-full bg-[#F3FAFF] pt-[7.5rem] px-[3.75rem] max-w-[30rem]"
+      class="flex-1 overflow-auto h-full bg-[--clr-light-blue] pt-[7.5rem] px-[3.75rem] max-w-[30rem]"
     >
       <div>
         <slot name="sidebar"></slot>
