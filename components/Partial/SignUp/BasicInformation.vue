@@ -25,7 +25,6 @@
       />
 
       <UiButtonDefault
-        :disabled="!isReady"
         label="Continue"
         variant="primary"
         @click="proceed"
