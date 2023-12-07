@@ -1,137 +1,5 @@
-export default function () {
-  const tabMap = {
-    [constants.BASIC_DETAILS]: {
-      prev: { name: "index" },
-      activeOthers: [
-        constants.EMAIL_VERIFY
-      ],
-      hideFrom: []
-    },
-    [constants.EMAIL_VERIFY]: {
-      prev: { name: "index" },
-      activeOthers: [
-        constants.BASIC_DETAILS
-      ],
-      hideFrom: []
-    },
-    [constants.BASIC_INFORMATION]: {
-      prev: {
-        query: {
-          tab: constants.BASIC_DETAILS
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS
-      ],
-      hideFrom: [constants.INFLUENCER]
-    },
-    [constants.COMPLETE_PROFILE]: {
-      prev: {
-        query: {
-          tab: constants.BASIC_DETAILS
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS
-      ],
-      hideFrom: [constants.AGENCY]
-    },
-    [constants.ADDRESS_DOCUMENTATION]: {
-      prev: {
-        query: {
-          tab: constants.BASIC_INFORMATION
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS,
-        constants.BASIC_INFORMATION
-      ],
-      hideFrom: []
-    },
-    [constants.INDUSTRY_SELECTION]: {
-      prev: {
-        query: {
-          tab: constants.ADDRESS_DOCUMENTATION
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS,
-        constants.BASIC_INFORMATION,
-        constants.ADDRESS_DOCUMENTATION
-      ],
-      hideFrom: [constants.INFLUENCER]
-    },
-    [constants.BANK_DETAILS]: {
-      prev: {
-        query: {
-          tab: constants.INDUSTRY_SELECTION
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS
-      ],
-      hideFrom: [constants.INFLUENCER]
-    },
-    [constants.CONTENT_CATEGORY]: {
-      prev: {
-        query: {
-          tab: constants.INDUSTRY_SELECTION
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS
-      ],
-      hideFrom: [constants.INFLUENCER]
-    },
-    [constants.REVIEW]: {
-      prev: {
-        query: {
-          tab: constants.BANK_DETAILS
-        }
-      },
-      activeOthers: [],
-      hideFrom: [],
-    },
-    [constants.ADDRESS_DOCUMENTATION_INFLUENCER]: {
-      prev: {
-        query: {
-          tab: constants.COMPLETE_PROFILE
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS,
-        constants.COMPLETE_PROFILE
-      ],
-      hideFrom: [],
-    },
-    [constants.BANK_DETAILS]: {
-      prev: {
-        query: {
-          tab: constants.ADDRESS_DOCUMENTATION_INFLUENCER
-        }
-      },
-      activeOthers: [
-        constants.BASIC_DETAILS,
-        constants.COMPLETE_PROFILE,
-        constants.ADDRESS_DOCUMENTATION_INFLUENCER
-      ],
-      hideFrom: [],
-    },
-    [constants.CONTENT_CATEGORY]: {
-      prev: {
-        query: {
-          tab: constants.BANK_DETAILS
-        }
-      },
-      activeOthers: [
-        constants.BANK_DETAILS,
-        constants.BASIC_DETAILS,
-        constants.COMPLETE_PROFILE,
-        constants.ADDRESS_DOCUMENTATION_INFLUENCER
-      ],
-      hideFrom: [],
-    }
-  };
+export default function (tabMap: Record<any, any>) {
+
 
   const route = useRoute();
   function isActiveTab(...names: any[]): boolean {
@@ -147,6 +15,9 @@ export default function () {
   const userType = computed(
     () => (route.params.type || "influencer") as string
   );
+  const currentView = computed(
+    () => tabMap[currentTab.value]
+  )
 
   function previousTab(tab: keyof typeof tabMap) {
     return tabMap[tab].prev || { query: { tab: constants.BASIC_DETAILS } };
@@ -161,6 +32,7 @@ export default function () {
   }
 
   return {
+    currentView,
     currentTab,
     previousTab,
     userType,

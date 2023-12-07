@@ -36,7 +36,7 @@
           </button>
         </div>
         <div
-          class="px-[3rem] text-center py-[2.1875rem] bg-white rounded-[1.875rem]"
+          class="px-[3rem] text-center py-[2.1875rem] dark:bg-[#444] bg-white rounded-[1.875rem]"
         >
           <h4 class="text-[1.75rem] mb-[2.5rem]">UPLOAD FILES</h4>
 

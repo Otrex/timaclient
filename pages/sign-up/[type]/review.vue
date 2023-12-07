@@ -20,7 +20,7 @@
         :to="`/sign-up/${$route.params.type}?tab=${constants.BASIC_DETAILS}`"
       >
         <UiButtonDefault
-          label="Go back"
+          label="Log In"
           variant="primary"
           class="w-full py-[0.875rem]"
         />

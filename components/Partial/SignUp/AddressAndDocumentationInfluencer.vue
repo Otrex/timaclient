@@ -21,6 +21,12 @@
       <UiInputText
         type="text"
         class="w-full"
+        v-model="form.postalCode"
+        placeholder="Postal Code"
+      />
+      <UiInputText
+        type="text"
+        class="w-full"
         v-model="form.state"
         placeholder="State"
       />
@@ -52,7 +58,7 @@
         :disabled="false"
         label="Continue"
         variant="primary"
-        class="w-full py-[0.875rem]"
+        class="w-full py-[0.875rem] mb-[1.875rem]"
         @click="proceed"
       />
     </div>
@@ -65,6 +71,7 @@ const form = reactive({
   companyRegDocs: [] as File[],
   language: "",
   country: "",
+  postalCode: "",
   state: "",
   street: "",
   city: "",

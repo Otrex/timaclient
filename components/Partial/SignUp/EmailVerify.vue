@@ -8,7 +8,7 @@
       </p>
     </div>
 
-    <div>
+    <div class="mt-[1.875rem]">
       <UiInputOtp :length="6" v-model="form.code" @finish="sendCode" />
       <p
         v-show="form.loading"
@@ -44,7 +44,7 @@ function sendCode(otp: string) {
         },
       });
     }
-  }, 5000);
+  }, 3000);
 }
 </script>
 

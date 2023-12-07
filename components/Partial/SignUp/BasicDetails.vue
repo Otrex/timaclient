@@ -42,7 +42,7 @@
         label="Continue"
         variant="primary"
         @click="proceed"
-        class="w-full py-[0.875rem]"
+        class="w-full py-[0.875rem] mb-[1.875rem]"
       />
     </div>
   </div>

@@ -31,5 +31,10 @@
   </ul>
 </template>
 <script setup lang="ts">
-const { isActiveTab: tab } = useSignupTabController();
+const props = defineProps<{
+  activeTabs: (keyof typeof constants | string)[];
+}>();
+const tab = (tab: keyof typeof constants | string) => {
+  return props.activeTabs.includes(tab);
+};
 </script>

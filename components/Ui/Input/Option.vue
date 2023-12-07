@@ -5,11 +5,12 @@
         :type="typeMap[props.type]"
         :name="props.name"
         class="hidden"
+        :disabled="props.disabled"
         @change="update"
       />
       <div
         :class="[
-          'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[#111111] hover:ring-4 hover:ring-slate-300',
+          'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[#111111] dark:border-[#eee] hover:ring-4 hover:ring-slate-300',
           isActive &&
             (props.activeClass || variantActiveCSS[props.variant || 'primary']),
         ]"
@@ -24,6 +25,7 @@
 interface IProps {
   type: "multi" | "single";
   variant?: "primary";
+  disabled?: boolean;
   label: string;
   name: string;
   value?: string | number;
@@ -43,7 +45,8 @@ const typeMap = {
 };
 
 const variantActiveCSS = {
-  primary: "border border-red-600 border-solid text-red-600",
+  primary:
+    "border border-red-600 dark:border-red-600 border-solid text-red-600",
 };
 
 function update() {

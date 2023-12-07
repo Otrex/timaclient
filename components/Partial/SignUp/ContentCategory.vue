@@ -9,6 +9,7 @@
       <UiInputOption
         class="!text-[1rem] min-w-[4.6875rem]"
         v-for="(option, idx) in options"
+        :disabled="disable(option)"
         :key="idx"
         :value="option"
         :label="option"
@@ -18,7 +19,7 @@
       />
     </div>
 
-    <div class="flex flex-col gap-[1rem] tm__box-598px">
+    <div class="flex flex-col gap-[1rem] tm__box-598px mb-[1.875rem]">
       <UiButtonDefault
         :disabled="false"
         label="Continue"
@@ -36,6 +37,10 @@ const route = useRoute();
 const form = reactive({
   selection: ["Arts"],
 });
+
+const disable = (value: string) => {
+  return form.selection.length >= 2 && !form.selection.includes(value);
+};
 
 const options = [
   "Arts",
@@ -60,7 +65,7 @@ const options = [
 ];
 
 function proceed() {
-  navigateTo(`/sign-up/${route.params.type}/review`);
+  navigateTo(`/sign-up/${route.params.type}/socials`);
 }
 </script>
 
