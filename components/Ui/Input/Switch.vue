@@ -1,9 +1,9 @@
 <template>
-  <div class="inline-block">
+  <div class="inline-block inx">
     <label
       :class="[
-        'flex items-center w-[calc(1.5rem_+_0.25rem)] transition-all rounded-lg p-[0.125rem]',
-        props.modelValue ? 'bg-gray-400' : 'bg-white',
+        'flex items-center w-[--box-size] transition-all rounded-[--radius] p-[--pad]',
+        props.modelValue ? 'bg-gray-400' : 'bg-gray-400',
       ]"
     >
       <input
@@ -14,7 +14,7 @@
       />
       <div
         :class="[
-          'w-[0.75rem] transition-all shadow h-[0.75rem] rounded-full bg-white dark:bg-[#444]',
+          'w-[--size] h-[--size] transition-all shadow  rounded-full bg-white dark:bg-[#444]',
           props.modelValue ? 'transform translate-x-[100%]' : '',
         ]"
       ></div>
@@ -27,10 +27,26 @@ const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps<{
   modelValue?: any;
+  size?: "sm" | "lg";
 }>();
+
+const sizeMap = {
+  lg: "1.5rem",
+  sm: "0.75rem",
+};
+
+const size = computed(() => sizeMap[props.size || "sm"]);
+
 const update = () => {
   emit("update:modelValue", !props.modelValue);
 };
 </script>
 
-<style></style>
+<style scoped>
+.inx {
+  --pad: calc(0.13rem);
+  --size: v-bind("size");
+  --radius: calc(v-bind("size") - var(--pad));
+  --box-size: calc((2 * v-bind("size")) + (var(--pad) * 2));
+}
+</style>

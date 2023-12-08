@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-[6.25rem]">
+  <div class="px-[6.25rem]">
     <div class="text-center tm__box-598px">
       <UtSvg name="logo/tima" class="max-w-[6.125rem]" />
       <div class="mb-[2.25rem]">

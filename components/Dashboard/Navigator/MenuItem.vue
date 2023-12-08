@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  to: any;
+  to?: any;
   label: string;
   icon: string;
 }>();

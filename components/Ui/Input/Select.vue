@@ -1,6 +1,6 @@
 <template>
   <select
-    class="px-[1.5rem] py-[0.75rem] rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]"
+    class="px-[1.5rem] py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]"
     v-bind="$attrs"
   >
     <option v-if="props.placeholder" class="text-[#999999]">

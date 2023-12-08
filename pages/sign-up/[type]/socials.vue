@@ -47,9 +47,10 @@
           label="Connect your web blog (not compulsory)"
         />
         <UiButtonDefault
+          @click="navigateTo('/auth/login')"
           label="Continue"
           variant="primary"
-          class="w-full py-[0.875rem]"
+          class="w-full py-[0.875rem] mb-[2rem]"
         />
       </div>
     </div>

@@ -4,7 +4,7 @@
   >
     <div>
       <slot name="left">
-        <h2>{{ tools.capitalize($route.name) }}</h2>
+        <h2>{{ routeName }}</h2>
       </slot>
     </div>
     <div>
@@ -17,6 +17,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const route = useRoute();
+const routeName = computed(() => tools.capitalize(route.name as string));
+</script>
 
 <style></style>

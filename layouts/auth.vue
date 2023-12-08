@@ -11,6 +11,7 @@
               <span
                 >Don’t have an account?
                 <NuxtLink
+                  to="/"
                   class="text-red-600 text-[1.1875rem] underline underline-offset-2"
                   >Sign Up</NuxtLink
                 >
