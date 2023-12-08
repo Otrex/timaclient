@@ -30,7 +30,7 @@
         <div class="flex items-center w-full">
           <div class="flex gap-[1.75rem]">
             <div>
-              <UiInputSwitch v-model="notice" size="lg" />
+              <UiInputSwitch v-model="notice2" size="lg" />
             </div>
             <div class="flex flex-col">
               <span class="mb-[0.5625rem]">I want to receive email alerts</span>
@@ -60,6 +60,7 @@
 
 <script setup lang="ts">
 const notice = ref();
+const notice2 = ref();
 </script>
 
 <style></style>
