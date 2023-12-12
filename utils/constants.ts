@@ -11,11 +11,18 @@ export default Object.freeze({
   BRAND_INFORMATION: "brand-information",
   CONTENT_CATEGORY: "content-category",
   COMPLETE_PROFILE: "complete-profile",
+
+  BRAND_OVERVIEW: "brand-overview",
+  BRAND_CREATIVE: "brand-creative",
+  BRAND_INFLUENCERS: "brand-influencers",
+
   BASIC_DETAILS: "basic-details",
   EMAIL_VERIFY: "email-verify",
   BANK_DETAILS: "bank-details",
-  INFLUENCER: "influencer",
   PASSWORD: "password",
   REVIEW: "review",
-  AGENCY: "agency",
+
+
+  INFLUENCER: "INFLUENCER",
+  AGENCY: "BRAND",
 });

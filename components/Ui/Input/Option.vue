@@ -11,11 +11,16 @@
       <div
         :class="[
           'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[#111111] dark:border-[#eee] hover:ring-4 hover:ring-slate-300',
+          props.mainClass,
           isActive &&
             (props.activeClass || variantActiveCSS[props.variant || 'primary']),
         ]"
       >
-        <p :class="$attrs.class">{{ props.label }}</p>
+        <slot
+          ><p v-if="props.label" :class="$attrs.class">
+            {{ props.label }}
+          </p></slot
+        >
       </div>
     </label>
   </div>
@@ -26,7 +31,8 @@ interface IProps {
   type: "multi" | "single";
   variant?: "primary";
   disabled?: boolean;
-  label: string;
+  mainClass?: string;
+  label?: string;
   name: string;
   value?: string | number;
   modelValue?: string | number | string[] | number[];
