@@ -62,53 +62,59 @@
           <UiInputOption
             type="multi"
             v-model="socials"
+            name="social-option"
             value="instagram"
-            main-class="!rounded-[1.25rem] text-center"
+            main-class="tima__social:option"
           >
             <UtSvg name="socials/instagram-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
 
           <UiInputOption
             type="multi"
+            name="social-option"
             v-model="socials"
             value="tiktok"
-            main-class="!rounded-[1.25rem] text-center"
+            main-class="tima__social:option"
           >
             <UtSvg name="socials/tiktok-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
 
           <UiInputOption
             type="multi"
+            name="social-option"
             v-model="socials"
             value="twitter"
-            main-class="!rounded-[1.25rem] text-center"
+            main-class="tima__social:option"
           >
             <UtSvg name="socials/twitter-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
 
           <UiInputOption
             type="multi"
+            name="social-option"
             v-model="socials"
             value="youtube"
-            main-class="!rounded-[1.25rem] text-center"
+            main-class="tima__social:option"
           >
             <UtSvg name="socials/youtube-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
 
           <UiInputOption
             type="multi"
+            name="social-option"
             v-model="socials"
             value="facebook"
-            main-class="!rounded-[1.25rem] text-center"
+            main-class="tima__social:option"
           >
             <UtSvg name="socials/facebook-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
 
           <UiInputOption
             type="multi"
+            name="social-option"
             v-model="socials"
             value="linkedin"
-            main-class="!rounded-[1.25rem] text-center"
+            main-class="tima__social:option"
           >
             <UtSvg name="socials/linkedin-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -122,4 +128,8 @@
 const socials = ref([]);
 </script>
 
-<style></style>
+<style>
+.tima__social\:option {
+  @apply !rounded-[1.25rem] text-center py-[1.4375rem];
+}
+</style>

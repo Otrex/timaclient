@@ -27,15 +27,17 @@
         v-model="form.password"
         placeholder="Password"
       />
-      <div class="flex items-center gap-[0.625rem] mb-[2.3125rem]">
-        <input
-          type="checkbox"
-          v-model="form.agreed"
-          class="rounded-full w-[1.25rem] h-[1.25rem]"
-        />
-        <span class="text-[0.875rem]">
-          I have read and understood the terms and conditions
-        </span>
+      <div class="mb-[2.3125rem]">
+        <label class="flex items-center gap-[0.625rem]">
+          <input
+            type="checkbox"
+            v-model="form.agreed"
+            class="rounded-full w-[1.25rem] h-[1.25rem]"
+          />
+          <span class="text-[0.875rem]">
+            I have read and understood the terms and conditions
+          </span>
+        </label>
       </div>
       <UiButtonDefault
         :disabled="!isReady"

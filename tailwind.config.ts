@@ -35,6 +35,9 @@ export const config: Partial<Config> = {
         'blue': '#1fb6ff',
         'pink': '#ff49db',
         'orange': '#ff7849',
+        // 'gray': {
+        //   '500': '#999999'
+        // }
       },
     },
   },

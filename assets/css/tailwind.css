@@ -62,6 +62,7 @@
 
 :root {
   --clr-light-blue: #f3faff;
+  --input-border-color: #aaa;
 }
 
 /**
@@ -103,4 +104,23 @@
   p {
     font-size: 1.1875rem; /* 19px */
   }
+}
+
+input:where(:not([type])),
+[type="text"],
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[multiple],
+textarea,
+select {
+  border-color: var(--input-border-color);
 }

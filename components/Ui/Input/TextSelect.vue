@@ -9,6 +9,7 @@
         @input="update"
         :value="props.modelValue"
         :class="[
+          'pr-[6.4375rem]',
           $attrs.class,
           'px-[1.5rem] w-full py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
         ]"
@@ -16,17 +17,14 @@
       <div
         class="absolute top-[1.5px] max-w-[6.4375rem] bottom-[1.5px] right-[2px] flex items-center bg-inherit justify-center rounded-r-[2.5rem]"
       >
-        <select
-          v-model="selection"
-          class="w-full h-full bg-[#CCE9FF] border-0 rounded-[2.5rem]"
-        >
-          <options
+        <select class="w-full h-full bg-[#CCE9FF] border-0 rounded-[2.5rem]">
+          <option
             v-for="(opt, idx) in props.options"
             :value="opt.value"
             :key="idx"
           >
             {{ opt.label }}
-          </options>
+          </option>
         </select>
       </div>
     </div>
