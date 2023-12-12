@@ -12,7 +12,7 @@
           />
         </div>
       </div>
-      <div class="select-none">Mercy Idowu</div>
+      <div class="select-none whitespace-nowrap">Mercy Idowu</div>
     </div>
     <div>
       <UtSvg name="down-caret" class="w-[0.75rem] h-[0.375rem] m-[0.375rem]" />

@@ -11,7 +11,8 @@
 
 @font-face {
   font-family: "SF-Pro";
-  src: url("~/assets/fonts/sf-pro-display/MEDIUM.OTF") format("opentype");
+  src: url("~/assets/fonts/sf-pro-display/SFPRODISPLAYMEDIUM.OTF")
+    format("opentype");
   font-weight: medium;
   font-style: normal;
 }
@@ -51,13 +52,20 @@
   font-weight: normal;
   font-style: italic;
 }
-
 @font-face {
   font-family: "SF-Pro";
   src: url("~/assets/fonts/sf-pro-display/ULTRALIGHTITALIC.OTF")
     format("opentype");
   font-weight: thin;
   font-style: italic;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("~/assets/fonts/sf-pro-display/SFPRODISPLAYREGULAR.OTF")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
@@ -88,7 +96,8 @@
 
   @media screen and (max-width: 40rem) {
     html {
-      font-size: 10px;
+      font-size: 12px;
+      transition: all 0.15s;
     }
   }
   * {
@@ -103,6 +112,14 @@
 
   p {
     font-size: 1.1875rem; /* 19px */
+  }
+
+  p.nl {
+    font-size: 1rem;
+  }
+
+  p.sm {
+    font-size: 0.8125rem;
   }
 }
 

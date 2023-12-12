@@ -3,7 +3,7 @@
     <label
       :class="[
         'flex items-center w-[--box-size] transition-all rounded-[--radius] p-[--pad]',
-        props.modelValue ? 'bg-gray-400' : 'bg-gray-400',
+        props.modelValue ? 'bg-red-400' : 'bg-gray-400',
       ]"
     >
       <input

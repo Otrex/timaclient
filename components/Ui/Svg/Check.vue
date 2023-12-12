@@ -1,6 +1,7 @@
 <template>
   <svg
     v-if="!checked"
+    :class="sizeMap[size || 'lg']"
     width="32"
     height="32"
     viewBox="0 0 32 32"
@@ -17,6 +18,7 @@
   </svg>
   <svg
     v-else
+    :class="sizeMap[size || 'lg']"
     width="32"
     height="32"
     viewBox="0 0 32 32"
@@ -35,7 +37,12 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ checked?: boolean }>();
+defineProps<{ checked?: boolean; size?: "lg" | "sm" }>();
+
+const sizeMap = {
+  sm: "w-[20px] h-[20px]",
+  lg: "",
+};
 </script>
 
 <style></style>

@@ -15,6 +15,7 @@ export default Object.freeze({
   BRAND_OVERVIEW: "brand-overview",
   BRAND_CREATIVE: "brand-creative",
   BRAND_INFLUENCERS: "brand-influencers",
+  BRAND_PREVIEW: 'brand-preview',
 
   BASIC_DETAILS: "basic-details",
   EMAIL_VERIFY: "email-verify",

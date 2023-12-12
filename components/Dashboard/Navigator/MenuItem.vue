@@ -8,7 +8,7 @@
       <div class="flex items-center">
         <UtSvg :name="props.icon" class="w-[1.2rem] h-[1.2rem]" />
       </div>
-      <div class="text-[1rem]">
+      <div class="text-[1.05rem]">
         {{ props.label }}
       </div>
     </div>

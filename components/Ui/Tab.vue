@@ -14,7 +14,9 @@
       </div>
     </div>
     <div :class="props.tabClass">
-      <component :is="currentComponent?.component" />
+      <transition mode="out-in">
+        <component :is="currentComponent?.component" />
+      </transition>
     </div>
   </div>
 </template>
@@ -35,13 +37,6 @@ const props = defineProps<{
 
 const emits = defineEmits(["change"]);
 
-// watch(
-//   () => currentTab,
-//   () => {
-//     emits("change");
-//   }
-// );
-
 const currentTab = computed(() => {
   const routeTab = route.query[props.routeKey || "tab"] as Routes;
   return !routeTab ? props.defaultTab : routeTab;
@@ -50,6 +45,10 @@ const currentTab = computed(() => {
 const currentComponent = computed(() =>
   props.menuItems.find((current) => current.name === currentTab.value)
 );
+
+watch(currentTab, () => {
+  emits("change", currentTab.value);
+});
 </script>
 
 <style></style>

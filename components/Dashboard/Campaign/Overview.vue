@@ -1,39 +1,39 @@
 <template>
   <div class="mt-[1.4375rem]">
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap"> Campaign name </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputText class="w-full" placeholder="Write campaign name here" />
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap"> About campaign </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputTextArea class="w-full h-[9.125rem]" placeholder="Brief" />
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap">
-          Campaign website <sub class="block">(if available)</sub>
+          Campaign website <sub class="md:block">(if available)</sub>
         </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputText class="w-full" placeholder="Add campaign website" />
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap"> Planned Budget </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputTextSelect
           :options="tools.generationOptions(['NGN', 'USD'])"
           placeholder="Add campaign website"
@@ -41,11 +41,11 @@
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap"> Cost per post </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputTextSelect
           :options="tools.generationOptions(['NGN', 'USD'])"
           placeholder="Add campaign website"
@@ -53,18 +53,18 @@
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block"> Social media platforms</label>
       </div>
-      <div class="w-3/4">
-        <div class="grid md:grid-cols-3 gap-[1.875rem]">
+      <div class="md:w-3/4">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-[1.875rem]">
           <UiInputOption
             type="multi"
             v-model="socials"
             name="social-option"
             value="instagram"
-            main-class="tima__social:option"
+            main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
             <UtSvg name="socials/instagram-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -74,7 +74,7 @@
             name="social-option"
             v-model="socials"
             value="tiktok"
-            main-class="tima__social:option"
+            main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
             <UtSvg name="socials/tiktok-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -84,7 +84,7 @@
             name="social-option"
             v-model="socials"
             value="twitter"
-            main-class="tima__social:option"
+            main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
             <UtSvg name="socials/twitter-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -94,7 +94,7 @@
             name="social-option"
             v-model="socials"
             value="youtube"
-            main-class="tima__social:option"
+            main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
             <UtSvg name="socials/youtube-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -104,7 +104,7 @@
             name="social-option"
             v-model="socials"
             value="facebook"
-            main-class="tima__social:option"
+            main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
             <UtSvg name="socials/facebook-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -114,7 +114,7 @@
             name="social-option"
             v-model="socials"
             value="linkedin"
-            main-class="tima__social:option"
+            main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
             <UtSvg name="socials/linkedin-lg" class="w-[3rem] h-[3rem]" />
           </UiInputOption>
@@ -128,8 +128,8 @@
 const socials = ref([]);
 </script>
 
-<style>
-.tima__social\:option {
-  @apply !rounded-[1.25rem] text-center py-[1.4375rem];
+<style scoped>
+.tima__form {
+  @apply flex md:flex-row flex-col w-full mb-[1.75rem];
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-[#F5F7FB] dark:bg-slate-800 flex flex-col justify-between w-1/3 h-full p-[1.5rem]"
+    class="bg-[#F5F7FB] sticky dark:bg-slate-800 flex flex-col justify-between md:w-1/3 h-full p-[1.5rem]"
   >
     <div>
       <h4 class="text-center text-[1.4375rem] mb-[2rem]">{{ props.title }}</h4>

@@ -1,12 +1,26 @@
 <template>
   <div class="mt-[1.4375rem]">
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap">
-          Category <sub class="block">(select all that apply)</sub>
+          Category <sub class="md:block">(select all that apply)</sub>
         </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
+        <UiInputSelectMulti
+          class="w-full"
+          :options="tools.generationOptions(['test', 'test2'])"
+        />
+      </div>
+    </div>
+
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
+        <label class="w-full block whitespace-nowrap">
+          Audience size <sub class="md:block">(select all that apply)</sub>
+        </label>
+      </div>
+      <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
           :options="tools.generationOptions([])"
@@ -14,13 +28,13 @@
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap">
-          Audience size <sub class="block">(select all that apply)</sub>
+          Audience Gender <sub class="md:block">(select all that apply)</sub>
         </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
           :options="tools.generationOptions([])"
@@ -28,13 +42,13 @@
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap">
-          Audience Gender <sub class="block">(select all that apply)</sub>
+          Audience Age group <sub class="md:block">(select all that apply)</sub>
         </label>
       </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
           :options="tools.generationOptions([])"
@@ -42,27 +56,13 @@
       </div>
     </div>
 
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap">
-          Audience Age group <sub class="block">(select all that apply)</sub>
+          Audience Location <sub class="md:block">(select all that apply)</sub>
         </label>
       </div>
-      <div class="w-3/4">
-        <UiInputSelectMulti
-          class="w-full"
-          :options="tools.generationOptions([])"
-        />
-      </div>
-    </div>
-
-    <div class="flex flex-row w-full mb-[1.75rem]">
-      <div class="w-1/4 pt-2">
-        <label class="w-full block whitespace-nowrap">
-          Audience Location <sub class="block">(select all that apply)</sub>
-        </label>
-      </div>
-      <div class="w-3/4">
+      <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
           :options="tools.generationOptions([])"
@@ -74,4 +74,8 @@
 
 <script setup lang="ts"></script>
 
-<style></style>
+<style scoped>
+.tima__form {
+  @apply flex md:flex-row flex-col w-full mb-[1.75rem];
+}
+</style>
