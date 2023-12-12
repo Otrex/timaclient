@@ -33,6 +33,15 @@ const props = defineProps<{
   }[];
 }>();
 
+const emits = defineEmits(["change"]);
+
+// watch(
+//   () => currentTab,
+//   () => {
+//     emits("change");
+//   }
+// );
+
 const currentTab = computed(() => {
   const routeTab = route.query[props.routeKey || "tab"] as Routes;
   return !routeTab ? props.defaultTab : routeTab;
