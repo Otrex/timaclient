@@ -9,14 +9,19 @@
     </div>
     <div class="w-full max-w-[42.5rem]">
       <slot name="middle">
-        <div class="flex justify-between" v-if="routeName === 'Campaign'">
+        <div
+          class="flex justify-between"
+          v-if="['Campaign', 'Explore'].includes(routeName)"
+        >
           <UiInputText
             class="max-w-[25.8125rem] w-full"
             placeholder="Search campaigns"
+            search
           />
 
           <UiButtonDefault
-            @click="navigateTo('/dashboard/create-campaign')"
+            v-if="routeName === 'Campaign'"
+            @click="navigateTo('/dashboard/campaign/create')"
             label="+ New campaign"
             class="px-[1.125rem] py-[0.625rem]"
             variant="primary"

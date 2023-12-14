@@ -71,6 +71,14 @@
 :root {
   --clr-light-blue: #f3faff;
   --input-border-color: #aaa;
+
+  --clr-grey-400: #777;
+  --clr-grey-300: #999;
+  --clr-grey-500: #555;
+
+  --clr-blue-700: #0077d3;
+  --clr-blue-500: #2ba2fd;
+  --clr-blue-100: #cce9ff;
 }
 
 /**
