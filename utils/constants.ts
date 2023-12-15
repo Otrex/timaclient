@@ -23,6 +23,9 @@ export default Object.freeze({
   PASSWORD: "password",
   REVIEW: "review",
 
+  CAMPAIGN_PAYMENT: 'payment',
+  CAMPAIGN_INFLUENCERS: 'influencers',
+  CAMPAIGN_ANALYTICS: 'analytics',
 
   INFLUENCER: "INFLUENCER",
   AGENCY: "BRAND",
