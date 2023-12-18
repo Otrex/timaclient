@@ -1,7 +1,7 @@
 <template>
   <div class="p-[1.75rem]">
     <div class="flex justify-end">
-      <div>
+      <!-- <div>
         <UiButtonDefault
           p="0.625rem"
           class="mr-[0.75rem]"
@@ -9,7 +9,7 @@
           label="Edit publications"
         />
         <UiButtonDefault variant="info" label="Add Publications" p="0.625rem" />
-      </div>
+      </div> -->
     </div>
 
     <section class="mt-[0.75rem]">
@@ -43,7 +43,7 @@
           :menu-items="tabs"
           class="w-full"
           @change="tabChange"
-          :default-tab="constants.BRAND_OVERVIEW"
+          :default-tab="constants.CAMPAIGN_INFLUENCERS"
         />
       </div>
     </section>
@@ -65,7 +65,6 @@ const tabs = [
     name: constants.CAMPAIGN_INFLUENCERS,
     component: resolveComponent("LazyDashboardCampaignUserInfluencers"),
     label: "Influencers",
-    default: true,
   },
   {
     name: constants.CAMPAIGN_PAYMENT,

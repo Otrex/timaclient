@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import mockData from 'vite-plugin-mock-data';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
 
@@ -19,7 +18,6 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   components: [
     { path: '~/components/Ui', prefix: 'Ui' },
-    { path: '~/components/Data', prefix: 'Dt' },
     { path: '~/components/Utility', prefix: 'Ut' },
     '~/components'
   ],
@@ -37,10 +35,6 @@ export default defineNuxtConfig({
   },
   vite: {
     plugins: [
-      mockData({
-        mockRoutesDir: './mock'
-      }),
-
       // Config Link: https://github.com/vbenjs/vite-plugin-svg-icons
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'assets/svg')],
