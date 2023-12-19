@@ -22,8 +22,13 @@ definePageMeta({
 const tabs = [
   {
     name: constants.CAMPAIGN_PERSONAL_INFO,
-    component: resolveComponent("LazyDashboardCampaignPersonalInfo"),
+    component: resolveComponent("LazyDashboardCampaignInfluencerPersonalInfo"),
     label: "Personal Info",
+  },
+  {
+    name: constants.CAMPAIGN_INFLUENCER_CAMPAIGN_INFO,
+    component: resolveComponent("LazyDashboardCampaignInfluencerCampaignInfo"),
+    label: "Campaign",
   },
 ];
 

@@ -43,14 +43,16 @@
       <section class="mt-[1.5rem]">
         <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-[1.1875rem]">
           <template v-for="(application, idx) in applications" :key="idx">
-            <DashboardCampaignApplication
-              :id="idx"
-              :name="application.name"
-              :type="application.type"
-              :socials="application.socials"
-              :profilePicture="application.profilePicture"
-              :questionAndAnswers="application.questionAndAnswers"
-            />
+            <NuxtLink :to="`/dashboard/campaign/influencer/${idx}/application`">
+              <DashboardCampaignApplication
+                :id="idx"
+                :name="application.name"
+                :type="application.type"
+                :socials="application.socials"
+                :profilePicture="application.profilePicture"
+                :questionAndAnswers="application.questionAndAnswers"
+              />
+            </NuxtLink>
           </template>
         </div>
       </section>

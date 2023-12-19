@@ -1,6 +1,6 @@
 <template>
   <section class="bg-[#FFFDF9] p-[1.3125rem] rounded-md">
-    <h4 class="pl-3 mb-3">Income</h4>
+    <h4 class="pl-3 mb-[1.875rem]">Income</h4>
     <div class="flex flex-col gap-[0.625rem]">
       <template v-for="(set, idx) in data.datasets" :key="idx">
         <div class="flex flex-row gap-[1.875rem]">

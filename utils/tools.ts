@@ -12,7 +12,7 @@ export default {
     const formattedDate = date.toLocaleDateString('en-US', options);
     return formattedDate;
   },
-  formatCurrency(number: number, currencySymbol?: 'N' | string) {
+  formatCurrency(number: number, currencySymbol = "₦", decimalPlaces = 0) {
     if (typeof number !== 'number' || isNaN(number)) {
       throw new Error('Invalid input. Please provide a valid number.');
     }
@@ -20,7 +20,7 @@ export default {
     const formattedNumber = number.toLocaleString('en-US', {
       style: 'currency',
       currency: 'NGN', // Set currency code as per your requirement (default is USD)
-      minimumFractionDigits: 2,
+      minimumFractionDigits: decimalPlaces,
     });
 
     let result = formattedNumber;

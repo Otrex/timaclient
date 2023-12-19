@@ -36,7 +36,7 @@
       </template>
     </div>
 
-    <div class="flex mt-[2rem] mb-[.5rem]">
+    <div class="flex mt-[2rem] gap-[0.625rem] mb-[.5rem]">
       <UiButtonDefault
         @click="$emit('accept', props.id)"
         label="Accept"
@@ -47,7 +47,7 @@
         label="View"
         @click="$emit('view', props.id)"
         variant="inverse-primary"
-        class="px-[1rem]"
+        class="px-[1rem] !text-red-600"
       />
     </div>
   </article>

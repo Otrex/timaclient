@@ -27,6 +27,7 @@ export default Object.freeze({
   CAMPAIGN_INFLUENCERS: 'influencers',
   CAMPAIGN_ANALYTICS: 'analytics',
   CAMPAIGN_PERSONAL_INFO: 'personal-info',
+  CAMPAIGN_INFLUENCER_CAMPAIGN_INFO: 'campaign-info',
 
   INFLUENCER: "INFLUENCER",
   AGENCY: "BRAND",
