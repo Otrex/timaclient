@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-[#FFFDF9] p-[1.3125rem] rounded-md">
+  <section class="var bg-[--bg] p-[1.5rem] rounded-md">
     <h4 class="pl-3">Audience Age range</h4>
     <Bar :data="data" class="inline-block" :options="options" />
   </section>
@@ -7,6 +7,10 @@
 
 <script setup lang="ts">
 import { Bar } from "vue-chartjs";
+
+const props = defineProps<{
+  bg?: string;
+}>();
 const data = ref({
   labels: ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"],
   datasets: [
@@ -46,11 +50,19 @@ const options = ref<any>({
       },
       labels: {
         boxWidth: 13,
-        fontSize: 8, // Adjust the box width as needed
+        font: {
+          size: 13,
+        },
       },
     },
   },
 });
+
+const bg = computed(() => props.bg || "#FFFDF9");
 </script>
 
-<style></style>
+<style scoped>
+.var {
+  --bg: v-bind("bg");
+}
+</style>
