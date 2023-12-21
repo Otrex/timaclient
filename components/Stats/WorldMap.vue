@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full overflow-clip">
+  <div class="var bg-[--bg] py-[1.5rem] rounded-md w-full overflow-clip">
+    <h4 class="pl-3 mb-3">Country distribution</h4>
     <canvas class="w-full h-screen aspect-[1119/643]" ref="canvas"></canvas>
   </div>
 </template>
@@ -9,6 +10,11 @@ import * as countriesM from "world-atlas/countries-110m.json";
 import { Chart } from "chart.js";
 import { topojson } from "chartjs-chart-geo";
 
+const props = defineProps<{
+  bg?: string;
+}>();
+
+const bg = computed(() => props.bg || "#FFFDF9");
 const canvas = ref<HTMLCanvasElement>();
 onMounted(async () => {
   const $countriesM = countriesM as any;
@@ -39,7 +45,7 @@ onMounted(async () => {
     },
     options: {
       showOutline: true,
-      showGraticule: true,
+      showGraticule: false,
       plugins: {
         legend: {
           display: false,
@@ -47,8 +53,13 @@ onMounted(async () => {
       },
       scales: {
         projection: {
-          axis: "x",
-          projection: "equalEarth",
+          axis: "y",
+          projection: "equirectangular", // "naturalEarth1",
+          projectionScale: 1.2,
+          bounds: "ticks",
+          grid: {
+            lineWidth: 0,
+          },
         },
       },
     },
@@ -56,4 +67,8 @@ onMounted(async () => {
 });
 </script>
 
-<style></style>
+<style scoped>
+.var {
+  --bg: v-bind("bg");
+}
+</style>

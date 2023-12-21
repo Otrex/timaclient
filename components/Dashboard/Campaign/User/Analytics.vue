@@ -27,7 +27,7 @@
     </div>
 
     <div class="w-full">
-      <StatsWorldMap class="w-full" />
+      <StatsWorldMap bg="#F1F9FF" class="w-full" />
     </div>
   </section>
 </template>
