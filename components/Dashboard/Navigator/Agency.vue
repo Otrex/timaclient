@@ -10,17 +10,17 @@
       icon="nav/campaign"
       to="/dashboard/"
     />
-    <DashboardNavigatorMenuItem
+    <!--<DashboardNavigatorMenuItem
       label="Influencers"
       icon="nav/influencers"
       to="/dashboard/influencers"
-    />
+    /> -->
     <DashboardNavigatorMenuItem
       label="Payment"
       icon="nav/payment"
       to="/dashboard/payment"
     />
-    <DashboardNavigatorMenuItem
+    <!-- <DashboardNavigatorMenuItem
       label="Draft"
       icon="nav/draft"
       to="/dashboard/draft"
@@ -29,7 +29,7 @@
       label="Bookmark"
       icon="nav/bookmark"
       to="/dashboard/bookmark"
-    />
+    /> -->
   </div>
 </template>
 

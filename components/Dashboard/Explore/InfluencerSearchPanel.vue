@@ -52,8 +52,8 @@
         <UtSvg name="socials/twitter-lg" class="w-[1.9375rem] h-[1.3125rem]" />
       </UiInputOption>
       <UiInputOption
-        type="single"
         name="socials"
+        type="single"
         value="linkedin"
         main-class="!rounded-[0.5625rem] h-full flex items-center justify-center w-full max-w-[3.6875rem] max-h-[2.8125rem]"
       >
@@ -61,46 +61,74 @@
       </UiInputOption>
     </div>
 
-    <div class="grid grid-cols-3 items-end gap-x-[3rem] gap-y-[1.75rem]">
+    <div
+      class="grid md:grid-cols-3 items-end sm:gap-x-[1.75rem] md:gap-x-[3rem] gap-y-[1.75rem]"
+    >
+      <div>
+        <label class="block mb-[0.875rem]">Influencer location</label>
+        <UiInputSelect
+          :options="tools.generationOptions(['Main page', 'story'])"
+          class="w-full"
+          placeholder="-- Select --"
+        />
+      </div>
+      <div>
+        <label class="block mb-[0.875rem]">Influencer size</label>
+        <UiInputSelect
+          :options="tools.generationOptions(['0 - 3', '4 - 5'])"
+          class="w-full"
+          placeholder="-- Select --"
+        />
+      </div>
+      <div>
+        <label class="block mb-[0.875rem]">Audience location</label>
+        <UiInputSelect
+          :options="tools.generationOptions(['Main page', 'story'])"
+          class="w-full"
+          placeholder="-- Select --"
+        />
+      </div>
+      <div>
+        <label class="block mb-[0.875rem]">Audience age range</label>
+        <UiInputSelect
+          :options="tools.generationOptions(['Main page', 'story'])"
+          class="w-full"
+          placeholder="-- Select --"
+        />
+      </div>
+      <div>
+        <label class="block mb-[0.875rem]">Audience Gender</label>
+        <UiInputSelect
+          :options="tools.generationOptions(['Main page', 'story'])"
+          class="w-full"
+          placeholder="-- Select --"
+        />
+      </div>
       <div>
         <label class="block mb-[0.875rem]">Category</label>
         <UiInputSelect
           :options="tools.generationOptions(['Main page', 'story'])"
           class="w-full"
-          placeholder="-- Select --"
+          placeholder="Select categories"
         />
       </div>
       <div>
-        <label class="block mb-[0.875rem]">Campaign type</label>
-        <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+        <label class="block mb-[0.875rem]">Max price per post</label>
+        <UiInputTextSelect
+          :options="tools.generationOptions(['NOK', 'story'])"
           class="w-full"
-          placeholder="-- Select --"
+          placeholder="No greater than"
         />
       </div>
-      <div>
-        <label class="block mb-[0.875rem]">Budget range</label>
-        <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
-          class="w-full"
-          placeholder="-- Select --"
-        />
-      </div>
-      <div>
-        <label class="block mb-[0.875rem]">Audience demographics</label>
-        <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
-          class="w-full"
-          placeholder="-- Select --"
-        />
-      </div>
-      <div>
-        <label class="block mb-[0.875rem]">Campaign status</label>
-        <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
-          class="w-full"
-          placeholder="-- Select --"
-        />
+      <div class="flex flex-row gap-[0.75rem]">
+        <div>
+          <label class="block mb-[0.875rem]">Min. reach</label>
+          <UiInputText class="w-full" placeholder="At least" />
+        </div>
+        <div>
+          <label class="block mb-[0.875rem]">Max. reach</label>
+          <UiInputText class="w-full" placeholder="Up to" />
+        </div>
       </div>
       <div>
         <UiButtonDefault

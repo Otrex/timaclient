@@ -6,6 +6,12 @@ export default {
   capitalize(str: string) {
     return str.split('').map((s, i) => i === 0 ? s.toUpperCase() : s).join('')
   },
+  truncate(inputString: string, maxLength: number) {
+    if (inputString.length > maxLength) {
+      return inputString.substring(0, maxLength) + '...';
+    }
+    return inputString;
+  },
   formatDate(isoString: string | Date): string {
     const date = new Date(isoString);
     const options: Record<string, any> = { day: 'numeric', month: 'long', year: 'numeric' };

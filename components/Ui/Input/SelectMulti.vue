@@ -4,7 +4,7 @@
       class="px-[1.5rem] py-[0.75rem] w-full dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]"
       v-model="selected"
     >
-      <option v-if="props.placeholder" class="text-[#999999]">
+      <option v-if="props.placeholder" disabled selected class="text-[#999999]">
         {{ props.placeholder }}
       </option>
       <option

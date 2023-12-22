@@ -3,7 +3,8 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 const api = useAPI();
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    h: "qwerty"
+    h: "qwerty",
+    user: { type: constants.AGENCY }
   }),
 
   getters: {

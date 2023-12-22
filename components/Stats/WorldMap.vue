@@ -1,7 +1,43 @@
 <template>
   <div class="var bg-[--bg] py-[1.5rem] rounded-md w-full overflow-clip">
     <h4 class="pl-3 mb-3">Country distribution</h4>
-    <canvas class="w-full h-screen aspect-[1119/643]" ref="canvas"></canvas>
+    <canvas
+      class="w-full h-screen aspect-[1119/643] mb-[2.1875rem]"
+      ref="canvas"
+    ></canvas>
+
+    <div class="px-[3.5625rem]">
+      <table class="w-full">
+        <tbody>
+          <template v-for="(set, idx) in data.datasets" :key="idx">
+            <tr :style="`--bg-clr: ${set.bgColor}`">
+              <td class="max-w-[300px]">
+                <div
+                  class="whitespace-nowrap max-w-[300px] w-full py-[0.75rem] mr-[1.25rem] inline-block"
+                >
+                  <p>{{ set.label }}</p>
+                </div>
+              </td>
+              <td class="w-full">
+                <div class="w-full flex flex-row items-center gap-[0.625rem]">
+                  <div
+                    class="w-full rounded flex items-center gap-[0.625rem] h-[0.875rem]"
+                  >
+                    <div
+                      :style="restorer(set.stats)"
+                      class="bg-[--bg-clr] h-full w-[--w]"
+                    ></div>
+                    <p class="nl text-[color:var(--clr-grey-300)]">
+                      {{ set.stats }}%
+                    </p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -16,17 +52,53 @@ const props = defineProps<{
 
 const bg = computed(() => props.bg || "#FFFDF9");
 const canvas = ref<HTMLCanvasElement>();
+
+const data = ref({
+  datasets: [
+    {
+      label: "Nigeria",
+      bgColor: "#58E48C",
+      stats: 60,
+    },
+    {
+      label: "United Kingdom",
+      bgColor: "#EF4E4D",
+      stats: 20,
+    },
+    {
+      label: "Netherlands",
+      bgColor: "#FFD784",
+      stats: 10,
+    },
+    {
+      label: "South Africa",
+      bgColor: "#55B4FE",
+      stats: 5,
+    },
+  ],
+});
+
+function restorer(data: number): string {
+  return `--w: ${(data / (highestDataset.value?.stats || 1)) * 100}%`;
+}
+
+function findHighestStats(data: Array<{ stats: number; [key: string]: any }>) {
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data.reduce(
+    (max, current) => (current.stats > max.stats ? current : max),
+    data[0]
+  );
+}
+const highestDataset = computed(() => findHighestStats(data.value.datasets));
+
 onMounted(async () => {
   const $countriesM = countriesM as any;
   const countries = (
     topojson.feature($countriesM, $countriesM.objects.countries) as any
   ).features.reverse();
-
-  // const world = await fetch(
-  //   "https://cdn.jsdelivr.net/npm/visionscarto-world-atlas@0.1.0/world/110m.json"
-  // ).then((d) => d.json());
-  // const countries = (topojson.feature(world, world.objects.countries) as any)
-  //   .features as any;
 
   const _2d = canvas.value?.getContext("2d")!;
   const chart = new Chart(_2d, {

@@ -1,23 +1,17 @@
 <template>
-  <div>
-    <template v-if="permitted">
-      <slot />
-    </template>
+  <div v-if="props.userType === currentUserType" class="inline-block w-full">
+    <slot></slot>
+    <slot name="fallback"></slot>
   </div>
 </template>
 
 <script setup lang="ts">
-export interface IPermitProps {
-  allow?: Array<string>;
-  type?: string;
-}
+const props = defineProps<{
+  userType: string;
+}>();
 
-const props = withDefaults(defineProps<IPermitProps>(), {
-  allow: () => ["*"],
-  type: "*",
-});
-
-const permitted = computed(() => props.allow.includes(props.type));
+const authStore = useAuthStore();
+const currentUserType = computed(() => authStore.user.type);
 </script>
 
 <style></style>

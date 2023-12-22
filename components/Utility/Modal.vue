@@ -77,13 +77,13 @@ watch(
       backdropState.value = state;
       setTimeout(() => {
         contentState.value = state;
-      }, 500);
+      }, 400);
     } else {
       emit("close:state");
       contentState.value = state;
       setTimeout(() => {
         backdropState.value = state;
-      }, 300);
+      }, 200);
     }
   }
 );

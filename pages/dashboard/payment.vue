@@ -118,7 +118,9 @@
                     <span>--</span>
                   </template>
                 </td>
-                <td class="align-middle text-center"><UtMoreActions /></td>
+                <td class="align-middle text-center">
+                  <UtMoreActions :data-id="transaction.id" />
+                </td>
               </tr>
             </template>
           </tbody>
@@ -212,6 +214,7 @@ const options = ref<any>({
 
 const transactions = ref([
   {
+    id: Math.random(),
     campaignImage: "https://example.com/puma-basketball-shoes.jpg",
     campaignName: "Puma Basketball Shoes",
     brandName: "Puma",
@@ -221,6 +224,7 @@ const transactions = ref([
     status: "completed",
   },
   {
+    id: Math.random(),
     campaignImage: undefined,
     campaignName: "Nike lebron shoes",
     brandName: "Nike",
@@ -230,6 +234,7 @@ const transactions = ref([
     status: "completed",
   },
   {
+    id: Math.random(),
     campaignImage: "url/to/image1.jpg",
     campaignName: "Adidas running shoes",
     brandName: "Adidas",
@@ -239,6 +244,7 @@ const transactions = ref([
     status: "pending",
   },
   {
+    id: Math.random(),
     campaignImage: "https://example.com/under-armour-training-shoes.jpg",
     campaignName: "Under Armour Training Shoes",
     brandName: "Under Armour",

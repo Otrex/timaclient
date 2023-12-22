@@ -25,12 +25,15 @@
           </div>
         </div>
         <div>
-          <button class="bg-[#111] text-white rounded-md p-[0.625rem]">
+          <button
+            @click="openShare = true"
+            class="bg-[#111] text-white rounded-md p-[0.625rem]"
+          >
             Share Campaign
           </button>
         </div>
       </div>
-      <p class="nl mt-[0.75rem] text-[#696969]">
+      <p class="nl mt-[0.75rem] text-[#696969] dark:text-slate-100">
         Lorem ipsum dolor sit amet consectetur. Hendrerit varius tristique
         scelerisque purus. Purus mauris lacus volutpat convallis elementum
         fringilla nam vulputate phasellus. Volutpat pulvinar ac dolor mauris
@@ -47,6 +50,14 @@
         />
       </div>
     </section>
+
+    <UtModal
+      m-width="31.25rem"
+      backdrop-color="rgba(0,0,0,.3)"
+      v-model:state="openShare"
+    >
+      <UiModalShare />
+    </UtModal>
   </div>
 </template>
 
@@ -54,6 +65,8 @@
 definePageMeta({
   name: "Campaign",
 });
+
+const openShare = ref(false);
 
 const tabs = [
   {

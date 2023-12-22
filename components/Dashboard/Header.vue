@@ -10,7 +10,7 @@
     <div class="w-full max-w-[42.5rem]">
       <slot name="middle">
         <div
-          class="flex justify-between"
+          class="flex gap-[1.25rem] justify-end"
           v-if="['Campaign', 'Explore'].includes(routeName)"
         >
           <UiInputText

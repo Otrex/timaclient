@@ -14,13 +14,13 @@
         </div>
       </template>
     </div>
-    <div v-else class="mb-[3.125rem]">&nbsp;</div>
+    <div v-else class="mb-[2.1875rem]">&nbsp;</div>
 
     <div
       :class="[
         'flex flex-wrap ',
         props.justified
-          ? 'justify-between'
+          ? 'justify-between text-center'
           : 'gap-x-[8.125rem] gap-y-[1.125rem]',
       ]"
     >

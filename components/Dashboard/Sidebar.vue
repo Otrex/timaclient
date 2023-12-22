@@ -11,7 +11,7 @@
           <DashboardNavigatorMenuItem
             label="Help/Support"
             icon="nav/help"
-            to="/dashboard/influencers"
+            to="/dashboard/help"
           />
           <DashboardNavigatorMenuItem label="Darkmode" icon="nav/darkmode">
             <template #right>
