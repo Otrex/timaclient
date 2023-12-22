@@ -164,6 +164,9 @@ select {
   background: #eee;
   padding: 0.8rem 0.3rem;
 }
+.dark .x-table thead th {
+  background: rgba(228, 243, 255, 0.5);
+}
 
 .x-table.no-clr thead th {
   background: transparent;

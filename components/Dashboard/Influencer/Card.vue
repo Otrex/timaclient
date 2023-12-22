@@ -1,5 +1,7 @@
 <template>
-  <article class="border border-solid bg-white border-[#E7E7E7]">
+  <article
+    class="border border-solid bg-white dark:bg-slate-900 border-[#E7E7E7] dark:border-slate-600"
+  >
     <div class="max-h-[9.5625rem] overflow-hidden">
       <img
         :src="props.cover"

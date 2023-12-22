@@ -2,7 +2,7 @@
   <section>
     <div
       style="--clr: rgba(228, 243, 255, 0.5)"
-      class="bg-[--clr] p-[1.25rem] mt-[0.375rem]"
+      class="bg-[--clr] rounded-b-md p-[1.25rem] mt-[0.375rem]"
     >
       <div class="flex flex-col gap-[1.25rem]">
         <template v-for="(metric, idx) in metrics" :key="idx">
@@ -19,15 +19,15 @@
       class="flex flex-col mb-[1.25rem] lg:flex-row gap-[1.25rem] mt-[1.25rem]"
     >
       <div class="w-full">
-        <StatsAudienceAgeRange bg="#F1F9FF" class="w-full" />
+        <StatsAudienceAgeRange bg="rgba(228, 243, 255, 0.5)" class="w-full" />
       </div>
       <div class="w-full">
-        <StatsAudienceGenderDistribution bg="#F1F9FF" />
+        <StatsAudienceGenderDistribution bg="rgba(228, 243, 255, 0.5)" />
       </div>
     </div>
 
     <div class="w-full">
-      <StatsWorldMap bg="#F1F9FF" class="w-full" />
+      <StatsWorldMap bg="rgba(228, 243, 255, 0.5)" class="w-full" />
     </div>
   </section>
 </template>

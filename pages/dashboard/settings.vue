@@ -42,10 +42,10 @@ definePageMeta({
 });
 const tabMap = {
   [constants.PASSWORD]: resolveComponent(
-    "LazyDashboardSettingPassword" //
+    "DashboardSettingPassword" //
   ),
   [constants.BRAND_INFORMATION]: resolveComponent(
-    "LazyDashboardSettingBrandInformation"
+    "DashboardSettingBrandInformation"
   ),
   [constants.PAYMENT_INFORMATION]: resolveComponent(
     "LazyDashboardSettingPaymentInformation"

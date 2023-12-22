@@ -2,7 +2,7 @@
   <div class="p-[1.25rem]">
     <div class="grid grid-cols-4 gap-[1.25rem] mb-[1.25rem]">
       <div
-        class="bg-[#F7FCFF] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
+        class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
       >
         <div class="text-center">
           <h3 class="text-[2.1875rem]">100</h3>
@@ -11,7 +11,7 @@
       </div>
 
       <div
-        class="bg-[#F7FCFF] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
+        class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
       >
         <div class="text-center">
           <h3 class="text-[2.1875rem]">90</h3>
@@ -20,7 +20,7 @@
       </div>
 
       <div
-        class="bg-[#F7FCFF] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
+        class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
       >
         <div class="text-center">
           <h3 class="text-[2.1875rem]">10</h3>
@@ -29,13 +29,17 @@
       </div>
     </div>
 
-    <div class="p-[1.5625rem] mb-[2.625rem] bg-[#F7FCFF] rounded-[0.75rem]">
+    <div
+      class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
+    >
       <div class="flex flex-row justify-between mb-[0.75rem] items-center">
         <div>
           <h1>Payment graph</h1>
         </div>
         <div>
-          <select class="border-none rounded-md">
+          <select
+            class="border-none dark:bg-[rgba(228,_243,_255,_0.5)] rounded-md"
+          >
             <option value="2023">2023</option>
           </select>
         </div>
