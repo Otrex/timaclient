@@ -26,6 +26,10 @@ const options = ref<any>({
   plugins: {
     legend: {
       position: "left",
+      labels: {
+        boxWidth: 22,
+        boxHeight: 22,
+      },
     },
   },
 });
