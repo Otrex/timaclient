@@ -13,6 +13,7 @@ export default defineNuxtConfig({
       script: [],
       link: [],
     },
+    // layoutTransition: { name: 'page', mode: 'out-in' }
   },
 
   css: ['~/assets/css/main.css'],

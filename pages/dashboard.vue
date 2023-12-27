@@ -1,10 +1,16 @@
 <template>
-  <NuxtLayout name="dashboard">
-    <template #indicator> </template>
-    <template #main>
-      <NuxtPage />
-    </template>
-  </NuxtLayout>
+  <div>
+    <NuxtLayout name="dashboard">
+      <template #main>
+        <NuxtPage
+          :transition="{
+            name: 'page',
+            mode: 'out-in',
+          }"
+        />
+      </template>
+    </NuxtLayout>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

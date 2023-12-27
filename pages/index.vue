@@ -1,5 +1,17 @@
 <template>
   <div class="px-[6.25rem] dark:bg-slate-800 h-screen dark:text-white">
+    <div class="text-right mt-10">
+      <div class="items-center flex justify-end">
+        <span
+          >Have an account?
+          <NuxtLink
+            to="/auth/login"
+            class="text-red-600 text-[1.1875rem] underline underline-offset-2"
+            >Login</NuxtLink
+          >
+        </span>
+      </div>
+    </div>
     <div class="text-center tm__box-598px">
       <UtSvg name="logo/tima" class="max-w-[6.125rem]" />
       <div class="mb-[2.25rem]">

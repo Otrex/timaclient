@@ -1,42 +1,44 @@
 <template>
-  <NuxtLayout :prev="currentView.prev" name="kyc">
-    <template #sidebar>
-      <SignUpNavigatorAgency
-        v-if="type(constants.AGENCY)"
-        :activeTabs="activeTabs"
-      />
-      <SignUpNavigatorInfluencer
-        v-if="type(constants.INFLUENCER)"
-        :activeTabs="activeTabs"
-      />
-    </template>
-    <template #topnav>
-      <div
-        v-if="show(constants.BASIC_DETAILS)"
-        class="items-center flex justify-end"
-      >
-        <span
-          >Already have an account?
-          <NuxtLink
-            to="/auth/login"
-            class="text-red-600 text-[1.1875rem] underline underline-offset-2"
-            >Log In</NuxtLink
-          >
-        </span>
-      </div>
-    </template>
-    <div>
-      <div class="text-center overflow-auto">
-        <UtSvg
-          name="logo/tima"
-          class="max-w-[6.125rem] h-[2.4375rem] mb-[3.5625rem] mt-[0.625rem]"
+  <div>
+    <NuxtLayout :prev="currentView.prev" name="kyc">
+      <template #sidebar>
+        <SignUpNavigatorAgency
+          v-if="type(constants.AGENCY)"
+          :activeTabs="activeTabs"
         />
-        <transition name="page" mode="out-in">
-          <component :is="currentView.component" />
-        </transition>
+        <SignUpNavigatorInfluencer
+          v-if="type(constants.INFLUENCER)"
+          :activeTabs="activeTabs"
+        />
+      </template>
+      <template #topnav>
+        <div
+          v-if="show(constants.BASIC_DETAILS)"
+          class="items-center flex justify-end"
+        >
+          <span
+            >Already have an account?
+            <NuxtLink
+              to="/auth/login"
+              class="text-red-600 text-[1.1875rem] underline underline-offset-2"
+              >Log In</NuxtLink
+            >
+          </span>
+        </div>
+      </template>
+      <div>
+        <div class="text-center overflow-auto">
+          <UtSvg
+            name="logo/tima"
+            class="max-w-[6.125rem] h-[2.4375rem] mb-[3.5625rem] mt-[0.625rem]"
+          />
+          <transition name="page" mode="out-in">
+            <component :is="currentView.component" />
+          </transition>
+        </div>
       </div>
-    </div>
-  </NuxtLayout>
+    </NuxtLayout>
+  </div>
 </template>
 
 <script setup lang="ts">
