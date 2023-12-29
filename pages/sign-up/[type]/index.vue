@@ -50,19 +50,19 @@ const route = useRoute();
 
 const tabMap = {
   [constants.BASIC_DETAILS]: {
-    component: resolveComponent("LazySignUpBasicDetails"),
+    component: resolveComponent("SignUpBasicDetails"),
     prev: { name: "index" },
     activeOthers: [constants.EMAIL_VERIFY],
     hideFrom: [],
   },
   [constants.EMAIL_VERIFY]: {
-    component: resolveComponent("LazySignUpEmailVerify"),
+    component: resolveComponent("SignUpEmailVerify"),
     prev: { name: "index" },
     activeOthers: [constants.BASIC_DETAILS],
     hideFrom: [],
   },
   [constants.BASIC_INFORMATION]: {
-    component: resolveComponent("LazySignUpBasicInformation"),
+    component: resolveComponent("SignUpBasicInformation"),
     prev: {
       query: {
         tab: constants.BASIC_DETAILS,
@@ -72,7 +72,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.ADDRESS_DOCUMENTATION]: {
-    component: resolveComponent("LazySignUpAddressAndDocumentation"),
+    component: resolveComponent("SignUpAddressAndDocumentation"),
     prev: {
       query: {
         tab: constants.BASIC_INFORMATION,
@@ -82,7 +82,7 @@ const tabMap = {
     hideFrom: [],
   },
   [constants.INDUSTRY_SELECTION]: {
-    component: resolveComponent("LazySignUpIndustrySelection"),
+    component: resolveComponent("SignUpIndustrySelection"),
     prev: {
       query: {
         tab: constants.ADDRESS_DOCUMENTATION,
@@ -96,7 +96,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.COMPLETE_PROFILE]: {
-    component: resolveComponent("LazySignUpCompleteProfile"),
+    component: resolveComponent("SignUpCompleteProfile"),
     prev: {
       query: {
         tab: constants.BASIC_DETAILS,
@@ -106,7 +106,7 @@ const tabMap = {
     hideFrom: [constants.AGENCY],
   },
   [constants.BANK_DETAILS]: {
-    component: resolveComponent("LazySignUpBankDetails"),
+    component: resolveComponent("SignUpBankDetails"),
     prev: {
       query: {
         tab: constants.ADDRESS_DOCUMENTATION_INFLUENCER,
@@ -120,7 +120,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.CONTENT_CATEGORY]: {
-    component: resolveComponent("LazySignUpContentCategory"),
+    component: resolveComponent("SignUpContentCategory"),
     prev: {
       query: {
         tab: constants.BANK_DETAILS,
@@ -135,7 +135,7 @@ const tabMap = {
     hideFrom: [constants.INFLUENCER],
   },
   [constants.ADDRESS_DOCUMENTATION_INFLUENCER]: {
-    component: resolveComponent("LazySignUpAddressAndDocumentationInfluencer"),
+    component: resolveComponent("SignUpAddressAndDocumentationInfluencer"),
     prev: {
       query: {
         tab: constants.COMPLETE_PROFILE,
@@ -151,7 +151,7 @@ const currentTab = computed(
 );
 
 const userType = computed(
-  () => (route.params.type || "influencer") as string //
+  () => ((route.params.type as string) || constants.AGENCY).toUpperCase() //
 );
 
 const currentView = computed(() => tabMap[currentTab.value]);

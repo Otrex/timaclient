@@ -1,8 +1,8 @@
-import { defineStore, acceptHMRUpdate } from 'pinia';
+import { defineStore } from "pinia";
 import { v4 as uuidv4 } from "uuid";
 
 export const useRequestsStore = defineStore("requests", {
-  state: () => {
+  state: (): { requests: Set<string> } => {
     return {
       requests: new Set<string>(),
     };
@@ -19,6 +19,10 @@ export const useRequestsStore = defineStore("requests", {
       return () => {
         this.requests.delete(uuid);
       };
+    },
+
+    clearAll() {
+      this.requests = new Set<string>();
     },
   },
 });

@@ -1,131 +1,59 @@
 <template>
-  <div class="progress flex-shrink-0">
-    <div class="indeterminate" />
+  <div class="fixed z-[100000] top-0 left-0 right-0">
+    <div class="vars container">
+      <div class="bar"></div>
+    </div>
   </div>
 </template>
 
-<style scoped>
-.progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  display: block;
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-  z-index: 2000;
+<script setup lang="ts"></script>
+
+<style>
+.vars {
+  --clr-1: #f1c40f;
+  /* --clr-2: #2c3e50; */
+  --clr-2: red;
+  --speed: 3s;
 }
 
-.progress .determinate {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #26a69a;
-  -webkit-transition: width 0.3s linear;
-  transition: width 0.3s linear;
-}
-
-.progress .indeterminate {
-  background-color: var(--purple-300);
-}
-
-.progress .indeterminate:before {
-  content: "";
-  position: absolute;
-  background-color: inherit;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  will-change: left, right;
-  -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395)
-    infinite;
-  animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-}
-
-.progress .indeterminate:after {
-  content: "";
-  position: absolute;
-  background-color: inherit;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  will-change: left, right;
-  -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1)
-    infinite;
-  animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1)
-    infinite;
-  -webkit-animation-delay: 1.15s;
-  animation-delay: 1.15s;
-}
-
-@-webkit-keyframes indeterminate {
-  0% {
-    left: -35%;
-    right: 100%;
+@keyframes slide {
+  from {
+    background-position-x: 0;
   }
-
-  60% {
-    left: 100%;
-    right: -90%;
-  }
-
-  100% {
-    left: 100%;
-    right: -90%;
+  to {
+    background-position-x: 113px;
   }
 }
-
-@keyframes indeterminate {
-  0% {
-    left: -35%;
-    right: 100%;
-  }
-
-  60% {
-    left: 100%;
-    right: -90%;
-  }
-
-  100% {
-    left: 100%;
-    right: -90%;
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container .bar {
+  min-height: 5px;
+  border-radius: 10px;
+  width: 130%;
+  transform: scaleX(2);
+  background-color: var(--clr-2);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 40px,
+    var(--clr-1) 40px,
+    var(--clr-1) 80px
+  );
+  animation: slide var(--speed) linear infinite;
+  will-change: background-position;
+}
+@media only screen and (max-width: 450px) {
+  .container .bar {
+    width: calc(113px * 3);
   }
 }
-
-@-webkit-keyframes indeterminate-short {
-  0% {
-    left: -200%;
-    right: 100%;
-  }
-
-  60% {
-    left: 107%;
-    right: -8%;
-  }
-
-  100% {
-    left: 107%;
-    right: -8%;
-  }
-}
-
-@keyframes indeterminate-short {
-  0% {
-    left: -200%;
-    right: 100%;
-  }
-
-  60% {
-    left: 107%;
-    right: -8%;
-  }
-
-  100% {
-    left: 107%;
-    right: -8%;
+@media only screen and (max-width: 350px) {
+  .container .bar {
+    width: calc(113px * 2);
   }
 }
 </style>

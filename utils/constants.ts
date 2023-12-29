@@ -1,3 +1,5 @@
+import { UserType } from "~/lib/enums";
+
 export default Object.freeze({
   NOTIFICATION_SETTINGS_INFLUENCER: "notification-settings-influencer",
   ADDRESS_DOCUMENTATION_INFLUENCER: "address-documentation-v2",
@@ -29,6 +31,6 @@ export default Object.freeze({
   CAMPAIGN_PERSONAL_INFO: 'personal-info',
   CAMPAIGN_INFLUENCER_CAMPAIGN_INFO: 'campaign-info',
 
-  INFLUENCER: "INFLUENCER",
-  AGENCY: "BRAND",
+  INFLUENCER: UserType.INFLUENCER,
+  AGENCY: UserType.BRAND,
 });

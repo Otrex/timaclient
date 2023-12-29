@@ -51,6 +51,8 @@
 </template>
 
 <script setup lang="ts">
+const authStore = useAuthStore();
+
 const form = reactive({
   agreed: false,
   password: "",
@@ -62,12 +64,18 @@ const isReady = computed(() => {
   return form.password && form.email && form.agreed;
 });
 
-function proceed() {
-  navigateTo({
-    query: {
-      tab: "email-verify",
-    },
-  });
+async function proceed() {
+  try {
+    await authStore.createUser({
+      email: form.email,
+      password: form.password,
+      username: form.username,
+    });
+
+    navigateTo({
+      query: { tab: "email-verify" },
+    });
+  } catch (error) {}
 }
 </script>
 

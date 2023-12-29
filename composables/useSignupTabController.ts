@@ -1,6 +1,4 @@
 export default function (tabMap: Record<any, any>) {
-
-
   const route = useRoute();
   function isActiveTab(...names: any[]): boolean {
     return (

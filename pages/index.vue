@@ -41,11 +41,15 @@
           />
         </div>
       </div>
-
       <div>
         <UiButtonDefault
           :disabled="!joinAs"
-          @click="signUp"
+          @click="
+            navigateTo({
+              path: `/sign-up/${joinAs?.toLowerCase()}`,
+              query: { tab: constants.BASIC_DETAILS },
+            })
+          "
           label="Continue"
           variant="primary"
           class="py-[0.875rem] w-full"
@@ -56,19 +60,24 @@
 </template>
 
 <script setup lang="ts">
+import { UserType } from "~/lib/enums";
+
+const authStore = useAuthStore();
 definePageMeta({
   layout: "default",
   name: "index",
 });
 
-const joinAs = ref();
-
-function signUp() {
-  navigateTo({
-    path: `/sign-up/${joinAs.value}`,
-    query: { tab: constants.BASIC_DETAILS },
-  });
-}
+const joinAs = computed({
+  get() {
+    return authStore.$state.userType;
+  },
+  set(value) {
+    authStore.$patch({
+      userType: value as UserType,
+    });
+  },
+});
 </script>
 
 <style></style>

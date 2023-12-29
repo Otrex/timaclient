@@ -1,5 +1,25 @@
 
 export default {
+  monitor: () => {
+    const requestsStore = useRequestsStore();
+    let stopRequest: () => void;
+    return {
+      $start() {
+        stopRequest = requestsStore.startRequest()
+      },
+      $stop() {
+        stopRequest && stopRequest();
+      }
+    }
+  },
+  json: {
+    encode: (value: any) => {
+      return JSON.stringify({ value });
+    },
+    parse: <T = unknown>(value: string | null) => {
+      return JSON.parse(value || '{}').value as T;
+    }
+  },
   generationOptions(options: string[]) {
     return options.map(option => ({ label: option, value: option }))
   },
