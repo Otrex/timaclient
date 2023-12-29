@@ -44,6 +44,7 @@
 <script setup lang="ts">
 definePageMeta({
   name: "signup",
+  middleware: ["user-type"],
 });
 
 const route = useRoute();
@@ -146,31 +147,33 @@ const tabMap = {
   },
 };
 
-const currentTab = computed(
-  () => (route.query.tab || "basic-details") as keyof typeof tabMap
-);
+// const currentTab = computed(
+//   () => (route.query.tab || "basic-details") as keyof typeof tabMap
+// );
 
-const userType = computed(
-  () => ((route.params.type as string) || constants.AGENCY).toUpperCase() //
-);
+// const userType = computed(
+//   () => ((route.params.type as string) || constants.AGENCY).toUpperCase() //
+// );
 
-const currentView = computed(() => tabMap[currentTab.value]);
+// const currentView = computed(() => tabMap[currentTab.value]);
 
-const activeTabs = computed(() => [
-  currentTab.value,
-  ...tabMap[currentTab.value].activeOthers,
-]);
+// const activeTabs = computed(() => [
+//   currentTab.value,
+//   ...tabMap[currentTab.value].activeOthers,
+// ]);
 
-const show = (tab: keyof typeof tabMap) => {
-  return (
-    currentTab.value === tab &&
-    !(tabMap[tab].hideFrom as string[]).includes(userType.value)
-  );
-};
+// const show = (tab: keyof typeof tabMap) => {
+//   return (
+//     currentTab.value === tab &&
+//     !(tabMap[tab].hideFrom as string[]).includes(userType.value)
+//   );
+// };
 
-const type = (type: string) => {
-  return userType.value === type;
-};
+// const type = (type: string) => {
+//   return userType.value === type;
+// };
+
+const { type, show, activeTabs, currentView } = useSignupTabController(tabMap);
 </script>
 
 <style></style>

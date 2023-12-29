@@ -1,1 +1,7 @@
-export default defineNuxtPlugin((app) => { })
+export default defineNuxtPlugin((app) => {
+  return {
+    provide: {
+      api: useAPI(),
+    }
+  }
+})

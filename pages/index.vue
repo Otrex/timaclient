@@ -24,7 +24,7 @@
           <UiInputOption
             type="single"
             name="join"
-            v-model="joinAs"
+            v-model="authStore.userType"
             :value="constants.INFLUENCER"
             class="w-full"
             label="An Influencer/ Affiliate"
@@ -34,7 +34,7 @@
           <UiInputOption
             type="single"
             name="join"
-            v-model="joinAs"
+            v-model="authStore.userType"
             :value="constants.AGENCY"
             class="w-full"
             label="A Brand/ Agency"
@@ -43,10 +43,10 @@
       </div>
       <div>
         <UiButtonDefault
-          :disabled="!joinAs"
+          :disabled="!authStore.userType"
           @click="
             navigateTo({
-              path: `/sign-up/${joinAs?.toLowerCase()}`,
+              path: `/sign-up/${authStore.userType}`,
               query: { tab: constants.BASIC_DETAILS },
             })
           "
@@ -66,17 +66,6 @@ const authStore = useAuthStore();
 definePageMeta({
   layout: "default",
   name: "index",
-});
-
-const joinAs = computed({
-  get() {
-    return authStore.$state.userType;
-  },
-  set(value) {
-    authStore.$patch({
-      userType: value as UserType,
-    });
-  },
 });
 </script>
 

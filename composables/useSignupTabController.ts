@@ -11,11 +11,15 @@ export default function (tabMap: Record<any, any>) {
     () => (route.query.tab || "basic-details") as keyof typeof tabMap
   );
   const userType = computed(
-    () => (route.params.type || "influencer") as string
+    () => ((route.params.type as string) || constants.AGENCY).toUpperCase()
   );
   const currentView = computed(
     () => tabMap[currentTab.value]
   )
+  const activeTabs = computed(() => [
+    currentTab.value,
+    ...tabMap[currentTab.value].activeOthers,
+  ]);
 
   function previousTab(tab: keyof typeof tabMap) {
     return tabMap[tab].prev || { query: { tab: constants.BASIC_DETAILS } };
@@ -30,12 +34,13 @@ export default function (tabMap: Record<any, any>) {
   }
 
   return {
+    activeTabs,
     currentView,
     currentTab,
     previousTab,
+    type: isType,
     userType,
     tabMap,
-    isType,
     show,
     isActiveTab
   }

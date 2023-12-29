@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
+    'nuxt3-notifications',
   ],
 
   image: {},

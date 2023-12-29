@@ -22,7 +22,7 @@ export const useAuthStore = defineStore('auth', {
       });
     }
   },
-  persist: ['publicId'],
+  persist: ['publicId', 'userType'],
   persistWith: {
     get(key: string) {
       return JSON.stringify(useCookie(key).value);

@@ -8,11 +8,11 @@
         v-bind="$attrs"
         @input="update"
         :value="props.modelValue"
-        :class="[
-          $attrs.class,
-          props.search ? 'input-search' : '',
-          'px-[1.5rem] w-full py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
-        ]"
+        :class="{
+          '!border-red-600': props.errorMessage,
+          'input-search': props.search,
+          'px-[1.5rem] w-full py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]': true,
+        }"
       />
       <div
         v-if="props.passwordToggle"
@@ -29,7 +29,10 @@
         />
       </div>
     </div>
-    <div v-if="props.errorMessage" class="mt-[0.625rem] text-[0.875rem]">
+    <div
+      v-if="props.errorMessage"
+      class="text-red-600 text-left text-[0.875rem]"
+    >
       {{ props.errorMessage }}
     </div>
   </div>
