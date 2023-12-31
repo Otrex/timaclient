@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async createUser(payload: Omit<Payload.CreateUser, 'userType'>) {
       const response = await this.$api.createUser({
-        // userType: this.userType!,
+        userType: this.userType!,
         ...payload,
       });
 
