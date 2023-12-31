@@ -6,7 +6,7 @@
     @on-finish="handleFinish"
     @on-change="handleChange"
     wrapperClassName="otp-input"
-    :inputClassName="`${props.inputClass} tm-input`"
+    :inputClassName="`i-vars ${props.inputClass} tm-input`"
     :outlined="true"
     ref="otpInput"
     :only-number="true"
@@ -62,17 +62,14 @@ function handleChange(otpCode) {
 
 <style scoped>
 .otp-input {
-  display: inline-flex;
-  gap: 2.1875rem;
-  gap: v-bind("props.gap");
+  --i-gap: v-bind("props.gap");
+  @apply inline-flex gap-[calc(var(--i-gap)_*_(1_/_3))] md:gap-[--i-gap];
 }
 .otp-input :deep(input) {
-  /* outline: none; */
+  --i-size: v-bind("props.size");
+  @apply w-[calc(var(--i-size)_*_(2_/_3))] md:w-[--i-size] aspect-square;
+  outline: none !important;
   border: 0.0625rem solid black !important;
-  width: 4.375rem;
-  width: v-bind("props.size");
-  aspect-ratio: 1/1;
-  /* border: none; */
   text-align: center;
 }
 .otp-input :deep(input):active {

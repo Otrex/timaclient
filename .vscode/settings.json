@@ -24,6 +24,7 @@
     "topnav",
     "topojson",
     "uuidv",
+    "Vargs",
     "vuelidate",
     "vueuse"
   ],

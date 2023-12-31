@@ -25,14 +25,12 @@ function persistHandler({ options, store }: PiniaPluginContext) {
     })
   });
 
-  store.$subscribe((mutation) => {
-    const $mutation = mutation as typeof mutation & { payload: typeof store };
-
-    Object.keys($mutation.payload).forEach((key) => {
+  store.$subscribe((mutation, state) => {
+    Object.keys(state).forEach((key) => {
       if (options.persist!.includes(key)) {
         storage.set(
-          storeKey($mutation.storeId, key),
-          json.encode($mutation.payload[key])
+          storeKey(mutation.storeId, key),
+          json.encode(state[key])
         )
       }
     });

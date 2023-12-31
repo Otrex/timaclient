@@ -9,13 +9,16 @@ type IState = {
 }
 
 export const useAuthStore = defineStore('auth', {
-  state: (): IState => ({}),
+  state: (): IState => ({
+    userType: undefined,
+    publicId: undefined
+  }),
   actions: {
     async createUser(payload: Omit<Payload.CreateUser, 'userType'>) {
       const response = await this.$api.createUser({
-        userType: this.userType!,
+        // userType: this.userType!,
         ...payload,
-      }, tools.monitor());
+      });
 
       this.$patch({
         publicId: response.data?.publicId

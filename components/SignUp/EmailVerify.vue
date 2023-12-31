@@ -9,7 +9,12 @@
     </div>
 
     <div class="mt-[1.875rem]">
-      <UiInputOtp :length="6" v-model="form.code" @finish="sendCode" />
+      <UiInputOtp
+        :length="6"
+        input-class="overflow-y-auto"
+        v-model="form.code"
+        @finish="sendCode"
+      />
       <p
         v-show="form.loading"
         class="flex gap-[0.625rem] justify-center mt-[1.5rem] items-center"

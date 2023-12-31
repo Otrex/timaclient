@@ -32,9 +32,7 @@
             name="logo/tima"
             class="max-w-[6.125rem] h-[2.4375rem] mb-[3.5625rem] mt-[0.625rem]"
           />
-          <transition name="page" mode="out-in">
-            <component :is="currentView.component" />
-          </transition>
+          <component :is="currentView.component" />
         </div>
       </div>
     </NuxtLayout>

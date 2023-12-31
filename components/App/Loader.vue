@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed">
+  <div>
     <transition>
       <UiLoaderLinear v-show="requestsStore?.hasActiveRequests" />
     </transition>

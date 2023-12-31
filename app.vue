@@ -1,5 +1,7 @@
 <template>
-  <div class="overflow-hidden">
+  <div class="overflow-hidden h-screen">
+    <AppLoader />
+    <AppNotification />
     <NuxtPage />
   </div>
 </template>

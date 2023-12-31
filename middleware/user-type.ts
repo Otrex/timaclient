@@ -1,15 +1,22 @@
-import type { UserType } from "~/lib/enums";
+import { UserType } from "~/lib/enums";
 import { useAuthStore } from "~~/stores/auth";
 
-export default defineNuxtRouteMiddleware(() => {
+export default defineNuxtRouteMiddleware((to) => {
   const authStore = useAuthStore();
-  // const route = useRoute();
+  const userTypes = Object.values(UserType);
+  const routeUserType = to.params.type as UserType;
 
-  // console.log(
-  //   (route.params.type as string).toUpperCase()
-  // );
+  if (!userTypes.includes(routeUserType)) {
+    return navigateTo("/404")
+  }
 
-  // authStore.$patch({
-  //   userType: (route.params.type as string).toUpperCase() as UserType
-  // });
+  if (!authStore.userType) {
+    authStore.$patch({
+      userType: routeUserType
+    });
+  }
+
+  if (routeUserType !== authStore.$state.userType) {
+    return navigateTo("/")
+  }
 });

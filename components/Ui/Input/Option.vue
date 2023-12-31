@@ -52,7 +52,7 @@ const typeMap = {
 
 const variantActiveCSS = {
   primary:
-    "border border-red-600 dark:border-red-600 border-solid text-red-600",
+    "border !border-red-600 dark:border-red-600 border-solid !text-red-600",
 };
 
 function update() {

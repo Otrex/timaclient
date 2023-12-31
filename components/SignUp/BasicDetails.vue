@@ -43,9 +43,9 @@
           </span>
         </label>
       </div>
-      {{ authStore.userType }}
+
       <UiButtonDefault
-        :disabled="!isReady"
+        :disabled="!isReady || state == constants.LOADING"
         label="Continue"
         variant="primary"
         @click="proceed"
@@ -56,13 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import useVuelidate from "@vuelidate/core";
-import { AxiosError } from "axios";
-import type { IErrorRequest } from "~/lib/interfaces/utils";
 import { CREATE_USER_RULE } from "~/lib/validation/rules";
 
 const { notify } = useNotification();
 const authStore = useAuthStore();
+const agreed = ref(false);
 
 const form = reactive({
   password: "",
@@ -70,27 +68,36 @@ const form = reactive({
   email: "",
 });
 
-const agreed = ref(false);
-
-const v$ = useVuelidate(CREATE_USER_RULE, form, { $autoDirty: true });
+const { execute, validate, state, v$ } = useRequestState({
+  action: () => authStore.createUser(form),
+  validation: {
+    config: { $autoDirty: true },
+    rule: CREATE_USER_RULE,
+    form,
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e?.data.status,
+      text: e?.data.userMessage,
+    });
+  },
+  onSuccess() {
+    navigateTo({
+      query: {
+        tab: "email-verify",
+      },
+    });
+  },
+  useGlobalLoader: true,
+});
 
 const isReady = computed(() => {
   return form.password && form.email && agreed.value;
 });
 
 async function proceed() {
-  try {
-    if (!(await v$.value.$validate())) return;
-    await authStore.createUser(form);
-    navigateTo({ query: { tab: "email-verify" } });
-  } catch (error: any) {
-    const $error = error as AxiosError<IErrorRequest>["response"];
-    notify({
-      type: "error",
-      title: $error?.data.status,
-      text: $error?.data.userMessage,
-    });
-  }
+  await validate!().then(() => execute());
 }
 </script>
 

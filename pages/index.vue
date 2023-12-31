@@ -24,7 +24,7 @@
           <UiInputOption
             type="single"
             name="join"
-            v-model="authStore.userType"
+            v-model="joinAs"
             :value="constants.INFLUENCER"
             class="w-full"
             label="An Influencer/ Affiliate"
@@ -34,7 +34,7 @@
           <UiInputOption
             type="single"
             name="join"
-            v-model="authStore.userType"
+            v-model="joinAs"
             :value="constants.AGENCY"
             class="w-full"
             label="A Brand/ Agency"
@@ -43,13 +43,8 @@
       </div>
       <div>
         <UiButtonDefault
-          :disabled="!authStore.userType"
-          @click="
-            navigateTo({
-              path: `/sign-up/${authStore.userType}`,
-              query: { tab: constants.BASIC_DETAILS },
-            })
-          "
+          :disabled="!joinAs"
+          @click="proceed"
           label="Continue"
           variant="primary"
           class="py-[0.875rem] w-full"
@@ -60,13 +55,24 @@
 </template>
 
 <script setup lang="ts">
-import { UserType } from "~/lib/enums";
-
-const authStore = useAuthStore();
 definePageMeta({
   layout: "default",
   name: "index",
 });
+
+const authStore = useAuthStore();
+
+const joinAs = ref();
+
+function proceed() {
+  authStore.$patch({
+    userType: joinAs.value,
+  });
+  navigateTo({
+    path: `/sign-up/${joinAs.value}`,
+    query: { tab: constants.BASIC_DETAILS },
+  });
+}
 </script>
 
 <style></style>

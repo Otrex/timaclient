@@ -25,7 +25,12 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/image',
-    '@pinia/nuxt',
+    [
+      "@pinia/nuxt",
+      {
+        autoImports: ["defineStore", "acceptHMRUpdate"],
+      },
+    ],
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     'nuxt3-notifications',

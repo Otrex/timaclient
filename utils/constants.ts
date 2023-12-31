@@ -1,6 +1,7 @@
-import { UserType } from "~/lib/enums";
+import { RequestState, UserType } from "~/lib/enums";
 
 export default Object.freeze({
+  LOADING: RequestState.LOADING,
   NOTIFICATION_SETTINGS_INFLUENCER: "notification-settings-influencer",
   ADDRESS_DOCUMENTATION_INFLUENCER: "address-documentation-v2",
   ADDRESS_DOCUMENTATION: "address-documentation",
