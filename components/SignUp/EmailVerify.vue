@@ -12,30 +12,49 @@
       <UiInputOtp
         :length="6"
         input-class="overflow-y-auto"
-        v-model="form.code"
-        @finish="sendCode"
+        @finish="(otp) => execute(otp)"
       />
       <p
-        v-show="form.loading"
+        v-show="state == constants.LOADING"
         class="flex gap-[0.625rem] justify-center mt-[1.5rem] items-center"
       >
         <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
         Checking the code
       </p>
+      <div class="mt-[1.5rem]">
+        <a
+          class="underline text-red-600"
+          v-show="route.query.email && route.query.username"
+          @click="() => resend()"
+          :disabled="resendState == constants.LOADING"
+        >
+          <UtSvg
+            name="sunshine"
+            class="spinner w-[1.5rem] h-[1.5rem]"
+            v-show="resendState == constants.LOADING"
+          />
+          Resend OTP
+        </a>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const { notify } = useNotification();
 const route = useRoute();
-const form = reactive({
-  loading: false,
-  code: "",
-});
-function sendCode(otp: string) {
-  form.loading = true;
-  setTimeout(() => {
-    form.loading = false;
+const api = useAPI();
+
+const { execute, state } = useRequestState({
+  action: (otp: string) => api.verifyOTP({ otp }),
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
     if (route.params.type === "influencer") {
       navigateTo({
         query: {
@@ -46,11 +65,34 @@ function sendCode(otp: string) {
       navigateTo({
         query: {
           tab: constants.BASIC_INFORMATION,
+          email: route.query.email as string,
         },
       });
     }
-  }, 3000);
-}
+  },
+});
+
+const { execute: resend, state: resendState } = useRequestState({
+  action: () =>
+    api.resendOTP({
+      email: route.query.email as string,
+      username: route.query.username as string,
+    }),
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "OTP resent!",
+      text: "The new OTP has been sent to your email address",
+    });
+  },
+});
 </script>
 
 <style></style>

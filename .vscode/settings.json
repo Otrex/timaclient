@@ -1,4 +1,5 @@
 {
+  "editor.formatOnSave": true,
   "cSpell.words": [
     "Adeoluwa",
     "apexcharts",
@@ -19,6 +20,7 @@
     "KPIS",
     "notif",
     "nuxtjs",
+    "sidonians",
     "Tiktok",
     "TIMA",
     "topnav",

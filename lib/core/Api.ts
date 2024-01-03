@@ -1,4 +1,4 @@
-import type { AxiosError, AxiosInstance } from "axios";
+import type { AxiosInstance } from "axios";
 import type { IRequestOptions, IStore } from "../interfaces/utils";
 import axios from "axios";
 
@@ -21,23 +21,24 @@ export default class Api {
   }
 
   private updateToken() {
-    const token = this.store?.get('token');
+    const token = this.store?.get('pinia-persist.auth.accessToken');
     if (token) {
       this.instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
   }
 
   public async request<R, T = any>(options: IRequestOptions<T>) {
-    this.updateToken();
-    const { $on, ...requestOptions } = options;
-    $on && $on.$start();
     try {
-      const res = await this.instance.request<R>(requestOptions);
+      this.updateToken();
+      const res = await this.instance.request<R>(options);
       return res.data;
-    } catch (error: AxiosError | any) {
-      return Promise.reject(error.response);
-    } finally {
-      $on && $on.$stop();
+    } catch (error: any) {
+      console.error(error);
+      return Promise.reject({
+        title: error.response?.data?.status || error.response?.statusText || error.message || "Server error",
+        description: error.response?.data?.userMessage || error.message || "Something went wrong",
+        __error: error,
+      });
     }
   }
 }

@@ -1,5 +1,5 @@
-import type { ExtractState, GlobalConfig, Validation, ValidationArgs } from "@vuelidate/core";
-import type { AxiosError, AxiosHeaders, Method, RawAxiosRequestHeaders } from "axios";
+import type { GlobalConfig, Validation, ValidationArgs } from "@vuelidate/core";
+import type { AxiosError, AxiosHeaders, AxiosRequestConfig, Method, RawAxiosRequestHeaders } from "axios";
 import type { UseFetchOptions } from "nuxt/app";
 import type { ToRefs } from "vue";
 import type { RequestState } from "../enums";
@@ -22,7 +22,7 @@ export type MethodsHeaders = Partial<
   } & { common: AxiosHeaders }
 >;
 
-export interface IRequestOptionEvents {
+export interface IRequestOptionEvents extends AxiosRequestConfig {
   $on?: {
     $start(): void;
     $stop(): void;
@@ -65,6 +65,12 @@ export interface IErrorRequest {
   userMessage: string;
 }
 
+export interface APIError<T = any> {
+  title: string;
+  description: string;
+  __error: T;
+}
+
 export type EnsureDefined<T, M extends keyof T> = {
   [K in keyof T]: T[K];
 } & {
@@ -74,7 +80,7 @@ export type EnsureDefined<T, M extends keyof T> = {
 
 export interface UseRequestProps<T, R = any[], M = any, K extends Record<string, any> = {}> {
   onSuccess?: (response: Awaited<T>) => void | Promise<void>;
-  onError?: (error: AxiosError<M>['response']) => void;
+  onError?: (error: APIError) => void;
   action: (...args: R[]) => Promise<T>;
   validation?: VuelidateConfig<K>;
   useGlobalLoader?: boolean;

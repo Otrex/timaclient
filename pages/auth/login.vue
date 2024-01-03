@@ -6,8 +6,17 @@
       </div>
       <div class="tm__box-598px">
         <div class="flex flex-col gap-[1rem] mb-[4.3125rem]">
-          <UiInputText class="w-full" placeholder="Email Address" />
-          <UiInputText class="w-full" placeholder="Password" type="password" />
+          <UiInputText
+            class="w-full"
+            v-model="form.identifier"
+            placeholder="Username"
+          />
+          <UiInputText
+            class="w-full"
+            v-model="form.password"
+            placeholder="Password"
+            type="password"
+          />
           <div class="text-left">
             <NuxtLink class="underline" to="/auth/forgot-password">
               Forgot password?</NuxtLink
@@ -17,7 +26,9 @@
 
         <div class="mb-[1.875rem]">
           <UiButtonDefault
-            @click="login"
+            @click="validate().then(() => login())"
+            :disabled="state === constants.LOADING"
+            :loading="state === constants.LOADING"
             label="Login"
             variant="primary"
             class="w-full py-[0.875rem]"
@@ -29,9 +40,42 @@
 </template>
 
 <script setup lang="ts">
-function login() {
-  navigateTo("/dashboard");
-}
+import { SIGN_IN_RULE } from "~/lib/validation/rules";
+const authStore = useAuthStore();
+const { notify } = useNotification();
+
+const form = reactive({
+  identifier: "",
+  password: "",
+});
+
+const {
+  execute: login,
+  validate,
+  state,
+  v$,
+} = useRequestState({
+  action: () =>
+    authStore.signIn({
+      username: form.identifier,
+      password: form.password,
+    }),
+  validation: {
+    config: { $autoDirty: true },
+    rule: SIGN_IN_RULE,
+    form,
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    navigateTo("/dashboard");
+  },
+});
 </script>
 
 <style></style>

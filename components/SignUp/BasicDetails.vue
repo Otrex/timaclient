@@ -46,10 +46,11 @@
 
       <UiButtonDefault
         :disabled="!isReady || state == constants.LOADING"
-        label="Continue"
-        variant="primary"
-        @click="proceed"
         class="w-full py-[0.875rem] mb-[1.875rem]"
+        @click="validate().then(() => execute())"
+        :loading="state == constants.LOADING"
+        variant="primary"
+        label="Continue"
       />
     </div>
   </div>
@@ -78,27 +79,25 @@ const { execute, validate, state, v$ } = useRequestState({
   onError(e) {
     notify({
       type: "error",
-      title: e?.data.status,
-      text: e?.data.userMessage,
+      title: e.title,
+      text: e.description,
     });
   },
   onSuccess() {
     navigateTo({
       query: {
         tab: "email-verify",
+        email: form.email,
+        username: form.username,
       },
     });
   },
-  useGlobalLoader: true,
+  useGlobalLoader: false,
 });
 
 const isReady = computed(() => {
   return form.password && form.email && agreed.value;
 });
-
-async function proceed() {
-  await validate!().then(() => execute());
-}
 </script>
 
-<style></style>
+<style scoped></style>

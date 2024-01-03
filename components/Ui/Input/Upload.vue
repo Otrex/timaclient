@@ -49,17 +49,17 @@
 
             <h4 class="text-[1.5rem]">Drag & Drop</h4>
             <p class="text-[#777777]">Your files here or browse to upload</p>
-            <label class="text-[#0077D3] text-[1.1875rem]">
+            <label class="text-[#0077D3] whitespace-nowrap text-[1.1875rem]">
               {{ fileName || "Only jpeg & png files with max size of 15mb" }}
               <input type="file" class="hidden" @change="clickHandler" />
             </label>
           </div>
 
           <button
-            @click="modalState = false"
+            @click="save"
             class="bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
           >
-            Save
+            {{ progress ? `${progress}%` : "Save" }}
           </button>
         </div>
       </div>
@@ -74,8 +74,16 @@ interface IProps {
   multi?: boolean;
   placeholder?: string;
 }
+
 type ClickEvent = Event & (MouseEvent & { target: HTMLInputElement }) & any;
 type DropEvent = DragEvent & ({ dataTransfer: DataTransfer } | any);
+
+const progress = ref(0);
+const file = ref();
+
+const { execute: upload } = useFileUploader("picture", (e) => {
+  progress.value = e;
+});
 
 const emit = defineEmits(["update:file", "update:name"]);
 const props = defineProps<IProps>();
@@ -88,7 +96,9 @@ const handleDragOver = (event: any) => {
 };
 
 const updateFile = (files: File[]) => {
+  const data = props.multi ? files : files[0];
   emit("update:file", props.multi ? files : files[0]);
+  file.value = data;
 };
 
 const updateFileName = () => {
@@ -124,6 +134,14 @@ const dropHandler = (event: DropEvent) => {
 
 function open() {
   modalState.value = true;
+}
+
+async function save() {
+  console.log("Saving", props.file);
+  if (file.value) {
+    await upload(file.value);
+    // modalState.value = false;
+  }
 }
 </script>
 
