@@ -1,6 +1,6 @@
 <template>
-  <div class="px-[6.25rem] dark:bg-slate-800 h-screen dark:text-white">
-    <div class="text-right mt-10">
+  <div class="px-[6.25rem] h-screen dark:bg-slate-800 dark:text-white">
+    <div class="text-right pt-10">
       <div class="items-center flex justify-end">
         <span
           >Have an account?
