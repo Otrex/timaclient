@@ -13,6 +13,14 @@ export default function () {
       useCookie(key).value = value;
     },
   })
+  api.setStoreGetter({
+    token: {
+      key: 'pinia-persist.auth.authorization',
+      getter: (state: any) => typeof state === 'string'
+        ? JSON.parse(state || '{}').value?.accessToken
+        : state.accessToken
+    }
+  })
 
   return api;
 }

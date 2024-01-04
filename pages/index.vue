@@ -61,12 +61,14 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-
 const joinAs = ref();
 
 function proceed() {
   authStore.$patch({
-    userType: joinAs.value,
+    registration: {
+      ...authStore.$state.registration,
+      type: joinAs.value,
+    },
   });
   navigateTo({
     path: `/sign-up/${joinAs.value}`,

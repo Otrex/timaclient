@@ -10,13 +10,15 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo("/404")
   }
 
-  if (!authStore.userType) {
+  if (!authStore.registration.type) {
     authStore.$patch({
-      userType: routeUserType
+      registration: {
+        type: routeUserType
+      }
     });
   }
 
-  if (routeUserType !== authStore.$state.userType) {
+  if (routeUserType !== authStore.$state.registration.type) {
     return navigateTo("/")
   }
 });

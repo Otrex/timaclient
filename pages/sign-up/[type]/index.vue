@@ -42,10 +42,10 @@
 <script setup lang="ts">
 definePageMeta({
   name: "signup",
-  middleware: ["user-type"],
+  middleware: ["register", "options"],
 });
 
-const route = useRoute();
+const authStore = useAuthStore();
 
 const tabMap = {
   [constants.BASIC_DETAILS]: {
@@ -75,6 +75,8 @@ const tabMap = {
     prev: {
       query: {
         tab: constants.BASIC_INFORMATION,
+        email: authStore.registration.email,
+        username: authStore.registration.username,
       },
     },
     activeOthers: [constants.BASIC_DETAILS, constants.BASIC_INFORMATION],
@@ -144,32 +146,6 @@ const tabMap = {
     hideFrom: [],
   },
 };
-
-// const currentTab = computed(
-//   () => (route.query.tab || "basic-details") as keyof typeof tabMap
-// );
-
-// const userType = computed(
-//   () => ((route.params.type as string) || constants.AGENCY).toUpperCase() //
-// );
-
-// const currentView = computed(() => tabMap[currentTab.value]);
-
-// const activeTabs = computed(() => [
-//   currentTab.value,
-//   ...tabMap[currentTab.value].activeOthers,
-// ]);
-
-// const show = (tab: keyof typeof tabMap) => {
-//   return (
-//     currentTab.value === tab &&
-//     !(tabMap[tab].hideFrom as string[]).includes(userType.value)
-//   );
-// };
-
-// const type = (type: string) => {
-//   return userType.value === type;
-// };
 
 const { type, show, activeTabs, currentView } = useSignupTabController(tabMap);
 </script>

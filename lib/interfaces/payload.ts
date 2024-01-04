@@ -7,6 +7,10 @@ export interface CreateUser {
   userType: UserType;
 }
 
+export interface PasswordReset {
+  email: string;
+}
+
 export interface SignIn {
   username: string;
   password: string;

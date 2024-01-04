@@ -3,8 +3,8 @@
     <div class="mb-[1.875rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Check your email for a code</h1>
       <p>
-        Check your email at yowa@gmail.com for the confirmation code. Enter it
-        soon, before it expires. Welcome aboard!
+        Check your email at <b>{{ $route.query.email }}</b> for the confirmation
+        code. Enter it soon, before it expires. Welcome aboard!
       </p>
     </div>
 
@@ -42,6 +42,7 @@
 
 <script setup lang="ts">
 const { notify } = useNotification();
+const authStore = useAuthStore();
 const route = useRoute();
 const api = useAPI();
 
@@ -73,11 +74,7 @@ const { execute, state } = useRequestState({
 });
 
 const { execute: resend, state: resendState } = useRequestState({
-  action: () =>
-    api.resendOTP({
-      email: route.query.email as string,
-      username: route.query.username as string,
-    }),
+  action: () => authStore.resendOTP(),
   onError(e) {
     notify({
       type: "error",

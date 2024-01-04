@@ -24,7 +24,8 @@
         v-model="form.state"
         placeholder="State"
       />
-      <UiInputText
+      <UiInputSelect
+        :options="[]"
         type="text"
         class="w-full"
         v-model="form.country"

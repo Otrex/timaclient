@@ -44,7 +44,6 @@
 import { UPDATE_BRAND_INFO_RULE } from "~/lib/validation/rules";
 const { notify } = useNotification();
 const authStore = useAuthStore();
-const route = useRoute();
 
 const form = reactive({
   companyName: "",
@@ -64,7 +63,6 @@ const { execute, validate, state, v$ } = useRequestState({
         typeof form.phoneNumber === "string"
           ? form.phoneNumber
           : form.phoneNumber?.number,
-      email: route.query.email as string,
     }),
   validation: {
     config: { $autoDirty: true },

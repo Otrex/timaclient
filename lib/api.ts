@@ -44,15 +44,29 @@ export default class TimaAPI extends Api {
 
   async getPictureSignedURL(fileName: string, fileExtension: string) {
     return this.request<Response.GetSignedURL>({
-      url: '/user/v1/signed/url/pics/' + fileName + '/' + fileExtension,
+      url: `/user/v1/signed/url/pics/${fileName}/${fileExtension}`,
       method: "GET",
     });
   }
 
   async getDocsSignedURL(fileName: string, fileExtension: string) {
     return this.request<Response.GetSignedURL>({
-      url: '/user/v1/signed/url/docs/' + fileName + '/' + fileExtension,
+      url: `/user/v1/signed/url/docs/${fileName}/${fileExtension}`,
       method: "GET",
+    });
+  }
+
+  async getCountries() {
+    return this.request<Response.GetCountries>({
+      url: '/user/v1/countries',
+      method: "GET",
+    });
+  }
+
+  async passwordReset(data: Payload.PasswordReset) {
+    return this.request<Response.CreateUser>({
+      url: `/user/v1/account/password/reset/${data.email}`,
+      method: "PUT",
     });
   }
 }

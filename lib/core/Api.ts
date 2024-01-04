@@ -1,13 +1,18 @@
 import type { AxiosInstance } from "axios";
-import type { IRequestOptions, IStore } from "../interfaces/utils";
+import type { Getter, IRequestOptions, IStore } from "../interfaces/utils";
 import axios from "axios";
 
 export default class Api {
+  private getters?: Record<string, Getter>;
   private instance: AxiosInstance;
   private store?: IStore;
 
   constructor() {
     this.instance = axios.create();
+  }
+
+  public setStoreGetter(getters: Record<string, Getter>) {
+    this.getters = getters;
   }
 
   public setStore(store: IStore) {
@@ -20,17 +25,29 @@ export default class Api {
     return this;
   }
 
-  private updateToken() {
-    const token = this.store?.get('pinia-persist.auth.accessToken');
-    if (token) {
-      this.instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    }
+  private getAccessToken() {
+    if (!this.store) return;
+    if (!this.getters) return;
+
+    const { key, getter } = this.getters['token'];
+    const token = getter<string>(this.store.get(key));
+
+    return token;
   }
 
   public async request<R, T = any>(options: IRequestOptions<T>) {
     try {
-      this.updateToken();
-      const res = await this.instance.request<R>(options);
+      const { requireAuth, ...axiosOptions } = options
+      const accessToken = this.getAccessToken();
+      const res = await this.instance.request<R>({
+        ...axiosOptions,
+        headers: {
+          ...axiosOptions.headers,
+          ...(requireAuth && accessToken ? {
+            Authorization: `Bearer ${accessToken}`,
+          } : {})
+        }
+      });
       return res.data;
     } catch (error: any) {
       console.error(error);

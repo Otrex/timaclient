@@ -4,6 +4,13 @@ export interface Industry {
   description: string;
 }
 
+export interface Country {
+  name: string;
+  language: string[];
+  currency: string;
+}
+
+
 export interface User {
   firstName: string;
   middleName: string;

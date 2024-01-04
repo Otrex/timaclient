@@ -1,10 +1,10 @@
-import type { Industry, User } from "./core";
+import type { Country, Industry, User } from "./core";
 import type { IRequest } from "./utils";
 
-
-
-
-
+export interface CreateUser extends IRequest<{
+  message: string;
+  publicId: string;
+}> { }
 export interface SignIn extends IRequest<{
   scope: null;
   access_token: string;
@@ -15,12 +15,10 @@ export interface SignIn extends IRequest<{
 
 
 export interface GetSignedURL extends IRequest<string> { }
+export interface GetCountries extends IRequest<Country[]> { };
 export interface IGetIndustry extends IRequest<Industry[]> { }
 export interface BrandBasicInformation extends IRequest<User> { };
-export interface CreateUser extends IRequest<{
-  message: string;
-  publicId: string;
-}> { }
+
 
 
 

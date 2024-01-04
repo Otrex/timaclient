@@ -3,19 +3,26 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
 
 export default defineNuxtConfig({
+  ssr: false,
   devtools: { enabled: true },
   spaLoadingTemplate: "./app.splash.html",
   app: {
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: "TIMA",
+      title: "Welcome to TIMA",
       script: [],
-      link: [],
+      link: [
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/app.ico.png' },
+      ],
     },
     // layoutTransition: { name: 'page', mode: 'out-in' }
   },
-
+  router: {
+    options: {
+      scrollBehaviorType: 'smooth'
+    }
+  },
   css: ['~/assets/css/main.css'],
   components: [
     { path: '~/components/Ui', prefix: 'Ui' },

@@ -84,11 +84,17 @@ const { execute, validate, state, v$ } = useRequestState({
     });
   },
   onSuccess() {
+    authStore.$patch({
+      registration: {
+        ...authStore.$state.registration,
+        username: form.username,
+        email: form.email,
+      },
+    });
     navigateTo({
       query: {
-        tab: "email-verify",
+        tab: constants.EMAIL_VERIFY,
         email: form.email,
-        username: form.username,
       },
     });
   },

@@ -10,6 +10,11 @@ export interface IRequest<T = unknown> {
   data: T;
 }
 
+export interface Getter {
+  key: string;
+  getter: <T = any>(state: unknown) => T
+}
+
 export interface IStore {
   set: (key: string, value: any) => void;
   get: (key: string) => string | null;
@@ -31,6 +36,7 @@ export interface IRequestOptionEvents extends AxiosRequestConfig {
 
 export interface IRequestOptions<T extends Record<string, any> | any> extends IRequestOptionEvents {
   headers?: (RawAxiosRequestHeaders & MethodsHeaders) | AxiosHeaders,
+  requireAuth?: boolean,
   method: Method,
   url: string,
   data?: T,
