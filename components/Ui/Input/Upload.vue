@@ -72,6 +72,8 @@
 
           <ui-button-default
             variant="primary"
+            :loading="requestState === constants.LOADING"
+            :disabled="requestState === constants.LOADING"
             @click="save"
             class="py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
           >
@@ -108,7 +110,7 @@ const accepts = {
   docs: "application/",
 };
 
-const { execute: upload } = useFileUploader({
+const { execute: upload, state: requestState } = useFileUploader({
   type: props.type!,
   onProgress(e) {
     progress.value = e;
