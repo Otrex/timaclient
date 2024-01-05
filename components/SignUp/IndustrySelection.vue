@@ -8,7 +8,7 @@
     <div class="flex flex-wrap justify-center mb-[4.3125rem] gap-[1.25rem]">
       <UiInputOption
         class="!text-[1rem] min-w-[4.6875rem]"
-        v-for="(option, idx) in options"
+        v-for="(option, idx) in optionsStore.$industries"
         :disabled="disable(option)"
         :key="idx"
         :value="option"
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 const route = useRoute();
+const optionsStore = useOptionsStore();
 
 const form = reactive({
   selection: [] as string[],

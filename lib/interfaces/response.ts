@@ -16,7 +16,7 @@ export interface SignIn extends IRequest<{
 
 export interface GetSignedURL extends IRequest<string> { }
 export interface GetCountries extends IRequest<Country[]> { };
-export interface IGetIndustry extends IRequest<Industry[]> { }
+export interface GetIndustry extends IRequest<Industry[]> { }
 export interface BrandBasicInformation extends IRequest<User> { };
 export interface BrandAddressDocumentation extends IRequest<Address> { };
 

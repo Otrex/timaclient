@@ -72,6 +72,13 @@ export default class TimaAPI extends Api {
     });
   }
 
+  async getIndustries() {
+    return this.request<Response.GetIndustry>({
+      url: '/agency/v1/industries',
+      method: "GET",
+    });
+  }
+
   async passwordReset(data: Payload.PasswordReset) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/password/reset/${data.email}`,
