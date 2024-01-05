@@ -70,6 +70,13 @@ export const useAuthStore = defineStore('auth', {
       });
     },
 
+    async updateBrandAddressDoc(payload: Omit<Payload.BrandAddressDocumentation, 'publicId'>) {
+      await this.$api.brandAddressDocumentUpdate({
+        publicId: this.registration.publicId!,
+        ...payload,
+      })
+    },
+
     async resendOTP() {
       await this.$api.resendOTP({
         email: this.registration.email!,

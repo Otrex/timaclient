@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from "axios";
 import Api from "./core/Api";
 import type { Payload, Response } from "./interfaces";
 
@@ -42,18 +43,26 @@ export default class TimaAPI extends Api {
     });
   }
 
-  async getPictureSignedURL(fileName: string, fileExtension: string) {
-    return this.request<Response.GetSignedURL>({
-      url: `/user/v1/signed/url/pics/${fileName}/${fileExtension}`,
-      method: "GET",
+  async brandAddressDocumentUpdate(data: Payload.BrandAddressDocumentation) {
+    return this.request<Response.BrandAddressDocumentation>({
+      url: `/user/v1/address`,
+      method: "POST",
+      data
     });
   }
 
-  async getDocsSignedURL(fileName: string, fileExtension: string) {
-    return this.request<Response.GetSignedURL>({
-      url: `/user/v1/signed/url/docs/${fileName}/${fileExtension}`,
-      method: "GET",
-    });
+  async getSignedUrl(file: File, type: "docs" | "pics") {
+    const fileMeta = TimaAPI.extractFileMeta(file);
+
+    return type === "pics"
+      ? this.request<Response.GetSignedURL>({
+        url: `/user/v1/signed/url/pics/${fileMeta.name}/${fileMeta.extension}`,
+        method: "GET",
+      })
+      : this.request<Response.GetSignedURL>({
+        url: `/user/v1/signed/url/docs/${fileMeta.name}/${fileMeta.extension}`,
+        method: "GET",
+      })
   }
 
   async getCountries() {
@@ -68,5 +77,25 @@ export default class TimaAPI extends Api {
       url: `/user/v1/account/password/reset/${data.email}`,
       method: "PUT",
     });
+  }
+
+  async upload(
+    data: Payload.UploadRequest,
+    onUploadProgress?: AxiosRequestConfig['onUploadProgress']
+  ) {
+
+    const { data: url } = await this.getSignedUrl(data.file, data.type);
+    await this.request({
+      headers: {
+        'Content-Type': data.file.type,
+      },
+      maxBodyLength: Infinity,
+      requireAuth: false,
+      onUploadProgress,
+      data: data.file,
+      method: "PUT",
+      url,
+    });
+    return new URL(url);
   }
 }

@@ -1,4 +1,4 @@
-import type { Country, Industry, User } from "./core";
+import type { Address, Country, Industry, User } from "./core";
 import type { IRequest } from "./utils";
 
 export interface CreateUser extends IRequest<{
@@ -18,7 +18,7 @@ export interface GetSignedURL extends IRequest<string> { }
 export interface GetCountries extends IRequest<Country[]> { };
 export interface IGetIndustry extends IRequest<Industry[]> { }
 export interface BrandBasicInformation extends IRequest<User> { };
-
+export interface BrandAddressDocumentation extends IRequest<Address> { };
 
 
 

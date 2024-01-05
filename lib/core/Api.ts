@@ -25,6 +25,13 @@ export default class Api {
     return this;
   }
 
+  public static extractFileMeta(file: File) {
+    const extension = file.type.split('/').pop();
+    const lastDotIndex = file.name.lastIndexOf('.');
+    const filename = lastDotIndex !== -1 ? file.name.substring(0, lastDotIndex) : file.name;
+    return { extension, name: filename };
+  }
+
   private getAccessToken() {
     if (!this.store) return;
     if (!this.getters) return;

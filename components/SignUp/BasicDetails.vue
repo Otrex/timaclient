@@ -14,7 +14,6 @@
         class="w-full"
         v-model="form.username"
         placeholder="Username"
-        :error="v$.username.$error"
         :error-message="v$.username.$errors[0]?.$message.toString()"
       />
       <UiInputText

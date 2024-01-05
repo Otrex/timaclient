@@ -12,6 +12,10 @@ export const useOptionsStore = defineStore("options", {
     };
   },
 
+  getters: {
+    $countries: (state) => tools.generationOptions(state.countries.map(country => country.name))
+  },
+
   actions: {
     async loadDashboardOptions() { },
     async loadRegisterOptions() {

@@ -10,6 +10,16 @@ export interface Country {
   currency: string;
 }
 
+export interface Address {
+  street: string;
+  city: string;
+  state: string;
+  postCode: string;
+  country: string;
+  createdOn: Date;
+}
+
+
 
 export interface User {
   firstName: string;

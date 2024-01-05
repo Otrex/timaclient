@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block min-w-[6.25rem]">
+  <div :key="reset" class="inline-block min-w-[6.25rem]">
     <div
       @click="open"
       class="w-full flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]"
@@ -41,26 +41,42 @@
           <h4 class="text-[1.75rem] mb-[2.5rem]">UPLOAD FILES</h4>
 
           <div
-            @dragover.prevent="handleDragOver"
-            @drop.prevent="dropHandler"
-            class="rounded-[0.5rem] mb-[1.5rem] outline-dashed outline-[#999999] pt-[1.25rem] pb-[1.8125rem]"
+            ref="dropZoneRef"
+            :class="{
+              'rounded-[0.5rem] mb-[1.5rem] outline-dashed outline-[#999999] pt-[1.25rem] pb-[1.8125rem]': true,
+              '!outline-red-600': error,
+            }"
           >
             <UtSvg name="upload" class="inline-block w-[4.5rem] h-[4.5rem]" />
 
             <h4 class="text-[1.5rem]">Drag & Drop</h4>
             <p class="text-[#777777]">Your files here or browse to upload</p>
-            <label class="text-[#0077D3] whitespace-nowrap text-[1.1875rem]">
+            <label
+              class="text-[#0077D3] w-full block px-4 overflow-clip text-[1.1875rem]"
+            >
               {{ fileName || "Only jpeg & png files with max size of 15mb" }}
-              <input type="file" class="hidden" @change="clickHandler" />
+              <input
+                type="file"
+                :accept="`${acceptsMime}*`"
+                class="hidden"
+                @change="clickHandler"
+              />
             </label>
+
+            <label
+              v-show="error"
+              class="text-[#d30007] block whitespace-nowrap text-[1.1875rem]"
+              >{{ error }}</label
+            >
           </div>
 
-          <button
+          <ui-button-default
+            variant="primary"
             @click="save"
-            class="bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
+            class="py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
           >
             {{ progress ? `${progress}%` : "Save" }}
-          </button>
+          </ui-button-default>
         </div>
       </div>
     </UtModal>
@@ -68,9 +84,12 @@
 </template>
 
 <script setup lang="ts">
+import { useDropZone } from "@vueuse/core";
 interface IProps {
   file?: File | File[];
   name?: string;
+  url?: string | string[];
+  type: "pics" | "docs";
   multi?: boolean;
   placeholder?: string;
 }
@@ -78,18 +97,53 @@ interface IProps {
 type ClickEvent = Event & (MouseEvent & { target: HTMLInputElement }) & any;
 type DropEvent = DragEvent & ({ dataTransfer: DataTransfer } | any);
 
+const props = defineProps<IProps>();
 const progress = ref(0);
 const file = ref();
 
-const { execute: upload } = useFileUploader("picture", (e) => {
-  progress.value = e;
+const emit = defineEmits(["update:file", "update:name", "update:url"]);
+
+const accepts = {
+  pics: "image/",
+  docs: "application/",
+};
+
+const { execute: upload } = useFileUploader({
+  type: props.type!,
+  onProgress(e) {
+    progress.value = e;
+  },
+  onCompleted(e) {
+    if (e) {
+      const url = Array.isArray(e)
+        ? e.map((m) => `${m.origin}${m.pathname}`)
+        : `${e.origin}${e.pathname}`;
+      emit("update:url", url);
+      modalState.value = false;
+    }
+  },
 });
 
-const emit = defineEmits(["update:file", "update:name"]);
-const props = defineProps<IProps>();
 const modalState = ref(false);
+const error = ref<string>();
+const reset = ref(0);
+
+const acceptsMime = computed(() => (props.type ? accepts[props.type] : "*/"));
 
 const fileName = ref<string>();
+
+const dropZoneRef = ref<HTMLDivElement>();
+
+function onDrop(files: File[] | null) {
+  // called when files are dropped on zone
+  if (files !== null) processFiles(files);
+}
+
+const { isOverDropZone } = useDropZone(dropZoneRef, {
+  onDrop,
+  // specify the types of data to be received.
+  dataTypes: ["image/jpeg"],
+});
 
 const handleDragOver = (event: any) => {
   event.preventDefault();
@@ -97,7 +151,7 @@ const handleDragOver = (event: any) => {
 
 const updateFile = (files: File[]) => {
   const data = props.multi ? files : files[0];
-  emit("update:file", props.multi ? files : files[0]);
+  emit("update:file", data);
   file.value = data;
 };
 
@@ -105,11 +159,26 @@ const updateFileName = () => {
   emit("update:name", fileName.value);
 };
 
-const processFiles = (fileList: FileList) => {
-  const files = Array.from(fileList);
-  fileName.value = files.map((f) => f.name).join(", ");
-  updateFile(files);
-  updateFileName();
+function isFileType(mimeType: string) {
+  if (acceptsMime.value === "*/") return true;
+  return mimeType.startsWith(acceptsMime.value);
+}
+
+const checkFileType = (file: File) => {
+  if (isFileType(file.type)) return;
+  throw new Error("Invalid file type: " + file.type);
+};
+
+const processFiles = (fileList: FileList | File[]) => {
+  try {
+    const files = Array.from(fileList);
+    files.map((file) => checkFileType(file));
+    fileName.value = files.map((f) => f.name).join(", ");
+    updateFile(files);
+    updateFileName();
+  } catch (err: any) {
+    error.value = err.message;
+  }
 };
 
 const clickHandler = (event: ClickEvent) => {

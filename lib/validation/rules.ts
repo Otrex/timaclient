@@ -16,6 +16,52 @@ export const CREATE_USER_RULE = {
   },
 };
 
+
+export const CREATE_BRAND_ADDRESS_VALIDATOR = {
+  street: {
+    required: helpers.withMessage("Please enter a valid street", required),
+    minLength: helpers.withMessage(
+      "street should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  country: {
+    required: helpers.withMessage("Please enter a valid country", required),
+    minLength: helpers.withMessage(
+      "country should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  state: {
+    required: helpers.withMessage("Please enter a valid state", required),
+    minLength: helpers.withMessage(
+      "state should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  city: {
+    required: helpers.withMessage("Please enter a valid city", required),
+    minLength: helpers.withMessage(
+      "city should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  postCode: {
+    required: helpers.withMessage("Please enter a valid postalCode", required),
+    minLength: helpers.withMessage(
+      "postalCode should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+
+  profilePicture: {
+    required: helpers.withMessage("Please select a valid picture", required),
+  },
+  companyRegDocs: {
+    required: helpers.withMessage("Please select a valid document", required),
+  }
+}
+
 export const SIGN_IN_RULE = {
   identifier: {
     required: helpers.withMessage("Please enter a valid username or email", required),

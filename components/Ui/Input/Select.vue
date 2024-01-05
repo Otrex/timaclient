@@ -4,6 +4,7 @@
       'px-[1.5rem] py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
     ]"
     v-bind="$attrs"
+    v-model="value"
   >
     <option v-if="props.placeholder" disabled selected class="text-[#999999]">
       {{ props.placeholder }}
@@ -22,7 +23,19 @@
 const props = defineProps<{
   options: { label: string; value: string }[];
   placeholder?: string;
+  modelValue?: string;
 }>();
+
+const emit = defineEmits(["update:modelValue"]);
+
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
 </script>
 
 <style></style>
