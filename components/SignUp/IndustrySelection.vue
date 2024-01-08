@@ -21,11 +21,12 @@
 
     <div class="flex flex-col gap-[1rem] tm__box-598px mb-[1.875rem]">
       <UiButtonDefault
-        :disabled="!isReady"
+        :disabled="!isReady || state === constants.LOADING"
+        :loading="state === constants.LOADING"
         label="Continue"
         variant="primary"
         class="w-full py-[0.875rem]"
-        @click="proceed"
+        @click="() => proceed()"
       />
     </div>
   </div>
@@ -33,6 +34,8 @@
 
 <script setup lang="ts">
 const route = useRoute();
+const authStore = useAuthStore();
+const { notify } = useNotification();
 const optionsStore = useOptionsStore();
 
 const form = reactive({
@@ -43,33 +46,21 @@ const disable = (value: string) => {
   return form.selection.length >= 2 && !form.selection.includes(value);
 };
 
-const options = [
-  "Arts",
-  "Film & photography",
-  "Consultancy",
-  "Education",
-  "Business & Entrepreneurship",
-  "Family & parenting",
-  "Fashion",
-  "Finance",
-  "Beauty &cosmetics",
-  "Gaming",
-  "Design",
-  "General services",
-  "Health & medicine",
-  "Lifestyle",
-  "Music & record label",
-  "Real estate & construction",
-  "Regional/ ethnic culture",
-  "Relationships & dating",
-  "Sports & events",
-];
-
-function proceed() {
-  navigateTo(`/sign-up/${route.params.type}/review`);
-}
-
 const isReady = computed(() => form.selection.length);
+
+const { execute: proceed, state } = useRequestState({
+  action: () => authStore.updateBrandIndustries(form.selection),
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    navigateTo(`/sign-up/${route.params.type}/review`);
+  },
+});
 </script>
 
 <style></style>

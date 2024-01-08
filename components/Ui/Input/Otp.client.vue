@@ -10,7 +10,7 @@
     :outlined="true"
     ref="otpInput"
     :only-number="true"
-    :allow-paste="allowPaste"
+    :allow-paste="true"
   />
 </template>
 

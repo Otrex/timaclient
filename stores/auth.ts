@@ -77,6 +77,13 @@ export const useAuthStore = defineStore('auth', {
       })
     },
 
+    async updateBrandIndustries(industries: string[]) {
+      await this.$api.brandIndustryUpdate(
+        this.registration.publicId!,
+        industries
+      )
+    },
+
     async resendOTP() {
       await this.$api.resendOTP({
         email: this.registration.email!,

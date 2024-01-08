@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: "Forgot Password",
+  name: "Update Password",
   pageTransition: false,
 });
 

@@ -25,9 +25,7 @@
       <div
         class="flex flex-col gap-[1rem] max-w-[37.375rem] mx-auto mt-[3.4375rem]"
       >
-        <NuxtLink
-          :to="`/sign-up/${$route.params.type}?tab=${constants.BASIC_DETAILS}`"
-        >
+        <NuxtLink to="/auth/login">
           <UiButtonDefault
             label="Log In"
             variant="primary"

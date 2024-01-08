@@ -16,6 +16,7 @@
             v-model="form.password"
             placeholder="Password"
             type="password"
+            passwordToggle
           />
           <div class="text-left">
             <NuxtLink class="underline" to="/auth/forgot-password">

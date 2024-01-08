@@ -79,6 +79,16 @@ export default class TimaAPI extends Api {
     });
   }
 
+  async brandIndustryUpdate(publicId: string, industries: string[]) {
+    return this.request<Response.GetIndustry>({
+      url: `/user/v1/industries/${publicId}`,
+      method: "PUT",
+      data: {
+        industries,
+      }
+    });
+  }
+
   async passwordReset(data: Payload.PasswordReset) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/password/reset/${data.email}`,
