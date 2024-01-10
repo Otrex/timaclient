@@ -33,13 +33,12 @@ definePageMeta({
 
 const { notify } = useNotification();
 const api = useAPI();
-const form = reactive({
-  loading: false,
-  code: "",
-});
 
 const { execute, state } = useRequestState({
-  action: (otp: string) => api.verifyOTP({ otp }),
+  action: async (otp: string) => {
+    const response = await api.verifyOTP({ otp });
+    return { otp, response };
+  },
   onError(e) {
     notify({
       type: "error",
@@ -47,25 +46,21 @@ const { execute, state } = useRequestState({
       text: e.description,
     });
   },
-  onSuccess(response) {
+  onSuccess({ response, otp }) {
     notify({
       type: "success",
       title: "Password Reset Successful!",
       text: "Proceed to login with your new password",
     });
     navigateTo({
-      path: "/auth/login",
+      path: "/auth/update-password",
+      query: {
+        publicId: response.data.publicId,
+        otp,
+      },
     });
   },
 });
-
-function sendCode(otp: string) {
-  form.loading = true;
-  setTimeout(() => {
-    form.loading = false;
-    navigateTo("/auth/login");
-  }, 3000);
-}
 </script>
 
 <style></style>

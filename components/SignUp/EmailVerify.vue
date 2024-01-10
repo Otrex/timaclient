@@ -56,7 +56,7 @@ const { execute, state } = useRequestState({
     });
   },
   onSuccess() {
-    if (route.params.type === "influencer") {
+    if (route.params.type === constants.INFLUENCER) {
       navigateTo({
         query: {
           tab: constants.COMPLETE_PROFILE,

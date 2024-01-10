@@ -3,15 +3,16 @@
     <NuxtLayout name="auth">
       <div>
         <div class="mb-[3.75rem]">
-          <h1 class="text-[2.4375rem] mb-[1.5rem]">Forgot Password</h1>
-          <p>Enter the email you use to register.</p>
+          <h1 class="text-[2.4375rem] mb-[1.5rem]">Update Password</h1>
+          <p>Enter your desired password</p>
         </div>
         <div class="tm__box-598px">
           <div class="flex flex-col gap-[1rem] mb-[9.9375rem]">
             <UiInputText
               class="w-full"
-              placeholder="Email Address"
-              v-model="form.email"
+              placeholder="Password"
+              v-model="form.password"
+              password-toggle
             />
           </div>
 
@@ -32,20 +33,47 @@
 </template>
 
 <script setup lang="ts">
+import { sha512 } from "js-sha512";
+
 definePageMeta({
   name: "Update Password",
   pageTransition: false,
 });
 
 const { notify } = useNotification();
+const route = useRoute();
 const api = useAPI();
 
 const form = reactive({
-  email: "",
+  password: "",
 });
 
+function createHash(otp: string, publicId: string) {
+  const salt = tools.generateSalt(5, "alphanumeric");
+  const hash = sha512(`${otp}${publicId}${salt}`);
+
+  return { salt, hash };
+}
+
 const { execute, state } = useRequestState({
-  action: () => api.passwordReset(form),
+  action: async () => {
+    const otp = route.query.otp as string;
+    const publicId = route.query.publicId as string;
+
+    if (!otp || !publicId) {
+      notify({
+        type: "error",
+        title: "Not Found",
+        text: "No OTP or publicId found",
+      });
+
+      throw new Error();
+    }
+
+    const { salt, hash } = createHash(otp, publicId);
+
+    console.log(salt, hash);
+  },
   onError(e) {
     notify({
       type: "error",
@@ -57,13 +85,10 @@ const { execute, state } = useRequestState({
     notify({
       type: "success",
       title: "Request Successful!",
-      text: response.data.message,
+      // text: response.data.message,
     });
     navigateTo({
-      path: "/auth/verify-password-reset",
-      query: {
-        email: form.email,
-      },
+      path: "/auth/login",
     });
   },
 });

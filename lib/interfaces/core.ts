@@ -1,3 +1,12 @@
+export interface Bank {
+  name: string;
+  slug: string;
+  code: string;
+  longCode: null | string;
+  country: string;
+  currency: string;
+  type: string;
+}
 
 export interface Industry {
   name: string;

@@ -17,6 +17,20 @@ export const CREATE_USER_RULE = {
 };
 
 
+
+export const COMPLETE_PROFILE_VALIDATOR = {
+  firstName: {
+    required: helpers.withMessage("Please enter a valid first name", required),
+  },
+  lastName: {
+    required: helpers.withMessage("Please enter a valid last name", required),
+  },
+  phoneNumber: {
+    required: helpers.withMessage("Please enter a valid phone number", required),
+  },
+}
+
+
 export const CREATE_BRAND_ADDRESS_VALIDATOR = {
   street: {
     required: helpers.withMessage("Please enter a valid street", required),
@@ -31,6 +45,54 @@ export const CREATE_BRAND_ADDRESS_VALIDATOR = {
       "country should be at least 3 characters",
       minLength(3)
     ),
+  },
+  state: {
+    required: helpers.withMessage("Please enter a valid state", required),
+    minLength: helpers.withMessage(
+      "state should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  city: {
+    required: helpers.withMessage("Please enter a valid city", required),
+    minLength: helpers.withMessage(
+      "city should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  postCode: {
+    required: helpers.withMessage("Please enter a valid postalCode", required),
+    minLength: helpers.withMessage(
+      "postalCode should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+
+  profilePicture: {
+    required: helpers.withMessage("Please select a valid picture", required),
+  },
+  companyRegDocs: {
+    required: helpers.withMessage("Please select a valid document", required),
+  }
+}
+
+export const CREATE_BRAND_ADDRESS_VALIDATOR_V2 = {
+  street: {
+    required: helpers.withMessage("Please enter a valid street", required),
+    minLength: helpers.withMessage(
+      "street should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  country: {
+    required: helpers.withMessage("Please enter a valid country", required),
+    minLength: helpers.withMessage(
+      "country should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  language: {
+    required: helpers.withMessage("Please enter a valid language", required),
   },
   state: {
     required: helpers.withMessage("Please enter a valid state", required),

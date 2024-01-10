@@ -8,6 +8,7 @@ type IState = {
     type?: UserType;
     publicId?: string;
     username?: string,
+    country?: string
   },
   authorization: {
     accessToken?: string;
@@ -70,8 +71,36 @@ export const useAuthStore = defineStore('auth', {
       });
     },
 
+    async updateInfluencerProfile(payload: Omit<Payload.InfluencerCompleteProfile, 'publicId' | 'email'>) {
+      await this.$api.influencerCompleteProfileUpdate({
+        publicId: this.registration.publicId!,
+        email: this.registration.email!,
+        ...payload,
+      });
+    },
+
     async updateBrandAddressDoc(payload: Omit<Payload.BrandAddressDocumentation, 'publicId'>) {
+      this.$patch({
+        registration: {
+          ...this.registration,
+          country: payload.addressRecord.country
+        }
+      })
       await this.$api.brandAddressDocumentUpdate({
+        publicId: this.registration.publicId!,
+        ...payload,
+      })
+
+      this.$patch({
+        registration: {
+          ...this.registration,
+          country: payload.addressRecord.country
+        }
+      })
+    },
+
+    async updateInfluencerBankDetails(payload: Omit<Payload.InfluencerBankDetails, 'publicId'>) {
+      await this.$api.influencerBankDetailsUpdate({
         publicId: this.registration.publicId!,
         ...payload,
       })

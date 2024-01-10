@@ -6,40 +6,39 @@
     </div>
 
     <div class="flex flex-col gap-[1rem]">
-      <UiInputSelect
+      <UiInputText
         class="w-full"
-        v-model="form.language"
+        v-model="form.currency"
         placeholder="Select currency"
-        :options="tools.generationOptions(['Naira', 'Dollar'])"
       />
       <UiInputText
         type="text"
         class="w-full"
-        v-model="form.street"
+        v-model="form.accountName"
         placeholder="Account name"
       />
       <UiInputText
         type="text"
         class="w-full"
-        v-model="form.state"
+        v-model="form.accountNumber"
         placeholder="Account number"
       />
       <UiInputText
         type="text"
         class="w-full"
-        v-model="form.country"
+        v-model="form.bankName"
         placeholder="Bank name"
       />
       <UiInputText
         type="text"
         class="w-full"
-        v-model="form.street"
+        v-model="form.bankAddress"
         placeholder="Bank address"
       />
       <UiInputText
         type="text"
         class="w-full mb-[3.25rem]"
-        v-model="form.city"
+        v-model="form.swiftCode"
         placeholder="Swift Code"
       />
 
@@ -55,15 +54,48 @@
 </template>
 
 <script setup lang="ts">
+const authStore = useAuthStore();
+
 const form = reactive({
-  profilePicture: undefined as string | File | undefined,
-  companyRegDocs: [] as File[],
-  language: "",
-  country: "",
-  state: "",
-  street: "",
-  city: "",
+  accountNumber: "",
+  accountName: "",
+  bankAddress: "",
+  swiftCode: "",
+  bankName: "",
+  currency: "",
 });
+
+// const { execute, validate, state, v$ } = useRequestState({
+//   action: () => authStore.createUser(form),
+//   validation: {
+//     config: { $autoDirty: true },
+//     rule: CREATE_USER_RULE,
+//     form,
+//   },
+//   onError(e) {
+//     notify({
+//       type: "error",
+//       title: e.title,
+//       text: e.description,
+//     });
+//   },
+//   onSuccess() {
+//     authStore.$patch({
+//       registration: {
+//         ...authStore.$state.registration,
+//         username: form.username,
+//         email: form.email,
+//       },
+//     });
+//     navigateTo({
+//       query: {
+//         tab: constants.EMAIL_VERIFY,
+//         email: form.email,
+//       },
+//     });
+//   },
+//   useGlobalLoader: false,
+// });
 
 function proceed() {
   navigateTo({

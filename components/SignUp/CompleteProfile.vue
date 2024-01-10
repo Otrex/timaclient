@@ -11,6 +11,7 @@
         class="w-full"
         v-model="form.firstName"
         placeholder="First name"
+        :error-message="v$.firstName.$errors[0]?.$message.toString()"
       />
       <UiInputText
         type="text"
@@ -23,10 +24,12 @@
         class="w-full"
         v-model="form.lastName"
         placeholder="Last name"
+        :error-message="v$.lastName.$errors[0]?.$message.toString()"
       />
       <UiInputPhone
-        class="w-full mb-[3.25rem]"
-        v-model="form.phone"
+        class="w-full"
+        v-model="form.phoneNumber"
+        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
         placeholder="234 803 443 3833"
       />
 
@@ -34,26 +37,56 @@
         label="Continue"
         variant="primary"
         @click="proceed"
-        class="w-full py-[0.875rem]"
+        :loading="state === constants.LOADING"
+        :disabled="state === constants.LOADING"
+        class="w-full py-[0.875rem] mt-[3.25rem]"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { COMPLETE_PROFILE_VALIDATOR } from "~/lib/validation/rules";
+
+const { notify } = useNotification();
+const authStore = useAuthStore();
+
 const form = reactive({
   firstName: "",
   lastName: "",
   middleName: "",
-  phone: "",
+  phoneNumber: {} as { number: string },
+});
+
+const { execute, validate, state, v$ } = useRequestState({
+  action: () =>
+    authStore.updateInfluencerProfile({
+      ...form,
+      phoneNumber: form.phoneNumber?.number,
+    }),
+  validation: {
+    config: { $autoDirty: true },
+    rule: COMPLETE_PROFILE_VALIDATOR,
+    form,
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    navigateTo({
+      query: {
+        tab: constants.ADDRESS_DOCUMENTATION_INFLUENCER,
+      },
+    });
+  },
 });
 
 function proceed() {
-  navigateTo({
-    query: {
-      tab: constants.ADDRESS_DOCUMENTATION_INFLUENCER,
-    },
-  });
+  validate().then(() => execute());
 }
 </script>
 

@@ -10,6 +10,7 @@
         type="text"
         class="w-full"
         v-model="form.street"
+        :error-message="v$.street?.$errors[0]?.$message.toString()"
         placeholder="Street"
       />
       <UiInputText
@@ -17,48 +18,54 @@
         class="w-full"
         v-model="form.city"
         placeholder="City"
+        :error-message="v$.city?.$errors[0]?.$message.toString()"
       />
       <UiInputText
         type="text"
         class="w-full"
-        v-model="form.postalCode"
+        v-model="form.postCode"
         placeholder="Postal Code"
+        :error-message="v$.postCode?.$errors[0]?.$message.toString()"
       />
       <UiInputText
         type="text"
         class="w-full"
         v-model="form.state"
         placeholder="State"
+        :error-message="v$.state?.$errors[0]?.$message.toString()"
       />
-      <UiInputText
+      <UiInputSelect
         type="text"
         class="w-full"
         v-model="form.country"
         placeholder="Country"
+        :options="optionsStore.$countries"
       />
       <UiInputSelect
         class="w-full"
         v-model="form.language"
         placeholder="Language"
-        :options="tools.generationOptions(['English', 'French'])"
+        :options="optionsStore.$countryLanguages(form.country)"
       />
       <UiInputUpload
         class="w-full"
-        v-model:file="form.companyRegDocs"
+        type="docs"
+        v-model:url="form.companyRegDocs"
         placeholder="Upload government issued identification"
       />
       <UiInputUpload
         class="w-full mb-[3.125rem]"
-        :multi="true"
-        v-model="form.profilePicture"
+        type="pics"
+        v-model:url="form.profilePicture"
         placeholder="Upload Profile picture"
       />
 
       <UiButtonDefault
-        :disabled="false"
-        label="Continue"
-        variant="primary"
         class="w-full py-[0.875rem] mb-[1.875rem]"
+        :disabled="state === constants.LOADING"
+        :loading="state === constants.LOADING"
+        variant="primary"
+        label="Continue"
         @click="proceed"
       />
     </div>
@@ -66,23 +73,67 @@
 </template>
 
 <script setup lang="ts">
+import { CREATE_BRAND_ADDRESS_VALIDATOR_V2 } from "~/lib/validation/rules";
+
+const { notify } = useNotification();
+const optionsStore = useOptionsStore();
+const authStore = useAuthStore();
+
 const form = reactive({
-  profilePicture: undefined as string | File | undefined,
-  companyRegDocs: [] as File[],
+  profilePicture: "",
+  companyRegDocs: "",
   language: "",
   country: "",
-  postalCode: "",
+  postCode: "",
   state: "",
   street: "",
   city: "",
 });
 
+const { execute, validate, state, v$ } = useRequestState({
+  action: () =>
+    authStore.updateBrandAddressDoc({
+      pictureName: form.profilePicture,
+      documentName: form.companyRegDocs as any,
+      addressRecord: {
+        country: form.country,
+        postCode: form.postCode,
+        state: form.state,
+        language: form.language,
+        street: form.street,
+        city: form.city,
+      },
+    }),
+  validation: {
+    config: { $autoDirty: true },
+    rule: CREATE_BRAND_ADDRESS_VALIDATOR_V2,
+    form,
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    navigateTo({
+      query: {
+        tab: constants.BANK_DETAILS,
+      },
+    });
+
+    authStore.$patch({
+      registration: {
+        ...authStore.$state.registration,
+        country: form.country,
+      },
+    });
+  },
+});
+
 function proceed() {
-  navigateTo({
-    query: {
-      tab: constants.BANK_DETAILS,
-    },
-  });
+  validate().then(() => execute());
 }
 </script>
 

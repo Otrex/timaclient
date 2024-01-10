@@ -37,7 +37,7 @@
             v-model="agreed"
             class="rounded-full w-[1.25rem] h-[1.25rem]"
           />
-          <span class="text-[0.875rem]">
+          <span class="text-[0.9375rem]">
             I have read and understood the terms and conditions
           </span>
         </label>

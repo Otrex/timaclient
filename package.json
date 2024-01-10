@@ -36,6 +36,7 @@
     "chartjs-chart-geo": "^4.2.7",
     "crypto-js": "^4.2.0",
     "flowbite": "^2.2.0",
+    "js-sha512": "^0.8.0",
     "mitt": "^3.0.1",
     "nuxt3-notifications": "^1.1.9",
     "pinia": "^2.1.7",

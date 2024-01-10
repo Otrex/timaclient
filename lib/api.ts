@@ -51,6 +51,14 @@ export default class TimaAPI extends Api {
     });
   }
 
+  async influencerCompleteProfileUpdate(data: Payload.InfluencerCompleteProfile) {
+    return this.request<Response.InfluencerCompleteProfile>({
+      url: `/user/v1/profile/influencer`,
+      method: "POST",
+      data
+    });
+  }
+
   async getSignedUrl(file: File, type: "docs" | "pics") {
     const fileMeta = TimaAPI.extractFileMeta(file);
 
@@ -79,6 +87,13 @@ export default class TimaAPI extends Api {
     });
   }
 
+  async getBanks() {
+    return this.request<Response.GetBankList>({
+      url: '/payment/v1/banks',
+      method: "GET",
+    });
+  }
+
   async brandIndustryUpdate(publicId: string, industries: string[]) {
     return this.request<Response.GetIndustry>({
       url: `/user/v1/industries/${publicId}`,
@@ -89,10 +104,26 @@ export default class TimaAPI extends Api {
     });
   }
 
+  async influencerBankDetailsUpdate(data: Payload.InfluencerBankDetails) {
+    return this.request<Response.CreateUser>({
+      url: '/payment/v1/bank/customers',
+      method: "PUT",
+      data
+    });
+  }
+
   async passwordReset(data: Payload.PasswordReset) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/password/reset/${data.email}`,
       method: "PUT",
+    });
+  }
+
+  async completePasswordReset(data: Payload.CompletePasswordReset, headers: Payload.CompletePasswordResetHeaders) {
+    return this.request<Response.CreateUser>({
+      url: "/user/v1/account/password/update",
+      method: "PUT",
+      headers,
     });
   }
 

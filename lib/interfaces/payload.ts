@@ -1,3 +1,4 @@
+import type { AxiosHeaders } from "axios";
 import type { UserType } from "../enums";
 
 export interface CreateUser {
@@ -9,6 +10,16 @@ export interface CreateUser {
 
 export interface PasswordReset {
   email: string;
+}
+
+export interface CompletePasswordReset {
+  password: string;
+  publicId: string;
+}
+
+export interface CompletePasswordResetHeaders extends AxiosHeaders {
+  salt: string;
+  hash: string;
 }
 
 export interface UploadRequest {
@@ -41,14 +52,33 @@ export interface BrandAddressDocumentation {
   addressRecord: AddressRecord;
 }
 
+export interface InfluencerBankDetails {
+  publicId: string;
+  bankName: string;
+  bankAddress: string;
+  currency: string;
+  accountName: string;
+  accountNumber: string;
+  swiftCode: string;
+}
+
 export interface AddressRecord {
   street: string;
   city: string;
   state: string;
   postCode: string;
   country: string;
+  language: string;
 }
 
+export interface InfluencerCompleteProfile {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  publicId: string;
+}
 
 export interface VerifyOTP {
   otp: string;
