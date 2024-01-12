@@ -16,7 +16,32 @@ export const CREATE_USER_RULE = {
   },
 };
 
-
+export const CREATE_BANK_DETAILS_RULE = {
+  accountNumber: {
+    required: helpers.withMessage("Please enter a valid Account Number", required),
+  },
+  accountName: {
+    required: helpers.withMessage("Please enter a valid Account Name", required),
+  },
+  bankAddress: {
+    required: helpers.withMessage("Please enter a valid Bank Address", required),
+  },
+  bankCode: {
+    minLength: helpers.withMessage(
+      "Bank code should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  swiftCode: {
+    minLength: helpers.withMessage(
+      "Swift code should be at least 5 characters",
+      minLength(5)
+    ),
+  },
+  bankName: {
+    required: helpers.withMessage("Please enter a valid Bank Name", required),
+  },
+};
 
 export const COMPLETE_PROFILE_VALIDATOR = {
   firstName: {

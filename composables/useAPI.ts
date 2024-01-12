@@ -1,24 +1,26 @@
-
 import TimaAPI from "~/lib/api";
 
 export default function () {
   const config = useRuntimeConfig();
+  const AUTH_STORE_KEY = 'pinia-persist.auth.authorization';
+
   const api = new TimaAPI();
+
   api.setBaseUrl(config.public.baseUrl);
-  api.setStore({
-    get(key) {
-      return JSON.stringify(useCookie(key).value);
-    },
-    set(key, value) {
-      useCookie(key).value = value;
-    },
-  })
+  api.set401handler(async () => {
+    return useAuthStore().refreshAuth();
+  });
+
+  api.setStore(tools.cookieStore());
+
   api.setStoreGetter({
-    token: {
-      key: 'pinia-persist.auth.authorization',
-      getter: (state: any) => typeof state === 'string'
-        ? JSON.parse(state || '{}').value?.accessToken
-        : state.accessToken
+    accessToken: {
+      key: AUTH_STORE_KEY,
+      getter: tools.cookieStoreValueGetter('accessToken')
+    },
+    refreshToken: {
+      key: AUTH_STORE_KEY,
+      getter: tools.cookieStoreValueGetter('refreshToken')
     }
   })
 

@@ -1,5 +1,5 @@
 <template>
-  <div>.... UpComping....</div>
+  <div>.... UpComing....</div>
 </template>
 
 <script setup lang="ts">

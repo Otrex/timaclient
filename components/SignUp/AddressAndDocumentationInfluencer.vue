@@ -50,13 +50,13 @@
       <UiInputUpload
         class="w-full"
         type="docs"
-        v-model:url="form.companyRegDocs"
+        v-model:name="form.companyRegDocs"
         placeholder="Upload government issued identification"
       />
       <UiInputUpload
         class="w-full mb-[3.125rem]"
         type="pics"
-        v-model:url="form.profilePicture"
+        v-model:name="form.profilePicture"
         placeholder="Upload Profile picture"
       />
 
@@ -117,16 +117,15 @@ const { execute, validate, state, v$ } = useRequestState({
     });
   },
   onSuccess() {
-    navigateTo({
-      query: {
-        tab: constants.BANK_DETAILS,
-      },
-    });
-
     authStore.$patch({
       registration: {
         ...authStore.$state.registration,
         country: form.country,
+      },
+    });
+    navigateTo({
+      query: {
+        tab: constants.BANK_DETAILS,
       },
     });
   },

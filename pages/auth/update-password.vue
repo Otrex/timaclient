@@ -43,6 +43,7 @@ definePageMeta({
 const { notify } = useNotification();
 const route = useRoute();
 const api = useAPI();
+const authStore = useAuthStore();
 
 const form = reactive({
   password: "",
@@ -72,9 +73,16 @@ const { execute, state } = useRequestState({
 
     const { salt, hash } = createHash(otp, publicId);
 
-    console.log(salt, hash);
+    return api.completePasswordReset(
+      { ...form, publicId: route.query.publicId as string },
+      {
+        salt,
+        hash,
+      }
+    );
   },
   onError(e) {
+    console.log(e);
     notify({
       type: "error",
       title: e.title,
@@ -82,14 +90,16 @@ const { execute, state } = useRequestState({
     });
   },
   onSuccess(response) {
+    console.log(response);
+
     notify({
       type: "success",
       title: "Request Successful!",
       // text: response.data.message,
     });
-    navigateTo({
-      path: "/auth/login",
-    });
+    // navigateTo({
+    //   path: "/auth/login",
+    // });
   },
 });
 </script>

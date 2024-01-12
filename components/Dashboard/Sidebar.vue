@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 const colorMode = useColorMode();
-
+const authStore = useAuthStore();
 const mode = ref(true);
 
 watch(mode, () => {
@@ -73,7 +73,11 @@ const toggleColor = () => {
 };
 
 const logout = () => {
-  navigateTo("/auth/login");
+  authStore.logout().then(() => {
+    console.log("Logging out...");
+
+    navigateTo("/auth/login");
+  });
 };
 </script>
 

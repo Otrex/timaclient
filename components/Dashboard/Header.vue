@@ -32,7 +32,13 @@
     <div class="flex justify-end">
       <div class="flex flex-row gap-[0.125rem] items-center">
         <div class="flex items-center"><DashboardNotification /></div>
-        <div class="flex items-center"><DashboardUserMenu /></div>
+        <div class="flex items-center">
+          <DashboardUserMenu
+            :name="profile?.fullName"
+            :image="profile?.profilePicture"
+            :type="profile?.userType"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -41,6 +47,17 @@
 <script setup lang="ts">
 const route = useRoute();
 const routeName = computed(() => tools.capitalize(route.name as string));
+
+const profileStore = useProfileStore();
+const profile = computed(() => profileStore.$profile);
 </script>
 
-<style></style>
+<style scoped>
+/* .influencer {
+  background: orange;
+}
+.brand {
+  background: red;
+  color: white;
+} */
+</style>

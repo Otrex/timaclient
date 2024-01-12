@@ -11,6 +11,7 @@ declare module 'nuxt/schema' {
 
 declare module "pinia" {
   export interface PiniaCustomProperties {
+    $clearPersist: () => void;
     $api: TimaAPI
   }
   export interface DefineStoreOptionsBase<S, Store> {

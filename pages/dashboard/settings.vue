@@ -7,7 +7,7 @@
         class="w-[11.625rem] select-none transform translate-y-[41%] h-[11.625rem] rounded-full border-[0.3125rem] border-solid border-white"
       >
         <img
-          src="~/assets/img/user-profile.jpg"
+          :src="profile?.profilePicture"
           class="object-cover w-full h-full rounded-full"
           alt="profile image"
         />
@@ -40,6 +40,10 @@
 definePageMeta({
   name: "Settings",
 });
+
+const profileStore = useProfileStore();
+
+const profile = computed(() => profileStore.$profile);
 const tabMap = {
   [constants.PASSWORD]: resolveComponent(
     "DashboardSettingPassword" //

@@ -1,12 +1,12 @@
-import type { Address, Bank, Country, Industry, User } from "./core";
-import type { IRequest } from "./utils";
+import type { Address, Authentication, Bank, Country, Industry, ProfileInfo, User } from "./core";
+import type { IResponse } from "./utils";
 
-export interface CreateUser extends IRequest<{
+export interface CreateUser extends IResponse<{
   message: string;
   publicId: string;
 }> { }
 
-export interface BankDetailUpdate extends IRequest<{
+export interface BankDetailUpdate extends IResponse<{
   createdOn: null;
   publicId: string;
   bankName: string;
@@ -17,22 +17,17 @@ export interface BankDetailUpdate extends IRequest<{
   accountNumber: string;
 }> { }
 
-export interface SignIn extends IRequest<{
-  scope: null;
-  token_type: string;
-  expires_in: number;
-  access_token: string;
-  refresh_token: string;
-}> { }
 
 
-export interface GetBankList extends IRequest<Bank[]> { }
-export interface GetSignedURL extends IRequest<string> { }
-export interface GetCountries extends IRequest<Country[]> { };
-export interface GetIndustry extends IRequest<Industry[]> { }
-export interface BrandBasicInformation extends IRequest<User> { };
-export interface InfluencerCompleteProfile extends IRequest<User> { };
-export interface BrandAddressDocumentation extends IRequest<Address> { };
+export interface GetBankList extends IResponse<Bank[]> { }
+export interface GetSignedURL extends IResponse<string> { }
+export interface SignIn extends IResponse<Authentication> { }
+export interface GetCountries extends IResponse<Country[]> { };
+export interface GetIndustry extends IResponse<Industry[]> { }
+export interface GetUserProfile extends IResponse<ProfileInfo> { };
+export interface BrandBasicInformation extends IResponse<User> { };
+export interface InfluencerCompleteProfile extends IResponse<User> { };
+export interface BrandAddressDocumentation extends IResponse<Address> { };
 
 
 

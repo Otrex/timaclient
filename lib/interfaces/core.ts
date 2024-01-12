@@ -18,6 +18,13 @@ export interface Country {
   language: string[];
   currency: string;
 }
+export interface Authentication {
+  scope: null;
+  token_type: string;
+  expires_in: number;
+  access_token: string;
+  refresh_token: string;
+}
 
 export interface Address {
   street: string;
@@ -27,8 +34,6 @@ export interface Address {
   country: string;
   createdOn: Date;
 }
-
-
 
 export interface User {
   firstName: string;
@@ -40,10 +45,15 @@ export interface User {
   companyName: string;
   website: string;
   language: null;
-  profilePicture: null;
+  profilePicture: string | null;
   registeredDocument: null;
   notificationSetting: string;
   userid: null;
   createdOn: Date;
 }
 
+export interface ProfileInfo {
+  username: string;
+  publicId: string;
+  profile: User;
+}

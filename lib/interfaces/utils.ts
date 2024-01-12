@@ -4,7 +4,7 @@ import type { UseFetchOptions } from "nuxt/app";
 import type { ToRefs } from "vue";
 import type { RequestState } from "../enums";
 
-export interface IRequest<T = unknown> {
+export interface IResponse<T = unknown> {
   status: boolean;
   message: string;
   data: T;
@@ -12,13 +12,13 @@ export interface IRequest<T = unknown> {
 
 export interface Getter {
   key: string;
-  getter: <T = any>(state: unknown) => T
+  getter: (state: any) => any
 }
 
 export interface IStore {
   set: (key: string, value: any) => void;
   get: (key: string) => string | null;
-  clear?: (key: string) => void;
+  clear: (key: string) => void;
 }
 
 export type MethodsHeaders = Partial<

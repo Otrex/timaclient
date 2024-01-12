@@ -2,7 +2,7 @@
   <NuxtLink
     :to="props.to"
     exact-active-class="!text-[#0077D3]"
-    class="px-[1.3125rem] text-[#00365C] dark:text-[#bbb] flex justify-between items-center py-[0.75rem] hover:bg-[#CCE9FF] hover:rounded dark:hover:bg-slate-700"
+    class="px-[1.3125rem] cursor-default text-[#00365C] dark:text-[#bbb] flex justify-between items-center py-[0.75rem] hover:bg-[#CCE9FF] hover:rounded dark:hover:bg-slate-700"
   >
     <div class="flex items-center gap-[0.625rem] flex-row">
       <div class="flex items-center">

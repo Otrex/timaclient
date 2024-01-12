@@ -1,4 +1,4 @@
-import type { AxiosHeaders } from "axios";
+
 import type { UserType } from "../enums";
 
 export interface CreateUser {
@@ -17,7 +17,7 @@ export interface CompletePasswordReset {
   publicId: string;
 }
 
-export interface CompletePasswordResetHeaders extends AxiosHeaders {
+export interface CompletePasswordResetHeaders extends Record<string, string> {
   salt: string;
   hash: string;
 }

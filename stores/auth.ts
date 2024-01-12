@@ -44,7 +44,23 @@ export const useAuthStore = defineStore('auth', {
 
       this.$patch({
         authorization: {
-          accessToken: response.data.access_token
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+          expiresIn: response.data.expires_in,
+        }
+      })
+    },
+
+    async refreshAuth() {
+      const response = await this.$api.refreshAuth(
+        this.authorization.refreshToken!
+      );
+
+      this.$patch({
+        authorization: {
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+          expiresIn: response.data.expires_in,
         }
       })
     },
@@ -80,22 +96,9 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async updateBrandAddressDoc(payload: Omit<Payload.BrandAddressDocumentation, 'publicId'>) {
-      this.$patch({
-        registration: {
-          ...this.registration,
-          country: payload.addressRecord.country
-        }
-      })
       await this.$api.brandAddressDocumentUpdate({
         publicId: this.registration.publicId!,
         ...payload,
-      })
-
-      this.$patch({
-        registration: {
-          ...this.registration,
-          country: payload.addressRecord.country
-        }
       })
     },
 
@@ -118,17 +121,34 @@ export const useAuthStore = defineStore('auth', {
         email: this.registration.email!,
         username: this.registration.username!,
       })
+    },
+
+    async logout() {
+      return new Promise((resolve) => {
+        this.$patch({
+          registration: {
+            type: undefined,
+            email: undefined,
+            publicId: undefined,
+            username: undefined,
+          },
+          authorization: {
+            accessToken: undefined,
+            refreshToken: undefined,
+            expiresIn: undefined,
+          }
+        });
+
+
+        setTimeout(() => {
+          this.$clearPersist();
+          resolve(true)
+        }, 3000);
+      })
     }
   },
   persist: ['registration', 'authorization'],
-  persistWith: {
-    get(key: string) {
-      return JSON.stringify(useCookie(key).value);
-    },
-    set(key: string, value: string) {
-      useCookie(key).value = value;
-    }
-  }
+  persistWith: tools.cookieStore(),
 })
 
 if (import.meta.hot) {

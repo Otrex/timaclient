@@ -1,3 +1,4 @@
+import type { IStore } from "~/lib/interfaces/utils";
 
 export default {
   generateSalt: (length: number, saltType: 'alphanumeric' | 'numeric') => {
@@ -40,6 +41,29 @@ export default {
       return JSON.parse(value || '{}').value as T;
     }
   },
+  cookieStore: (): IStore => ({
+    get(key: string) {
+      return JSON.stringify(useCookie(key).value);
+    },
+    set(key: string, value: string) {
+      useCookie(key).value = value;
+    },
+    clear(key) {
+      document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    },
+  }),
+
+  cookieStoreValueGetter: (key: string) => {
+    return <T extends Record<string, any>>(state: T) => {
+      if (typeof state === 'string') {
+        const storeData = JSON.parse(state || '{}').value;
+        return storeData && storeData[key];
+      } else {
+        state && state[key];
+      }
+    }
+  },
+
   generationOptions(options: string[]) {
     return options.map(option => ({ label: option, value: option }))
   },
