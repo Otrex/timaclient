@@ -16,6 +16,10 @@ export const CREATE_USER_RULE = {
   },
 };
 
+export const UPDATE_INFLUENCER_USER_RULE = {
+
+}
+
 export const CREATE_BANK_DETAILS_RULE = {
   accountNumber: {
     required: helpers.withMessage("Please enter a valid Account Number", required),

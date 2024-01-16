@@ -6,32 +6,35 @@
     </div>
 
     <div class="flex flex-col gap-[1rem]">
-      <UiInputText
-        type="text"
-        class="w-full"
-        v-model="form.firstName"
-        placeholder="First name"
-        :error-message="v$.firstName.$errors[0]?.$message.toString()"
-      />
-      <UiInputText
-        type="text"
-        class="w-full"
-        v-model="form.middleName"
-        placeholder="Middle name"
-      />
-      <UiInputText
-        type="text"
-        class="w-full"
-        v-model="form.lastName"
-        placeholder="Last name"
-        :error-message="v$.lastName.$errors[0]?.$message.toString()"
-      />
-      <UiInputPhone
-        class="w-full"
-        v-model="form.phoneNumber"
-        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
-        placeholder="234 803 443 3833"
-      />
+      <ClientOnly>
+        <UiInputText
+          type="text"
+          class="w-full"
+          v-model="form.firstName"
+          placeholder="First name"
+          :error-message="v$.firstName.$errors[0]?.$message.toString()"
+        />
+        <UiInputText
+          type="text"
+          class="w-full"
+          v-model="form.middleName"
+          placeholder="Middle name"
+        />
+        <UiInputText
+          type="text"
+          class="w-full"
+          v-model="form.lastName"
+          placeholder="Last name"
+          :error-message="v$.lastName.$errors[0]?.$message.toString()"
+        />
+
+        <UiInputPhone
+          class="w-full"
+          v-model="form.phoneNumber"
+          :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
+          placeholder="234 803 443 3833"
+        />
+      </ClientOnly>
 
       <UiButtonDefault
         label="Continue"
@@ -55,14 +58,17 @@ const form = reactive({
   firstName: "",
   lastName: "",
   middleName: "",
-  phoneNumber: {} as { number: string },
+  phoneNumber: "",
 });
 
 const { execute, validate, state, v$ } = useRequestState({
   action: () =>
     authStore.updateInfluencerProfile({
       ...form,
-      phoneNumber: form.phoneNumber?.number,
+      phoneNumber:
+        typeof form.phoneNumber === "string"
+          ? form.phoneNumber
+          : (form.phoneNumber as any).number,
     }),
   validation: {
     config: { $autoDirty: true },

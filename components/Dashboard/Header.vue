@@ -30,7 +30,7 @@
       </slot>
     </div>
     <div class="flex justify-end">
-      <div class="flex flex-row gap-[0.125rem] items-center">
+      <div class="flex flex-row gap-[0.625rem] items-center">
         <div class="flex items-center"><DashboardNotification /></div>
         <div class="flex items-center">
           <DashboardUserMenu

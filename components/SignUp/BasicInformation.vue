@@ -51,10 +51,6 @@ const form = reactive({
   phoneNumber: undefined as Record<string, any> | undefined | string,
 });
 
-const isReady = computed(() => {
-  return form.website && form.phoneNumber && form.companyName;
-});
-
 const { execute, validate, state, v$ } = useRequestState({
   action: () =>
     authStore.updateBrandInformation({

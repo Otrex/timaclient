@@ -146,4 +146,13 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+
+  async updatePersonalProfile(data: Payload.InfluencerPersonalProfile) {
+    return this.request<Response.InfluencerCompleteProfile>({
+      url: "/user/v1/profile/influencer",
+      requireAuth: true,
+      method: "PUT"
+    })
+  }
+
 }

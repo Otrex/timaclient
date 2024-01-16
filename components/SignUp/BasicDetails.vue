@@ -97,7 +97,6 @@ const { execute, validate, state, v$ } = useRequestState({
       },
     });
   },
-  useGlobalLoader: false,
 });
 
 const isReady = computed(() => {

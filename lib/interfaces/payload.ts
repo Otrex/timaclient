@@ -84,4 +84,12 @@ export interface VerifyOTP {
   otp: string;
 }
 
+export interface InfluencerPersonalProfile {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  publicId: string;
+}
 

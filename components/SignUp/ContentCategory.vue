@@ -23,10 +23,10 @@
 
     <div class="flex flex-col gap-[1rem] tm__box-598px mb-[1.875rem]">
       <UiButtonDefault
-        :disabled="state === constants.LOADING"
-        :loading="state === constants.LOADING"
         label="Continue"
         variant="primary"
+        :disabled="state === constants.LOADING"
+        :loading="state === constants.LOADING"
         class="w-full py-[0.875rem]"
         @click="() => proceed()"
       />

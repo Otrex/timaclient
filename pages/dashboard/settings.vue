@@ -4,7 +4,7 @@
       class="h-[13.75rem] flex items-end px-[2.5rem] bg-cover bg-center rounded-[0.625remx] bg-no-repeat bg-[url(~/assets/img/setting-backdrop.jpg)]"
     >
       <div
-        class="w-[11.625rem] select-none transform translate-y-[41%] h-[11.625rem] rounded-full border-[0.3125rem] border-solid border-white"
+        class="w-[11.625rem] bg-white select-none transform translate-y-[41%] h-[11.625rem] rounded-full border-[0.3125rem] border-solid border-white"
       >
         <img
           :src="profile?.profilePicture"
@@ -25,7 +25,7 @@
     </div>
     <div class="px-[2.5rem] pb-[1.9375rem]">
       <div>
-        <DashboardSettingTabAgency />
+        <DashboardSettingTabInfluencer />
         <div class="max-w-[65.875rem]">
           <transition mode="out-in">
             <component :is="tabMap[currentTab]" />
@@ -42,7 +42,6 @@ definePageMeta({
 });
 
 const profileStore = useProfileStore();
-
 const profile = computed(() => profileStore.$profile);
 const tabMap = {
   [constants.PASSWORD]: resolveComponent(
@@ -52,7 +51,7 @@ const tabMap = {
     "DashboardSettingBrandInformation"
   ),
   [constants.PAYMENT_INFORMATION]: resolveComponent(
-    "LazyDashboardSettingPaymentInformation"
+    "DashboardSettingPaymentInformation"
   ),
   [constants.NOTIFICATION_SETTINGS]: resolveComponent(
     "LazyDashboardSettingNotificationSettings"
@@ -61,16 +60,21 @@ const tabMap = {
     "LazyDashboardSettingAccountDeactivation"
   ),
   [constants.PERSONAL_INFORMATION]: resolveComponent(
-    "LazyDashboardSettingPersonalInformation"
+    "DashboardSettingPersonalInformation"
   ),
   [constants.NOTIFICATION_SETTINGS_INFLUENCER]: resolveComponent(
     "LazyDashboardSettingNotificationSettingsInfluencer"
   ),
 };
 const route = useRoute();
-const currentTab = computed(
-  () => (route.query.tab as keyof typeof tabMap) || constants.BRAND_INFORMATION
-);
+
+const currentTab = computed(() => {
+  const defaultTab =
+    profile.value?.userType === constants.INFLUENCER
+      ? constants.PERSONAL_INFORMATION
+      : constants.BRAND_INFORMATION;
+  return (route.query.tab as keyof typeof tabMap) || defaultTab;
+});
 </script>
 
 <style></style>

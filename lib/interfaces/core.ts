@@ -45,7 +45,7 @@ export interface User {
   companyName: string;
   website: string;
   language: null;
-  profilePicture: string | null;
+  profilePicture: string;
   registeredDocument: null;
   notificationSetting: string;
   userid: null;

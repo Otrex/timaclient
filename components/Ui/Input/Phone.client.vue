@@ -25,7 +25,6 @@
 <script setup>
 import { Vue3ReactiveTelInput } from "vue3-reactive-tel-input";
 const props = defineProps({
-  modelValue: [String, Object],
   errorMessage: String,
   inputClass: {
     type: String,
