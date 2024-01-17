@@ -40,7 +40,6 @@ export default defineNuxtConfig({
     ],
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
-    'nuxt3-notifications',
   ],
 
   image: {},

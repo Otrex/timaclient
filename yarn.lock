@@ -685,16 +685,6 @@
   resolved "https://registry.yarnpkg.com/@kwsites/promise-deferred/-/promise-deferred-1.1.1.tgz#8ace5259254426ccef57f3175bc64ed7095ed919"
   integrity sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==
 
-"@kyvg/vue3-notification@^2.8.0":
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/@kyvg/vue3-notification/-/vue3-notification-2.9.1.tgz#6c74e5c1723ead8a0a42f00d81c2b3a13eee2f96"
-  integrity sha512-FsY8g25tQetr3etnarxHtCeNFKssH8sheFu13LyL2JJmOOel437QqKV5n4RBDDDTIo55iKgIVYXeojliXYdEhw==
-
-"@kyvg/vue3-notification@^3.1.3":
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/@kyvg/vue3-notification/-/vue3-notification-3.1.3.tgz#eb5cea0b4ba16c98e1697cddbfae7b33ad76499f"
-  integrity sha512-z66zE1b37oZodBjiTiaEumBfEyLzpPnDeqpSHlOomYAqeOWwfMGSSUbWc6GZCOFmlZSlfytFLdMJJmEwQUBbRw==
-
 "@mapbox/node-pre-gyp@^1.0.5":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.11.tgz#417db42b7f5323d79e93b34a6d7a2a12c0df43fa"
@@ -5216,14 +5206,6 @@ nuxi@^3.10.0:
   optionalDependencies:
     fsevents "~2.3.3"
 
-nuxt3-notifications@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/nuxt3-notifications/-/nuxt3-notifications-1.1.9.tgz#1a4126750829a6707b227b072f383371250cf0ed"
-  integrity sha512-1UomYiSzsuUd+slfa9iL8OVfHoNfe0W2l3Q8lzcWV5xi1kGkMQycAALPrY2IbZpgaMjs9kuCvnNZ9JtrnD8ZAg==
-  dependencies:
-    "@kyvg/vue3-notification" "^2.8.0"
-    scule "^1.0.0"
-
 nuxt@^3.8.1, nuxt@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-3.8.2.tgz#6db515d41e7745c725be7f34f692bdeabc53da07"
@@ -7485,6 +7467,11 @@ vue3-reactive-tel-input@^1.8.1:
   integrity sha512-uvbAS8wb0QY6FvLerWCOg4Tf4JcNggEZ5FlzAWCREvTR+43Q7zlXMaXRzvIrIR+md8KVdl0z3JnfmEi1XI3Mrg==
   dependencies:
     libphonenumber-js "^1.10.13"
+
+vue3-toastify@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/vue3-toastify/-/vue3-toastify-0.2.1.tgz#d3999c9f29add53416b0bc23f3ede81cf724b654"
+  integrity sha512-u4i5LCu1q5qs4L4Kbjb4u8NipCS8ox1fCHQ6XFS62676xnA6Q/AJRpZEkAurTMp723LeH6eQX6k9+24bKf1T4Q==
 
 vue@^3.3.8:
   version "3.3.9"

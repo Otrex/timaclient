@@ -67,6 +67,8 @@ const {
     form,
   },
   onError(e) {
+    console.log("error: ", e);
+
     notify({
       type: "error",
       title: e.title,

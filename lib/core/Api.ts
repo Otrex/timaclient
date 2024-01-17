@@ -2,6 +2,22 @@ import type { AxiosInstance } from "axios";
 import type { Getter, IRequestOptions, IStore } from "../interfaces/utils";
 import axios from "axios";
 
+class ApiError extends Error {
+  title: string;
+  description: string;
+  __error: any;
+
+  constructor(error: any) {
+    super(error);
+    const title = error.response?.data?.status || error.response?.statusText || error.message || "Server error";
+    const description = error.response?.data?.userMessage || error.message || "Something went wrong";
+
+    this.title = title === description ? "App Error" : title;
+    this.description = description;
+    this.__error = error;
+  }
+}
+
 export default class Api {
   private handle401?: () => Promise<void>;
   private getters?: Record<string, Getter>;
@@ -98,16 +114,8 @@ export default class Api {
         }
       });
       return res.data;
-    } catch (error: any) {
-      console.log(error);
-      const title = error.response?.data?.status || error.response?.statusText || error.message || "Server error";
-      const description = error.response?.data?.userMessage || error.message || "Something went wrong";
-
-      return Promise.reject({
-        description: title === description ? undefined : description,
-        __error: error,
-        title,
-      });
+    } catch (error) {
+      throw new ApiError(error);
     }
   }
 }

@@ -1,11 +1,12 @@
 import type { Pinia } from "pinia"
 import type { IStore } from "./lib/interfaces/utils";
 import type TimaAPI from "./lib/api";
-import type { NotificationsProps } from "#build/nuxt-notifications";
+import type { ToastOptions } from "vue3-toastify";
+
 
 declare module 'nuxt/schema' {
   interface AppConfig {
-    notification: NotificationsProps
+    toastConfig: ToastOptions
   }
 }
 

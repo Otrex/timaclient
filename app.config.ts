@@ -1,8 +1,14 @@
-import type { NotificationsProps } from "#build/nuxt-notifications";
+import type { ToastOptions } from "vue3-toastify";
 
-export default defineAppConfig({
-  notification: {
-    speed: 1000,
-    position: "top right"
-  } as NotificationsProps
+export default defineAppConfig<{
+  toastConfig: ToastOptions
+}>({
+  toastConfig: {
+    dangerouslyHTMLString: true,
+    position: "top-right",
+    pauseOnHover: true,
+    transition: "flip",
+    autoClose: 5000,
+    theme: "auto",
+  }
 })
