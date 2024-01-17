@@ -33,7 +33,12 @@
           <DashboardNavigatorMenuItem
             label="Settings"
             icon="nav/setting"
-            to="/dashboard/settings"
+            :to="{
+              name: 'Settings',
+              params: {
+                type: $route.params.type,
+              },
+            }"
           />
           <DashboardNavigatorMenuItem
             @click="logout"

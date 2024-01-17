@@ -38,6 +38,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async signIn(payload: Payload.SignIn) {
+
       const response = await this.$api.signIn({
         ...payload,
       });

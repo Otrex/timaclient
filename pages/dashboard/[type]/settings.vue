@@ -1,7 +1,7 @@
 <template>
   <section>
     <div
-      class="h-[13.75rem] flex items-end px-[2.5rem] bg-cover bg-center rounded-[0.625remx] bg-no-repeat bg-[url(~/assets/img/setting-backdrop.jpg)]"
+      class="h-[13.75rem] flex items-end px-[2.5rem] bg-cover bg-center x-rounded-[0.625rem] bg-no-repeat bg-[url(~/assets/img/setting-backdrop.jpg)]"
     >
       <div
         class="w-[11.625rem] bg-white select-none transform translate-y-[41%] h-[11.625rem] rounded-full border-[0.3125rem] border-solid border-white"
@@ -70,7 +70,7 @@ const route = useRoute();
 
 const currentTab = computed(() => {
   const defaultTab =
-    profile.value?.userType === constants.INFLUENCER
+    route.params.type === constants.INFLUENCER
       ? constants.PERSONAL_INFORMATION
       : constants.BRAND_INFORMATION;
   return (route.query.tab as keyof typeof tabMap) || defaultTab;

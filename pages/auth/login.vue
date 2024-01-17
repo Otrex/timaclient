@@ -67,8 +67,6 @@ const {
     form,
   },
   onError(e) {
-    console.log("error: ", e);
-
     notify({
       type: "error",
       title: e.title,
@@ -76,7 +74,16 @@ const {
     });
   },
   onSuccess() {
-    navigateTo("/dashboard");
+    const profileStore = useProfileStore();
+    profileStore.getProfile().then(() => {
+      const profile = profileStore.$profile;
+      navigateTo({
+        name: "Campaign",
+        params: {
+          type: profile!.userType,
+        },
+      });
+    });
   },
 });
 </script>

@@ -49,6 +49,15 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const form = reactive({
+  currentPassword: "",
+  confirmPassword: "",
+  newPassword: "",
+});
+
+const profileStore = useProfileStore();
+const { notify } = useNotification();
+</script>
 
 <style></style>

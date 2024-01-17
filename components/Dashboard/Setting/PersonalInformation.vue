@@ -1,51 +1,49 @@
 <template>
-  <ClientOnly>
-    <div class="pt-[3.4375rem]">
-      <div class="flex flex-col gap-[1.5rem]">
-        <div class="flex md:flex-row flex-col">
-          <div class="max-w-[22.125rem] w-full">
-            <label class="text-[1.25rem] font-medium">Full name</label>
-          </div>
-          <div class="flex items-center w-full">
-            <UiInputText class="w-full" v-model="form.fullName" />
-          </div>
+  <div class="pt-[3.4375rem]">
+    <div class="flex flex-col gap-[1.5rem]">
+      <div class="flex md:flex-row flex-col">
+        <div class="max-w-[22.125rem] w-full">
+          <label class="text-[1.25rem] font-medium">Full name</label>
         </div>
-        <div class="flex md:flex-row flex-col">
-          <div class="max-w-[22.125rem] w-full">
-            <label class="text-[1.25rem] font-medium">Email Address</label>
-          </div>
-          <div class="flex items-center w-full">
-            <UiInputText class="w-full" type="email" v-model="form.email" />
-          </div>
+        <div class="flex items-center w-full">
+          <UiInputText class="w-full" v-model="form.fullName" />
         </div>
+      </div>
+      <div class="flex md:flex-row flex-col">
+        <div class="max-w-[22.125rem] w-full">
+          <label class="text-[1.25rem] font-medium">Email Address</label>
+        </div>
+        <div class="flex items-center w-full">
+          <UiInputText class="w-full" type="email" v-model="form.email" />
+        </div>
+      </div>
 
-        <div class="flex md:flex-row flex-col">
-          <div class="max-w-[22.125rem] w-full">
-            <label class="text-[1.25rem] font-medium">Phone</label>
-          </div>
-          <div class="flex items-center w-full">
-            <UiInputPhone class="w-full" v-model="form.phoneNumber" />
-          </div>
+      <div class="flex md:flex-row flex-col">
+        <div class="max-w-[22.125rem] w-full">
+          <label class="text-[1.25rem] font-medium">Phone</label>
         </div>
+        <div class="flex items-center w-full">
+          <UiInputPhone class="w-full" v-model="form.phoneNumber" />
+        </div>
+      </div>
 
-        <div class="flex md:flex-row flex-col">
-          <div class="max-w-[22.125rem] w-full">&nbsp;</div>
-          <div class="flex items-center w-full">
-            <div class="mb-[1.875rem] mt-[7.625rem] w-full">
-              <UiButtonDefault
-                @click="validate().then(() => execute())"
-                :disabled="state === constants.LOADING"
-                :loading="state === constants.LOADING"
-                label="Save Changes"
-                variant="primary"
-                class="w-full py-[0.875rem]"
-              />
-            </div>
+      <div class="flex md:flex-row flex-col">
+        <div class="max-w-[22.125rem] w-full">&nbsp;</div>
+        <div class="flex items-center w-full">
+          <div class="mb-[1.875rem] mt-[7.625rem] w-full">
+            <UiButtonDefault
+              @click="() => validate().then(() => execute())"
+              :disabled="state === constants.LOADING"
+              :loading="state === constants.LOADING"
+              label="Save Changes"
+              variant="primary"
+              class="w-full py-[0.875rem]"
+            />
           </div>
         </div>
       </div>
     </div>
-  </ClientOnly>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -66,8 +64,8 @@ const form = reactive<{
 
 function updateForm() {
   form.phoneNumber = profileStore.$profile?.phoneNumber;
+  form.fullName = profileStore.$profile?.totalFullName;
   form.email = profileStore.$profile?.email;
-  form.fullName = profileStore.$profile?.fullName;
 }
 
 function extractName(fullName: string) {
@@ -90,7 +88,10 @@ const { execute, validate, state, v$ } = useRequestState({
     const extract = extractName(form.fullName!);
     const formPayload = {
       email: form.email!,
-      phoneNumber: form.phoneNumber!,
+      phoneNumber:
+        typeof form.phoneNumber === "string"
+          ? form.phoneNumber
+          : (form.phoneNumber as any)?.number!,
       firstName: extract.firstName,
       lastName: extract.lastName,
     };
@@ -117,11 +118,11 @@ const { execute, validate, state, v$ } = useRequestState({
       text: e.description,
     });
   },
-  onSuccess(response) {
+  onSuccess() {
     notify({
       type: "success",
       title: "Update Successful",
-      text: response.message,
+      text: "Your personal information has been updated",
     });
   },
 });

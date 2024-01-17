@@ -46,14 +46,13 @@ export const useProfileStore = defineStore('profile', {
         ...payload
       });
 
+      if (!response?.data) return;
       this.$patch({
         profile: {
           ...this.profile,
           profile: response.data
         }
-      })
-
-      return response;
+      });
     }
   }
 })

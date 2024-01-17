@@ -151,7 +151,8 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.InfluencerCompleteProfile>({
       url: "/user/v1/profile/influencer",
       requireAuth: true,
-      method: "PUT"
+      method: "PUT",
+      data
     })
   }
 

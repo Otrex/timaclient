@@ -34,9 +34,9 @@
         <div class="flex items-center"><DashboardNotification /></div>
         <div class="flex items-center">
           <DashboardUserMenu
-            :name="profile?.fullName"
-            :image="profile?.profilePicture"
-            :type="profile?.userType"
+            :name="profile?.fullName || ''"
+            :image="profile?.profilePicture || '#'"
+            :type="profile?.userType || ''"
           />
         </div>
       </div>

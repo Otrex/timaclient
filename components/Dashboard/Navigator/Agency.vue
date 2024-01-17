@@ -3,7 +3,12 @@
     <DashboardNavigatorMenuItem
       label="Explore"
       icon="nav/search"
-      to="/dashboard/explore"
+      :to="{
+        name: 'Explore',
+        params: {
+          type: $route.params.type,
+        },
+      }"
     />
     <DashboardNavigatorMenuItem
       label="Campaigns"
