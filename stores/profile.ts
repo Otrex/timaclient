@@ -18,18 +18,23 @@ export const useProfileStore = defineStore('profile', {
   }),
   getters: {
     $profile: (state): GetterProfile | null => {
+      const isInfluencer = state.profile?.profile?.userType === constants.INFLUENCER;
       return state.profile ? {
         ...state.profile,
         ...state.profile.profile,
-        totalFullName: [
-          state.profile?.profile?.firstName,
-          state.profile?.profile?.middleName,
-          state.profile?.profile?.lastName,
-        ].join(' '),
-        fullName: [
-          state.profile?.profile?.firstName,
-          state.profile?.profile?.lastName,
-        ].join(' '),
+        totalFullName: !isInfluencer
+          ? state.profile?.profile?.companyName
+          : [
+            state.profile?.profile?.firstName,
+            state.profile?.profile?.middleName,
+            state.profile?.profile?.lastName,
+          ].join(' '),
+        fullName: !isInfluencer
+          ? state.profile?.profile?.companyName
+          : [
+            state.profile?.profile?.firstName,
+            state.profile?.profile?.lastName,
+          ].join(' ')
       } : null
     }
   },
@@ -38,6 +43,24 @@ export const useProfileStore = defineStore('profile', {
     async getProfile() {
       const response = await this.$api.getUserProfile();
       this.$patch({ profile: response.data });
+    },
+
+    async updatePassword(payload: Payload.UpdatePassword) {
+      return this.$api.updatePassword(payload);
+    },
+
+    async updateBrandInformation(payload: Payload.UpdateBrandInformation) {
+      const response = await this.$api.updateBrandInformation({
+        ...payload
+      });
+
+      if (!response?.data) return;
+      this.$patch({
+        profile: {
+          ...this.profile,
+          profile: response.data
+        }
+      });
     },
 
     async updatePersonalProfile(payload: Omit<Payload.InfluencerPersonalProfile, "publicId">) {

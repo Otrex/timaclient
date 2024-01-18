@@ -57,3 +57,38 @@ export interface ProfileInfo {
   publicId: string;
   profile: User;
 }
+
+
+export interface Creative {
+  paymentType: string;
+  startDate: Date;
+  endDate: string;
+  contentType: string;
+  contentPlacement: string;
+  creativeBrief: string;
+  rules: string;
+  creativeTone: string;
+  referenceLink: string;
+  awarenessObjective: string[];
+  acquisitionObjective: string[];
+  thumbnail: string;
+  visibility: boolean;
+}
+
+export interface Influencer {
+  influencerCategory: string[];
+  audienceSize: string[];
+  audienceGender: string[];
+  audienceAgeGroup: string[];
+  audienceLocation: string[];
+}
+
+export interface Overview {
+  name: string;
+  briefDescription: string;
+  website: string;
+  plannedBudget: number;
+  costPerPost: number;
+  socialMediaPlatforms: string[];
+}
+

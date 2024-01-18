@@ -1,5 +1,5 @@
 <template>
-  <NuxtImg src="~/assets/img/avatar.png" />
+  <img :src="state?.src" />
 </template>
 
 <script setup lang="ts">
@@ -17,15 +17,12 @@ const props = withDefaults(
   }
 );
 
-const $src = computed(() => {
-  if (props.src.startsWith("~")) {
-    return props.src;
-  } else {
-    return props.src;
-  }
-});
+const image = ref(new Image());
+
+const source = computed(() => {});
+
 const avatarUrl = "https://place.dog/300/200";
-const { isLoading, error } = useImage({ src: props.src });
+const { isLoading, error, state } = useImage({ src: props.src });
 </script>
 
 <style scoped>

@@ -1,33 +1,17 @@
 <template>
-  <div :key="reset" class="inline-block min-w-[6.25rem]">
+  <div :key="reset" class="inline-block overflow-hidden w-full h-full">
     <div
       @click="open"
-      class="w-full flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]"
+      class="w-full h-full bg-slate-50 bg-opacity-30 flex items-center gap-[0.625rem] justify-center p-[0.375rem]"
     >
-      <div>
-        <transition>
-          <span
-            v-show="fileName"
-            class="text-[1.1875rem] pl-[0.75rem] w-full"
-            >{{ fileName }}</span
-          >
-        </transition>
-        <transition>
-          <span
-            v-show="!fileName"
-            class="text-[#999999] text-[1.1875rem] pl-[0.75rem] w-full"
-            >{{ props.placeholder || "Select a file to upload" }}</span
-          >
-        </transition>
-      </div>
-      <div>
+      <slot>
         <button
           @click="open"
-          class="!rounded-[2.5rem] bg-[#F59594] text-[19px] px-[3.125rem] py-[0.25rem] text-[#fff] min-w-[4.375rem]"
+          class="!rounded-[2.5rem] bg-[#F59594] py-[0.25rem] text-[#fff] min-w-[4.375rem]"
         >
           Upload
         </button>
-      </div>
+      </slot>
     </div>
 
     <Teleport to="body">

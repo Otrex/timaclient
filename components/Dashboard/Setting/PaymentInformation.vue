@@ -57,6 +57,11 @@ import type { UiInputSelect } from '#build/components';
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{ isEditable?: boolean }>();
+
+const profileStore = useProfileStore();
+const { notify } = useNotification();
+</script>
 
 <style></style>

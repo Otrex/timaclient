@@ -5,18 +5,34 @@
         <DashboardExploreSearchPanel class="mb-[3.75rem]" />
         <h2 class="text-[2rem] mb-[1.375rem]">Recommended Campaigns</h2>
         <div class="flex flex-wrap gap-[1.0625rem]">
-          <template v-for="(campaign, idx) in recommended" :key="idx">
-            <NuxtLink :to="{ params: { id: idx }, name: 'Explore - Campaign' }">
-              <LazyDashboardCampaignCard
-                :image="campaign.image"
-                :brand="campaign.brand"
-                :budget="campaign.budget"
-                :category="campaign.category"
-                :deadline="campaign.deadline"
-                :completion="campaign.completion"
-                :description="campaign.description"
-              />
-            </NuxtLink>
+          <template v-if="requestState(getRecommended) === constants.LOADING">
+            <div class="text-center">
+              <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
+              Fetching recommendations
+            </div>
+          </template>
+          <template v-else-if="recommended.length === 0">
+            <div>No Recommended Campaigns</div>
+          </template>
+          <template v-else>
+            <template v-for="campaign in recommended" :key="campaign.publicId">
+              <NuxtLink
+                :to="{
+                  params: { id: campaign.publicId, type: $route.params.type },
+                  name: 'Explore - Campaign',
+                }"
+              >
+                <DashboardCampaignCard
+                  :image="campaign.creative.thumbnail"
+                  :budget="campaign.overview.plannedBudget"
+                  :category="campaign.creative.creativeTone"
+                  :description="campaign.overview.briefDescription"
+                  :deadline="campaign.creative.endDate"
+                  :brand="campaign.overview.name"
+                  :completion="0"
+                />
+              </NuxtLink>
+            </template>
           </template>
         </div>
 
@@ -24,16 +40,34 @@
           Top Campaigns for the week
         </h2>
         <div class="flex flex-wrap gap-[1.0625rem]">
-          <template v-for="(campaign, idx) in topCampaigns" :key="idx">
-            <LazyDashboardCampaignCard
-              :image="campaign.image"
-              :brand="campaign.brand"
-              :budget="campaign.budget"
-              :category="campaign.category"
-              :deadline="campaign.deadline"
-              :completion="campaign.completion"
-              :description="campaign.description"
-            />
+          <template v-if="requestState(getTop) === constants.LOADING">
+            <div class="text-center">
+              <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
+              Fetching Top Campaigns
+            </div>
+          </template>
+          <template v-else-if="topCampaigns.length === 0">
+            <div>No Top Campaigns</div>
+          </template>
+          <template v-else>
+            <template v-for="campaign in topCampaigns" :key="campaign.publicId">
+              <NuxtLink
+                :to="{
+                  params: { id: campaign.publicId, type: $route.params.type },
+                  name: 'Explore - Campaign',
+                }"
+              >
+                <DashboardCampaignCard
+                  :image="campaign.creative.thumbnail"
+                  :brand="campaign.overview.name"
+                  :budget="campaign.overview.plannedBudget"
+                  :category="campaign.creative.creativeTone"
+                  :description="campaign.overview.briefDescription"
+                  :deadline="campaign.creative.endDate"
+                  :completion="0"
+                />
+              </NuxtLink>
+            </template>
           </template>
         </div>
       </div>
@@ -75,9 +109,14 @@
 </template>
 
 <script setup lang="ts">
+import type { GetCampaigns } from "~/lib/interfaces/response";
+
 definePageMeta({
   name: "Explore",
 });
+
+const api = useAPI();
+const route = useRoute();
 
 const search = ref({
   category: "",
@@ -87,7 +126,34 @@ const search = ref({
   campaignStatus: "",
 });
 
-const recommended = ref([
+const recommended = ref<GetCampaigns["data"]>([]);
+const topCampaigns = ref<GetCampaigns["data"]>([]);
+
+const getRecommended = useRequestState({
+  action: () => api.getCampaigns({ type: "recommendation" }),
+  onSuccess: (response) => {
+    recommended.value = response.data;
+  },
+});
+
+const getTop = useRequestState({
+  action: () => api.getCampaigns({ type: "top" }),
+  onSuccess: (response) => {
+    topCampaigns.value = response.data;
+  },
+});
+
+onMounted(() => {
+  if (route.params.type !== constants.INFLUENCER) return;
+  getRecommended.execute();
+  getTop.execute();
+});
+
+const requestState = (d: ReturnType<typeof useRequestState> | any) => {
+  return d.state.value;
+};
+
+const $recommended = ref([
   {
     image:
       "https://s3-alpha-sig.figma.com/img/f471/8529/5eb4c6137c1f6a34dce366a5b1d7fdb9?Expires=1703462400&Signature=pXg2kh34Dd07t6~vtlzHiQ~F7vZjARpOCg2kX-IFDRj4iUr4u7DQXwzn~UH0I2ZA~EiPCFTmr4umzlndhRx~NEkK2gWQyhARaLv7tr5SEvZuNbPeT~EYjGvo8sQyX377JsBQ1COWOh8Rpho8pD2HYQotKfQQxb4KW5g6FbGjiRPTRR4RYqc~0YaRsCIG8IWuCRhX6v0iK6wXYhEHF3w2jyBLTy5H5Pv13~VupdMiau2-kO02e-cvS4Wjc63D8B3Tb0L2lIK5tPxgDShCJ~rxQtIhhGgbsqbtrvGST8uAnH5A6tPWKxK5ZtMQPZ2vkkjnKvBE~vXXyhUA~NWB3ZcgHg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
@@ -123,7 +189,7 @@ Join the movement and showcase your strength with the new Nike Flex collection -
   },
 ]);
 
-const topCampaigns = ref([
+const $topCampaigns = ref([
   {
     image:
       "https://s3-alpha-sig.figma.com/img/c360/a71b/7db3b2655bf684ea8078c0e34d960851?Expires=1703462400&Signature=CgN~cnIhb21VdCJBBgtOwCT2Y0XCWLRr6sOCIFxjUFnnhB2zda4ydvII6yJ8exQgvYv9kTfzBBFZDRdQ-oz8CXPnyIAK6Z7nrub5zuFzd89Qp5O14Mz3BjXsIrbvrMJ5L~04Dz-tfpd8DQDQ5L1n4H0VmwzBypmK8JqLna4KMSxO43VwTcw1-HDaLAguU~JmxdlmJQ-OGx9PiHWgrYnoaERwklkvFfOKwNVAbhncGdp2uBA9c5lPAjr~-oBoJjtCRwFTJvq~6v90OuPVE9iu3BPccHdpnfc~q-RQ5alKgvhZS6Oi-VojMXU6W7hs5HmZTv8VSyQVp00VgoSLy4-RfQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",

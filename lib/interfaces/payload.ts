@@ -93,3 +93,26 @@ export interface InfluencerPersonalProfile {
   publicId: string;
 }
 
+export interface UpdatePassword {
+  currentPassword: string;
+  newPassword: string
+}
+
+export interface UpdateBrandInformation {
+  companyName: string;
+  phoneNumber: string;
+  website: string;
+  email: string;
+}
+
+export type GetCampaigns = {
+  type: 'filter',
+  category: string;
+  size: string;
+  age: `${string} - ${string}`;
+  location: string;
+} | {
+  type: 'recommendation'
+} | {
+  type: 'top'
+}

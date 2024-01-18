@@ -29,12 +29,14 @@
         />
       </div>
     </div>
-    <div
-      v-if="props.errorMessage"
-      class="text-red-600 text-left text-[0.875rem]"
-    >
-      {{ props.errorMessage }}
-    </div>
+    <transition>
+      <div
+        v-show="props.errorMessage"
+        class="text-red-600 text-left text-[0.875rem]"
+      >
+        {{ props.errorMessage }}
+      </div>
+    </transition>
   </div>
 </template>
 <script lang="ts" setup>

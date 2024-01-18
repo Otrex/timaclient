@@ -1,4 +1,4 @@
-import { email, helpers, minLength, required, url } from "@vuelidate/validators";
+import { email, helpers, minLength, required } from "@vuelidate/validators";
 
 export const CREATE_USER_RULE = {
   email: {
@@ -19,6 +19,30 @@ export const CREATE_USER_RULE = {
 export const UPDATE_INFLUENCER_USER_RULE = {
 
 }
+
+
+type Pass = ReturnType<typeof reactive<{ newPassword: string }>>;
+
+export const UPDATE_PASSWORD_RULE = <T extends Pass>(form: T) => ({
+  currentPassword: {
+    required: helpers.withMessage("Please enter your password", required),
+    minLength: helpers.withMessage(
+      "Password should be at least 3 characters",
+      minLength(3)
+    ),
+  },
+  confirmPassword: {
+    required: helpers.withMessage("Please enter your confirm password", required),
+    sameAsRawValue: helpers.withMessage("Passwords do not match", (data) => data === form.newPassword)
+  },
+  newPassword: {
+    required: helpers.withMessage("Please enter your new password", required),
+    minLength: helpers.withMessage(
+      "Your new password should not be less than 8 characters",
+      minLength(8)
+    )
+  }
+})
 
 export const CREATE_BANK_DETAILS_RULE = {
   accountNumber: {
@@ -170,7 +194,7 @@ export const UPDATE_BRAND_INFO_RULE = {
     required: helpers.withMessage("Please enter a valid phone number", required),
   },
   website: {
-    url: helpers.withMessage("Please enter a valid url", url),
+    url: helpers.withMessage("Please enter a valid url", helpers.regex(/^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$/)),
     required: helpers.withMessage("Please enter a website url", required),
   },
 }

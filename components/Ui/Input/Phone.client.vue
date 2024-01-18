@@ -13,12 +13,14 @@
       dropdownStyle="border-radius: 2.5rem 0px 0px 2.5rem; padding: 0px 1.25rem"
       v-bind="$attrs"
     />
-    <div
-      v-if="props.errorMessage"
-      class="text-red-600 text-left text-[0.875rem]"
-    >
-      {{ props.errorMessage }}
-    </div>
+    <transition>
+      <div
+        v-show="props.errorMessage"
+        class="text-red-600 text-left text-[0.875rem]"
+      >
+        {{ props.errorMessage }}
+      </div>
+    </transition>
   </div>
 </template>
 

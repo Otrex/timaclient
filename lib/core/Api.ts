@@ -1,4 +1,4 @@
-import type { AxiosInstance } from "axios";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import type { Getter, IRequestOptions, IStore } from "../interfaces/utils";
 import axios from "axios";
 
@@ -19,7 +19,7 @@ class ApiError extends Error {
 }
 
 export default class Api {
-  private handle401?: () => Promise<void>;
+  private handle401?: (config: AxiosRequestConfig) => Promise<void>;
   private getters?: Record<string, Getter>;
   private instance: AxiosInstance;
   private store?: IStore;
@@ -38,7 +38,7 @@ export default class Api {
     let retries = 0;
     this.instance.interceptors.response.use(null, (error) => {
       if (!this.handle401) return Promise.reject(error);
-      if (error.response.status !== this.RETRY_ON_STATUS) {
+      if (error.response?.status !== this.RETRY_ON_STATUS) {
         return Promise.reject(error)
       }
 
@@ -53,7 +53,7 @@ export default class Api {
       if (!hasCompletedRetries) {
         return new Promise((resolve, reject) => {
           retries += 1;
-          this.handle401!().then(() => {
+          this.handle401!(error.config).then(() => {
             resolve(axios(error.config))
             retries = 0;
           }).catch(() => {
@@ -75,7 +75,7 @@ export default class Api {
     this.getters = getters;
   }
 
-  public set401handler(handler: () => Promise<any>) {
+  public set401handler(handler: (config: AxiosRequestConfig) => Promise<any>) {
     this.handle401 = handler;
   }
 
@@ -87,6 +87,11 @@ export default class Api {
   public setBaseUrl(url: string) {
     this.instance.defaults.baseURL = url;
     return this;
+  }
+
+  public querify(url: string, data: Record<string, any> = {}) {
+    const queryParams = (new URLSearchParams(data)).toString().trim();
+    return queryParams ? `${url}?${queryParams}` : url;
   }
 
   public getStoreData(key: string) {

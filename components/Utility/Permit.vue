@@ -10,8 +10,8 @@ const props = defineProps<{
   userType: string;
 }>();
 
-const authStore = useAuthStore();
-const currentUserType = computed(() => authStore.user.type);
+const profileStore = useProfileStore();
+const currentUserType = computed(() => profileStore.$profile?.userType);
 </script>
 
 <style></style>

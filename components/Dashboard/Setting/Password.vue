@@ -6,7 +6,14 @@
           <label class="text-[1.25rem] font-medium">Current Password</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputText class="w-full" type="password" password-toggle />
+          <UiInputText
+            :error-message="v$.currentPassword.$errors[0]?.$message.toString()"
+            v-model="form.currentPassword"
+            :disabled="!props.isEditable"
+            class="w-full"
+            type="password"
+            password-toggle
+          />
         </div>
       </div>
 
@@ -16,10 +23,12 @@
         </div>
         <div class="flex items-center w-full">
           <UiInputText
+            :error-message="v$.newPassword.$errors[0]?.$message.toString()"
+            v-model="form.newPassword"
+            :disabled="!props.isEditable"
             class="w-full"
             type="password"
             password-toggle
-            error-message="Your new password should not be less than 8 characters"
           />
         </div>
       </div>
@@ -29,7 +38,14 @@
           <label class="text-[1.25rem] font-medium">Confirm Password</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputText class="w-full" type="password" password-toggle />
+          <UiInputText
+            :error-message="v$.confirmPassword.$errors[0]?.$message.toString()"
+            v-model="form.confirmPassword"
+            :disabled="!props.isEditable"
+            class="w-full"
+            type="password"
+            password-toggle
+          />
         </div>
       </div>
 
@@ -37,11 +53,17 @@
         <div class="max-w-[22.125rem] w-full">&nbsp;</div>
         <div class="flex items-center w-full">
           <div class="mb-[1.875rem] mt-[7.625rem] w-full">
-            <UiButtonDefault
-              label="Save Changes"
-              variant="primary"
-              class="w-full py-[0.875rem]"
-            />
+            <transition>
+              <UiButtonDefault
+                v-show="props.isEditable"
+                @click="() => validate().then(() => execute())"
+                :disabled="state === constants.LOADING"
+                :loading="state === constants.LOADING"
+                class="w-full py-[0.875rem]"
+                label="Save Changes"
+                variant="primary"
+              />
+            </transition>
           </div>
         </div>
       </div>
@@ -50,6 +72,9 @@
 </template>
 
 <script setup lang="ts">
+import { UPDATE_PASSWORD_RULE } from "~/lib/validation/rules";
+
+const props = defineProps<{ isEditable?: boolean }>();
 const form = reactive({
   currentPassword: "",
   confirmPassword: "",
@@ -58,6 +83,33 @@ const form = reactive({
 
 const profileStore = useProfileStore();
 const { notify } = useNotification();
+
+const { execute, validate, state, v$ } = useRequestState({
+  action: () =>
+    profileStore.updatePassword({
+      currentPassword: form.currentPassword,
+      newPassword: form.newPassword,
+    }),
+  validation: {
+    config: { $autoDirty: true },
+    rule: UPDATE_PASSWORD_RULE(form),
+    form,
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "Update Successful",
+      text: "Password updated successfully",
+    });
+  },
+});
 </script>
 
 <style></style>

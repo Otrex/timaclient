@@ -13,7 +13,12 @@
     <DashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"
-      to="/dashboard/"
+      :to="{
+        name: 'Campaign',
+        params: {
+          type: $route.params.type,
+        },
+      }"
     />
     <!--<DashboardNavigatorMenuItem
       label="Influencers"
@@ -23,7 +28,12 @@
     <DashboardNavigatorMenuItem
       label="Payment"
       icon="nav/payment"
-      to="/dashboard/payment"
+      :to="{
+        name: 'Payment',
+        params: {
+          type: $route.params.type,
+        },
+      }"
     />
     <!-- <DashboardNavigatorMenuItem
       label="Draft"

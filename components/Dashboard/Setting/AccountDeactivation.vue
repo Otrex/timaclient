@@ -40,7 +40,45 @@
 </template>
 
 <script setup lang="ts">
+import { UPDATE_PASSWORD_RULE } from "~/lib/validation/rules";
+
 const notice = ref();
+const props = defineProps<{ isEditable?: boolean }>();
+const form = reactive({
+  currentPassword: "",
+  confirmPassword: "",
+  newPassword: "",
+});
+
+const profileStore = useProfileStore();
+const { notify } = useNotification();
+
+const { execute, validate, state, v$ } = useRequestState({
+  action: () =>
+    profileStore.updatePassword({
+      currentPassword: form.currentPassword,
+      newPassword: form.newPassword,
+    }),
+  validation: {
+    config: { $autoDirty: true },
+    rule: UPDATE_PASSWORD_RULE(form),
+    form,
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "Update Successful",
+      text: "Password updated successfully",
+    });
+  },
+});
 </script>
 
 <style></style>

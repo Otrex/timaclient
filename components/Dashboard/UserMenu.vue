@@ -4,16 +4,18 @@
   >
     <div class="flex items-center gap-[0.5rem]">
       <div>
-        <div class="w-[2.375rem] h-[2.375rem] bg-[#FFCC9D] rounded-full">
+        <div
+          class="w-[2.375rem] h-[2.375rem] overflow-hidden bg-[#FFCC9D] rounded-full"
+        >
           <img
-            :src="props.image"
-            class="object-contain w-full h-full"
+            :src="tools.removeDuplicateURL(props.image)"
+            class="object-cover w-full h-full"
             alt="avatar"
           />
         </div>
       </div>
       <div class="select-none whitespace-nowrap">
-        <div>{{ props.name }}</div>
+        <div>{{ props.name.trim() || "New Account" }}</div>
         <div class="text-xs">{{ props.type }}</div>
       </div>
     </div>

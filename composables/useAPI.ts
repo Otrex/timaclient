@@ -7,7 +7,13 @@ export default function () {
   const api = new TimaAPI();
 
   api.setBaseUrl(config.public.baseUrl);
-  api.set401handler(async () => {
+  api.set401handler(async (request) => {
+    const newAccessToken = api.getStoreData(AUTH_STORE_KEY);
+    request.headers = {
+      ...request.headers,
+      Authorization: `Bearer ${newAccessToken}`
+    };
+
     return useAuthStore().refreshAuth();
   });
 

@@ -138,6 +138,27 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCampaign(publicId: string) {
+    return this.request<Response.GetCampaign>({
+      url: `/agency/v1/campaigns/${publicId}`,
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
+  async getCampaigns(payload: Payload.GetCampaigns) {
+    const { type, ...data } = payload;
+
+    return this.request<Response.GetCampaigns>({
+      url: this.querify(
+        `/agency/v1/campaigns/search/${type}`,
+        data
+      ),
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
   async getUserProfile() {
     return this.request<Response.GetUserProfile>({
       url: '/user/v1/profile',
@@ -156,4 +177,21 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async updatePassword(data: Payload.UpdatePassword) {
+    return this.request<Response.UpdatePassword>({
+      url: "/user/v1/account/password",
+      requireAuth: true,
+      method: "PUT",
+      data
+    })
+  }
+
+  async updateBrandInformation(data: Payload.UpdateBrandInformation) {
+    return this.request<Response.UpdateBrandInformation>({
+      url: "/user/v1/profile/brand",
+      requireAuth: true,
+      method: "PUT",
+      data
+    })
+  }
 }

@@ -53,6 +53,35 @@ export default {
     },
   }),
 
+  removeDuplicateURL(url = "") {
+    const urlPattern = /(https?:\/\/\S+\/)(?=\S*https?:\/\/\S+\/)/g;
+    return url.replace(urlPattern, "");
+  },
+  resolveSocialsIcon(key: string) {
+    const socialMap: Record<string, string> = {
+      "Instagram": "socials/instagram-lg",
+      "Tictok": "socials/tiktok-lg",
+      "Youtube": "socials/youtube-lg",
+    }
+
+    return socialMap[key] || socialMap['Youtube'];
+  },
+
+  extractName(fullName: string) {
+    const names = fullName.split(" ");
+    let firstName, lastName, middleName;
+
+    if (names.length > 2) [firstName, middleName, lastName] = names;
+    else[firstName, lastName] = names;
+
+    return {
+      firstName,
+      lastName,
+      middleName,
+      length: names.length
+    };
+  },
+
   cookieStoreValueGetter: (key: string) => {
     return <T extends Record<string, any>>(state: T) => {
       if (typeof state === 'string') {

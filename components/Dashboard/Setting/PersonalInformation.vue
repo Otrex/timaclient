@@ -6,7 +6,11 @@
           <label class="text-[1.25rem] font-medium">Full name</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputText class="w-full" v-model="form.fullName" />
+          <UiInputText
+            :disabled="!props.isEditable"
+            v-model="form.fullName"
+            class="w-full"
+          />
         </div>
       </div>
       <div class="flex md:flex-row flex-col">
@@ -14,7 +18,12 @@
           <label class="text-[1.25rem] font-medium">Email Address</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputText class="w-full" type="email" v-model="form.email" />
+          <UiInputText
+            :disabled="!props.isEditable"
+            class="w-full"
+            type="email"
+            v-model="form.email"
+          />
         </div>
       </div>
 
@@ -23,7 +32,11 @@
           <label class="text-[1.25rem] font-medium">Phone</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputPhone class="w-full" v-model="form.phoneNumber" />
+          <UiInputPhone
+            :disabled="!props.isEditable"
+            v-model="form.phoneNumber"
+            class="w-full"
+          />
         </div>
       </div>
 
@@ -31,14 +44,17 @@
         <div class="max-w-[22.125rem] w-full">&nbsp;</div>
         <div class="flex items-center w-full">
           <div class="mb-[1.875rem] mt-[7.625rem] w-full">
-            <UiButtonDefault
-              @click="() => validate().then(() => execute())"
-              :disabled="state === constants.LOADING"
-              :loading="state === constants.LOADING"
-              label="Save Changes"
-              variant="primary"
-              class="w-full py-[0.875rem]"
-            />
+            <transition>
+              <UiButtonDefault
+                v-show="props.isEditable"
+                @click="() => validate().then(() => execute())"
+                :disabled="state === constants.LOADING"
+                :loading="state === constants.LOADING"
+                class="w-full py-[0.875rem]"
+                label="Save Changes"
+                variant="primary"
+              />
+            </transition>
           </div>
         </div>
       </div>
@@ -49,62 +65,49 @@
 <script setup lang="ts">
 import { UPDATE_INFLUENCER_USER_RULE } from "~/lib/validation/rules";
 
+const props = defineProps<{ isEditable?: boolean }>();
 const profileStore = useProfileStore();
 const { notify } = useNotification();
 
-const form = reactive<{
-  fullName?: string;
-  email?: string;
-  phoneNumber?: string;
-}>({
-  fullName: "",
+const form = reactive({
   email: "",
+  fullName: "",
   phoneNumber: "",
 });
 
 function updateForm() {
-  form.phoneNumber = profileStore.$profile?.phoneNumber;
-  form.fullName = profileStore.$profile?.totalFullName;
-  form.email = profileStore.$profile?.email;
-}
+  const profile = profileStore.$profile;
 
-function extractName(fullName: string) {
-  const names = fullName.split(" ");
-  let firstName, lastName, middleName;
-
-  if (names.length > 2) {
-    [firstName, middleName, lastName] = names;
-  } else {
-    [firstName, lastName] = names;
+  if (profile) {
+    form.phoneNumber = profile.phoneNumber;
+    form.fullName = profile.totalFullName;
+    form.email = profile.email;
   }
-
-  return { firstName, lastName, middleName, length: names.length };
 }
 
 watch(() => profileStore.$profile, updateForm);
 
+onMounted(updateForm);
+
 const { execute, validate, state, v$ } = useRequestState({
   action: () => {
-    const extract = extractName(form.fullName!);
+    const extract = tools.extractName(form.fullName!);
+    const phoneNumber =
+      typeof form.phoneNumber !== "string"
+        ? (form.phoneNumber as any)?.number!
+        : form.phoneNumber;
+
     const formPayload = {
       email: form.email!,
-      phoneNumber:
-        typeof form.phoneNumber === "string"
-          ? form.phoneNumber
-          : (form.phoneNumber as any)?.number!,
-      firstName: extract.firstName,
+      phoneNumber: phoneNumber,
       lastName: extract.lastName,
+      firstName: extract.firstName,
     };
 
-    const payload =
-      extract.length < 3
-        ? formPayload
-        : {
-            middleName: extract.middleName,
-            ...formPayload,
-          };
-
-    return profileStore.updatePersonalProfile(payload);
+    return profileStore.updatePersonalProfile({
+      ...(extract.length > 2 ? { middleName: extract.middleName } : {}),
+      ...formPayload,
+    });
   },
   validation: {
     config: { $autoDirty: true },
@@ -125,10 +128,6 @@ const { execute, validate, state, v$ } = useRequestState({
       text: "Your personal information has been updated",
     });
   },
-});
-
-onMounted(() => {
-  updateForm();
 });
 </script>
 
