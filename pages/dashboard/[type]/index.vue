@@ -13,7 +13,13 @@
     </div>
 
     <section class="mt-[0.75rem]">
-      <div><img src="~/assets/img/banner.png" alt="campaign banner" /></div>
+      <div>
+        <img
+          src="~/assets/img/banner.png"
+          class="w-full"
+          alt="campaign banner"
+        />
+      </div>
 
       <div class="flex flex-row justify-between mt-[1.125rem]">
         <div>
