@@ -11,7 +11,6 @@
         <UiButtonDefault variant="info" label="Add Publications" p="0.625rem" />
       </div> -->
     </div>
-
     <section class="mt-[0.75rem]">
       <div>
         <img
