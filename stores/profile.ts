@@ -1,39 +1,53 @@
-import type { Payload } from "~/lib/interfaces"
-import type { ProfileInfo, User } from "~/lib/interfaces/core"
+import type { Payload, Core } from "~/lib/interfaces"
 
 type IState = {
-  profile: ProfileInfo | null
+  bankDetails: Core.BankDetails | null,
+  profile: Core.ProfileInfo | null
+  address: Core.Address | null,
 }
 
-type GetterProfile = User & {
+type GetterProfile = Core.User & {
   username: string
   publicId: string
   totalFullName: string
-  fullName: string
+  fullName: string,
+  address: Core.Address | null,
+  notificationSetting: Core.NotificationSetting | null,
+  bankDetails: Core.BankDetails | null,
 }
 
 export const useProfileStore = defineStore('profile', {
   state: (): IState => ({
-    profile: null
+    profile: null,
+    address: null,
+    bankDetails: null,
   }),
   getters: {
     $profile: (state): GetterProfile | null => {
-      const isInfluencer = state.profile?.profile?.userType === constants.INFLUENCER;
+      const profile = state.profile?.profile!;
+
+      const userType = profile?.userType;
+      const isInfluencer = userType === constants.INFLUENCER;
+      const notification = profile?.notificationSetting || 'null'
+
       return state.profile ? {
+        ...profile,
         ...state.profile,
-        ...state.profile.profile,
+        address: state.address,
+        bankDetails: state.bankDetails,
+        notificationSetting: JSON.parse(notification),
         totalFullName: !isInfluencer
-          ? state.profile?.profile?.companyName
+          ? profile?.companyName
           : [
-            state.profile?.profile?.firstName,
-            state.profile?.profile?.middleName,
-            state.profile?.profile?.lastName,
+            profile?.firstName,
+            profile?.middleName,
+            profile?.lastName,
           ].join(' '),
         fullName: !isInfluencer
-          ? state.profile?.profile?.companyName
+          ? profile?.companyName
           : [
-            state.profile?.profile?.firstName,
-            state.profile?.profile?.lastName,
+            profile?.firstName,
+            profile?.lastName,
           ].join(' ')
       } : null
     }
@@ -41,41 +55,118 @@ export const useProfileStore = defineStore('profile', {
 
   actions: {
     async getProfile() {
+      await Promise.all([
+        this.getUserDetails(),
+        this.getBankDetails(),
+        this.getAddressDetails(),
+      ]);
+    },
+
+    async getUserDetails() {
       const response = await this.$api.getUserProfile();
-      this.$patch({ profile: response.data });
+
+      if (response?.data) {
+        const authStore = useAuthStore();
+        this.$patch({ profile: response.data })
+        authStore.updateStoreUserType(
+          response.data.profile?.userType
+        );
+      }
+    },
+
+    async getBankDetails() {
+      const response = await this.$api.getBankDetails();
+      if (response?.data) this.$patch({ bankDetails: response.data })
+    },
+
+    async getAddressDetails() {
+      const response = await this.$api.getAddress();
+      if (response?.data) this.$patch({ address: response.data })
     },
 
     async updatePassword(payload: Payload.UpdatePassword) {
       return this.$api.updatePassword(payload);
     },
 
-    async updateBrandInformation(payload: Payload.UpdateBrandInformation) {
+    async updateNotificationSettings(
+      payload: Payload.NotificationSettings
+    ) {
+      const response = await this.$api.updateInfluencerNotificationSetting({
+        ...payload
+      });
+
+      if (response?.data) {
+        await this.getUserDetails();
+      }
+    },
+
+    async updateBrandInformation(
+      payload: Payload.UpdateBrandInformation
+    ) {
       const response = await this.$api.updateBrandInformation({
         ...payload
       });
 
-      if (!response?.data) return;
-      this.$patch({
-        profile: {
-          ...this.profile,
-          profile: response.data
-        }
-      });
+      if (response?.data) {
+        this.$patch({
+          profile: {
+            ...this.profile,
+            profile: response.data
+          }
+        });
+      }
+
     },
 
-    async updatePersonalProfile(payload: Omit<Payload.InfluencerPersonalProfile, "publicId">) {
+    async updatePersonalProfile(
+      payload: Omit<Payload.InfluencerPersonalProfile, "publicId">
+    ) {
       const response = await this.$api.updatePersonalProfile({
         publicId: this.$profile?.publicId!,
         ...payload
       });
 
-      if (!response?.data) return;
-      this.$patch({
-        profile: {
-          ...this.profile,
-          profile: response.data
-        }
+      if (response?.data) {
+        this.$patch({
+          profile: {
+            ...this.profile,
+            profile: response.data
+          }
+        });
+      }
+    },
+
+    async updateBankInformation(
+      payload: Payload.UpdateBankInformation
+    ) {
+      const response = await this.$api.updateBankDetails(payload);
+
+      if (response?.data) {
+        this.$patch({
+          bankDetails: {
+            ...this.bankDetails,
+            ...response.data
+          }
+        })
+      }
+
+    },
+
+    async updateAddress(
+      payload: Payload.UpdateAddress['addressRecord']
+    ) {
+      const response = await this.$api.updateAddress({
+        addressRecord: payload
       });
+
+      if (response?.data) {
+        this.$patch({
+          address: {
+            ...this.address,
+            ...response.data
+          }
+        })
+      }
     }
   }
 })

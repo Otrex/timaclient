@@ -15,8 +15,8 @@
       <div>
         <img
           src="~/assets/img/banner.png"
-          class="w-full"
           alt="campaign banner"
+          class="w-full"
         />
       </div>
 

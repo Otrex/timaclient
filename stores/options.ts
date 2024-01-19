@@ -26,14 +26,15 @@ export const useOptionsStore = defineStore("options", {
 
   actions: {
     async loadDashboardOptions() {
-      console.log("fetching dashboard options");
       const profileStore = useProfileStore();
-
+      if (profileStore.profile) return;
       await Promise.all([
-        profileStore.getProfile()
+        profileStore.getProfile(),
+        this.getCountries(),
       ]);
     },
     async loadRegisterOptions() {
+      if (this.countries.length > 0) return
       await Promise.all([
         this.getBanks(),
         this.getCountries(),

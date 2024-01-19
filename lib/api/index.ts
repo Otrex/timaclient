@@ -13,6 +13,7 @@ export default class TimaAPI extends UploadAPI {
       }
     })
   }
+
   async signIn(data: Payload.SignIn) {
     return this.request<Response.SignIn>({
       url: `/user/v1/login`,
@@ -167,6 +168,21 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getAddress() {
+    return this.request<Response.GetAddress>({
+      url: '/user/v1/address',
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getBankDetails() {
+    return this.request<Response.BankDetailUpdate>({
+      url: "/payment/v1/bank/customers/_self",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
 
   async updatePersonalProfile(data: Payload.InfluencerPersonalProfile) {
     return this.request<Response.InfluencerCompleteProfile>({
@@ -183,6 +199,33 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: "PUT",
       data
+    })
+  }
+
+  async updateBankDetails(data: Payload.UpdateBankInformation) {
+    return this.request<Response.BankDetailUpdate>({
+      url: "/payment/v1/bank/customers/_edit",
+      method: "PUT",
+      requireAuth: true,
+      data,
+    })
+  }
+
+  async updateAddress(data: Payload.UpdateAddress) {
+    return this.request<Response.GetAddress>({
+      url: "/user/v1/address",
+      method: "PUT",
+      requireAuth: true,
+      data
+    });
+  }
+
+  async updateInfluencerNotificationSetting(data: Payload.NotificationSettings) {
+    return this.request<Response.GenericStringRes>({
+      url: "/agency/v1/settings/toggle",
+      requireAuth: true,
+      method: "PATCH",
+      data,
     })
   }
 

@@ -1,3 +1,5 @@
+import type { UserType } from "../enums";
+
 export interface Bank {
   name: string;
   slug: string;
@@ -7,6 +9,13 @@ export interface Bank {
   currency: string;
   type: string;
 }
+
+export interface NotificationSetting {
+  campaignUpdateAlert: boolean;
+  emailAlert: boolean;
+  paymentUpdateAlert: boolean;
+}
+
 
 export interface Industry {
   name: string;
@@ -41,7 +50,7 @@ export interface User {
   lastName: string;
   email: string;
   phoneNumber: string;
-  userType: string;
+  userType: UserType;
   companyName: string;
   website: string;
   language: null;
@@ -73,6 +82,17 @@ export interface Creative {
   acquisitionObjective: string[];
   thumbnail: string;
   visibility: boolean;
+}
+
+export interface BankDetails {
+  createdOn: null;
+  publicId: string;
+  bankName: string;
+  currency: string;
+  swiftCode: string;
+  bankAddress: string;
+  accountName: string;
+  accountNumber: string;
 }
 
 export interface Influencer {

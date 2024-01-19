@@ -1,4 +1,4 @@
-import type { IStore } from "~/lib/interfaces/utils";
+import type { IStore, Rule, RuleObject } from "~/lib/interfaces/utils";
 
 export default {
   generateSalt: (length: number, saltType: 'alphanumeric' | 'numeric') => {
@@ -65,6 +65,21 @@ export default {
     }
 
     return socialMap[key] || socialMap['Youtube'];
+  },
+
+  optionizeRule: <T extends Record<string, Rule>>(inputObject: T): RuleObject<T> => {
+    const result: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(inputObject)) {
+      if (value.hasOwnProperty('required')) {
+        const { required, ...rest } = value as Rule;
+        result[key] = rest;
+      } else {
+        result[key] = value;
+      }
+    }
+
+    return result as RuleObject<T>;
   },
 
   extractName(fullName: string) {

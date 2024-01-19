@@ -14,6 +14,7 @@ type IState = {
     accessToken?: string;
     refreshToken?: string;
     expiresIn?: number;
+    userType?: UserType;
   }
 }
 
@@ -29,6 +30,7 @@ export const useAuthStore = defineStore('auth', {
       accessToken: undefined,
       refreshToken: undefined,
       expiresIn: undefined,
+      userType: undefined,
     }
   }),
   getters: {
@@ -37,8 +39,16 @@ export const useAuthStore = defineStore('auth', {
     }
   },
   actions: {
-    async signIn(payload: Payload.SignIn) {
+    updateStoreUserType(data: UserType) {
+      this.$patch({
+        authorization: {
+          ...this.authorization,
+          userType: data
+        }
+      })
+    },
 
+    async signIn(payload: Payload.SignIn) {
       const response = await this.$api.signIn({
         ...payload,
       });

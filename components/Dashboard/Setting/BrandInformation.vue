@@ -87,26 +87,15 @@ const props = defineProps<{ isEditable?: boolean }>();
 const profileStore = useProfileStore();
 const { notify } = useNotification();
 
-const form = reactive({
-  companyName: "",
-  website: "",
-  phoneNumber: "",
-  email: "",
+const form = useWatchedForm({
+  monitor: profileStore.profile?.profile,
+  fields: {
+    companyName: "",
+    website: "",
+    phoneNumber: "",
+    email: "",
+  },
 });
-
-function updateForm() {
-  const profile = profileStore.$profile;
-
-  if (profile) {
-    form.phoneNumber = profile.phoneNumber;
-    form.companyName = profile.totalFullName;
-    form.website = profile.website;
-    form.email = profile.email;
-  }
-}
-
-onMounted(updateForm);
-watch(() => profileStore.$profile, updateForm);
 
 const { execute, validate, state, v$ } = useRequestState({
   action: () => profileStore.updateBrandInformation(form),

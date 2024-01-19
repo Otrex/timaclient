@@ -5,8 +5,10 @@
         <UtSvg name="logo/tima" class="w-[6.125rem] h-[2.4375rem]" />
       </div>
       <div class="mt-[4.625rem]">
-        <DashboardNavigatorInfluencer v-if="false" />
-        <DashboardNavigatorAgency />
+        <DashboardNavigatorInfluencer
+          v-if="$route.params.type === constants.INFLUENCER"
+        />
+        <DashboardNavigatorAgency v-else />
         <div class="mt-[1rem] flex flex-col gap-[1rem]">
           <DashboardNavigatorMenuItem
             label="Help/Support"

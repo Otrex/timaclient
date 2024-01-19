@@ -1,10 +1,10 @@
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   const optionsStore = useOptionsStore();
   const { notify } = useNotification();
   const authStore = useAuthStore();
 
   try {
-    if (authStore.isAuthenticated) {
+    if (authStore.isAuthenticated && !from.path.includes('/auth/login')) {
       await optionsStore.loadDashboardOptions();
     } else {
       await optionsStore.loadRegisterOptions();
@@ -13,6 +13,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     notify({
       type: 'error',
       title: "Data loading error",
+      text: "Something went wrong"
     });
   }
 })

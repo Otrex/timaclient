@@ -12,6 +12,7 @@ export default Object.freeze({
   INDUSTRY_SELECTION: "industry-selection",
   BASIC_INFORMATION: "basic-information",
   BRAND_INFORMATION: "brand-information",
+  ADDRESS_INFORMATION: "address-information",
   CONTENT_CATEGORY: "content-category",
   COMPLETE_PROFILE: "complete-profile",
 

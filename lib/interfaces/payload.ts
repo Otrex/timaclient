@@ -52,6 +52,19 @@ export interface BrandAddressDocumentation {
   addressRecord: AddressRecord;
 }
 
+export interface UpdateBankInformation {
+  bankName: string;
+  bankAddress: string;
+  currency: string;
+  accountName: string;
+  accountNumber: string;
+  swiftCode: string;
+}
+
+export interface UpdateAddress {
+  addressRecord: AddressRecord;
+}
+
 export interface InfluencerBankDetails {
   publicId: string;
   bankName: string;
@@ -91,6 +104,11 @@ export interface InfluencerPersonalProfile {
   phoneNumber: string;
   email: string;
   publicId: string;
+}
+
+export interface NotificationSettings {
+  campaignUpdateAlert: boolean;
+  paymentUpdateAlert: boolean;
 }
 
 export interface UpdatePassword {

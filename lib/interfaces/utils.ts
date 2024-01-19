@@ -104,3 +104,11 @@ export interface UseRequestReturnType<T, R = any[], M = any, K extends Record<st
 
 export interface UseRequestPropsWithValidation<T, R, M, K extends Record<string, any>> extends EnsureDefined<UseRequestProps<T, R, M, K>, 'validation'> { };
 
+export type Rule = {
+  [key: string]: any;
+};
+
+
+export type RuleObject<T extends Record<string, Rule>> = {
+  [K in keyof T]: Omit<T[K], 'required'>;
+};

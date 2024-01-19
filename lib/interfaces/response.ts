@@ -1,4 +1,9 @@
-import type { Address, Authentication, Bank, Country, Creative, Industry, Influencer, Overview, ProfileInfo, User } from "./core";
+import type {
+  Address, Authentication,
+  Bank, BankDetails, Country,
+  Creative, Industry, Influencer,
+  Overview, ProfileInfo, User
+} from "./core";
 import type { IResponse } from "./utils";
 
 export interface CreateUser extends IResponse<{
@@ -6,16 +11,7 @@ export interface CreateUser extends IResponse<{
   publicId: string;
 }> { }
 
-export interface BankDetailUpdate extends IResponse<{
-  createdOn: null;
-  publicId: string;
-  bankName: string;
-  currency: string;
-  swiftCode: string;
-  bankAddress: string;
-  accountName: string;
-  accountNumber: string;
-}> { }
+export interface BankDetailUpdate extends IResponse<BankDetails> { }
 
 export interface GetCampaigns extends IResponse<{
   publicId: string;
@@ -35,9 +31,12 @@ export interface GetCampaign extends IResponse<{
   createdOn: null;
 }> { }
 
+
+export interface GetAddress extends IResponse<Address> { }
 export interface UpdatePassword extends IResponse<string> { }
 export interface GetBankList extends IResponse<Bank[]> { }
 export interface GetSignedURL extends IResponse<string> { }
+export interface GenericStringRes extends IResponse<string> { }
 export interface SignIn extends IResponse<Authentication> { }
 export interface GetCountries extends IResponse<Country[]> { };
 export interface GetIndustry extends IResponse<Industry[]> { }

@@ -5,6 +5,10 @@
       :name="constants.PERSONAL_INFORMATION"
       default
     />
+    <UtTabMenuItem
+      label="Address Information"
+      :name="constants.ADDRESS_INFORMATION"
+    />
     <UtTabMenuItem label="Password" :name="constants.PASSWORD" />
     <UtTabMenuItem
       label="Payment Information"
@@ -12,7 +16,7 @@
     />
     <UtTabMenuItem
       label="Notification Settings"
-      :name="constants.NOTIFICATION_SETTINGS"
+      :name="constants.NOTIFICATION_SETTINGS_INFLUENCER"
     />
     <UtTabMenuItem
       label="Account Deactivation"

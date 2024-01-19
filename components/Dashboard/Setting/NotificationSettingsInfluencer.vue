@@ -7,14 +7,18 @@
         </div>
         <div class="flex items-center w-full">
           <div class="flex gap-[1.75rem]">
-            <div>
-              <UiInputSwitch v-model="notice" size="lg" />
+            <div class="mt-[0.1875rem]">
+              <UiInputSwitch
+                :disabled="!props.isEditable"
+                v-model="form.campaignUpdateAlert"
+                size="lg"
+              />
             </div>
             <div class="flex flex-col">
-              <span class="mb-[0.5625rem]"
+              <span class="mb-[0.3125rem]"
                 >I want to receive notifications on updates</span
               >
-              <span class="text-[0.625rem]"
+              <span class="text-[0.75rem]"
                 >Get notified when there are important updates about the
                 design</span
               >
@@ -31,14 +35,18 @@
         </div>
         <div class="flex items-center w-full">
           <div class="flex gap-[1.75rem]">
-            <div>
-              <UiInputSwitch v-model="notice" size="lg" />
+            <div class="mt-[0.1875rem]">
+              <UiInputSwitch
+                :disabled="!props.isEditable"
+                v-model="form.paymentUpdateAlert"
+                size="lg"
+              />
             </div>
             <div class="flex flex-col">
-              <span class="mb-[0.5625rem]"
+              <span class="mb-[0.3125rem]"
                 >I want to receive payment notifications</span
               >
-              <span class="text-[0.625rem]"
+              <span class="text-[0.75rem]"
                 >Get notified when i have been paid.</span
               >
             </div>
@@ -50,11 +58,17 @@
         <div class="max-w-[22.125rem] w-full">&nbsp;</div>
         <div class="flex items-center w-full">
           <div class="mb-[1.875rem] mt-[7.625rem] w-full">
-            <UiButtonDefault
-              label="Save Changes"
-              variant="primary"
-              class="w-full py-[0.875rem]"
-            />
+            <transition>
+              <UiButtonDefault
+                v-show="props.isEditable"
+                @click="() => execute()"
+                :disabled="state === constants.LOADING"
+                :loading="state === constants.LOADING"
+                label="Save Changes"
+                variant="primary"
+                class="w-full py-[0.875rem]"
+              />
+            </transition>
           </div>
         </div>
       </div>
@@ -63,7 +77,36 @@
 </template>
 
 <script setup lang="ts">
-const notice = ref();
+const props = defineProps<{ isEditable?: boolean }>();
+
+const profileStore = useProfileStore();
+const { notify } = useNotification();
+
+const form = useWatchedForm({
+  monitor: profileStore.$profile?.notificationSetting,
+  fields: {
+    campaignUpdateAlert: false,
+    paymentUpdateAlert: false,
+  },
+});
+
+const { execute, state } = useRequestState({
+  action: () => profileStore.updateNotificationSettings(form),
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "Update Successful",
+      text: "Your Notification settings has been updated",
+    });
+  },
+});
 </script>
 
 <style></style>

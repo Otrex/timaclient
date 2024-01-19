@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block inx">
+  <div :class="['inline-block inx', props.disabled && 'select-none']">
     <label
       :class="[
         'flex items-center w-[--box-size] transition-all rounded-[--radius] p-[--pad]',
@@ -8,6 +8,7 @@
     >
       <input
         type="checkbox"
+        :disabled="props.disabled"
         :value="props.modelValue"
         @input="update"
         class="hidden"
@@ -28,6 +29,7 @@ const emit = defineEmits(["update:modelValue"]);
 const props = defineProps<{
   modelValue?: any;
   size?: "sm" | "lg";
+  disabled?: boolean;
 }>();
 
 const sizeMap = {

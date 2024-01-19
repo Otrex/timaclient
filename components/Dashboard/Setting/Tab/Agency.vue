@@ -7,9 +7,13 @@
     />
     <UtTabMenuItem label="Password" :name="constants.PASSWORD" />
     <UtTabMenuItem
+      label="Address Information"
+      :name="constants.ADDRESS_INFORMATION"
+    />
+    <!--<UtTabMenuItem
       label="Payment Information"
       :name="constants.PAYMENT_INFORMATION"
-    />
+    /> -->
     <UtTabMenuItem
       label="Notification Settings"
       :name="constants.NOTIFICATION_SETTINGS"

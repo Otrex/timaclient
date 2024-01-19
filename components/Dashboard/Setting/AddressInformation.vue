@@ -3,96 +3,85 @@
     <div class="flex flex-col gap-[1.5rem]">
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium">Account Name</label>
+          <label class="text-[1.25rem] font-medium">Post Code</label>
         </div>
         <div class="flex items-center w-full">
           <UiInputText
             :disabled="!props.isEditable"
-            type="text"
+            v-model="form.postCode"
             class="w-full"
-            v-model="form.accountName"
-            :error-message="v$.accountName?.$errors[0]?.$message.toString()"
-            placeholder="Account name"
           />
         </div>
       </div>
 
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium">Account Number</label>
+          <label class="text-[1.25rem] font-medium">Country</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputText
+          <UiInputSelect
             type="text"
             class="w-full"
-            v-model="form.accountNumber"
             :disabled="!props.isEditable"
-            :error-message="v$.accountNumber?.$errors[0]?.$message.toString()"
-            placeholder="Account number"
+            v-model="form.country"
+            placeholder="Country"
+            :options="optionsStore.$countries"
           />
         </div>
       </div>
 
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium">Bank Name</label>
+          <label class="text-[1.25rem] font-medium">State</label>
         </div>
         <div class="flex items-center w-full">
           <UiInputText
-            type="text"
-            class="w-full"
-            v-model="form.bankName"
             :disabled="!props.isEditable"
-            :error-message="v$.bankName?.$errors[0]?.$message.toString()"
-            placeholder="Bank name"
+            v-model="form.state"
+            class="w-full"
           />
         </div>
       </div>
 
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium">Bank Address</label>
+          <label class="text-[1.25rem] font-medium">City</label>
         </div>
         <div class="flex items-center w-full">
           <UiInputText
-            type="text"
-            class="w-full"
-            v-model="form.bankAddress"
             :disabled="!props.isEditable"
-            :error-message="v$.bankAddress?.$errors[0]?.$message.toString()"
-            placeholder="Bank address"
+            v-model="form.city"
+            class="w-full"
           />
         </div>
       </div>
 
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium">Bank Code</label>
+          <label class="text-[1.25rem] font-medium">Street</label>
         </div>
         <div class="flex items-center w-full">
           <UiInputText
-            type="text"
-            class="w-full"
-            v-model="form.bankCode"
             :disabled="!props.isEditable"
-            :error-message="v$.bankCode?.$errors[0]?.$message.toString()"
-            placeholder="Bank code"
+            v-model="form.street"
+            class="w-full"
           />
         </div>
       </div>
 
-      <div class="flex md:flex-row flex-col">
+      <div
+        v-if="$route.params.type === constants.INFLUENCER"
+        class="flex md:flex-row flex-col"
+      >
         <div class="max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium">Swift Code</label>
+          <label class="text-[1.25rem] font-medium">Language</label>
         </div>
         <div class="flex items-center w-full">
-          <UiInputText
-            type="text"
+          <UiInputSelect
             class="w-full"
-            v-model="form.swiftCode"
-            :disabled="!props.isEditable"
-            :error-message="v$.swiftCode?.$errors[0]?.$message.toString()"
-            placeholder="Swift Code"
+            v-model="form.language"
+            placeholder="Language"
+            :options="optionsStore.$countryLanguages(form.country)"
           />
         </div>
       </div>
@@ -104,12 +93,12 @@
             <transition>
               <UiButtonDefault
                 v-show="props.isEditable"
-                @click="() => validate().then(() => execute())"
+                @click="() => execute()"
                 :disabled="state === constants.LOADING"
                 :loading="state === constants.LOADING"
+                class="w-full py-[0.875rem]"
                 label="Save Changes"
                 variant="primary"
-                class="w-full py-[0.875rem]"
               />
             </transition>
           </div>
@@ -120,32 +109,25 @@
 </template>
 
 <script setup lang="ts">
-import { CREATE_BANK_DETAILS_RULE } from "~/lib/validation/rules";
 const props = defineProps<{ isEditable?: boolean }>();
-
 const profileStore = useProfileStore();
+const optionsStore = useOptionsStore();
 const { notify } = useNotification();
 
 const form = useWatchedForm({
-  monitor: profileStore.bankDetails,
+  monitor: profileStore.$profile?.address,
   fields: {
-    bankCode: "",
-    swiftCode: "",
-    bankName: "",
-    bankAddress: "",
-    accountNumber: "",
-    accountName: "",
-    currency: "",
+    postCode: "",
+    country: "",
+    language: "",
+    street: "",
+    state: "",
+    city: "",
   },
 });
 
-const { execute, validate, state, v$ } = useRequestState({
-  action: () => profileStore.updateBankInformation(form),
-  validation: {
-    config: { $autoDirty: true },
-    rule: tools.optionizeRule(CREATE_BANK_DETAILS_RULE),
-    form,
-  },
+const { execute, state } = useRequestState({
+  action: () => profileStore.updateAddress(form),
   onError(e) {
     notify({
       type: "error",
@@ -157,14 +139,10 @@ const { execute, validate, state, v$ } = useRequestState({
     notify({
       type: "success",
       title: "Update Successful",
-      text: "Your payment information has been updated",
+      text: "Your address information has been updated",
     });
   },
 });
-
-function proceed() {
-  validate().then(() => execute());
-}
 </script>
 
 <style></style>

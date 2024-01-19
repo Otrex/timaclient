@@ -25,16 +25,32 @@ export default class Api {
   private store?: IStore;
 
   private ACCESS_TOKEN_KEY = "accessToken";
+  private REQUIRE_AUTH_HEADER = "x-tima-requires-auth";
   private RETRY_ON_STATUS = 401;
   private BASE_ROUTE = "/"
   private MAX_RETRY = 3;
 
   constructor() {
     this.instance = axios.create();
-    this.interceptors();
+    this.responseInterceptor();
+    this.requestInterceptor();
   }
 
-  public interceptors() {
+  public requestInterceptor() {
+    this.instance.interceptors.request.use((config) => {
+      const requiresAuth = config.headers[this.REQUIRE_AUTH_HEADER];
+      if (!requiresAuth) return config;
+
+      console.log("entererd");
+
+
+      const accessToken = this.getStoreData(this.ACCESS_TOKEN_KEY);
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+      return config;
+    });
+  }
+
+  public responseInterceptor() {
     let retries = 0;
     this.instance.interceptors.response.use(null, (error) => {
       if (!this.handle401) return Promise.reject(error);
@@ -108,14 +124,12 @@ export default class Api {
   public async request<R, T = any>(options: IRequestOptions<T>) {
     try {
       const { requireAuth, ...axiosOptions } = options
-      const accessToken = this.getStoreData(this.ACCESS_TOKEN_KEY);
+
       const res = await this.instance.request<R>({
         ...axiosOptions,
         headers: {
           ...axiosOptions.headers,
-          ...(requireAuth && accessToken ? {
-            Authorization: `Bearer ${accessToken}`,
-          } : {})
+          [this.REQUIRE_AUTH_HEADER]: !!requireAuth,
         }
       });
       return res.data;

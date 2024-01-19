@@ -77,6 +77,9 @@ const tabMap = {
   [constants.BRAND_INFORMATION]: resolveComponent(
     "DashboardSettingBrandInformation"
   ),
+  [constants.ADDRESS_INFORMATION]: resolveComponent(
+    "DashboardSettingAddressInformation"
+  ),
   [constants.PAYMENT_INFORMATION]: resolveComponent(
     "DashboardSettingPaymentInformation"
   ),
@@ -90,7 +93,7 @@ const tabMap = {
     "DashboardSettingPersonalInformation"
   ),
   [constants.NOTIFICATION_SETTINGS_INFLUENCER]: resolveComponent(
-    "LazyDashboardSettingNotificationSettingsInfluencer"
+    "DashboardSettingNotificationSettingsInfluencer"
   ),
 };
 
