@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden h-screen">
-    <AppLoader />
+    <NuxtLoadingIndicator color="red" :duration="500" />
     <NuxtPage />
   </div>
 </template>

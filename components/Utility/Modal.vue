@@ -3,7 +3,6 @@
     <div
       :class="[
         'fixed top-0 backdrop-color flex left-0 w-full h-screen z-[70000000]',
-        position,
       ]"
       :style="backdropColor"
       v-show="backdropState"

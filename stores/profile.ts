@@ -4,6 +4,7 @@ type IState = {
   bankDetails: Core.BankDetails | null,
   profile: Core.ProfileInfo | null
   address: Core.Address | null,
+  industries: string[]
 }
 
 type GetterProfile = Core.User & {
@@ -14,6 +15,7 @@ type GetterProfile = Core.User & {
   address: Core.Address | null,
   notificationSetting: Core.NotificationSetting | null,
   bankDetails: Core.BankDetails | null,
+  industries: string[]
 }
 
 export const useProfileStore = defineStore('profile', {
@@ -21,6 +23,7 @@ export const useProfileStore = defineStore('profile', {
     profile: null,
     address: null,
     bankDetails: null,
+    industries: []
   }),
   getters: {
     $profile: (state): GetterProfile | null => {
@@ -34,6 +37,7 @@ export const useProfileStore = defineStore('profile', {
         ...profile,
         ...state.profile,
         address: state.address,
+        industries: state.industries,
         bankDetails: state.bankDetails,
         notificationSetting: JSON.parse(notification),
         totalFullName: !isInfluencer
@@ -59,6 +63,7 @@ export const useProfileStore = defineStore('profile', {
         this.getUserDetails(),
         this.getBankDetails(),
         this.getAddressDetails(),
+        this.getUserIndustries(),
       ]);
     },
 
@@ -74,9 +79,16 @@ export const useProfileStore = defineStore('profile', {
       }
     },
 
+    async getUserIndustries() {
+      const response = await this.$api.getUserIndustries();
+      if (response?.data) this.$patch({ industries: response.data?.selectedIndustries })
+    },
+
     async getBankDetails() {
-      const response = await this.$api.getBankDetails();
-      if (response?.data) this.$patch({ bankDetails: response.data })
+      if (this.profile?.profile.userType === constants.INFLUENCER) {
+        const response = await this.$api.getBankDetails();
+        if (response?.data) this.$patch({ bankDetails: response.data })
+      }
     },
 
     async getAddressDetails() {
@@ -86,6 +98,13 @@ export const useProfileStore = defineStore('profile', {
 
     async updatePassword(payload: Payload.UpdatePassword) {
       return this.$api.updatePassword(payload);
+    },
+
+    async updateIndustries(payload: string[]) {
+      const response = await this.$api.updateIndustries(payload);
+      if (response?.data) {
+        await this.getUserDetails();
+      }
     },
 
     async updateNotificationSettings(

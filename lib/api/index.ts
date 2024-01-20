@@ -184,6 +184,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getUserIndustries() {
+    return this.request<Response.UpdateIndustries>({
+      url: "/agency/v1/user/industry",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async updatePersonalProfile(data: Payload.InfluencerPersonalProfile) {
     return this.request<Response.InfluencerCompleteProfile>({
       url: "/user/v1/profile/influencer",
@@ -218,6 +226,25 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       data
     });
+  }
+
+  async deactivateUser() {
+    return this.request({
+      url: "/user/v1/account/deactivate",
+      requireAuth: true,
+      method: "PUT"
+    });
+  }
+
+  async updateIndustries(data: string[]) {
+    return this.request<Response.UpdateIndustries>({
+      url: "/agency/v1/user/industry",
+      method: "PUT",
+      requireAuth: true,
+      data: {
+        selectedIndustries: data
+      }
+    })
   }
 
   async updateInfluencerNotificationSetting(data: Payload.NotificationSettings) {

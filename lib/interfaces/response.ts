@@ -31,6 +31,12 @@ export interface GetCampaign extends IResponse<{
   createdOn: null;
 }> { }
 
+export interface UpdateIndustries extends IResponse<{
+  userPublicId: string;
+  selectedIndustries: string[];
+  createdOn: Date;
+}> { }
+
 
 export interface GetAddress extends IResponse<Address> { }
 export interface UpdatePassword extends IResponse<string> { }

@@ -8,7 +8,11 @@
         <div class="flex items-center w-full">
           <div class="flex gap-[1.75rem]">
             <div>
-              <UiInputSwitch v-model="notice" size="lg" />
+              <UiInputSwitch
+                :disabled="!props.isEditable"
+                v-model="deactivateUser"
+                size="lg"
+              />
             </div>
             <div class="flex flex-col">
               <span class="mb-[0.5625rem]"
@@ -22,48 +26,37 @@
           </div>
         </div>
       </div>
-
-      <div class="flex md:flex-row flex-col">
-        <div class="max-w-[22.125rem] w-full">&nbsp;</div>
-        <div class="flex items-center w-full">
-          <div class="mb-[1.875rem] mt-[7.625rem] w-full">
-            <UiButtonDefault
-              label="Save Changes"
-              variant="primary"
-              class="w-full py-[0.875rem]"
-            />
-          </div>
-        </div>
-      </div>
     </div>
+
+    <UiModalConfirmAction
+      ref="confirm"
+      @onapprove="approveDeactivation"
+      :loading="state === constants.LOADING"
+      @oncancel="deactivateUser = false"
+    >
+      <template #title> Confirm Deactivation </template>
+      <template #body>
+        Are you you want to proceed to delete your account?.
+      </template>
+    </UiModalConfirmAction>
   </div>
 </template>
 
 <script setup lang="ts">
-import { UPDATE_PASSWORD_RULE } from "~/lib/validation/rules";
-
-const notice = ref();
 const props = defineProps<{ isEditable?: boolean }>();
-const form = reactive({
-  currentPassword: "",
-  confirmPassword: "",
-  newPassword: "",
-});
 
-const profileStore = useProfileStore();
 const { notify } = useNotification();
+const deactivateUser = ref(false);
+const api = useAPI();
 
-const { execute, validate, state, v$ } = useRequestState({
-  action: () =>
-    profileStore.updatePassword({
-      currentPassword: form.currentPassword,
-      newPassword: form.newPassword,
-    }),
-  validation: {
-    config: { $autoDirty: true },
-    rule: UPDATE_PASSWORD_RULE(form),
-    form,
-  },
+const confirm = ref<{
+  open: () => void;
+  close: () => void;
+  modelState: Ref<boolean>;
+}>();
+
+const { execute, state } = useRequestState({
+  action: async () => api.deactivateUser(),
   onError(e) {
     notify({
       type: "error",
@@ -74,11 +67,27 @@ const { execute, validate, state, v$ } = useRequestState({
   onSuccess() {
     notify({
       type: "success",
-      title: "Update Successful",
-      text: "Password updated successfully",
+      title: "Account Deactivated",
+      text: "Your Account has been deactivated. To use TIMA, Please create a new Account",
     });
   },
 });
+
+watch(deactivateUser, () => {
+  if (deactivateUser.value) {
+    confirm.value!.open();
+  }
+});
+
+function approveDeactivation() {
+  execute().then(() => {
+    confirm.value!.close();
+    useAuthStore().logout();
+    setTimeout(() => {
+      navigateTo("/");
+    }, 2000);
+  });
+}
 </script>
 
 <style></style>

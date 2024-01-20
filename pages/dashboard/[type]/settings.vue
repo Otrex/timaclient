@@ -92,6 +92,9 @@ const tabMap = {
   [constants.PERSONAL_INFORMATION]: resolveComponent(
     "DashboardSettingPersonalInformation"
   ),
+  [constants.INDUSTRY_INFORMATION]: resolveComponent(
+    "DashboardSettingIndustryInformation"
+  ),
   [constants.NOTIFICATION_SETTINGS_INFLUENCER]: resolveComponent(
     "DashboardSettingNotificationSettingsInfluencer"
   ),

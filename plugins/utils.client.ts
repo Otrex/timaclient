@@ -15,7 +15,6 @@ import Vue3Toastify, { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 export default defineNuxtPlugin(({ vueApp: app }) => {
-
   // Register chart plugin
   Chart.register(
     ChoroplethController, GeoFeature,
@@ -24,7 +23,6 @@ export default defineNuxtPlugin(({ vueApp: app }) => {
     ArcElement, BarElement,
     Title, Tooltip, Legend
   );
-
   // Inject Toastify
   app.use(Vue3Toastify, { autoClose: 1000 });
 

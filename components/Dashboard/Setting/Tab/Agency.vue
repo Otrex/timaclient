@@ -10,14 +10,14 @@
       label="Address Information"
       :name="constants.ADDRESS_INFORMATION"
     />
-    <!--<UtTabMenuItem
-      label="Payment Information"
-      :name="constants.PAYMENT_INFORMATION"
-    /> -->
     <UtTabMenuItem
+      label="Industry Information"
+      :name="constants.INDUSTRY_INFORMATION"
+    />
+    <!-- <UtTabMenuItem
       label="Notification Settings"
       :name="constants.NOTIFICATION_SETTINGS"
-    />
+    /> -->
     <UtTabMenuItem
       label="Account Deactivation"
       :name="constants.ACCOUNT_DEACTIVATION"
