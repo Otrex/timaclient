@@ -1,6 +1,6 @@
 <template>
   <div
-    class="inline-flex items-center bg-slate-100 gap-[0.5rem] px-[0.875rem] py-[0.5625rem] rounded-md hover:bg-slate-50 dark:hover:bg-slate-600 active:ring-4 active:ring-slate-200 flex-row"
+    class="inline-flex items-center bg-slate-100 dark:bg-slate-800 gap-[0.5rem] px-[0.875rem] py-[0.5625rem] rounded-md hover:bg-slate-50 dark:hover:bg-slate-600 active:ring-4 active:ring-slate-200 flex-row"
   >
     <div class="flex items-center gap-[0.5rem]">
       <div>
@@ -16,7 +16,7 @@
       </div>
       <div class="select-none whitespace-nowrap">
         <div>{{ props.name.trim() || "New Account" }}</div>
-        <div class="text-xs">{{ props.type }}</div>
+        <!--<div class="text-xs">{{ props.type }}</div>-->
       </div>
     </div>
     <div>

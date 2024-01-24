@@ -94,6 +94,13 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCampaignsOptions() {
+    return this.request<Response.GetCampaignOptions>({
+      url: "/agency/v1/settings/audience",
+      requireAuth: true,
+      method: "GET",
+    })
+  }
 
   async brandIndustryUpdate(
     publicId: string,
@@ -160,6 +167,25 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+
+  async getBrandCampaigns(payload: Payload.GetBrandCampaigns) {
+    const { name, ...data } = payload;
+
+    console.log(this.querify(
+      `/agency/v1/campaigns/brand/${name}`,
+      data
+    ),);
+
+    return this.request<Response.GetCampaigns>({
+      url: this.querify(
+        `/agency/v1/campaigns/brand/${name}`,
+        data
+      ),
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
   async getUserProfile() {
     return this.request<Response.GetUserProfile>({
       url: '/user/v1/profile',
@@ -199,6 +225,14 @@ export default class TimaAPI extends UploadAPI {
       method: "PUT",
       data
     })
+  }
+
+  async updateProfilePictures(fileName: string) {
+    return this.request<Response.GetUserProfile>({
+      url: `/user/v1/profile/picture/${fileName}`,
+      requireAuth: true,
+      method: 'PUT',
+    });
   }
 
   async updatePassword(data: Payload.UpdatePassword) {
@@ -261,6 +295,15 @@ export default class TimaAPI extends UploadAPI {
       url: "/user/v1/profile/brand",
       requireAuth: true,
       method: "PUT",
+      data
+    })
+  }
+
+  async createCampaign(data: Payload.CreateCampaign) {
+    return this.request<Response.GetCampaign>({
+      url: "/agency/v1/campaigns",
+      requireAuth: true,
+      method: "POST",
       data
     })
   }

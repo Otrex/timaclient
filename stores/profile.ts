@@ -171,6 +171,11 @@ export const useProfileStore = defineStore('profile', {
 
     },
 
+    async updateProfilePicture(picture: string) {
+      const response = await this.$api.updateProfilePictures(picture);
+      await this.getUserDetails();
+    },
+
     async updateAddress(
       payload: Payload.UpdateAddress['addressRecord']
     ) {

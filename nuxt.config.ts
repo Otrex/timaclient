@@ -4,8 +4,8 @@ import path from 'path'
 
 export default defineNuxtConfig({
   ssr: false,
+  spaLoadingTemplate: "app.splash.html",
   devtools: { enabled: true },
-  spaLoadingTemplate: "./app.splash.html",
   app: {
     head: {
       charset: 'utf-8',

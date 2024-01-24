@@ -1,6 +1,6 @@
 <template>
   <div
-    class="max-w-[23.5rem] rounded-[1.25rem] h-full p-[1.25rem] border border-solid border-[#E7E7E7]"
+    class="max-w-[23.5rem] rounded-[1.25rem] h-full p-[1.25rem] border border-solid border-[#E7E7E7] dark:border-slate-500"
   >
     <div
       class="rounded-[1.25rem] mb-[1.25rem] overflow-hidden h-[12.9375rem] relative"
@@ -27,19 +27,23 @@
       <span class="text-[--clr-grey-300] text-[0.8125rem]">{{
         props.category
       }}</span>
-      <p class="text-[--clr-grey-400] mt-[0.5625rem] nl mb-[1rem]">
+      <p
+        class="text-[--clr-grey-400] dark:text-slate-50 mt-[0.5625rem] nl mb-[1rem]"
+      >
         {{ props.description }}
       </p>
       <div>
-        <p class="text-[--clr-grey-500] nl mb-[0.75rem]">
+        <p class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]">
           Budget:
-          <span class="text-black">{{
+          <span class="text-black dark:text-slate-50">{{
             tools.formatCurrency(props.budget, "&#8358;")
           }}</span>
         </p>
-        <p class="text-[--clr-grey-500] nl mb-[0.75rem]">
+        <p class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]">
           Deadline:
-          <span class="text-black">{{ tools.formatDate(props.deadline) }}</span>
+          <span class="text-black dark:text-slate-50">{{
+            tools.formatDate(props.deadline)
+          }}</span>
         </p>
       </div>
       <div v-if="props.completion === 100">

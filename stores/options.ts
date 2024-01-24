@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import type { Bank, Country, Industry } from "~/lib/interfaces/core";
+import type { GetCampaignOptions } from "~/lib/interfaces/response";
 
 interface IState {
   countries: Country[];
   industries: Industry[];
+  campaignOptions?: GetCampaignOptions['data'];
   banks: Bank[];
 }
 
@@ -12,12 +14,14 @@ export const useOptionsStore = defineStore("options", {
     return {
       countries: [],
       industries: [],
-      banks: []
+      campaignOptions: undefined,
+      banks: [],
     };
   },
 
   getters: {
     $banks: (state) => state.banks,
+    $campaignOptions: (state) => state.campaignOptions || [],
     $industries: (state) => state.industries.map(industry => industry.name),
     $countries: (state) => tools.generationOptions(state.countries.map(country => country.name)),
     $getCurrency: (state) => (countryName: string) => state.countries.find(country => country.name === countryName)?.currency,
@@ -28,9 +32,12 @@ export const useOptionsStore = defineStore("options", {
     async loadDashboardOptions() {
       const profileStore = useProfileStore();
       if (profileStore.profile) return;
+
       await Promise.all([
         profileStore.getProfile(),
         this.getCountries(),
+        this.getIndustries(),
+        this.getCampaignOptions(),
       ]);
     },
     async loadRegisterOptions() {
@@ -48,6 +55,13 @@ export const useOptionsStore = defineStore("options", {
       })
     },
 
+    async getCampaignOptions() {
+      const response = await this.$api.getCampaignsOptions();
+      this.$patch({
+        campaignOptions: response.data
+      })
+    },
+
     async getIndustries() {
       const response = await this.$api.getIndustries();
       this.$patch({
@@ -59,6 +73,13 @@ export const useOptionsStore = defineStore("options", {
       const response = await this.$api.getBanks();
       this.$patch({
         banks: response.data
+      })
+    },
+
+    async getCampaignsOptions() {
+      const response = await this.$api.getCampaignsOptions();
+      this.$patch({
+
       })
     }
   },

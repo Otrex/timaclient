@@ -198,3 +198,50 @@ export const UPDATE_BRAND_INFO_RULE = {
     required: helpers.withMessage("Please enter a website url", required),
   },
 }
+
+export const CREATE_CAMPAIGN_INFLUENCERS = {
+  influencerCategory: {
+    required: helpers.withMessage("Please select your influencer category", (data: string[]) => data.length > 0),
+  },
+  audienceGender: {
+    required: helpers.withMessage("Please select your audience gender", (data: string[]) => data.length > 0),
+  },
+  audienceAgeGroup: {
+    required: helpers.withMessage("Please select your audience age group", (data: string[]) => data.length > 0),
+  },
+  audienceLocation: {
+    required: helpers.withMessage("Please select your audience location", (data: string[]) => data.length > 0),
+  },
+  audienceSize: {
+    required: helpers.withMessage("Please select your audience size", (data: string[]) => data.length > 0),
+  }
+}
+
+export const CREATE_CAMPAIGN_OVERVIEW = {
+  name: {
+    required: helpers.withMessage("Please enter a valid campaign name", required),
+  },
+
+  socialMediaPlatforms: {
+    required: helpers.withMessage("Please select your social media platforms", (data: string[]) => data.length > 0),
+  },
+
+  briefDescription: {
+    required: helpers.withMessage("Please enter a valid campaign description", required),
+  },
+
+  plannedBudget: {
+    required: helpers.withMessage("Please enter a valid campaign budget", required),
+    max: helpers.withMessage("Please enter a valid amount of budget", (data: number) => +data > 0)
+  },
+
+  costPerPost: {
+    required: helpers.withMessage("Please enter a valid campaign budget", required),
+    max: helpers.withMessage("Please enter a valid amount of budget", (data: number) => +data > 0)
+  },
+
+  website: {
+    url: helpers.withMessage("Please enter a valid url", helpers.regex(/^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$/)),
+    required: helpers.withMessage("Please enter a website url", required),
+  },
+}

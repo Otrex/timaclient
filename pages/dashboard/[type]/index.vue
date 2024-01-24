@@ -1,104 +1,80 @@
 <template>
   <div class="p-[1.75rem]">
-    <div class="flex justify-end">
-      <!-- <div>
-        <UiButtonDefault
-          p="0.625rem"
-          class="mr-[0.75rem]"
-          variant="info-outline"
-          label="Edit publications"
-        />
-        <UiButtonDefault variant="info" label="Add Publications" p="0.625rem" />
-      </div> -->
-    </div>
-    <section class="mt-[0.75rem]">
-      <div>
-        <img
-          src="~/assets/img/banner.png"
-          alt="campaign banner"
-          class="w-full"
-        />
-      </div>
-
-      <div class="flex flex-row justify-between mt-[1.125rem]">
-        <div>
-          <h3>Nike Campaign</h3>
-          <div class="flex gap-[2rem]">
-            <p class="sm">34 publications</p>
-            <p class="sm">34 Influencers</p>
-            <p class="sm">Date posted: 10th march, 2023</p>
-          </div>
+    <h2 class="text-[1.8rem] mt-[1.5rem] mb-[1.375rem]">Your Campaigns</h2>
+    <div class="flex flex-wrap gap-[1.0625rem]">
+      <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
+        <div class="text-center">
+          <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
+          Fetching Your Campaigns
         </div>
-        <div>
-          <button
-            @click="openShare = true"
-            class="bg-[#111] text-white rounded-md p-[0.625rem]"
+      </template>
+      <template v-else-if="campaigns.length === 0">
+        <div>No Campaigns</div>
+      </template>
+      <template v-else>
+        <transition-group name="list" tag="ul">
+          <NuxtLink
+            v-for="campaign in campaigns"
+            :key="campaign.publicId"
+            :to="{
+              params: { id: campaign.publicId },
+              name: 'Campaign',
+            }"
           >
-            Share Campaign
-          </button>
-        </div>
-      </div>
-      <p class="nl mt-[0.75rem] text-[#696969] dark:text-slate-100">
-        Lorem ipsum dolor sit amet consectetur. Hendrerit varius tristique
-        scelerisque purus. Purus mauris lacus volutpat convallis elementum
-        fringilla nam vulputate phasellus. Volutpat pulvinar ac dolor mauris
-        mauris consequat mauris nibh. Tincidunt tincidunt sed eget natoque in
-        turpis neque auctor ullamcorper.
-      </p>
-
-      <div class="mt-[1.625rem]">
-        <UiTab
-          :menu-items="tabs"
-          class="w-full"
-          @change="tabChange"
-          :default-tab="constants.CAMPAIGN_INFLUENCERS"
-        />
-      </div>
-    </section>
-
-    <UtModal
-      m-width="31.25rem"
-      backdrop-color="rgba(0,0,0,.3)"
-      v-model:state="openShare"
-    >
-      <UiModalShare />
-    </UtModal>
+            <DashboardCampaignCard
+              :image="campaign.creative.thumbnail"
+              :brand="campaign.overview.name"
+              :budget="campaign.overview.plannedBudget"
+              :category="campaign.creative.creativeTone"
+              :description="campaign.overview.briefDescription"
+              :deadline="campaign.creative.endDate"
+              :completion="0"
+            />
+          </NuxtLink>
+        </transition-group>
+      </template>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Core } from "~/lib/interfaces";
+
 definePageMeta({
-  name: "Campaign",
+  name: "BrandCampaign",
 });
 
-const openShare = ref(false);
-
-const tabs = [
-  {
-    name: constants.CAMPAIGN_ANALYTICS,
-    component: resolveComponent("LazyDashboardCampaignUserAnalytics"),
-    label: "Analytics",
+const api = useAPI();
+const campaigns = ref<Core.Campaign[]>([]);
+const profileStore = useProfileStore();
+const getCampaigns = useRequestState({
+  action: async () => {
+    if (!profileStore.$profile?.companyName) return;
+    return api.getBrandCampaigns({
+      name: profileStore.$profile?.companyName!,
+      size: 10,
+      page: 0,
+    });
   },
-  {
-    name: constants.CAMPAIGN_INFLUENCERS,
-    component: resolveComponent("LazyDashboardCampaignUserInfluencers"),
-    label: "Influencers",
+  onSuccess: (response) => {
+    if (!response) return;
+    campaigns.value = response.data;
   },
-  {
-    name: constants.CAMPAIGN_PAYMENT,
-    component: resolveComponent("LazyDashboardCampaignUserPayment"),
-    label: "Payments",
-  },
-];
+});
 
-const currentTab = ref();
-
-function tabChange(tab: string) {
-  currentTab.value = tab;
-}
-
-const src =
-  "https://s3-alpha-sig.figma.com/img/8fe6/8571/c8e53c81e59e8694df607a6bf3018436?Expires=1703462400&Signature=FJ6hEMq~uLydgv0fRwBCDCdZnGbOawNY1DNYkKlF2LO2TygXq7C9S6Rc9GYprDWaW83ZAhCIxJKPxKkUD6afauKYoV1hrUpsDpIH0n43Ntu9C6YhmOYyH-d2C7Qu22q0VSK-soA6qp3gJ6MxYjuUIujcu-K1q9MVojFOQijGsqTXVLCZKIpOx3nrIR4C-wcpCRyM~MHIX9wphPH9LJRe-SSTxYPxjLt9EpOYHhKjuQOUyL~tz4fYEHQek2pc21yZyqjigMq9an9i1kVnsS6KnNsE7cRZ9DOtj62gYnG8DeIK0sYWnNDmOBFhKb2JvApSOUXDphrh23JGgtX4e~t~DQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4";
+onMounted(() => {
+  getCampaigns.execute();
+});
 </script>
 
-<style></style>
+<style scoped>
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>

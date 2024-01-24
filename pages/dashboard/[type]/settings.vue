@@ -14,6 +14,8 @@
 
         <UiInputOverlayUpload
           type="pics"
+          v-model:name="form.profilePicture"
+          @update:url="execute"
           v-show="isEditable"
           class="absolute inset-0 rounded-full"
         >
@@ -68,7 +70,30 @@ definePageMeta({
 const route = useRoute();
 const isEditable = ref(false);
 const profileStore = useProfileStore();
+const { notify } = useNotification();
 const profile = computed(() => profileStore.$profile);
+
+const form = reactive({
+  profilePicture: "",
+});
+
+const { state, execute } = useRequestState({
+  action: () => profileStore.updateProfilePicture(form.profilePicture),
+  onSuccess(_) {
+    notify({
+      type: "success",
+      title: "Update successful",
+      text: "Profile picture updated",
+    });
+  },
+  onError(error) {
+    notify({
+      type: "error",
+      title: "Upload failed",
+      text: "Profile picture failed",
+    });
+  },
+});
 
 const tabMap = {
   [constants.PASSWORD]: resolveComponent(

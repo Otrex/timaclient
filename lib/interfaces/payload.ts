@@ -1,5 +1,6 @@
 
 import type { UserType } from "../enums";
+import type * as Core from "./core";
 
 export interface CreateUser {
   username: string;
@@ -123,6 +124,9 @@ export interface UpdateBrandInformation {
   email: string;
 }
 
+
+export type CreateCampaign = Omit<Core.Campaign, 'publicId' | 'status' | 'createdOn'>;
+
 export type GetCampaigns = {
   type: 'filter',
   category: string;
@@ -133,4 +137,10 @@ export type GetCampaigns = {
   type: 'recommendation'
 } | {
   type: 'top'
+}
+
+export type GetBrandCampaigns = {
+  name: string;
+  page?: number;
+  size?: number;
 }

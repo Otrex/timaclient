@@ -15,19 +15,23 @@
     </div>
     <div :class="props.tabClass">
       <transition mode="out-in">
-        <component :is="currentComponent?.component" />
+        <component :is="currentComponent?.component" :bus="props.bus" />
       </transition>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { UseEventBusReturn } from "@vueuse/core";
+
 type Routes = Partial<keyof typeof constants>;
 const route = useRoute();
 const props = defineProps<{
   tabClass?: string;
   routeKey?: string;
   defaultTab: string;
+  bus?: UseEventBusReturn<string, any>;
+  ref?: any;
   menuItems: {
     name: string;
     label: string;

@@ -1,11 +1,22 @@
 <template>
   <div class="inline-block transition-all">
+    <transition>
+      <div
+        v-show="props.errorMessage"
+        class="text-red-600 text-left text-[0.875rem]"
+      >
+        {{ props.errorMessage }}
+      </div>
+    </transition>
     <select
-      class="px-[1.5rem] py-[0.75rem] w-full dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]"
+      :class="[
+        props.errorMessage && '!border-red-600',
+        'px-[1.5rem] py-[0.75rem] w-full dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
+      ]"
       v-model="selected"
     >
-      <option v-if="props.placeholder" disabled selected class="text-[#999999]">
-        {{ props.placeholder }}
+      <option disabled selected class="text-[#999999]">
+        {{ props.placeholder || "-- Select --" }}
       </option>
       <option
         v-for="(option, idx) in shallowOptions"
@@ -43,11 +54,19 @@ const props = defineProps<{
   options: { label: string; value: string }[];
   placeholder?: string;
   modelValue?: string[];
+  errorMessage?: string;
 }>();
 
 // const selected
 const selected = ref();
-const selections = ref<string[]>([]);
+const selections = computed({
+  get() {
+    return props.modelValue || [];
+  },
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 const shallowOptions = computed(() =>
   props.options.filter((option) => !selections.value.includes(option.value))
 );
@@ -60,6 +79,7 @@ watch(selected, () => {
 
 const removeSelection = (index: number) => {
   selections.value.splice(index, 1);
+  emits("update:modelValue", selections.value);
 };
 </script>
 

@@ -9,7 +9,11 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :options="tools.generationOptions(['test', 'test2'])"
+          :error-message="
+            v$.influencerCategory?.$errors[0]?.$message.toString()
+          "
+          v-model="campaignStore.influencer.influencerCategory"
+          :options="tools.generationOptions(industries)"
         />
       </div>
     </div>
@@ -23,7 +27,9 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :options="tools.generationOptions([])"
+          :error-message="v$.audienceSize?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.influencer.audienceSize"
+          :options="tools.generationOptions(options?.size || [])"
         />
       </div>
     </div>
@@ -37,7 +43,9 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :options="tools.generationOptions([])"
+          :error-message="v$.audienceGender?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.influencer.audienceGender"
+          :options="tools.generationOptions(options?.gender || [])"
         />
       </div>
     </div>
@@ -51,7 +59,9 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :options="tools.generationOptions([])"
+          v-model="campaignStore.influencer.audienceAgeGroup"
+          :error-message="v$.audienceAgeGroup?.$errors[0]?.$message.toString()"
+          :options="tools.generationOptions(options?.ageGroup || [])"
         />
       </div>
     </div>
@@ -64,15 +74,53 @@
       </div>
       <div class="md:w-3/4">
         <UiInputSelectMulti
+          v-model="campaignStore.influencer.audienceLocation"
+          :error-message="v$.audienceLocation?.$errors[0]?.$message.toString()"
           class="w-full"
-          :options="tools.generationOptions([])"
+          :options="locations"
         />
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { UseEventBusReturn } from "@vueuse/core";
+import type { Core } from "~/lib/interfaces";
+import type { UnPartial } from "~/lib/interfaces/utils";
+
+const props = defineProps<{
+  bus?: UseEventBusReturn<string, any>;
+}>();
+
+const rules = useValidationRules();
+const optionsStore = useOptionsStore();
+const campaignStore = useCampaignStore();
+
+const options = computed(() => optionsStore.$campaignOptions[0]);
+const industries = computed(() => optionsStore.$industries);
+const locations = computed(() => optionsStore.$countries);
+
+const v$ = useValidator(
+  rules.CREATE_CAMPAIGN_INFLUENCERS,
+  campaignStore.influencer as UnPartial<Core.Campaign["influencer"]>,
+  { $autoDirty: true }
+);
+
+async function proceed() {
+  const v = await v$.value.$validate();
+  if (!v) return;
+  navigateTo({
+    query: {
+      tab: constants.BRAND_CREATIVE,
+    },
+  });
+}
+
+props.bus?.on(() => {
+  proceed();
+});
+</script>
 
 <style scoped>
 .tima__form {

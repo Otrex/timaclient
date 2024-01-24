@@ -9,6 +9,7 @@
         @input="update"
         :value="props.modelValue"
         :class="[
+          props.errorMessage && '!border-red-600',
           'pr-[6.4375rem]',
           $attrs.class,
           'px-[1.5rem] w-full py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
@@ -30,18 +31,25 @@
         </select>
       </div>
     </div>
-    <div v-if="props.errorMessage" class="mt-[0.625rem] text-[0.875rem]">
-      {{ props.errorMessage }}
-    </div>
+    <transition>
+      <div
+        v-if="props.errorMessage"
+        class="mt-[0.3125rem] text-red-600 text-[0.875rem]"
+      >
+        {{ props.errorMessage }}
+      </div>
+    </transition>
   </div>
 </template>
 <script lang="ts" setup>
 const props = defineProps<{
-  modelValue?: string;
+  modelValue?: string | number;
   passwordToggle?: boolean;
   errorMessage?: string;
   options: ReturnType<typeof tools.generationOptions>;
 }>();
+
+const attrs = useAttrs();
 
 const selection = ref(props.options[0].value);
 
@@ -50,7 +58,11 @@ const typeState = ref("password");
 const emits = defineEmits(["update:modelValue"]);
 
 function update(e: any) {
-  emits("update:modelValue", e.target.value);
+  if (attrs.type === "number")
+    emits(
+      "update:modelValue",
+      attrs.type === "number" ? +e.target.value : e.target.value
+    );
 }
 
 function togglePasswordVisibility() {

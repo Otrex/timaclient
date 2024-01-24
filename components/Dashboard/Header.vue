@@ -21,7 +21,11 @@
 
           <UiButtonDefault
             v-if="routeName === 'Campaign'"
-            @click="navigateTo('/dashboard/campaign/create')"
+            @click="
+              navigateTo({
+                name: 'CreateCampaign',
+              })
+            "
             label="+ New campaign"
             class="px-[1.125rem] py-[0.625rem]"
             variant="primary"
@@ -46,7 +50,16 @@
 
 <script setup lang="ts">
 const route = useRoute();
-const routeName = computed(() => tools.capitalize(route.name as string));
+
+const routeNameMap: Record<string, any> = {
+  CreateCampaign: "Campaign >>> Create a campaign",
+  BrandCampaign: "Campaign",
+};
+
+const routeName = computed(
+  () =>
+    routeNameMap[route.name as string] || tools.capitalize(route.name as string)
+);
 
 const profileStore = useProfileStore();
 const profile = computed(() => profileStore.$profile);

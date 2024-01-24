@@ -108,6 +108,9 @@ export type Rule = {
   [key: string]: any;
 };
 
+export type UnPartial<T> = {
+  [K in keyof T]-?: T[K];
+};
 
 export type RuleObject<T extends Record<string, Rule>> = {
   [K in keyof T]: Omit<T[K], 'required'>;

@@ -15,6 +15,9 @@ class ApiError extends Error {
     this.title = title === description ? "App Error" : title;
     this.description = description;
     this.__error = error;
+
+    console.error(error);
+
   }
 }
 

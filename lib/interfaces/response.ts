@@ -1,9 +1,6 @@
-import type {
-  Address, Authentication,
-  Bank, BankDetails, Country,
-  Creative, Industry, Influencer,
-  Overview, ProfileInfo, User
-} from "./core";
+
+
+import type * as Core from "./core";
 import type { IResponse } from "./utils";
 
 export interface CreateUser extends IResponse<{
@@ -11,25 +8,11 @@ export interface CreateUser extends IResponse<{
   publicId: string;
 }> { }
 
-export interface BankDetailUpdate extends IResponse<BankDetails> { }
+export interface BankDetailUpdate extends IResponse<Core.BankDetails> { }
 
-export interface GetCampaigns extends IResponse<{
-  publicId: string;
-  overview: Overview;
-  influencer: Influencer;
-  creative: Creative;
-  status: null;
-  createdOn: null;
-}[]> { }
+export interface GetCampaigns extends IResponse<Core.Campaign[]> { }
 
-export interface GetCampaign extends IResponse<{
-  publicId: string;
-  overview: Overview;
-  influencer: Influencer;
-  creative: Creative;
-  status: null;
-  createdOn: null;
-}> { }
+export interface GetCampaign extends IResponse<Core.Campaign> { }
 
 export interface UpdateIndustries extends IResponse<{
   userPublicId: string;
@@ -37,20 +20,20 @@ export interface UpdateIndustries extends IResponse<{
   createdOn: Date;
 }> { }
 
-
-export interface GetAddress extends IResponse<Address> { }
+export interface GetCampaignOptions extends IResponse<Core.CampaignOptions[]> { }
+export interface GetAddress extends IResponse<Core.Address> { }
 export interface UpdatePassword extends IResponse<string> { }
-export interface GetBankList extends IResponse<Bank[]> { }
+export interface GetBankList extends IResponse<Core.Bank[]> { }
 export interface GetSignedURL extends IResponse<string> { }
 export interface GenericStringRes extends IResponse<string> { }
-export interface SignIn extends IResponse<Authentication> { }
-export interface GetCountries extends IResponse<Country[]> { };
-export interface GetIndustry extends IResponse<Industry[]> { }
-export interface GetUserProfile extends IResponse<ProfileInfo> { };
-export interface BrandBasicInformation extends IResponse<User> { };
-export interface InfluencerCompleteProfile extends IResponse<User> { };
-export interface UpdateBrandInformation extends IResponse<User> { };
-export interface BrandAddressDocumentation extends IResponse<Address> { };
+export interface SignIn extends IResponse<Core.Authentication> { }
+export interface GetCountries extends IResponse<Core.Country[]> { };
+export interface GetIndustry extends IResponse<Core.Industry[]> { }
+export interface GetUserProfile extends IResponse<Core.ProfileInfo> { };
+export interface BrandBasicInformation extends IResponse<Core.User> { };
+export interface InfluencerCompleteProfile extends IResponse<Core.User> { };
+export interface UpdateBrandInformation extends IResponse<Core.User> { };
+export interface BrandAddressDocumentation extends IResponse<Core.Address> { };
 
 
 

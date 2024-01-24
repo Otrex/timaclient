@@ -13,7 +13,9 @@
           <DashboardNavigatorMenuItem
             label="Help/Support"
             icon="nav/help"
-            to="/dashboard/help"
+            :to="{
+              name: 'Help & Support',
+            }"
           />
           <DashboardNavigatorMenuItem label="Darkmode" icon="nav/darkmode">
             <template #right>
@@ -44,7 +46,7 @@
           />
           <DashboardNavigatorMenuItem
             @click="logout"
-            class="text-red-600"
+            :class="['text-red-600', loading && 'pulse-element']"
             label="Log Out"
             icon="nav/logout"
           />
@@ -58,6 +60,8 @@
 const colorMode = useColorMode();
 const authStore = useAuthStore();
 const mode = ref(true);
+
+const loading = ref(false);
 
 watch(mode, () => {
   if (mode.value) {
@@ -79,13 +83,34 @@ const toggleColor = () => {
   }
 };
 
-const logout = () => {
-  authStore.logout().then(() => {
-    console.log("Logging out...");
-
+const logout = async () => {
+  try {
+    loading.value = true;
+    await authStore.logout();
     navigateTo("/auth/login");
-  });
+  } catch (error: any) {
+    alert(error.message);
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 
-<style></style>
+<style>
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+.pulse-element {
+  animation: pulse 2s infinite;
+  border-radius: 10px;
+}
+</style>

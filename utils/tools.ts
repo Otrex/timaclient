@@ -1,3 +1,4 @@
+import { useTimeAgo } from "@vueuse/core";
 import type { IStore, Rule, RuleObject } from "~/lib/interfaces/utils";
 
 export default {
@@ -108,6 +109,40 @@ export default {
     }
   },
 
+  removeFields<T extends Record<string, any>, K extends keyof T>(obj: T, fieldsToRemove: K[]): Omit<T, K> {
+    const result = { ...obj };
+
+    fieldsToRemove.forEach((field) => {
+      if (field in result) {
+        delete result[field];
+      }
+    });
+
+    return result as Omit<T, K>;
+  },
+
+  isEmpty<T = any>(value: T, elementIsEmpty?: (element: T) => boolean): boolean {
+    if (value === null || value === undefined) {
+      return true;
+    }
+
+    if (Array.isArray(value)) {
+      return value.length === 0;
+    }
+
+    if (typeof value === 'object') {
+      return elementIsEmpty
+        ? elementIsEmpty(value)
+        : Object.keys(value).length === 0;
+    }
+
+    return false;
+  },
+
+  requestState: (d: ReturnType<typeof useRequestState> | any) => {
+    return d.state.value;
+  },
+
   generationOptions(options: string[]) {
     return options.map(option => ({ label: option, value: option }))
   },
@@ -126,6 +161,7 @@ export default {
     const formattedDate = date.toLocaleDateString('en-US', options);
     return formattedDate;
   },
+  timeAgo: useTimeAgo,
   formatCurrency(number: number, currencySymbol = "₦", decimalPlaces = 0) {
     if (typeof number !== 'number' || isNaN(number)) {
       throw new Error('Invalid input. Please provide a valid number.');

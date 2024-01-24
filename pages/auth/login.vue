@@ -1,5 +1,9 @@
 <template>
-  <NuxtLayout name="auth" hide-back>
+  <NuxtLayout
+    name="auth"
+    hide-back
+    @keypress.enter="validate().then(() => login())"
+  >
     <div>
       <div class="mb-[3.75rem]">
         <h1 class="text-[2.4375rem] mb-[1.5rem]">Log In</h1>
@@ -88,7 +92,7 @@ const {
             },
           }
         : {
-            name: "Campaign",
+            name: "BrandCampaign",
             params: {
               type: userType,
             },

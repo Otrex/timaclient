@@ -10,6 +10,17 @@ export interface Bank {
   type: string;
 }
 
+
+export interface Campaign {
+  publicId: string;
+  brandName: string,
+  overview: Overview;
+  influencer: Influencer;
+  creative: Creative;
+  status: null;
+  createdOn: null;
+}
+
 export interface NotificationSetting {
   campaignUpdateAlert: boolean;
   emailAlert: boolean;
@@ -42,6 +53,14 @@ export interface Address {
   postCode: string;
   country: string;
   createdOn: Date;
+}
+
+export interface CampaignOptions {
+  size: string[];
+  gender: string[];
+  ageGroup: string[];
+  location: string[];
+  monthlyIncome: string[];
 }
 
 export interface User {

@@ -36,8 +36,12 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isAuthenticated(state) {
       return !!state.authorization.accessToken
+    },
+    userType(state) {
+      return state.authorization.userType;
     }
   },
+
   actions: {
     updateStoreUserType(data: UserType) {
       this.$patch({
