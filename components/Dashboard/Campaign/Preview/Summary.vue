@@ -1,5 +1,5 @@
 <template>
-  <UiLayoutPreview title="PREVIEW THE CAMPAIGN">
+  <UiLayoutPreview title="PREVIEW THE CAMPAIGN" @next="props.bus?.emit()">
     <div>
       <p class="mb-[2.5rem]">
         Congrats on reaching the preview page! Your campaign is almost ready to
@@ -51,6 +51,14 @@
   </UiLayoutPreview>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { UseEventBusReturn } from "@vueuse/core";
+
+const props = defineProps<{
+  bus?: UseEventBusReturn<string, any>;
+}>();
+
+const campaignStore = useCampaignStore();
+</script>
 
 <style></style>

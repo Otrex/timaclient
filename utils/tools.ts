@@ -22,18 +22,6 @@ export default {
 
     return salt;
   },
-  monitor: () => {
-    const requestsStore = useRequestsStore();
-    let stopRequest: () => void;
-    return {
-      $start() {
-        stopRequest = requestsStore.startRequest()
-      },
-      $stop() {
-        stopRequest && stopRequest();
-      }
-    }
-  },
   json: {
     encode: (value: any) => {
       return JSON.stringify({ value });
@@ -59,6 +47,15 @@ export default {
     return url.replace(urlPattern, "");
   },
   resolveSocialsIcon(key: string) {
+    const availableIcons = [
+      "instagram-lg",
+      "tiktok-lg",
+      "youtube-lg"
+    ];
+
+    const el = availableIcons.find(e => e.includes(key.toLowerCase()))
+    if (el) return `socials/${el}`;
+
     const socialMap: Record<string, string> = {
       "Instagram": "socials/instagram-lg",
       "Tictok": "socials/tiktok-lg",

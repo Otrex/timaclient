@@ -31,7 +31,7 @@ definePageMeta({
                 },
               }
             : {
-                name: "Campaign",
+                name: "BrandCampaign",
                 params: {
                   type: userType,
                 },

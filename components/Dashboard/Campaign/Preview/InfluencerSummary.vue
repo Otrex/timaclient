@@ -32,7 +32,6 @@ const props = defineProps<{
 }>();
 
 const campaignStore = useCampaignStore();
-const emit = defineEmits(["next"]);
 </script>
 
 <style></style>

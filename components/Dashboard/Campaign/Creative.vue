@@ -5,9 +5,11 @@
         <label class="w-full block"> Payment type </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputSelectMulti
+        <UiInputSelect
           class="w-full"
-          :options="tools.generationOptions(['crypto', 'money transfer'])"
+          v-model="campaignStore.creative.paymentType"
+          :error-message="v$.paymentType?.$errors[0]?.$message.toString()"
+          :options="tools.generationOptions(optionsStore.$paymentMethods)"
         />
       </div>
     </div>
@@ -19,7 +21,12 @@
         </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputText class="max-w-[19.625rem] w-full" type="date" />
+        <UiInputText
+          v-model="campaignStore.creative.startDate"
+          :error-message="v$.startDate?.$errors[0]?.$message.toString()"
+          class="max-w-[19.625rem] w-full"
+          type="date"
+        />
       </div>
     </div>
 
@@ -30,7 +37,12 @@
         </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputText class="max-w-[19.625rem] w-full" type="date" />
+        <UiInputText
+          v-model="campaignStore.creative.endDate"
+          :error-message="v$.endDate?.$errors[0]?.$message.toString()"
+          class="max-w-[19.625rem] w-full"
+          type="date"
+        />
       </div>
     </div>
 
@@ -39,9 +51,11 @@
         <label class="w-full block whitespace-nowrap"> Content type </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputSelectMulti
+        <UiInputSelect
           class="w-full"
-          :options="tools.generationOptions(['test', 'test2'])"
+          v-model="campaignStore.creative.contentType"
+          :error-message="v$.contentType?.$errors[0]?.$message.toString()"
+          :options="tools.generationOptions(dataOptions?.contentType || [])"
         />
       </div>
     </div>
@@ -53,9 +67,13 @@
         </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputSelectMulti
+        <UiInputSelect
           class="w-full"
-          :options="tools.generationOptions(['Main page', 'story'])"
+          v-model="campaignStore.creative.contentPlacement"
+          :error-message="v$.contentPlacement?.$errors[0]?.$message.toString()"
+          :options="
+            tools.generationOptions(dataOptions?.contentPlacement || [])
+          "
         />
       </div>
     </div>
@@ -65,7 +83,12 @@
         <label class="w-full block whitespace-nowrap"> Creative brief </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputTextArea class="w-full h-[9.125rem]" placeholder="Brief" />
+        <UiInputTextArea
+          v-model="campaignStore.creative.creativeBrief"
+          :error-message="v$.creativeBrief?.$errors[0]?.$message.toString()"
+          class="w-full h-[9.125rem]"
+          placeholder="Brief"
+        />
       </div>
     </div>
 
@@ -75,7 +98,9 @@
       </div>
       <div class="md:w-3/4">
         <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+          v-model="campaignStore.creative.creativeTone"
+          :error-message="v$.creativeTone?.$errors[0]?.$message.toString()"
+          :options="tools.generationOptions(dataOptions?.creativeTone || [])"
           class="w-full"
           placeholder="-- Select --"
         />
@@ -87,7 +112,12 @@
         <label class="w-full block whitespace-nowrap"> Campaign rules </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputTextArea class="w-full h-[9.125rem]" placeholder="Brief" />
+        <UiInputTextArea
+          v-model="campaignStore.creative.rules"
+          :error-message="v$.rules?.$errors[0]?.$message.toString()"
+          class="w-full h-[9.125rem]"
+          placeholder="Brief"
+        />
       </div>
     </div>
 
@@ -98,6 +128,8 @@
       <div class="md:w-3/4">
         <UiInputText
           class="w-full"
+          v-model="campaignStore.creative.referenceLink"
+          :error-message="v$.referenceLink?.$errors[0]?.$message.toString()"
           placeholder="Sample content reference link"
         />
       </div>
@@ -113,7 +145,13 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :options="tools.generationOptions([])"
+          v-model="campaignStore.creative.awarenessObjective"
+          :error-message="
+            v$.awarenessObjective?.$errors[0]?.$message.toString()
+          "
+          :options="
+            tools.generationOptions(dataOptions?.objectiveAwareness || [])
+          "
         />
       </div>
     </div>
@@ -128,7 +166,13 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :options="tools.generationOptions(['tex', 'ben'])"
+          v-model="campaignStore.creative.acquisitionObjective"
+          :error-message="
+            v$.awarenessObjective?.$errors[0]?.$message.toString()
+          "
+          :options="
+            tools.generationOptions(dataOptions?.objectiveAcquisition || [])
+          "
         />
       </div>
     </div>
@@ -143,13 +187,18 @@
         </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputUpload class="w-full" />
+        <UiInputUpload
+          type="thumb"
+          :error-message="v$.thumbnail?.$errors[0]?.$message.toString()"
+          v-model:name="campaignStore.creative.thumbnail"
+          class="w-full"
+        />
       </div>
     </div>
 
     <div class="tima__form pb-[1.875rem]">
       <div class="md:w-1/4">
-        <UiInputSwitch size="lg" v-model="form.makeCampaignPublic" />
+        <UiInputSwitch size="lg" v-model="campaignStore.creative.visibility" />
       </div>
       <div class="md:w-3/4">
         <h6 class="text-[1.4375rem]">Make campaign public</h6>
@@ -164,8 +213,37 @@
 </template>
 
 <script setup lang="ts">
-const form = reactive({
-  makeCampaignPublic: false,
+import type { UseEventBusReturn } from "@vueuse/core";
+import type { UnPartial } from "~/lib/interfaces/utils";
+import type { Core } from "~/lib/interfaces";
+
+const props = defineProps<{
+  bus?: UseEventBusReturn<string, any>;
+}>();
+
+const rules = useValidationRules();
+const campaignStore = useCampaignStore();
+const optionsStore = useOptionsStore();
+
+const dataOptions = computed(() => optionsStore.$creativesOptions[0]);
+
+const v$ = useValidator(
+  rules.CREATE_CAMPAIGN_CREATIVE(campaignStore.creative),
+  campaignStore.creative as UnPartial<Core.Campaign["creative"]>,
+  { $autoDirty: true }
+);
+
+async function proceed() {
+  const v = await v$.value.$validate();
+  if (!v) return;
+
+  navigateTo({
+    query: { tab: constants.BRAND_PREVIEW },
+  });
+}
+
+props.bus?.on(() => {
+  proceed();
 });
 </script>
 

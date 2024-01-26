@@ -1,7 +1,7 @@
 <template>
   <div class="p-[1.75rem]">
     <h2 class="text-[1.8rem] mt-[1.5rem] mb-[1.375rem]">Your Campaigns</h2>
-    <div class="flex flex-wrap gap-[1.0625rem]">
+    <div class="grid grid-cols-3 gap-4">
       <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
         <div class="text-center">
           <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
@@ -12,26 +12,27 @@
         <div>No Campaigns</div>
       </template>
       <template v-else>
-        <transition-group name="list" tag="ul">
-          <NuxtLink
-            v-for="campaign in campaigns"
-            :key="campaign.publicId"
-            :to="{
-              params: { id: campaign.publicId },
-              name: 'Campaign',
-            }"
-          >
-            <DashboardCampaignCard
-              :image="campaign.creative.thumbnail"
-              :brand="campaign.overview.name"
-              :budget="campaign.overview.plannedBudget"
-              :category="campaign.creative.creativeTone"
-              :description="campaign.overview.briefDescription"
-              :deadline="campaign.creative.endDate"
-              :completion="0"
-            />
-          </NuxtLink>
-        </transition-group>
+        <NuxtLink
+          v-for="campaign in campaigns"
+          :key="campaign.publicId"
+          class="w-full"
+          :to="{
+            params: { id: campaign.publicId },
+            name: 'Campaign',
+          }"
+        >
+          <DashboardCampaignCard
+            class="w-full"
+            no-max-w
+            :image="campaign.creative.thumbnail"
+            :brand="campaign.overview.name"
+            :budget="campaign.overview.plannedBudget"
+            :category="campaign.creative.creativeTone"
+            :description="campaign.overview.briefDescription"
+            :deadline="campaign.creative.endDate"
+            :completion="0"
+          />
+        </NuxtLink>
       </template>
     </div>
   </div>

@@ -21,6 +21,14 @@ export interface Campaign {
   createdOn: null;
 }
 
+
+export interface PaymentMethod {
+  name: string;
+  type: string;
+  createdOn?: Date;
+}
+
+
 export interface NotificationSetting {
   campaignUpdateAlert: boolean;
   emailAlert: boolean;
@@ -89,7 +97,7 @@ export interface ProfileInfo {
 
 export interface Creative {
   paymentType: string;
-  startDate: Date;
+  startDate: Date | string;
   endDate: string;
   contentType: string;
   contentPlacement: string;

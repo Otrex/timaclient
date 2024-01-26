@@ -12,18 +12,28 @@ export default class UploadAPI extends Api {
     return { extension, name: filename };
   }
 
-  async getSignedUrl(file: File, type: "docs" | "pics") {
+  async getSignedUrl(file: File, type: Payload.UploadRequest['type']) {
     const fileMeta = this.extractFileMeta(file);
 
-    return type === "pics"
-      ? this.request<Response.GetSignedURL>({
-        url: `/user/v1/signed/url/pics/${fileMeta.name}/${fileMeta.extension}`,
-        method: "GET",
-      })
-      : this.request<Response.GetSignedURL>({
-        url: `/user/v1/signed/url/docs/${fileMeta.name}/${fileMeta.extension}`,
-        method: "GET",
-      })
+    switch (type) {
+      case "pics":
+        return this.request<Response.GetSignedURL>({
+          url: `/user/v1/signed/url/pics/${fileMeta.name}/${fileMeta.extension}`,
+          method: "GET",
+        })
+
+      case "thumb":
+        return this.request<Response.GetSignedURL>({
+          url: `/agency/v1/campaigns/signed/url/thumbnail/${fileMeta.name}/${fileMeta.extension}`,
+          method: "GET",
+        })
+    
+      default:
+        return this.request<Response.GetSignedURL>({
+          url: `/user/v1/signed/url/docs/${fileMeta.name}/${fileMeta.extension}`,
+          method: "GET",
+        })
+    }
   }
 
   async upload(

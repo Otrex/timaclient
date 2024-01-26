@@ -210,6 +210,22 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCreativesOptions() {
+    return this.request<Response.GetCreativesOptions>({
+      url: "/agency/v1/settings/creative",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getPaymentMethods() {
+    return this.request<Response.GetPaymentMethods>({
+      url: "/payment/v1/methods/_public",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async getUserIndustries() {
     return this.request<Response.UpdateIndustries>({
       url: "/agency/v1/user/industry",
@@ -281,7 +297,9 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async updateInfluencerNotificationSetting(data: Payload.NotificationSettings) {
+  async updateInfluencerNotificationSetting(
+    data: Payload.NotificationSettings
+  ) {
     return this.request<Response.GenericStringRes>({
       url: "/agency/v1/settings/toggle",
       requireAuth: true,

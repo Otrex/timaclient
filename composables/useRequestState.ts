@@ -17,7 +17,7 @@ export default function <T, R = any[], M = any, K extends Record<string, any> = 
   options: UseRequestProps<T, R, M, K> | UseRequestPropsWithValidation<T, R, M, K>
 ) {
   const { action, validation, onError, onSuccess, useGlobalLoader } = options;
-  const requestsStore = useRequestsStore();
+
   const v$ = validation && useValidator(
     validation.rule,
     validation.form,
@@ -37,10 +37,6 @@ export default function <T, R = any[], M = any, K extends Record<string, any> = 
   const clear = () => state.value = RequestState.IDLE;
 
   const execute = async (...args: R[]) => {
-    const stopRequest = useGlobalLoader
-      ? requestsStore.startRequest()
-      : null;
-
     try {
       state.value = RequestState.LOADING;
       const result = await action(...args);
@@ -51,8 +47,6 @@ export default function <T, R = any[], M = any, K extends Record<string, any> = 
       state.value = RequestState.ERROR;
       error.value = e
       onError && onError(e as (AxiosError<M>['response'] | ApiError | any));
-    } finally {
-      stopRequest && stopRequest();
     }
   };
 

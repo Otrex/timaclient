@@ -24,7 +24,7 @@ export interface CompletePasswordResetHeaders extends Record<string, string> {
 }
 
 export interface UploadRequest {
-  type: "docs" | "pics";
+  type: "docs" | "pics" | "thumb";
   file: File,
 }
 

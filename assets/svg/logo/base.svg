@@ -1,61 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .abs-screen {
-        width: 100%;
-        height: 100vh;
-      }
-      .abs-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .tima-loader {
-        text-align: center;
-        min-width: 300px;
-      }
-
-      .tima-loader img {
-        width: 150px;
-        height: auto;
-      }
-
-      .tima-animate {
-        animation: logoAnimation 2s ease-in-out infinite;
-      }
-
-      .tima-loader span {
-        text-transform: uppercase;
-        letter-spacing: 0.7em;
-        font-weight: bold;
-        font-family: sans-serif;
-      }
-
-      @keyframes logoAnimation {
-        0%,
-        100% {
-          transform: scale(1.1) translateX(-20px) translateY(-20px);
-        }
-        50% {
-          transform: scale(1) translate(10px, 10px);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="abs-center abs-screen">
-      <div class="tima-loader">
-        <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             zoomAndPan="magnify"
-            viewBox="75 275 630 200"
+            viewBox="0 0 750 500"
             preserveAspectRatio="xMidYMid meet"
             version="1.0"
           >
@@ -111,7 +58,7 @@
               </clipPath>
             </defs>
 
-            <g class="tima-animate" clip-path="url(#ed25edbbd4)">
+            <g clip-path="url(#ed25edbbd4)">
               <g clip-path="url(#220ae5d40c)">
                 <path
                   fill="#000000"
@@ -127,7 +74,7 @@
                 />
               </g>
             </g>
-            <g class="tima-animate" clip-path="url(#2ad261526c)">
+            <g clip-path="url(#2ad261526c)">
               <g clip-path="url(#c2bd2a7227)">
                 <path
                   fill="#f02727"
@@ -137,7 +84,7 @@
                 />
               </g>
             </g>
-            <g class="tima-animate" clip-path="url(#6f8252085e)">
+            <g clip-path="url(#6f8252085e)">
               <g clip-path="url(#7bfcbbf99c)">
                 <path
                   fill="#ffbb00"
@@ -147,7 +94,7 @@
                 />
               </g>
             </g>
-            <g class="tima-animate" clip-path="url(#05569ddcce)">
+            <g clip-path="url(#05569ddcce)">
               <g clip-path="url(#c962258e48)">
                 <path
                   fill="#30de80"
@@ -157,7 +104,7 @@
                 />
               </g>
             </g>
-            <g class="tima-animate" fill="#ffffff" fill-opacity="1">
+            <g fill="#ffffff" fill-opacity="1">
               <g transform="translate(158.987309, 411.234674)">
                 <g>
                   <path
@@ -166,7 +113,7 @@
                 </g>
               </g>
             </g>
-            <g class="tima-animate" fill="#ffffff" fill-opacity="1">
+            <g fill="#ffffff" fill-opacity="1">
               <g transform="translate(293.147244, 411.234674)">
                 <g>
                   <path
@@ -175,7 +122,7 @@
                 </g>
               </g>
             </g>
-            <g class="tima-animate" fill="#ffffff" fill-opacity="1">
+            <g fill="#ffffff" fill-opacity="1">
               <g transform="translate(382.61253, 403.399927)">
                 <g>
                   <path
@@ -184,7 +131,7 @@
                 </g>
               </g>
             </g>
-            <g class="tima-animate" fill="#ffffff" fill-opacity="1">
+            <g fill="#ffffff" fill-opacity="1">
               <g transform="translate(531.27136, 403.399927)">
                 <g>
                   <path
@@ -194,8 +141,3 @@
               </g>
             </g>
           </svg>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>

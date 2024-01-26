@@ -5,6 +5,7 @@
         :menu-items="tabs"
         ref="currentScreen"
         :bus="bus"
+        :disabled="true"
         class="w-full"
         @change="tabChange"
         :default-tab="constants.BRAND_OVERVIEW"

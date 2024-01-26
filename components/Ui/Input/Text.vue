@@ -41,7 +41,7 @@
 </template>
 <script lang="ts" setup>
 const props = defineProps<{
-  modelValue?: string;
+  modelValue?: any;
   passwordToggle?: boolean;
   errorMessage?: string;
   search?: boolean;

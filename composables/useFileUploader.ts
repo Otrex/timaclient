@@ -1,7 +1,8 @@
 import { RequestState } from "~/lib/enums";
+import type { UploadRequest } from "~/lib/interface/payload";
 
 export default function (opts: {
-  type: "pics" | "docs",
+  type: Payload.UploadRequest['type'],
   onProgress?: (e: number) => void,
   onCompleted?: (e: URL | URL[] | undefined) => void
 }) {

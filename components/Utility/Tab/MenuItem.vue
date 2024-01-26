@@ -16,6 +16,7 @@ const props = defineProps<{
   label: string;
   name: string;
   default?: boolean;
+  disabled?: boolean;
 }>();
 
 const tabName = computed(() => props.name as string);
@@ -26,6 +27,7 @@ const active = computed(
 );
 
 function clickHandler() {
+  if (props.disabled) return;
   navigateTo({
     query: {
       tab: tabName.value,

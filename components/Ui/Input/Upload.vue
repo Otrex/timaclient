@@ -2,7 +2,10 @@
   <div :key="reset" class="inline-block min-w-[6.25rem]">
     <div
       @click="open"
-      class="w-full flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]"
+      :class="[
+        props.errorMessage && '!border-red-600',
+        'w-full flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]',
+      ]"
     >
       <div>
         <transition>
@@ -29,6 +32,14 @@
         </button>
       </div>
     </div>
+    <transition>
+      <div
+        v-show="props.errorMessage"
+        class="text-red-600 text-left text-[0.875rem]"
+      >
+        {{ props.errorMessage }}
+      </div>
+    </transition>
 
     <Teleport to="body">
       <UtModal
@@ -94,14 +105,17 @@
 </template>
 
 <script setup lang="ts">
+// TODO: Fix drag and drop issues
 import { useDropZone } from "@vueuse/core";
+import { Payload } from "~/lib/interfaces";
 interface IProps {
   file?: File | File[];
   name?: string;
   url?: string | string[];
-  type: "pics" | "docs";
+  type: Payload.UploadRequest["type"];
   multi?: boolean;
   placeholder?: string;
+  errorMessage?: string;
 }
 
 type ClickEvent = Event & (MouseEvent & { target: HTMLInputElement }) & any;
@@ -115,6 +129,7 @@ const emit = defineEmits(["update:file", "update:name", "update:url"]);
 
 const accepts = {
   pics: "image/",
+  thumb: "image/",
   docs: "application/",
 };
 

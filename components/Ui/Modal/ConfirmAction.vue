@@ -16,6 +16,7 @@
             </div>
             <div>
               <button
+                @click="close"
                 class="w-[1.4rem] h-[1.4rem] flex items-center justify-center bg-red-600 aspect-square hover:ring-4 hover:ring-red-300 p-[.2rem] rounded-full"
               >
                 <UtSvg

@@ -1,9 +1,13 @@
 import type { ToastOptions } from "vue3-toastify";
 
-export default defineAppConfig<{
+type IAppConfig = {
   toastConfig: ToastOptions,
-  authStoreKey: string
-}>({
+  thumbnailBaseUrl: string,
+  authStoreKey: string,
+}
+export default defineAppConfig<IAppConfig>({
+  authStoreKey: 'pinia-persist.auth.authorization',
+  thumbnailBaseUrl: "https://tima-resources.s3.us-east-2.amazonaws.com/thumbnailPicture",
   toastConfig: {
     dangerouslyHTMLString: true,
     position: "top-right",
@@ -12,5 +16,4 @@ export default defineAppConfig<{
     autoClose: 5000,
     theme: "auto",
   },
-  authStoreKey: 'pinia-persist.auth.authorization'
 })

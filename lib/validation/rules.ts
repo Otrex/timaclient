@@ -217,6 +217,50 @@ export const CREATE_CAMPAIGN_INFLUENCERS = {
   }
 }
 
+export const CREATE_CAMPAIGN_CREATIVE = (form: Record<string, any>) => ({
+  paymentType: {
+    required: helpers.withMessage("Please select a valid payment type", required),
+  },
+  contentType: {
+    required: helpers.withMessage("Please select a valid content type", required),
+  },
+  contentPlacement: {
+    required: helpers.withMessage("Please select a valid content placement", required),
+  },
+  startDate: {
+    required: helpers.withMessage("Please enter a start date", (data?: string | Date) => !!data),
+    min: helpers.withMessage("Your start date must be greater than your today's date", (data: string | Date) => new Date(data) >= new Date(Date.now())),
+  },
+  endDate: {
+    required: helpers.withMessage("Please enter a end date", (data?: string | Date) => !!data),
+    min: helpers.withMessage("Your end date must be greater than your start date", (data: string | Date) => new Date(data) > new Date(form.startDate)),
+  },
+  creativeBrief: {
+    required: helpers.withMessage("Please enter a valid creative brief", required),
+  },
+  creativeTone: {
+    required: helpers.withMessage("Please select a creative tone", required),
+  },
+  rules: {
+    required: helpers.withMessage("Please enter your rules for this campaign", required),
+  },
+  referenceLink: {
+    required: helpers.withMessage("Please enter your reference link", required),
+  },
+
+  awarenessObjective: {
+    required: helpers.withMessage("Please select your awareness objectives", (data: string[]) => data.length > 0),
+  },
+
+  acquisitionObjective: {
+    required: helpers.withMessage("Please select your acquisition objectives", (data: string[]) => data.length > 0),
+  },
+
+  thumbnail: {
+    required: helpers.withMessage("Please upload a thumbnail", required),
+  }
+})
+
 export const CREATE_CAMPAIGN_OVERVIEW = {
   name: {
     required: helpers.withMessage("Please enter a valid campaign name", required),

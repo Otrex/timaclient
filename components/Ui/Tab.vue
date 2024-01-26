@@ -10,6 +10,7 @@
           :label="item.label"
           :name="item.name"
           :default="props.defaultTab === item.name"
+          :disabled="props.disabled"
         />
       </div>
     </div>
@@ -32,6 +33,7 @@ const props = defineProps<{
   defaultTab: string;
   bus?: UseEventBusReturn<string, any>;
   ref?: any;
+  disabled?: boolean;
   menuItems: {
     name: string;
     label: string;
