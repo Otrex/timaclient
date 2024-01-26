@@ -1,7 +1,9 @@
 <template>
   <div class="p-[1.75rem]">
     <h2 class="text-[1.8rem] mt-[1.5rem] mb-[1.375rem]">Your Campaigns</h2>
-    <div class="grid grid-cols-3 gap-4">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
       <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
         <div class="text-center">
           <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />

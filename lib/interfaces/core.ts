@@ -54,6 +54,32 @@ export interface Authentication {
   refresh_token: string;
 }
 
+export interface Application {
+  applicationId: string;
+  campaignPublicId: string;
+  campaignName: string;
+  campaignBudget: number;
+  campaignDescription: string;
+  username: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  profilePicture: string;
+  socialMediaPlatform: string;
+  collaboration: string;
+  userExperience: string;
+  userExperienceBrief: string;
+  userMotivationBrief: string;
+  status: string;
+  applicationDate: Date;
+  approvedBy: null;
+  submittedBy: string;
+  reviewedBy: null;
+  createdOn: Date;
+  editedOn: Date;
+}
+
+
 export interface Address {
   street: string;
   city: string;

@@ -20,6 +20,24 @@ export const UPDATE_INFLUENCER_USER_RULE = {
 
 }
 
+export const CREATE_APPLICATION_RULE = {
+  campaignPublicId: {
+    required: helpers.withMessage("No campaign selected. Please select a campaign", required),
+  },
+  collaboration: {
+    required: helpers.withMessage("Please enter if you have worked with us before", required),
+  },
+  userExperience: {
+    required: helpers.withMessage("Please enter if you have used our product or service before?", required),
+  },
+  userExperienceBrief: {
+    required: helpers.withMessage("Please enter If you have used our product or service before, what did you love about it??", required),
+  },
+  userMotivationBrief: {
+    required: helpers.withMessage("In one or two sentences, tell us why you would like to work with us.", required),
+  },
+}
+
 
 type Pass = ReturnType<typeof reactive<{ newPassword: string }>>;
 

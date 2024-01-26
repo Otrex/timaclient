@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block">
+  <div class="inline-block !border-0 !p-0">
     <select
       :class="[
         props.errorMessage && '!border-red-600',

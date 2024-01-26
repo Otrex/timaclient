@@ -1,4 +1,4 @@
-import type * as Core from "./core";
+import * as Core from "./core";
 import type { IResponse } from "./utils";
 
 export interface CreateUser extends IResponse<{
@@ -40,6 +40,6 @@ export interface BrandBasicInformation extends IResponse<Core.User> { };
 export interface UpdateBrandInformation extends IResponse<Core.User> { };
 export interface InfluencerCompleteProfile extends IResponse<Core.User> { };
 export interface BrandAddressDocumentation extends IResponse<Core.Address> { };
-
+export interface CreateApplication extends IResponse<Core.Application> { }
 
 

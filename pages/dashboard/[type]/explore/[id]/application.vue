@@ -11,6 +11,8 @@
           <div class="md:w-7/12">
             <UiInputText
               class="w-full"
+              v-model="form.collaboration"
+              :error-message="v$.collaboration?.$errors[0]?.$message.toString()"
               placeholder="Write campaign name here"
             />
           </div>
@@ -25,6 +27,10 @@
           <div class="md:w-7/12">
             <UiInputText
               class="w-full"
+              v-model="form.userExperience"
+              :error-message="
+                v$.userExperience?.$errors[0]?.$message.toString()
+              "
               placeholder="Write campaign name here"
             />
           </div>
@@ -40,6 +46,10 @@
           <div class="md:w-7/12">
             <UiInputText
               class="w-full"
+              v-model="form.userExperienceBrief"
+              :error-message="
+                v$.userExperienceBrief?.$errors[0]?.$message.toString()
+              "
               placeholder="Write campaign name here"
             />
           </div>
@@ -55,6 +65,10 @@
           <div class="md:w-7/12">
             <UiInputText
               class="w-full"
+              v-model="form.userMotivationBrief"
+              :error-message="
+                v$.userMotivationBrief?.$errors[0]?.$message.toString()
+              "
               placeholder="Write campaign name here"
             />
           </div>
@@ -65,6 +79,9 @@
     <section class="text-center mb-[3.4375rem]">
       <UiButtonDefault
         variant="primary"
+        @click="() => validate().then(() => execute())"
+        :disabled="state === constants.LOADING"
+        :loading="state === constants.LOADING"
         class="py-[0.75rem] px-[3.75rem]"
         label="Submit Application"
       />
@@ -75,6 +92,51 @@
 <script setup lang="ts">
 definePageMeta({
   name: "Explore - Application",
+});
+
+const rules = useValidationRules();
+const { notify } = useNotification();
+const route = useRoute();
+const api = useAPI();
+
+const form = reactive({
+  campaignPublicId: route.params.id,
+  collaboration: "",
+  userExperience: "",
+  userExperienceBrief: "",
+  userMotivationBrief: "",
+});
+
+const { state, v$, validate, execute } = useRequestState({
+  action: async () => {
+    if (!route.params.id) return;
+    return api.createApplication({
+      ...form,
+      campaignPublicId: route.params.id as string,
+    });
+  },
+  validation: {
+    rule: rules.CREATE_APPLICATION_RULE,
+    form,
+  },
+  onSuccess: () => {
+    notify({
+      type: "success",
+      title: "Application Sent!",
+      text: "Your Application has been sent to the brand",
+    });
+
+    navigateTo({
+      name: "Explore",
+    });
+  },
+  onError: (response) => {
+    notify({
+      type: "error",
+      title: response.title,
+      text: response.description,
+    });
+  },
 });
 </script>
 

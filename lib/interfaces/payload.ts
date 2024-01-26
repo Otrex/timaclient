@@ -22,6 +22,14 @@ export interface CompletePasswordResetHeaders extends Record<string, string> {
   salt: string;
   hash: string;
 }
+export interface CreateApplication {
+  campaignPublicId: string;
+  collaboration: string;
+  userExperience: string;
+  userExperienceBrief: string;
+  userMotivationBrief: string;
+}
+
 
 export interface UploadRequest {
   type: "docs" | "pics" | "thumb";

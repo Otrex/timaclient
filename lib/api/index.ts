@@ -325,4 +325,13 @@ export default class TimaAPI extends UploadAPI {
       data
     })
   }
+
+  async createApplication(data: Payload.CreateApplication) {
+    return this.request<Response.CreateApplication>({
+      url: "/agency/v1/applications",
+      requireAuth: true,
+      method: "POST",
+      data
+    })
+  }
 }
