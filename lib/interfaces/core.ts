@@ -97,6 +97,17 @@ export interface CampaignOptions {
   monthlyIncome: string[];
 }
 
+export interface CampaignTransaction {
+  transactionDate: Date;
+  reference: string;
+  amount: number;
+  balance: number;
+  status: string;
+  publicId: string;
+  type: string;
+  name: string;
+}
+
 export interface User {
   firstName: string;
   middleName: string;

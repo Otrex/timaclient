@@ -8,6 +8,7 @@ interface IState {
   campaignOptions?: GetCampaignOptions['data'];
   creativesOptions?: GetCreativesOptions['data'];
   paymentMethods?: GetPaymentMethods['data'];
+  paymentStatus: string[]
   banks: Bank[];
 }
 
@@ -19,6 +20,7 @@ export const useOptionsStore = defineStore("options", {
       campaignOptions: undefined,
       paymentMethods: undefined,
       creativesOptions: undefined,
+      paymentStatus: [],
       banks: [],
     };
   },
@@ -27,6 +29,7 @@ export const useOptionsStore = defineStore("options", {
     $banks: (state) => state.banks,
     $campaignOptions: (state) => state.campaignOptions || [],
     $creativesOptions: (state) => state.creativesOptions || [],
+    $paymentStatus: (state) => tools.generationOptions(state.paymentStatus),
     $paymentMethods: (state) => (state.paymentMethods || []).map(e => e.name),
     $industries: (state) => state.industries.map(industry => industry.name),
     $countries: (state) => tools.generationOptions(state.countries.map(country => country.name)),
@@ -43,6 +46,7 @@ export const useOptionsStore = defineStore("options", {
         profileStore.getProfile(),
         this.getCountries(),
         this.getIndustries(),
+        this.getPaymentStatus(),
       ]);
 
       await Promise.all([
@@ -65,7 +69,12 @@ export const useOptionsStore = defineStore("options", {
         countries: response.data
       })
     },
-
+    async getPaymentStatus() {
+      const response = await this.$api.getPaymentStatus();
+      this.$patch({
+        paymentStatus: response.data
+      })
+    },
     async getCampaignOptions() {
       const response = await this.$api.getCampaignsOptions();
       this.$patch({

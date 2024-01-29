@@ -228,6 +228,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getPaymentStatus() {
+    return this.request<Response.GetPaymentStatus>({
+      url: "/payment/v1/statuses",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async getCampaignPendingApplications(campaignId: string, data: Payload.Filter) {
     return this.request<Response.GetApplication>({
       url: this.querify(`/agency/v1/applications/applicant/${campaignId}`, data),
@@ -239,6 +247,14 @@ export default class TimaAPI extends UploadAPI {
   async getPaymentStats() {
     return this.request<Response.GetPaymentStats>({
       url: "/payment/v1/histories/campaign/dashboard",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getCampaignTransactions() {
+    return this.request<Response.GetCampaignPayments>({
+      url: "/payment/v1/histories",
       requireAuth: true,
       method: 'GET',
     });

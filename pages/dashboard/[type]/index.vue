@@ -5,13 +5,10 @@
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
     >
       <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
-        <div class="text-center">
-          <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-          Fetching Your Campaigns
-        </div>
+        <UtLoaderIndicator message="Fetching Your Campaigns" />
       </template>
       <template v-else-if="campaigns.length === 0">
-        <div>No Campaigns</div>
+        <UtNoResource message="No campaigns available" />
       </template>
       <template v-else>
         <NuxtLink

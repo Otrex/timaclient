@@ -18,12 +18,16 @@
       <div class="mb-[1.875rem]">
         <UiInputText
           search
-          placeholder="Search Influencers"
+          placeholder="Search Transactions"
           class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
         />
         <UiInputSelect
           class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
-          :options="tools.generationOptions(['all'])"
+          v-model="searchFilter"
+          :options="[
+            { value: '', label: 'ALL' },
+            ...optionsStore.$paymentStatus,
+          ]"
         />
       </div>
 
@@ -39,7 +43,26 @@
             <th></th>
           </thead>
           <tbody>
-            <template v-for="(transaction, idx) in transactions" :key="idx">
+            <template
+              v-if="tools.requestState(getTransactions) === constants.LOADING"
+            >
+              <tr>
+                <td colspan="6">
+                  <UtLoaderIndicator message="Fetching Transactions" />
+                </td>
+              </tr>
+            </template>
+            <template v-else-if="transactions.length === 0">
+              <tr>
+                <td colspan="6">
+                  <UtNoResource message="No transactions available" />
+                </td>
+              </tr>
+            </template>
+            <template
+              v-for="transaction in transactions"
+              :key="transaction.publicId"
+            >
               <tr>
                 <td>
                   <div class="flex gap-[1rem] items-center flex-row">
@@ -55,23 +78,23 @@
                         />
                       </div>
                     </div>
-                    <div>{{ transaction.influencerName }}</div>
+                    <div>{{ transaction.name }}</div>
                   </div>
                 </td>
                 <td class="align-middle text-center">
-                  {{ tools.formatCurrency(transaction.earnings) }}
+                  {{ tools.formatCurrency(transaction.amount) }}
                 </td>
                 <td class="align-middle text-center">
                   {{ tools.formatCurrency(transaction.balance) }}
                 </td>
                 <td class="align-middle text-center">
-                  {{ tools.formatDate(transaction.createdAt) }}
+                  {{ tools.formatDate(transaction.transactionDate) }}
                 </td>
                 <td class="align-middle text-center">
-                  <template v-if="transaction.status === 'successful'">
+                  <template v-if="transaction.status === 'SUCCESS'">
                     <span class="text-[#2DBA62]">Successful</span>
                   </template>
-                  <template v-else-if="transaction.status === 'pending'">
+                  <template v-else-if="transaction.status === 'PENDING'">
                     <span class="text-[#FFCA5B]">Pending</span>
                   </template>
                   <template v-else>
@@ -79,10 +102,10 @@
                   </template>
                 </td>
                 <td class="align-middle text-center">
-                  {{ transaction.paymentMethod }}
+                  {{ transaction.type }}
                 </td>
                 <td class="align-middle text-center">
-                  <UtPayBalance :data-id="transaction.id" />
+                  <UtPayBalance :data-id="transaction.publicId" />
                 </td>
               </tr>
             </template>
@@ -94,104 +117,58 @@
 </template>
 
 <script setup lang="ts">
+import { Core } from "~/lib/interfaces";
+
+const optionsStore = useOptionsStore();
+const searchFilter = ref<string>("");
+
 const metric = ref({
   title: "PAYMENTS",
   socials: [],
-  data: [
-    {
-      value: tools.formatCurrency(35_000_000),
-      label: "Total Budget",
-    },
-
-    {
-      value: 40,
-      label: "Influencers Paid",
-    },
-
-    {
-      value: tools.formatCurrency(55_000_000),
-      label: "Money disbursed",
-    },
-
-    {
-      value: tools.formatCurrency(10_000_000),
-      label: "Outstanding payment",
-    },
-  ],
+  data: [] as { value: number | string; label: string }[],
 });
 
-const transactions = ref([
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "successful",
-    paymentMethod: "Flutterwave",
+const api = useAPI();
+
+const getPaymentStats = useRequestState({
+  action: () => api.getPaymentStats(),
+  onSuccess: (response) => {
+    metric.value.data = [
+      {
+        value: tools.formatCurrency(response.data.totalBudget),
+        label: "Total Budget",
+      },
+      {
+        value: response.data.totalClientPaid,
+        label: "Influencers Paid",
+      },
+      {
+        value: tools.formatCurrency(response.data.totalAmountPaid),
+        label: "Money disbursed",
+      },
+      {
+        value: tools.formatCurrency(response.data.totalBalance),
+        label: "Outstanding payment",
+      },
+    ];
   },
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "successful",
-    paymentMethod: "Flutterwave",
+});
+
+const transactions = ref<
+  (Core.CampaignTransaction & { profilePicture?: string })[]
+>([]);
+
+const getTransactions = useRequestState({
+  action: () => api.getCampaignTransactions(),
+  onSuccess: (response) => {
+    transactions.value = response.data;
   },
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "pending",
-    paymentMethod: "Flutterwave",
-  },
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "successful",
-    paymentMethod: "Flutterwave",
-  },
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "successful",
-    paymentMethod: "Flutterwave",
-  },
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "pending",
-    paymentMethod: "Flutterwave",
-  },
-  {
-    id: Math.random(),
-    profilePicture: undefined,
-    influencerName: "Enioluwa",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "successful",
-    paymentMethod: "Flutterwave",
-  },
-]);
+});
+
+onMounted(() => {
+  getPaymentStats.execute();
+  getTransactions.execute();
+});
 </script>
 
 <style></style>
