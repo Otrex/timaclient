@@ -7,17 +7,13 @@
         <h2>{{ routeName }}</h2>
       </slot>
     </div>
-    <div class="w-full max-w-[42.5rem]">
+    <div class="w-full justify-self-start max-w-[42.5rem]">
       <slot name="middle">
         <div
-          class="flex gap-[1.25rem] justify-end"
+          class="flex gap-[1.25rem]"
           v-if="['Campaign', 'Explore'].includes(routeName)"
         >
-          <UiInputText
-            class="max-w-[25.8125rem] w-full"
-            placeholder="Search campaigns"
-            search
-          />
+          <UiInputText class="w-full" placeholder="Search campaigns" search />
 
           <UiButtonDefault
             v-if="routeName === 'Campaign'"
@@ -27,7 +23,7 @@
               })
             "
             label="+ New campaign"
-            class="px-[1.125rem] py-[0.625rem]"
+            class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
             variant="primary"
           />
         </div>

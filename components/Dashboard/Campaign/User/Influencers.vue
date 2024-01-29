@@ -42,15 +42,22 @@
       <h3>Campaign Application</h3>
       <section class="mt-[1.5rem]">
         <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-[1.1875rem]">
-          <template v-for="(application, idx) in applications" :key="idx">
-            <NuxtLink :to="`/dashboard/campaign/influencer/${idx}/application`">
+          <template v-for="(application, idx) in pendingApplication" :key="idx">
+            <NuxtLink
+              :to="{
+                name: 'Campaign Application',
+                params: {
+                  id: application.applicationId,
+                },
+              }"
+            >
               <DashboardCampaignApplication
                 :id="idx"
-                :name="application.name"
-                :type="application.type"
-                :socials="application.socials"
+                type="Independent"
+                :name="application.username"
+                :socials="application.socialMediaPlatform"
                 :profilePicture="application.profilePicture"
-                :questionAndAnswers="application.questionAndAnswers"
+                :questionAndAnswers="QandA(application)"
               />
             </NuxtLink>
           </template>
@@ -61,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Application } from "~/lib/interfaces/core";
+
 const applications = ref([
   {
     name: "beautygoddess",
@@ -114,6 +123,53 @@ const applications = ref([
     ],
   },
 ]);
+
+const api = useAPI();
+const route = useRoute();
+const { notify } = useNotification();
+
+function trx(data: any) {
+  data.socialMediaPlatform = JSON.parse(data.socialMediaPlatform);
+  return data;
+}
+
+function QandA(data: Application) {
+  return [
+    {
+      question: "Have you worked with us before?",
+      answer: data.collaboration,
+    },
+    {
+      question: "Have you worked with us before?",
+      answer: data.userExperience,
+    },
+  ];
+}
+
+const pendingApplication = ref<Application[]>([]);
+const getCampaignApplications = useRequestState({
+  action: () =>
+    api.getCampaignPendingApplications(route.params.id as string, {
+      page: 0,
+      size: 10,
+      sortIn: "DESC",
+      sortBy: "createdOn",
+    }),
+  onSuccess: (res) => {
+    pendingApplication.value = res.data.map(trx);
+  },
+  onError: (err) => {
+    notify({
+      type: "error",
+      title: err.title,
+      text: err.description,
+    });
+  },
+});
+
+onMounted(() => {
+  getCampaignApplications.execute();
+});
 
 const influencers = ref([
   {

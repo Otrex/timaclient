@@ -47,7 +47,7 @@
           <div>
             <button
               @click="openShare = true"
-              class="bg-[#111] text-white rounded-md p-[0.625rem]"
+              class="bg-[#111] text-white px-[0.9375rem] rounded-lg p-[0.625rem]"
             >
               Share Campaign
             </button>

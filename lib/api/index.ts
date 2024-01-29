@@ -170,12 +170,6 @@ export default class TimaAPI extends UploadAPI {
 
   async getBrandCampaigns(payload: Payload.GetBrandCampaigns) {
     const { name, ...data } = payload;
-
-    console.log(this.querify(
-      `/agency/v1/campaigns/brand/${name}`,
-      data
-    ),);
-
     return this.request<Response.GetCampaigns>({
       url: this.querify(
         `/agency/v1/campaigns/brand/${name}`,
@@ -229,6 +223,22 @@ export default class TimaAPI extends UploadAPI {
   async getUserIndustries() {
     return this.request<Response.UpdateIndustries>({
       url: "/agency/v1/user/industry",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getCampaignPendingApplications(campaignId: string, data: Payload.Filter) {
+    return this.request<Response.GetApplication>({
+      url: this.querify(`/agency/v1/applications/applicant/${campaignId}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getPaymentStats() {
+    return this.request<Response.GetPaymentStats>({
+      url: "/payment/v1/histories/campaign/dashboard",
       requireAuth: true,
       method: 'GET',
     });
@@ -334,4 +344,6 @@ export default class TimaAPI extends UploadAPI {
       data
     })
   }
+
+
 }

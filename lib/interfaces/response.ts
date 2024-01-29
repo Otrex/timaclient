@@ -20,7 +20,12 @@ export interface UpdateIndustries extends IResponse<{
   createdOn: Date;
 }> { }
 
-
+export interface GetPaymentStats extends IResponse<{
+  totalBudget: number;
+  totalClientPaid: number;
+  totalAmountPaid: number;
+  totalBalance: number;
+}> { }
 
 export interface GetCampaignOptions extends IResponse<Core.CampaignOptions[]> { }
 export interface GetPaymentMethods extends IResponse<Core.PaymentMethod[]> { }
@@ -41,5 +46,6 @@ export interface UpdateBrandInformation extends IResponse<Core.User> { };
 export interface InfluencerCompleteProfile extends IResponse<Core.User> { };
 export interface BrandAddressDocumentation extends IResponse<Core.Address> { };
 export interface CreateApplication extends IResponse<Core.Application> { }
+export interface GetApplication extends IResponse<Core.Application[]> { }
 
 

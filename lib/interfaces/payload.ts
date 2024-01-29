@@ -30,6 +30,12 @@ export interface CreateApplication {
   userMotivationBrief: string;
 }
 
+export interface Filter {
+  page: number;
+  size: number;
+  sortIn: string;
+  sortBy: string;
+}
 
 export interface UploadRequest {
   type: "docs" | "pics" | "thumb";

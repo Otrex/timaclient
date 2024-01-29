@@ -65,7 +65,7 @@ export interface Application {
   email: string;
   phoneNumber: string;
   profilePicture: string;
-  socialMediaPlatform: string;
+  socialMediaPlatform: string[];
   collaboration: string;
   userExperience: string;
   userExperienceBrief: string;
