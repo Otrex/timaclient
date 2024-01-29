@@ -127,7 +127,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: "Campaign Application",
+  name: "Campaign Application Influencer",
 });
 
 const idx = ref(0);

@@ -6,8 +6,8 @@
     >
       <div class="flex flex-col gap-[1.25rem]">
         <StatsMetrics
-          :title="metric.title"
-          :socials="metric.socials"
+          title="PAYMENTS"
+          :socials="[]"
           :data="metric.data"
           justified
         />
@@ -119,13 +119,16 @@
 <script setup lang="ts">
 import { Core } from "~/lib/interfaces";
 
+type Options = { value: number | string; label: string };
+type Transactions = Core.CampaignTransaction & { profilePicture?: string };
+
 const optionsStore = useOptionsStore();
 const searchFilter = ref<string>("");
 
 const metric = ref({
   title: "PAYMENTS",
   socials: [],
-  data: [] as { value: number | string; label: string }[],
+  data: [] as Options[],
 });
 
 const api = useAPI();
@@ -135,12 +138,12 @@ const getPaymentStats = useRequestState({
   onSuccess: (response) => {
     metric.value.data = [
       {
-        value: tools.formatCurrency(response.data.totalBudget),
-        label: "Total Budget",
-      },
-      {
         value: response.data.totalClientPaid,
         label: "Influencers Paid",
+      },
+      {
+        value: tools.formatCurrency(response.data.totalBudget),
+        label: "Total Budget",
       },
       {
         value: tools.formatCurrency(response.data.totalAmountPaid),
@@ -154,10 +157,7 @@ const getPaymentStats = useRequestState({
   },
 });
 
-const transactions = ref<
-  (Core.CampaignTransaction & { profilePicture?: string })[]
->([]);
-
+const transactions = ref<Transactions[]>([]);
 const getTransactions = useRequestState({
   action: () => api.getCampaignTransactions(),
   onSuccess: (response) => {

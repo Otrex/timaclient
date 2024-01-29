@@ -236,9 +236,26 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getCampaignPendingApplications(campaignId: string, data: Payload.Filter) {
+  async getCampaignApplicants(campaignId: string, data: Payload.Filter) {
     return this.request<Response.GetApplication>({
       url: this.querify(`/agency/v1/applications/applicant/${campaignId}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getCampaignPendingApplications(status: string, data: Payload.Filter) {
+    return this.request<Response.GetApplication>({
+      url: this.querify(`/agency/v1/applications/status/${status}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+
+  async getCampaignApplicationsByStatus(data: Payload.Filter & { status: string; campaignId: string }) {
+    return this.request<Response.GetApplication>({
+      url: this.querify(`/agency/v1/applications/search/filter`, data),
       requireAuth: true,
       method: 'GET',
     });

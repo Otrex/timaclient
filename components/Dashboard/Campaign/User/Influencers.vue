@@ -13,6 +13,7 @@
         <UiInputSelect
           class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
           :options="tools.generationOptions(['all'])"
+          v-model="filter"
         />
       </div>
 
@@ -41,27 +42,37 @@
     <div class="mt-[2.5rem]">
       <h3>Campaign Application</h3>
       <section class="mt-[1.5rem]">
-        <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-[1.1875rem]">
-          <template v-for="(application, idx) in pendingApplication" :key="idx">
-            <NuxtLink
-              :to="{
-                name: 'Campaign Application',
-                params: {
-                  id: application.applicationId,
-                },
-              }"
+        <UtLoadPresenter
+          loading-message="Fetching pending applications"
+          not-found-message="No pending applications"
+          :state="tools.requestState(getCampaignPendingApplications)"
+          :data="pendingApplication.length === 0"
+        >
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-[1.1875rem]">
+            <template
+              v-for="(application, idx) in pendingApplication"
+              :key="idx"
             >
-              <DashboardCampaignApplication
-                :id="idx"
-                type="Independent"
-                :name="application.username"
-                :socials="application.socialMediaPlatform"
-                :profilePicture="application.profilePicture"
-                :questionAndAnswers="QandA(application)"
-              />
-            </NuxtLink>
-          </template>
-        </div>
+              <NuxtLink
+                :to="{
+                  name: 'Campaign Application Influencer',
+                  params: {
+                    id: application.applicationId,
+                  },
+                }"
+              >
+                <DashboardCampaignApplication
+                  :id="idx"
+                  type="Independent"
+                  :name="application.username"
+                  :socials="application.socialMediaPlatform"
+                  :profilePicture="application.profilePicture"
+                  :questionAndAnswers="QandA(application)"
+                />
+              </NuxtLink>
+            </template>
+          </div>
+        </UtLoadPresenter>
       </section>
     </div>
   </div>
@@ -70,59 +81,7 @@
 <script setup lang="ts">
 import type { Application } from "~/lib/interfaces/core";
 
-const applications = ref([
-  {
-    name: "beautygoddess",
-    type: "Independent",
-    socials: ["instagram", "tiktok"],
-    profilePicture:
-      "https://s3-alpha-sig.figma.com/img/05ee/48aa/de7b6e9524212508334e50ea61c70030?Expires=1703462400&Signature=ijz7Asd6CkEZ2tuTDLFfgVnYLczHgS9svBiHSTeM-ALflGOpy2voPkT4dAgv5qz7BjaP8Hhji2Sudf703R-LMdxx~QqsGVsD8sTUjggRrplAYV33UUvB5IoRL7nWaQYSQdp1NJW4ad9nFdfBa9SOhCClKy5orrkYO0fTxtQaLofMBQ9dvm5aNoUehHJhP9yT15xR8aPb38TVswBbTRYZoLuF2tFn1klCnhE2elnfVAFxzcFEL9TYxtY4okRAx3WIREMXaPE6W-gSZnL84DkbwdprqhmiNCwPXSQ33I9yeyTAbWJ85ftV1Rm0chKTeYSHUaRb~JMqMRYXeBzIksskqA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-    questionAndAnswers: [
-      {
-        question: "Have you worked with us before?",
-        answer: "Yes",
-      },
-      {
-        question: "Have you worked with us before?",
-        answer: "Yes",
-      },
-    ],
-  },
-  {
-    name: "beautygoddess",
-    type: "Independent",
-    socials: ["instagram", "tiktok"],
-    profilePicture:
-      "https://s3-alpha-sig.figma.com/img/05ee/48aa/de7b6e9524212508334e50ea61c70030?Expires=1703462400&Signature=ijz7Asd6CkEZ2tuTDLFfgVnYLczHgS9svBiHSTeM-ALflGOpy2voPkT4dAgv5qz7BjaP8Hhji2Sudf703R-LMdxx~QqsGVsD8sTUjggRrplAYV33UUvB5IoRL7nWaQYSQdp1NJW4ad9nFdfBa9SOhCClKy5orrkYO0fTxtQaLofMBQ9dvm5aNoUehHJhP9yT15xR8aPb38TVswBbTRYZoLuF2tFn1klCnhE2elnfVAFxzcFEL9TYxtY4okRAx3WIREMXaPE6W-gSZnL84DkbwdprqhmiNCwPXSQ33I9yeyTAbWJ85ftV1Rm0chKTeYSHUaRb~JMqMRYXeBzIksskqA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-    questionAndAnswers: [
-      {
-        question: "Have you worked with us before?",
-        answer: "Yes",
-      },
-      {
-        question: "Have you worked with us before?",
-        answer: "Yes",
-      },
-    ],
-  },
-  {
-    name: "beautygoddess",
-    type: "Independent",
-    socials: ["instagram", "tiktok"],
-    profilePicture:
-      "https://s3-alpha-sig.figma.com/img/05ee/48aa/de7b6e9524212508334e50ea61c70030?Expires=1703462400&Signature=ijz7Asd6CkEZ2tuTDLFfgVnYLczHgS9svBiHSTeM-ALflGOpy2voPkT4dAgv5qz7BjaP8Hhji2Sudf703R-LMdxx~QqsGVsD8sTUjggRrplAYV33UUvB5IoRL7nWaQYSQdp1NJW4ad9nFdfBa9SOhCClKy5orrkYO0fTxtQaLofMBQ9dvm5aNoUehHJhP9yT15xR8aPb38TVswBbTRYZoLuF2tFn1klCnhE2elnfVAFxzcFEL9TYxtY4okRAx3WIREMXaPE6W-gSZnL84DkbwdprqhmiNCwPXSQ33I9yeyTAbWJ85ftV1Rm0chKTeYSHUaRb~JMqMRYXeBzIksskqA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
-    questionAndAnswers: [
-      {
-        question: "Have you worked with us before?",
-        answer: "Yes",
-      },
-      {
-        question: "Have you worked with us before?",
-        answer: "Yes",
-      },
-    ],
-  },
-]);
+const filter = ref();
 
 const api = useAPI();
 const route = useRoute();
@@ -147,13 +106,15 @@ function QandA(data: Application) {
 }
 
 const pendingApplication = ref<Application[]>([]);
-const getCampaignApplications = useRequestState({
+const getCampaignPendingApplications = useRequestState({
   action: () =>
-    api.getCampaignPendingApplications(route.params.id as string, {
+    api.getCampaignApplicationsByStatus({
+      campaignId: route.params.id as string,
+      sortBy: "createdOn",
+      status: "PENDING",
+      sortIn: "DESC",
       page: 0,
       size: 10,
-      sortIn: "DESC",
-      sortBy: "createdOn",
     }),
   onSuccess: (res) => {
     pendingApplication.value = res.data.map(trx);
@@ -168,7 +129,7 @@ const getCampaignApplications = useRequestState({
 });
 
 onMounted(() => {
-  getCampaignApplications.execute();
+  getCampaignPendingApplications.execute();
 });
 
 const influencers = ref([

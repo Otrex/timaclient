@@ -49,6 +49,7 @@ const route = useRoute();
 
 const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",
+  "Campaign Application Influencer": "Campaign Application",
   BrandCampaign: "Campaign",
 };
 
