@@ -50,8 +50,8 @@
         >
           <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-[1.1875rem]">
             <template
-              v-for="(application, idx) in pendingApplication"
-              :key="idx"
+              v-for="application in pendingApplication"
+              :key="application.applicationId"
             >
               <NuxtLink
                 :to="{
@@ -62,16 +62,29 @@
                 }"
               >
                 <DashboardCampaignApplication
-                  :id="idx"
+                  :id="application.applicationId"
                   type="Independent"
                   :name="application.username"
                   :socials="application.socialMediaPlatform"
                   :profilePicture="application.profilePicture"
                   :questionAndAnswers="QandA(application)"
+                  @accept="triggerAccept"
                 />
               </NuxtLink>
             </template>
           </div>
+          <UiModalConfirmAction
+            :loading="state === constants.LOADING"
+            @onapprove="accept"
+            ref="confirmAccept"
+          >
+            <template #title>
+              <div>Application Accept Notice</div>
+            </template>
+            <template #body>
+              <div>Are you sure you want to accept this application?</div>
+            </template>
+          </UiModalConfirmAction>
         </UtLoadPresenter>
       </section>
     </div>
@@ -82,7 +95,6 @@
 import type { Application } from "~/lib/interfaces/core";
 
 const filter = ref();
-
 const api = useAPI();
 const route = useRoute();
 const { notify } = useNotification();
@@ -105,8 +117,10 @@ function QandA(data: Application) {
   ];
 }
 
+const actionId = ref();
 const pendingApplication = ref<Application[]>([]);
 const getCampaignPendingApplications = useRequestState({
+  immediately: true,
   action: () =>
     api.getCampaignApplicationsByStatus({
       campaignId: route.params.id as string,
@@ -116,8 +130,8 @@ const getCampaignPendingApplications = useRequestState({
       page: 0,
       size: 10,
     }),
-  onSuccess: (res) => {
-    pendingApplication.value = res.data.map(trx);
+  onSuccess: (response) => {
+    pendingApplication.value = response.data.map(trx);
   },
   onError: (err) => {
     notify({
@@ -128,9 +142,40 @@ const getCampaignPendingApplications = useRequestState({
   },
 });
 
-onMounted(() => {
-  getCampaignPendingApplications.execute();
+const { state, execute: review } = useRequestState({
+  action: (status: string) =>
+    api.reviewApplication({
+      status,
+      applicationId: actionId.value,
+    }),
+  onSuccess(response) {
+    getCampaignPendingApplications.execute();
+    notify({
+      title: "Successfully Reviewed Application",
+      text: response.message,
+      type: "success",
+    });
+  },
+  onError(error) {
+    notify({
+      title: "Review Failed",
+      text: error.description,
+      type: "error",
+    });
+  },
 });
+
+const confirmAccept = ref();
+const triggerAccept = (id: string) => {
+  actionId.value = id;
+  confirmAccept.value.open();
+};
+
+const accept = () => {
+  review("APPROVED").then(() => {
+    confirmAccept.value.close();
+  });
+};
 
 const influencers = ref([
   {

@@ -86,6 +86,7 @@ definePageMeta({
 
 const api = useAPI();
 const route = useRoute();
+const { notify } = useNotification();
 const campaign = ref<GetCampaign["data"]>();
 
 const { execute: getCampaign, state } = useRequestState({

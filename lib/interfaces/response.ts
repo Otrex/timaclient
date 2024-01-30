@@ -41,7 +41,8 @@ export interface GetCampaigns extends IResponse<Core.Campaign[]> { }
 export interface GetUserProfile extends IResponse<Core.ProfileInfo> { };
 export interface BrandBasicInformation extends IResponse<Core.User> { };
 export interface UpdateBrandInformation extends IResponse<Core.User> { };
-export interface GetApplication extends IResponse<Core.Application[]> { }
+export interface GetApplications extends IResponse<Core.Application[]> { }
+export interface GetApplication extends IResponse<Core.Application> { }
 export interface BankDetailUpdate extends IResponse<Core.BankDetails> { }
 export interface CreateApplication extends IResponse<Core.Application> { }
 export interface InfluencerCompleteProfile extends IResponse<Core.User> { };

@@ -1,13 +1,15 @@
 <template>
-  <template v-if="state === constants.LOADING">
-    <UtLoaderIndicator :message="loadingMessage" />
-  </template>
-  <template v-else-if="data">
-    <UtNoResource :message="notFoundMessage" />
-  </template>
-  <template v-else>
-    <slot> </slot>
-  </template>
+  <transition>
+    <template v-if="state === constants.LOADING">
+      <UtLoaderIndicator :message="loadingMessage" />
+    </template>
+    <template v-else-if="data">
+      <UtNoResource :message="notFoundMessage" />
+    </template>
+    <template v-else>
+      <div><slot> </slot></div>
+    </template>
+  </transition>
 </template>
 
 <script setup lang="ts">

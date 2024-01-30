@@ -16,7 +16,7 @@ export default function <T, R = any[], M = any, K extends Record<string, any> = 
 export default function <T, R = any[], M = any, K extends Record<string, any> = {}>(
   options: UseRequestProps<T, R, M, K> | UseRequestPropsWithValidation<T, R, M, K>
 ) {
-  const { action, validation, onError, onSuccess, useGlobalLoader } = options;
+  const { action, validation, onError, onSuccess, immediately } = options;
 
   const v$ = validation && useValidator(
     validation.rule,
@@ -56,6 +56,12 @@ export default function <T, R = any[], M = any, K extends Record<string, any> = 
       acc[key] = v$?.value[key].$errors[0]?.$message.toString();
       return acc;
     }, {})
+  })
+
+  onMounted(() => {
+    if (immediately) {
+      execute()
+    }
   })
 
   return {

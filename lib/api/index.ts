@@ -237,7 +237,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getCampaignApplicants(campaignId: string, data: Payload.Filter) {
-    return this.request<Response.GetApplication>({
+    return this.request<Response.GetApplications>({
       url: this.querify(`/agency/v1/applications/applicant/${campaignId}`, data),
       requireAuth: true,
       method: 'GET',
@@ -245,7 +245,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getCampaignPendingApplications(status: string, data: Payload.Filter) {
-    return this.request<Response.GetApplication>({
+    return this.request<Response.GetApplications>({
       url: this.querify(`/agency/v1/applications/status/${status}`, data),
       requireAuth: true,
       method: 'GET',
@@ -254,8 +254,16 @@ export default class TimaAPI extends UploadAPI {
 
 
   async getCampaignApplicationsByStatus(data: Payload.Filter & { status: string; campaignId: string }) {
-    return this.request<Response.GetApplication>({
+    return this.request<Response.GetApplications>({
       url: this.querify(`/agency/v1/applications/search/filter`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getApplicationById(publicId: string) {
+    return this.request<Response.GetApplication>({
+      url: `/agency/v1/applications/${publicId}`,
       requireAuth: true,
       method: 'GET',
     });
@@ -378,5 +386,12 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-
+  async reviewApplication(data: Payload.ReviewApplication) {
+    const { status, applicationId } = data;
+    return this.request<Response.GetApplication>({
+      url: this.querify(`/agency/v1/applications/review/${status}`, { applicationId }),
+      requireAuth: true,
+      method: "PUT",
+    })
+  }
 }

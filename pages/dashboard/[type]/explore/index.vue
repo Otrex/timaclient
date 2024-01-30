@@ -4,21 +4,24 @@
       <div class="px-[1.625rem] pt-[1.875rem] pb-[2.5rem]">
         <DashboardExploreSearchPanel class="mb-[3.75rem]" />
         <h2 class="text-[2rem] mb-[1.375rem]">Recommended Campaigns</h2>
-        <div class="flex flex-wrap gap-[1.0625rem]">
-          <template
-            v-if="tools.requestState(getRecommended) === constants.LOADING"
+        <template
+          v-if="tools.requestState(getRecommended) === constants.LOADING"
+        >
+          <div class="text-center">
+            <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
+            Fetching recommendations
+          </div>
+        </template>
+        <template v-else-if="recommended.length === 0">
+          <div>No Recommended Campaigns</div>
+        </template>
+        <template v-else>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
-            <div class="text-center">
-              <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-              Fetching recommendations
-            </div>
-          </template>
-          <template v-else-if="recommended.length === 0">
-            <div>No Recommended Campaigns</div>
-          </template>
-          <template v-else>
-            <template v-for="campaign in recommended" :key="campaign.publicId">
+            <div v-for="campaign in recommended" :key="campaign.publicId">
               <NuxtLink
+                class="w-full"
                 :to="{
                   params: { id: campaign.publicId, type: $route.params.type },
                   name: 'Explore - Campaign',
@@ -34,24 +37,26 @@
                   :completion="0"
                 />
               </NuxtLink>
-            </template>
-          </template>
-        </div>
+            </div>
+          </div>
+        </template>
 
         <h2 class="text-[2rem] mt-[1.5rem] mb-[1.375rem]">
           Top Campaigns for the week
         </h2>
-        <div class="flex flex-wrap gap-[1.0625rem]">
-          <template v-if="tools.requestState(getTop) === constants.LOADING">
-            <div class="text-center">
-              <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-              Fetching Top Campaigns
-            </div>
-          </template>
-          <template v-else-if="topCampaigns.length === 0">
-            <div>No Top Campaigns</div>
-          </template>
-          <template v-else>
+        <template v-if="tools.requestState(getTop) === constants.LOADING">
+          <div class="text-center">
+            <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
+            Fetching Top Campaigns
+          </div>
+        </template>
+        <template v-else-if="topCampaigns.length === 0">
+          <div>No Top Campaigns</div>
+        </template>
+        <template v-else>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
+          >
             <template v-for="campaign in topCampaigns" :key="campaign.publicId">
               <NuxtLink
                 :to="{
@@ -70,8 +75,8 @@
                 />
               </NuxtLink>
             </template>
-          </template>
-        </div>
+          </div>
+        </template>
       </div>
     </UtPermit>
     <UtPermit :user-type="constants.AGENCY">

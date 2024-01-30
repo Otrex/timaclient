@@ -9,6 +9,11 @@ export interface CreateUser {
   userType: UserType;
 }
 
+export interface ReviewApplication {
+  status: string;
+  applicationId: string;
+}
+
 export interface PasswordReset {
   email: string;
 }

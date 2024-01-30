@@ -90,6 +90,7 @@ export interface UseRequestProps<T, R = any[], M = any, K extends Record<string,
   action: (...args: R[]) => Promise<T>;
   validation?: VuelidateConfig<K>;
   useGlobalLoader?: boolean;
+  immediately?: boolean;
 }
 
 export interface UseRequestReturnType<T, R = any[], M = any, K extends Record<string, any> = {}> {
