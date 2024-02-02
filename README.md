@@ -73,3 +73,13 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Using Docker
+
+use the command
+
+```bash
+docker run -p 3000:3000 timaagency/mvp-client:<tag-name>
+```
+
+to start the app

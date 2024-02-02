@@ -236,6 +236,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getApplicantsByCampaign(campaignId: string, data: Payload.Filter) {
+    return this.request<Response.GetApplications>({
+      url: this.querify(`/agency/v1/applications/campaign/${campaignId}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async getCampaignApplicants(campaignId: string, data: Payload.Filter) {
     return this.request<Response.GetApplications>({
       url: this.querify(`/agency/v1/applications/applicant/${campaignId}`, data),
@@ -247,6 +255,14 @@ export default class TimaAPI extends UploadAPI {
   async getCampaignPendingApplications(status: string, data: Payload.Filter) {
     return this.request<Response.GetApplications>({
       url: this.querify(`/agency/v1/applications/status/${status}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getNotifications(data: Payload.Filter) {
+    return this.request<Response.GetNotifications>({
+      url: this.querify("/alert/v1/notifications", data),
       requireAuth: true,
       method: 'GET',
     });

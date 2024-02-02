@@ -24,8 +24,8 @@
       label="Influencers"
       icon="nav/influencers"
       to="/dashboard/influencers"
-    /> -->
-    <DashboardNavigatorMenuItem
+    /> 
+     <DashboardNavigatorMenuItem
       label="Payment"
       icon="nav/payment"
       :to="{
@@ -34,7 +34,7 @@
           type: $route.params.type,
         },
       }"
-    />
+    /> -->
     <!-- <DashboardNavigatorMenuItem
       label="Draft"
       icon="nav/draft"

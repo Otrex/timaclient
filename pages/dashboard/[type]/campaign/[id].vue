@@ -89,15 +89,12 @@ const route = useRoute();
 const { notify } = useNotification();
 const campaign = ref<GetCampaign["data"]>();
 
-const { execute: getCampaign, state } = useRequestState({
+const { state } = useRequestState({
   action: () => api.getCampaign(route.params.id as string),
+  immediately: true,
   onSuccess: (response) => {
     campaign.value = response.data;
   },
-});
-
-onMounted(() => {
-  getCampaign();
 });
 
 const openShare = ref(false);

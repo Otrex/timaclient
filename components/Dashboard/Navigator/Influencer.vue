@@ -45,6 +45,7 @@
       icon="nav/bookmark"
       to="/dashboard/bookmark"
     /> -->
+    <DashboardNavigatorMenuItem label="Bookmark" icon="nav/bookmark" />
   </div>
 </template>
 

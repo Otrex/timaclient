@@ -46,38 +46,50 @@
             </button>
           </div>
 
-          <transition>
-            <ul v-if="activeTab === 0">
-              <li
-                v-for="(notification, idx) in notifications"
-                class="tima-notif py-[0.4375rem]"
-                :key="idx"
-              >
-                <div>
-                  <div class="flex flex-row items-center justify-between">
-                    <p class="nl">{{ notification.title }}</p>
-                    <div>
-                      <UtNotificationAction :data-id="notification.id" />
+          <UtLoadPresenter
+            not-found-message="No Notifications"
+            loading-message="Fetching Notifications"
+            :state="state"
+            :data="notifications.length === 0"
+          >
+            <transition>
+              <ul v-if="activeTab === 0">
+                <li
+                  v-for="(notification, idx) in notifications"
+                  class="tima-notif py-[0.4375rem]"
+                  :key="idx"
+                >
+                  <div>
+                    <div class="flex flex-row items-center justify-between">
+                      <p class="nl">{{ notification.title }}</p>
+                      <div>
+                        <UtNotificationAction :data-id="notification.id" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="flex flex-row items-center justify-between">
-                    <p class="nl text-[--clr-grey-300]">
-                      {{ tools.truncate(notification.content, 50) }}
-                    </p>
-                    <div class="flex">
-                      <div
-                        v-show="!notification.isRead"
-                        class="flex pr-[0.375rem]"
-                      >
-                        <UtSvg name="indicator" dim w="0.625rem" h="0.625rem" />
+                    <div class="flex flex-row items-center justify-between">
+                      <p class="nl text-[--clr-grey-300]">
+                        {{ tools.truncate(notification.content, 50) }}
+                      </p>
+                      <div class="flex">
+                        <div
+                          v-show="!notification.isRead"
+                          class="flex pr-[0.375rem]"
+                        >
+                          <UtSvg
+                            name="indicator"
+                            dim
+                            w="0.625rem"
+                            h="0.625rem"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            </ul>
-          </transition>
+                </li>
+              </ul>
+            </transition>
+          </UtLoadPresenter>
         </div>
       </div>
     </transition>
@@ -86,29 +98,61 @@
 
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
+import type { Core } from "~/lib/interfaces";
+
+type AppNotification = {
+  id: number;
+  title: string;
+  content: string;
+  isRead: boolean;
+};
+
+const ONE_MINUTE = 1000 * 60;
 const activeTab = ref(0);
 const open = ref(false);
 const target = ref<HTMLDivElement>();
+const notifications = ref<AppNotification[]>([]);
 
 onClickOutside(target, (event) => {
   open.value = false;
   console.log("clicked outside");
 });
 
-const notifications = ref([
-  {
+const api = useAPI();
+
+watch(open, () => {
+  getNotifications(open.value);
+});
+
+function format(notification: Core.Notification) {
+  return {
     id: Math.random(),
-    title: "Campaign successful",
-    content: "Your campaign was successfully posted, influencers bla bla bla",
-    isRead: false,
+    title: notification.title,
+    content: notification.message,
+    isRead: notification.status != "NEW",
+  };
+}
+
+const { state, execute } = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getNotifications({
+      page: 0,
+      size: 10,
+      sortIn: "asc",
+      sortBy: "createdOn",
+    }),
+  onSuccess(response) {
+    notifications.value = response.data.map(format);
   },
-  {
-    id: Math.random(),
-    title: "Nike campaign application",
-    content: "Enioluwa Adeoluwa sent an application to your nike ..",
-    isRead: true,
-  },
-]);
+});
+
+async function getNotifications(iterate: boolean): Promise<any> {
+  await execute();
+  await tools.delay(ONE_MINUTE);
+  if (!iterate) return;
+  return getNotifications(iterate);
+}
 </script>
 
 <style scoped>

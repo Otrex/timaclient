@@ -28,6 +28,7 @@ export interface GetPaymentStats extends IResponse<{
 }> { }
 
 export interface GetSignedURL extends IResponse<string> { }
+export interface GetNotifications extends IResponse<Core.Notification[]> { }
 export interface UpdatePassword extends IResponse<string> { }
 export interface GetAddress extends IResponse<Core.Address> { }
 export interface GetBankList extends IResponse<Core.Bank[]> { }

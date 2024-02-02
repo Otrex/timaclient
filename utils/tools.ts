@@ -1,6 +1,10 @@
 import { useTimeAgo } from "@vueuse/core";
 import type { IStore, Rule, RuleObject } from "~/lib/interfaces/utils";
 
+function capitalize(str: string) {
+  return str.split('').map((s, i) => i === 0 ? s.toUpperCase() : s.toLowerCase()).join('')
+}
+
 export default {
   generateSalt: (length: number, saltType: 'alphanumeric' | 'numeric') => {
     if (!['alphanumeric', 'numeric'].includes(saltType)) {
@@ -141,11 +145,9 @@ export default {
   },
 
   generationOptions(options: string[]) {
-    return options.map(option => ({ label: option, value: option }))
+    return options.map(option => ({ label: capitalize(option), value: option }))
   },
-  capitalize(str: string) {
-    return str.split('').map((s, i) => i === 0 ? s.toUpperCase() : s).join('')
-  },
+  capitalize: capitalize,
   truncate(inputString: string, maxLength: number) {
     if (inputString.length > maxLength) {
       return inputString.substring(0, maxLength) + '...';
@@ -211,5 +213,10 @@ export default {
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
 
     return brightness;
+  },
+  async delay(ms: number) {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, ms);
+    });
   }
 }

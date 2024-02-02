@@ -97,6 +97,15 @@ export interface CampaignOptions {
   monthlyIncome: string[];
 }
 
+export interface Notification {
+  title: string;
+  message: string;
+  type: string;
+  status: string;
+  createdOn: Date;
+}
+
+
 export interface CampaignTransaction {
   transactionDate: Date;
   reference: string;
