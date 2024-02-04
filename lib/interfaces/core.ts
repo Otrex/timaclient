@@ -97,6 +97,12 @@ export interface CampaignOptions {
   monthlyIncome: string[];
 }
 
+export interface SocialType {
+  name: string;
+  logo: string;
+}
+
+
 export interface Notification {
   title: string;
   message: string;
@@ -138,6 +144,14 @@ export interface ProfileInfo {
   username: string;
   publicId: string;
   profile: User;
+}
+
+export interface UserSocial {
+  name: string;
+  handle: string;
+  businessId: string;
+  logo: string;
+  expiresIn: number;
 }
 
 

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: "signup",
+  name: "SignUp",
   middleware: ["register", "options"],
 });
 

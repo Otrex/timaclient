@@ -49,16 +49,9 @@ const { execute: proceed, state } = useRequestState({
     });
   },
   onSuccess() {
-    notify({
-      type: "success",
-      title: "Signup Completed!",
-      text: "Proceed to login to your account",
+    navigateTo({
+      name: "SignUpSocials",
     });
-
-    setTimeout(() => {
-      navigateTo("/auth/login");
-    }, 2000);
-    // navigateTo(`/sign-up/${route.params.type}/socials`);
   },
 });
 

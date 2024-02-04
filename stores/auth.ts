@@ -15,7 +15,8 @@ type IState = {
     refreshToken?: string;
     expiresIn?: number;
     userType?: UserType;
-  }
+  },
+  connectedSocials: string[];
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -31,7 +32,8 @@ export const useAuthStore = defineStore('auth', {
       refreshToken: undefined,
       expiresIn: undefined,
       userType: undefined,
-    }
+    },
+    connectedSocials: []
   }),
   getters: {
     isAuthenticated(state) {
@@ -129,6 +131,24 @@ export const useAuthStore = defineStore('auth', {
         this.registration.publicId!,
         industries
       )
+    },
+
+    async updateSocials(data: Payload.AddSocials) {
+      const res = await this.$api.updateSocialPlatforms(
+        this.registration.publicId!,
+        data
+      );
+
+      this.$patch({
+        connectedSocials: [
+          ...this.connectedSocials,
+          res.data.name
+        ]
+      })
+
+      return {
+        title: res.data.name
+      }
     },
 
     async resendOTP() {

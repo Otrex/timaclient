@@ -20,6 +20,15 @@ export const UPDATE_INFLUENCER_USER_RULE = {
 
 }
 
+export const ADD_SOCIAL_VALIDATION = {
+  name: {
+    required: helpers.withMessage("Please enter name", required),
+  },
+  handle: {
+    required: helpers.withMessage("Please enter your handle", required),
+  }
+}
+
 export const CREATE_APPLICATION_RULE = {
   campaignPublicId: {
     required: helpers.withMessage("No campaign selected. Please select a campaign", required),

@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (authStore.isAuthenticated && !from.path.includes('/auth/login')) {
       await optionsStore.loadDashboardOptions();
     } else {
-      await optionsStore.loadRegisterOptions();
+      optionsStore.loadRegisterOptions();
     }
   } catch (error) {
     notify({

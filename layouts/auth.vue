@@ -19,7 +19,7 @@
             </div>
           </div>
         </div>
-        <div class="px-[2.5rem]">
+        <div class="px-[2.5rem] h-screen overflow-y-auto">
           <div>
             <div class="text-center overflow-auto">
               <UtSvg

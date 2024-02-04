@@ -13,6 +13,12 @@ export interface ReviewApplication {
   status: string;
   applicationId: string;
 }
+export interface AddSocials {
+  name: string;
+  handle: string;
+  accessToken: string;
+}
+
 
 export interface PasswordReset {
   email: string;

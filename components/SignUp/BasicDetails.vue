@@ -13,6 +13,7 @@
         type="text"
         class="w-full"
         v-model="form.username"
+        :autocomplete="false"
         placeholder="Username"
         :error-message="v$.username.$errors[0]?.$message.toString()"
       />
@@ -20,6 +21,7 @@
         type="email"
         class="w-full"
         v-model="form.email"
+        :autocomplete="false"
         placeholder="Email address"
         :error-message="v$.email.$errors[0]?.$message.toString()"
       />
@@ -27,6 +29,7 @@
         type="password"
         class="w-full"
         v-model="form.password"
+        :autocomplete="false"
         placeholder="Password"
         :error-message="v$.password.$errors[0]?.$message.toString()"
       />

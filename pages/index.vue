@@ -71,8 +71,13 @@ function proceed() {
     },
   });
   navigateTo({
-    path: `/sign-up/${joinAs.value}`,
-    query: { tab: constants.BASIC_DETAILS },
+    name: "SignUp",
+    params: {
+      type: joinAs.value,
+    },
+    query: {
+      tab: constants.BASIC_DETAILS,
+    },
   });
 }
 </script>

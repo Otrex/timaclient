@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import type { Bank, Country, Industry } from "~/lib/interfaces/core";
+import type { __String } from "typescript";
+import type { Bank, Country, Industry, SocialType } from "~/lib/interfaces/core";
 import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods } from "~/lib/interfaces/response";
 
 interface IState {
@@ -10,6 +11,7 @@ interface IState {
   paymentMethods?: GetPaymentMethods['data'];
   paymentStatus: string[]
   banks: Bank[];
+  socialTypes: SocialType[];
 }
 
 export const useOptionsStore = defineStore("options", {
@@ -22,10 +24,13 @@ export const useOptionsStore = defineStore("options", {
       creativesOptions: undefined,
       paymentStatus: [],
       banks: [],
+      socialTypes: [],
     };
   },
 
   getters: {
+    $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
+    $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
     $banks: (state) => state.banks,
     $campaignOptions: (state) => state.campaignOptions || [],
     $creativesOptions: (state) => state.creativesOptions || [],
@@ -81,33 +86,35 @@ export const useOptionsStore = defineStore("options", {
         campaignOptions: response.data
       })
     },
-
     async getIndustries() {
       const response = await this.$api.getIndustries();
       this.$patch({
         industries: response.data
       })
     },
-
     async getBanks() {
       const response = await this.$api.getBanks();
       this.$patch({
         banks: response.data
       })
     },
-
     async getCreativesOptions() {
       const response = await this.$api.getCreativesOptions();
       this.$patch({
         creativesOptions: response.data
       })
     },
-
     async getPaymentMethods() {
       const response = await this.$api.getPaymentMethods();
       this.$patch({
         paymentMethods: response.data
       })
+    },
+    async getSocialTypes() {
+      const response = await this.$api.getSocials();
+      this.$patch({
+        socialTypes: response.data
+      });
     }
   },
 });

@@ -64,6 +64,7 @@ export default {
       "Instagram": "socials/instagram-lg",
       "Tictok": "socials/tiktok-lg",
       "Youtube": "socials/youtube-lg",
+      "Twiiter": "socials/twitter-lg",
     }
 
     return socialMap[key] || socialMap['Youtube'];
@@ -141,7 +142,8 @@ export default {
   },
 
   requestState: (d: ReturnType<typeof useRequestState> | any) => {
-    return d.state.value;
+    const { state } = d;
+    return state.value;
   },
 
   generationOptions(options: string[]) {

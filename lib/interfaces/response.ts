@@ -27,6 +27,8 @@ export interface GetPaymentStats extends IResponse<{
   totalBalance: number;
 }> { }
 
+export interface UpdateSocials extends IResponse<Core.UserSocial> { }
+export interface GetSocialTypes extends IResponse<Core.SocialType[]> { }
 export interface GetSignedURL extends IResponse<string> { }
 export interface GetNotifications extends IResponse<Core.Notification[]> { }
 export interface UpdatePassword extends IResponse<string> { }
