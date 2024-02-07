@@ -2,7 +2,10 @@
   <div>
     <div class="flex flex-row justify-between">
       <p class="nl mb-[1.125rem]">Select a social media channel</p>
-      <button class="flex items-center active:bg-slate-100">
+      <button
+        @click="emits('update:state', false)"
+        class="flex items-center active:bg-slate-100"
+      >
         <UtSvg name="close" class="w-[0.8125rem] h-[0.8125rem] text-black" />
         &nbsp; Clear filter
       </button>
@@ -65,15 +68,16 @@
       <div>
         <label class="block mb-[0.875rem]">Category</label>
         <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+          :options="tools.generationOptions(categories)"
           class="w-full"
+          v-model="form.category"
           placeholder="-- Select --"
         />
       </div>
       <div>
         <label class="block mb-[0.875rem]">Campaign type</label>
         <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+          :options="tools.generationOptions(contentType)"
           class="w-full"
           placeholder="-- Select --"
         />
@@ -81,7 +85,7 @@
       <div>
         <label class="block mb-[0.875rem]">Budget range</label>
         <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+          :options="tools.generationOptions(budgetRange)"
           class="w-full"
           placeholder="-- Select --"
         />
@@ -89,8 +93,9 @@
       <div>
         <label class="block mb-[0.875rem]">Audience demographics</label>
         <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+          :options="tools.generationOptions(size)"
           class="w-full"
+          v-model="form.size"
           placeholder="-- Select --"
         />
       </div>
@@ -110,10 +115,51 @@
         />
       </div>
     </div>
+
+    <div class="mt-3">
+      <template v-if="state === constants.LOADING">
+        <UtLoaderIndicator message="Fetching Your Campaigns" />
+      </template>
+      <template v-else-if="search.length === 0">
+        <UtNoResource message="No campaigns available" />
+      </template>
+      <template v-else>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
+          <NuxtLink
+            v-for="campaign in search"
+            :key="campaign.publicId"
+            class="w-full"
+            :to="{
+              params: { id: campaign.publicId },
+              name: 'Campaign',
+            }"
+          >
+            <DashboardCampaignCard
+              class="w-full"
+              no-max-w
+              :image="campaign.creative.thumbnail"
+              :brand="campaign.overview.name"
+              :budget="campaign.overview.plannedBudget"
+              :category="campaign.creative.creativeTone"
+              :description="campaign.overview.briefDescription"
+              :deadline="campaign.creative.endDate"
+              :public-id="campaign.publicId"
+              :title="campaign.overview.name"
+              :completion="0"
+            />
+          </NuxtLink>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Core } from "~/lib/interfaces";
+import type { GetCampaigns } from "~/lib/interfaces/payload";
+
 const props = defineProps<{
   modelValue?: {
     category: string;
@@ -122,14 +168,49 @@ const props = defineProps<{
     audienceDemography: string;
     campaignStatus: string;
   };
+  state?: boolean;
 }>();
-// Do it one one
-const form = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {},
+
+const api = useAPI();
+const optionsStore = useOptionsStore();
+const search = ref<Core.Campaign[]>([]);
+
+const form = reactive({
+  type: "filter",
+  age: "",
+  size: "",
+  category: "",
+  location: "",
 });
+
+const { state, execute } = useRequestState({
+  action: () =>
+    api.getCampaigns({
+      age: form.age,
+      type: "filter",
+      size: form.size,
+      location: form.location,
+      category: form.category,
+    }),
+  onSuccess: (response) => {
+    search.value = response.data;
+  },
+});
+
+const categories = computed(
+  () => optionsStore.$creativesOptions[0]?.contentType || []
+);
+
+const contentType = computed(
+  () => optionsStore.$creativesOptions[0]?.contentType || []
+);
+
+const budgetRange = computed(
+  () => optionsStore.$campaignOptions[0]?.monthlyIncome || []
+);
+
+const size = computed(() => optionsStore.$campaignOptions[0]?.size || []);
+const emits = defineEmits(["update:state"]);
 </script>
 
 <style></style>

@@ -1,16 +1,16 @@
 <template>
   <div class="p-[1.75rem]">
     <h2 class="text-[1.8rem] mt-[1.5rem] mb-[1.375rem]">Your Campaigns</h2>
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
-      <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
-        <UtLoaderIndicator message="Fetching Your Campaigns" />
-      </template>
-      <template v-else-if="campaigns.length === 0">
-        <UtNoResource message="No campaigns available" />
-      </template>
-      <template v-else>
+    <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
+      <UtLoaderIndicator message="Fetching Your Campaigns" />
+    </template>
+    <template v-else-if="campaigns.length === 0">
+      <UtNoResource message="No campaigns available" />
+    </template>
+    <template v-else>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
         <NuxtLink
           v-for="campaign in campaigns"
           :key="campaign.publicId"
@@ -29,11 +29,13 @@
             :category="campaign.creative.creativeTone"
             :description="campaign.overview.briefDescription"
             :deadline="campaign.creative.endDate"
+            :public-id="campaign.publicId"
+            :title="campaign.overview.name"
             :completion="0"
           />
         </NuxtLink>
-      </template>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
 

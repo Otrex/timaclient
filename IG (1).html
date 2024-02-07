@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>IG Button Login</title>
+  </head>
+  <body>
+    <p id="profile"></p>
+
+    <script>
+      function statusChangeCallback(response) {
+        // Called with the results from FB.getLoginStatus().
+        console.log("statusChangeCallback");
+        console.log(response); // The current login status of the person.
+        if (response.status === "connected") {
+          // Logged into your webpage and Facebook.
+          testAPI(response);
+        } else {
+          // Not logged into your webpage or we are unable to tell.
+          document.getElementById("status").innerHTML =
+            "Please log " + "into this webpage.";
+        }
+      }
+
+      function checkLoginState() {
+        // Called when a person is finished with the Login Button.
+        FB.getLoginStatus(function (response) {
+          // See the onlogin handler
+          statusChangeCallback(response);
+        });
+      }
+
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "1871358313281038",
+          cookie: true, // Enable cookies to allow the server to access the session.
+          xfbml: true, // Parse social plugins on this webpage.
+          version: "v18.0", // Use this Graph API version for this call.
+        });
+
+        FB.getLoginStatus(function (response) {
+          // Called after the JS SDK has been initialized.
+          statusChangeCallback(response); // Returns the login status.
+        });
+      };
+
+      function testAPI(resp) {
+        // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+        console.log("Welcome!  Fetching your information.... ");
+        console.log(resp);
+        FB.api("/me", function (response) {
+          console.log("Successful login for: " + response.name);
+          document.getElementById("status").innerHTML =
+            "Thanks for logging in, " + response.name + "!" + "<br />";
+          document.getElementById("token").value =
+            resp.authResponse.accessToken;
+        });
+      }
+
+      function fbLogin() {
+        // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+        console.log("Click here");
+        FB.getLoginStatus(function (response) {
+          // See the onlogin handler
+          statusChangeCallback(response);
+          console.log(response);
+        });
+        // document.getElementById('fc-login').click();
+      }
+    </script>
+
+    <button id="facebook" style="background-color: green; padding: 30px">
+      Facebook
+    </button>
+    <fb:login-button
+      id="login"
+      scope="public_profile,instagram_basic,pages_show_list,pages_read_engagement,instagram_manage_comments,instagram_manage_insights"
+      onlogin="checkLoginState();"
+    >
+    </fb:login-button>
+    <br />
+    <div id="status"></div>
+    <div>
+      <textarea id="token" rows="10" style="width: 400px" disabled></textarea
+      ><br />
+    </div>
+    <script type="text/javascript">
+      const btn = document.getElementById("facebook");
+      const login = document.getElementById("login");
+
+      btn.onclick = () => {
+        fbLogin();
+      };
+    </script>
+
+    <div
+      class="fb-login-button"
+      data-max-rows="1"
+      data-size="<medium, large>"
+      data-button-type="continue_with"
+      data-width="<100% or px>"
+      data-scope="<comma separated list of permissions, e.g. public_profile, email>"
+    ></div>
+
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=1871358313281038"
+      nonce="wreDQhen"
+    ></script>
+  </body>
+</html>

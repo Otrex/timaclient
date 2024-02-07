@@ -59,8 +59,8 @@
 
         <div class="mt-[1.625rem]">
           <UiTab
-            :menu-items="tabs"
             class="w-full"
+            :menu-items="tabs"
             @change="tabChange"
             :default-tab="constants.CAMPAIGN_INFLUENCERS"
           />

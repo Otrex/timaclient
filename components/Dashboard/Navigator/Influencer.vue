@@ -26,6 +26,13 @@
       to="/dashboard/influencers"
     /> -->
     <DashboardNavigatorMenuItem
+      :to="{
+        name: 'Bookmark',
+      }"
+      label="Bookmark"
+      icon="nav/bookmark"
+    />
+    <DashboardNavigatorMenuItem
       label="Payment"
       icon="nav/payment"
       :to="{
@@ -45,7 +52,6 @@
       icon="nav/bookmark"
       to="/dashboard/bookmark"
     /> -->
-    <DashboardNavigatorMenuItem label="Bookmark" icon="nav/bookmark" />
   </div>
 </template>
 

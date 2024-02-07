@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import type { Getter, IRequestOptions, IStore } from "../interfaces/utils";
 import axios from "axios";
 
-class ApiError extends Error {
+export class ApiError extends Error {
   title: string;
   description: string;
   __error: any;

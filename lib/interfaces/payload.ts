@@ -9,6 +9,11 @@ export interface CreateUser {
   userType: UserType;
 }
 
+export interface AddBookmark {
+  title: string;
+  campaignPublicId: string;
+}
+
 export interface ReviewApplication {
   status: string;
   applicationId: string;
@@ -156,7 +161,7 @@ export type GetCampaigns = {
   type: 'filter',
   category: string;
   size: string;
-  age: `${string} - ${string}`;
+  age: string;
   location: string;
 } | {
   type: 'recommendation'

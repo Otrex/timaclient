@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import type { __String } from "typescript";
 import type { Bank, Country, Industry, SocialType } from "~/lib/interfaces/core";
 import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods } from "~/lib/interfaces/response";
 
@@ -9,9 +8,9 @@ interface IState {
   campaignOptions?: GetCampaignOptions['data'];
   creativesOptions?: GetCreativesOptions['data'];
   paymentMethods?: GetPaymentMethods['data'];
-  paymentStatus: string[]
-  banks: Bank[];
   socialTypes: SocialType[];
+  paymentStatus: string[];
+  banks: Bank[];
 }
 
 export const useOptionsStore = defineStore("options", {
@@ -29,14 +28,14 @@ export const useOptionsStore = defineStore("options", {
   },
 
   getters: {
-    $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
-    $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
     $banks: (state) => state.banks,
     $campaignOptions: (state) => state.campaignOptions || [],
     $creativesOptions: (state) => state.creativesOptions || [],
     $paymentStatus: (state) => tools.generationOptions(state.paymentStatus),
     $paymentMethods: (state) => (state.paymentMethods || []).map(e => e.name),
     $industries: (state) => state.industries.map(industry => industry.name),
+    $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
+    $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
     $countries: (state) => tools.generationOptions(state.countries.map(country => country.name)),
     $getCurrency: (state) => (countryName: string) => state.countries.find(country => country.name === countryName)?.currency,
     $countryLanguages: (state) => (countryName: string) => tools.generationOptions(state.countries.find(country => country.name === countryName)?.language || [])

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div id="fb-root"></div>
     <NuxtLayout name="auth">
       <div class="pb-[40px]">
         <div class="mb-[3.75rem]">
@@ -17,12 +18,13 @@
             <UiButtonAddSocial
               class="w-full"
               @open="onOpen"
-              label="Connect Instagram"
+              :label="`Connect ${getSocial(social.icon)?.name}`"
               :icon="social.icon"
               :id="social.icon"
             >
               <template #form>
                 <UtAddSocial
+                  v-if="form.accessToken"
                   :social="getSocial(social.icon)"
                   v-model:handle="form.handle"
                   @add-social="addSocial"
@@ -31,6 +33,20 @@
                     v$.handle?.$errors[0]?.$message.toString()
                   "
                 />
+                <div v-else class="bg-white h-[300px] p-4">
+                  <div class="flex h-full items-center justify-center">
+                    <div
+                      class="fb-login-button"
+                      data-width="100%"
+                      data-size=""
+                      data-button-type=""
+                      data-layout=""
+                      data-auto-logout-link="true"
+                      data-use-continue-as="false"
+                      ref="button"
+                    ></div>
+                  </div>
+                </div>
               </template>
             </UiButtonAddSocial>
           </template>
@@ -59,8 +75,26 @@ definePageMeta({
   name: "SignUpSocials",
   middleware: [
     async () => {
-      const optionsStore = useOptionsStore();
-      await optionsStore.getSocialTypes();
+      try {
+        const optionsStore = useOptionsStore();
+        await optionsStore.getSocialTypes();
+      } catch (err) {}
+    },
+  ],
+});
+const button = ref();
+function click() {
+  console.log(button.value[0].querySelector("iframe").contentWindow);
+}
+
+useHead({
+  script: [
+    {
+      async: true,
+      defer: true,
+      nonce: "wreDQhen",
+      crossorigin: "anonymous",
+      src: "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=1871358313281038",
     },
   ],
 });
@@ -74,6 +108,7 @@ const api = useAPI();
 const form = reactive({
   name: "",
   handle: "",
+  accessToken: "",
 });
 
 function onOpen(id: string) {
@@ -99,7 +134,6 @@ const { state, execute, v$, validate } = useRequestState({
   action: () =>
     authStore.updateSocials({
       ...form,
-      accessToken: "",
     }),
   onSuccess(response) {
     notify({

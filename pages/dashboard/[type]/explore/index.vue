@@ -2,8 +2,24 @@
   <div>
     <UtPermit :user-type="constants.INFLUENCER">
       <div class="px-[1.625rem] pt-[1.875rem] pb-[2.5rem]">
-        <DashboardExploreSearchPanel class="mb-[3.75rem]" />
-        <h2 class="text-[2rem] mb-[1.375rem]">Recommended Campaigns</h2>
+        <DashboardExploreSearchPanel
+          v-model:state="viewSearchFilter"
+          v-show="viewSearchFilter"
+          class="mb-[3.75rem]"
+        />
+        <div class="flex flex-row justify-between">
+          <h2 class="text-[2rem] mb-[1.375rem]">Recommended Campaigns</h2>
+          <div>
+            <UiButtonDefault
+              v-show="!viewSearchFilter"
+              @click="viewSearchFilter = true"
+              variant="primary"
+              class="px-3 py-1"
+            >
+              Open Search Filter
+            </UiButtonDefault>
+          </div>
+        </div>
         <template
           v-if="tools.requestState(getRecommended) === constants.LOADING"
         >
@@ -35,6 +51,8 @@
                   :deadline="campaign.creative.endDate"
                   :brand="campaign.overview.name"
                   :completion="0"
+                  :public-id="campaign.publicId"
+                  :title="campaign.overview.name"
                 />
               </NuxtLink>
             </div>
@@ -72,6 +90,8 @@
                   :description="campaign.overview.briefDescription"
                   :deadline="campaign.creative.endDate"
                   :completion="0"
+                  :public-id="campaign.publicId"
+                  :title="campaign.overview.name"
                 />
               </NuxtLink>
             </template>
@@ -135,6 +155,7 @@ const search = ref({
 
 const recommended = ref<GetCampaigns["data"]>([]);
 const topCampaigns = ref<GetCampaigns["data"]>([]);
+const viewSearchFilter = ref<boolean>(false);
 
 const getRecommended = useRequestState({
   action: () => api.getCampaigns({ type: "recommendation" }),

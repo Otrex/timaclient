@@ -35,7 +35,6 @@ export interface NotificationSetting {
   paymentUpdateAlert: boolean;
 }
 
-
 export interface Industry {
   name: string;
   description: string;
@@ -154,6 +153,17 @@ export interface UserSocial {
   expiresIn: number;
 }
 
+
+export interface FullCampaign {
+  publicId: string;
+  brandName: string;
+  overview: Overview;
+  influencer: Influencer;
+  creative: Creative;
+  status: number;
+  createdBy: string;
+  createdOn: Date;
+}
 
 export interface Creative {
   paymentType: string;

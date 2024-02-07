@@ -9,14 +9,37 @@
       class="rounded-[1.25rem] mb-[1.25rem] overflow-hidden h-[12.9375rem] relative"
     >
       <button
+        v-if="authStore.authorization.userType !== 'BRAND' || !props.isBookmark"
         style="--tw-ring-opacity: 0.2"
         :class="[
           'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
           avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
         ]"
+        @click.prevent.capture="() => execute()"
       >
+        <UtSvg v-if="state === constants.LOADING" name="sunshine" />
         <UtSvg
+          v-else
           name="bookmark"
+          :class="[
+            'w-[1.5rem] h-[1.5rem]',
+            avgColor > 128 ? 'text-black' : 'text-white',
+          ]"
+        />
+      </button>
+      <button
+        v-if="props.isBookmark"
+        style="--tw-ring-opacity: 0.2"
+        :class="[
+          'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
+          avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
+        ]"
+        @click.prevent.capture="() => deleteBookmark(props.title)"
+      >
+        <UtSvg v-if="deleteState === constants.LOADING" name="sunshine" />
+        <UtSvg
+          v-else
+          name="trash"
           :class="[
             'w-[1.5rem] h-[1.5rem]',
             avgColor > 128 ? 'text-black' : 'text-white',
@@ -75,6 +98,8 @@
 </template>
 
 <script setup lang="ts">
+import { ApiError } from "~/lib/core/Api";
+
 const props = defineProps<{
   image: string;
   category: string;
@@ -83,17 +108,69 @@ const props = defineProps<{
   budget: number;
   deadline: string;
   completion: number;
+  title: string;
+  publicId: string;
   noMaxWidth?: boolean;
+  isBookmark?: boolean;
 }>();
 
+const api = useAPI();
 const avgColor = ref(0);
+const { notify } = useNotification();
 const image = ref<HTMLImageElement>();
 const colorExtract = useImageColorExtract();
+const authStore = useAuthStore();
 
 onMounted(() => {
   colorExtract.getAverageColor(image.value?.src!).then((value) => {
     avgColor.value = value;
   });
+});
+
+const { state, execute } = useRequestState({
+  action: () => {
+    if (!props.publicId || !props.title) {
+      throw new ApiError({
+        message: "Invalid Campaign",
+      });
+    }
+    return api.addBookmark({
+      title: props.title,
+      campaignPublicId: props.publicId,
+    });
+  },
+  onSuccess() {
+    notify({
+      type: "success",
+      title: `${props.title} bookmarked`,
+      text: "This campaign has been bookmarked successfully",
+    });
+  },
+  onError(error) {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.description,
+    });
+  },
+});
+
+const { state: deleteState, execute: deleteBookmark } = useRequestState({
+  action: (name: string) => api.deleteBookmark(name),
+  onSuccess() {
+    notify({
+      type: "success",
+      title: `${props.title} deleted`,
+      text: "This campaign has been removed form the bookmark",
+    });
+  },
+  onError(error) {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.description,
+    });
+  },
 });
 </script>
 

@@ -295,7 +295,10 @@ export default class TimaAPI extends UploadAPI {
 
 
   async getCampaignApplicationsByStatus(
-    data: Payload.Filter & { status: string; campaignId: string }
+    data: Payload.Filter & {
+      status: string;
+      campaignId: string
+    }
   ) {
     return this.request<Response.GetApplications>({
       url: this.querify(
@@ -313,6 +316,31 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: 'GET',
     });
+  }
+
+  async getBookmarks() {
+    return this.request<Response.GetBookmarks>({
+      url: `/agency/v1/bookmarks`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async addBookmark(data: Payload.AddBookmark) {
+    return this.request<Response.GetBookmarks>({
+      url: `/agency/v1/bookmarks`,
+      requireAuth: true,
+      method: 'POST',
+      data,
+    });
+  }
+
+  async deleteBookmark(name: string) {
+    return this.request({
+      url: `/agency/v1/bookmarks/${name}`,
+      requireAuth: true,
+      method: 'DELETE',
+    })
   }
 
   async getPaymentStats() {
@@ -350,7 +378,10 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async updateSocialPlatforms(publicId: string, data: Payload.AddSocials) {
+  async updateSocialPlatforms(
+    publicId: string,
+    data: Payload.AddSocials
+  ) {
     return this.request<Response.UpdateSocials>({
       url: `/agency/v1/social-media/linked/user/${publicId}`,
       method: 'PUT',
@@ -415,7 +446,9 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async updateBrandInformation(data: Payload.UpdateBrandInformation) {
+  async updateBrandInformation(
+    data: Payload.UpdateBrandInformation
+  ) {
     return this.request<Response.UpdateBrandInformation>({
       url: "/user/v1/profile/brand",
       requireAuth: true,
