@@ -3,6 +3,14 @@ import type { IStore } from "./lib/interfaces/utils";
 import type TimaAPI from "./lib/api";
 import type { ToastOptions } from "vue3-toastify";
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void
+    dataLayer: Record<string, any>;
+    fbAsyncInit: any
+    FB: any
+  }
+}
 
 declare module 'nuxt/schema' {
   interface AppConfig {

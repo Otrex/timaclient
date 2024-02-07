@@ -24,29 +24,19 @@
             >
               <template #form>
                 <UtAddSocial
-                  v-if="form.accessToken"
                   :social="getSocial(social.icon)"
                   v-model:handle="form.handle"
-                  @add-social="addSocial"
+                  @add-social="
+                    () =>
+                      getSocial(social.icon)?.name.toLowerCase() === 'instagram'
+                        ? facebookLogin()
+                        : addSocial()
+                  "
                   :loading="state === constants.LOADING"
                   :form-error-message="
                     v$.handle?.$errors[0]?.$message.toString()
                   "
                 />
-                <div v-else class="bg-white h-[300px] p-4">
-                  <div class="flex h-full items-center justify-center">
-                    <div
-                      class="fb-login-button"
-                      data-width="100%"
-                      data-size=""
-                      data-button-type=""
-                      data-layout=""
-                      data-auto-logout-link="true"
-                      data-use-continue-as="false"
-                      ref="button"
-                    ></div>
-                  </div>
-                </div>
               </template>
             </UiButtonAddSocial>
           </template>
@@ -111,6 +101,40 @@ const form = reactive({
   accessToken: "",
 });
 
+onMounted(() => {
+  window.fbAsyncInit = function () {
+    window.FB.init({
+      appId: "1871358313281038",
+      xfbml: true,
+      version: "v18.0",
+    });
+
+    window.FB.login(
+      function (response: { authResponse: any }) {
+        if (response.authResponse) {
+          console.log("Welcome!  Fetching your information.... ");
+          form.accessToken = response.authResponse.accessToken;
+          addSocial();
+          window.FB.api(
+            "/me",
+            { fields: "name, email" },
+            function (response: { name: string; email: string }) {
+              document.getElementById("profile")!.innerHTML =
+                "Good to see you, " +
+                response.name +
+                ". i see your email address is " +
+                response.email;
+            }
+          );
+        } else {
+          console.log("User cancelled login or did not fully authorize.");
+        }
+      },
+      { scope: "public_profile" }
+    );
+  };
+});
+
 function onOpen(id: string) {
   form.name = id.includes("socials/")
     ? optionsStore.$socialsByIcon(id)!.name
@@ -119,6 +143,10 @@ function onOpen(id: string) {
 
 function getSocial(id: string) {
   return optionsStore.$socialsByIcon(id) || ({} as Core.SocialType);
+}
+
+function facebookLogin() {
+  window.fbAsyncInit();
 }
 
 async function addSocial() {
