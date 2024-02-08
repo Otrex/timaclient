@@ -38,7 +38,8 @@
     "uuidv",
     "Vargs",
     "vuelidate",
-    "vueuse"
+    "vueuse",
+    "xfbml"
   ],
   "[snippets]": {
     "Pinia Options Store Boilerplate": {

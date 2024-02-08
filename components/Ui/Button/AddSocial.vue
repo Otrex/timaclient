@@ -60,10 +60,20 @@ const props = defineProps<{
   icon?: string;
   label: string;
   id: string;
+  modal?: boolean;
 }>();
-const $emit = defineEmits(["action", "open"]);
 
-const modalState = ref(false);
+const $emit = defineEmits(["action", "open", "closeModal"]);
+
+const modalState = computed({
+  get() {
+    return !!props.modal;
+  },
+  set(value) {
+    $emit("closeModal", value);
+  },
+});
+
 const open = () => {
   modalState.value = true;
   $emit("open", props.id);

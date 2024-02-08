@@ -95,7 +95,9 @@ const logout = async () => {
   try {
     loading.value = true;
     await authStore.logout();
-    navigateTo("/auth/login");
+    navigateTo({
+      name: "login",
+    });
   } catch (error: any) {
     alert(error.message);
   } finally {

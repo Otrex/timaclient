@@ -11,7 +11,14 @@
           <h2 class="font-bold">Applicant profile</h2>
         </div>
         <div>
-          <NuxtLink :to="`/dashboard/campaign/influencer/${0}`">
+          <NuxtLink
+            :to="{
+              name: 'Campaign >>> Influencers',
+              query: {
+                publicId: 0,
+              },
+            }"
+          >
             <UiButtonDefault
               variant="info"
               class="!px-[1rem] !py-[0.375rem]"

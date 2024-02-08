@@ -44,21 +44,24 @@ export const useOptionsStore = defineStore("options", {
   actions: {
     async loadDashboardOptions() {
       const profileStore = useProfileStore();
-      if (profileStore.profile) return;
+      if (!profileStore.profile) {
+        await Promise.all([
+          profileStore.getProfile(),
+          this.getCountries(),
+          this.getIndustries(),
+          this.getPaymentStatus(),
+        ]);
+      }
 
-      await Promise.all([
-        profileStore.getProfile(),
-        this.getCountries(),
-        this.getIndustries(),
-        this.getPaymentStatus(),
-      ]);
-
-      await Promise.all([
-        this.getCampaignOptions(),
-        this.getCreativesOptions(),
-        this.getPaymentMethods(),
-      ])
+      if (!this.campaignOptions) {
+        await Promise.all([
+          this.getCampaignOptions(),
+          this.getCreativesOptions(),
+          this.getPaymentMethods(),
+        ]);
+      }
     },
+
     async loadRegisterOptions() {
       if (this.countries.length > 0) return
       await Promise.all([
@@ -67,48 +70,56 @@ export const useOptionsStore = defineStore("options", {
         this.getIndustries(),
       ]);
     },
+
     async getCountries() {
       const response = await this.$api.getCountries();
       this.$patch({
         countries: response.data
       })
     },
+
     async getPaymentStatus() {
       const response = await this.$api.getPaymentStatus();
       this.$patch({
         paymentStatus: response.data
       })
     },
+
     async getCampaignOptions() {
       const response = await this.$api.getCampaignsOptions();
       this.$patch({
         campaignOptions: response.data
       })
     },
+
     async getIndustries() {
       const response = await this.$api.getIndustries();
       this.$patch({
         industries: response.data
       })
     },
+
     async getBanks() {
       const response = await this.$api.getBanks();
       this.$patch({
         banks: response.data
       })
     },
+
     async getCreativesOptions() {
       const response = await this.$api.getCreativesOptions();
       this.$patch({
         creativesOptions: response.data
       })
     },
+
     async getPaymentMethods() {
       const response = await this.$api.getPaymentMethods();
       this.$patch({
         paymentMethods: response.data
       })
     },
+
     async getSocialTypes() {
       const response = await this.$api.getSocials();
       this.$patch({

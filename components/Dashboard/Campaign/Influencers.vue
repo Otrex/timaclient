@@ -28,8 +28,8 @@
         <UiInputSelectMulti
           class="w-full"
           :error-message="v$.audienceSize?.$errors[0]?.$message.toString()"
-          v-model="campaignStore.influencer.audienceSize"
           :options="tools.generationOptions(options?.size || [])"
+          v-model="campaignStore.influencer.audienceSize"
         />
       </div>
     </div>

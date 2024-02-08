@@ -18,6 +18,8 @@
               class="w-full"
               @open="onOpen"
               :label="`Connect ${getSocial(social.icon)?.name}`"
+              @closeModal="openModal[social.icon] = false"
+              :modal="openModal[social.icon]"
               :icon="social.icon"
               :id="social.icon"
             >
@@ -46,7 +48,7 @@
             label="Connect your web blog (not compulsory)"
           />
           <UiButtonDefault
-            @click="navigateTo('/auth/login')"
+            @click="toLogin"
             class="w-full py-[0.875rem] mb-[2rem]"
             label="Continue"
             variant="primary"
@@ -71,10 +73,6 @@ definePageMeta({
     },
   ],
 });
-const button = ref();
-function click() {
-  console.log(button.value[0].querySelector("iframe").contentWindow);
-}
 
 useHead({
   script: [
@@ -94,6 +92,7 @@ const authStore = useAuthStore();
 const rules = useValidationRules();
 const api = useAPI();
 
+const openModal = ref<Record<string, boolean>>({});
 const form = reactive({
   name: "",
   handle: "",
@@ -112,7 +111,6 @@ onMounted(() => {
     FB.login(
       (response: any) => {
         if (response.authResponse) {
-          console.log("Welcome!  Fetching your information.... ");
           form.accessToken = response.authResponse.accessToken;
           addSocial();
         } else {
@@ -129,6 +127,7 @@ onMounted(() => {
 });
 
 function onOpen(id: string) {
+  openModal.value[id] = true;
   form.name = id.includes("socials/")
     ? optionsStore.$socialsByIcon(id)!.name
     : id;
@@ -161,6 +160,10 @@ const { state, execute, v$, validate } = useRequestState({
       type: "success",
       title: response.title,
       text: "Social Account updated",
+    });
+
+    Object.keys(openModal.value).forEach((key) => {
+      openModal.value[key] = false;
     });
   },
   onError(error) {

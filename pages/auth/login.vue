@@ -50,6 +50,10 @@ const authStore = useAuthStore();
 const profileStore = useProfileStore();
 const { notify } = useNotification();
 
+definePageMeta({
+  name: "login",
+});
+
 const form = reactive({
   identifier: "",
   password: "",
