@@ -102,34 +102,28 @@ const form = reactive({
 
 onMounted(() => {
   window.fbAsyncInit = function () {
-    window.FB.init({
+    const FB = window.FB;
+    FB.init({
       appId: "1871358313281038",
       xfbml: true,
       version: "v18.0",
     });
 
-    window.FB.login(
-      function (response: { authResponse: any }) {
+    FB.login(
+      (response: any) => {
         if (response.authResponse) {
           console.log("Welcome!  Fetching your information.... ");
           form.accessToken = response.authResponse.accessToken;
           addSocial();
-          window.FB.api(
-            "/me",
-            { fields: "name, email" },
-            function (response: { name: string; email: string }) {
-              document.getElementById("profile")!.innerHTML =
-                "Good to see you, " +
-                response.name +
-                ". i see your email address is " +
-                response.email;
-            }
-          );
         } else {
-          console.log("User cancelled login or did not fully authorize.");
+          notify({
+            type: "error",
+            title: "Facebook Error",
+            text: "Facebook authorization failed",
+          });
         }
       },
-      { scope: "public_profile" }
+      { scope: "public_profile,instagram_basic" }
     );
   };
 });
