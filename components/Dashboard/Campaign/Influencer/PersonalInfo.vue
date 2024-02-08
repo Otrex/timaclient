@@ -4,7 +4,7 @@
       Social Media Platform
     </p>
 
-    <div class="flex flex-row mb-[2rem] gap-[1.25rem]">
+    <div class="flex flex-col md:flex-row mb-[2rem] gap-[1.25rem]">
       <div class="w-full">
         <DashboardCampaignDataSocialCard
           social="instagram"

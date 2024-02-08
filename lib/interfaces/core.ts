@@ -152,7 +152,12 @@ export interface UserSocial {
   logo: string;
   expiresIn: number;
 }
-
+export interface AgeDemographicsData {
+  name: string;
+  value1?: number;
+  value2?: number;
+  value3?: number;
+}
 
 export interface FullCampaign {
   publicId: string;

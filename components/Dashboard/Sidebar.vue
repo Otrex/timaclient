@@ -1,55 +1,63 @@
 <template>
-  <div class="flex justify-between h-full flex-col">
-    <div class="pt-[2.375rem] px-[1.125rem]">
-      <div class="px-[0.75rem]">
-        <UtSvg name="logo/tima" class="w-[6.125rem] h-[2.4375rem]" />
-      </div>
-      <div class="mt-[4.625rem]">
-        <DashboardNavigatorInfluencer
-          v-if="$route.params.type === constants.INFLUENCER"
-        />
-        <DashboardNavigatorAgency v-else />
-        <div class="mt-[1rem] flex flex-col gap-[1rem]">
-          <DashboardNavigatorMenuItem
-            label="Help/Support"
-            icon="nav/help"
-            :to="{
-              name: 'Help & Support',
-            }"
+  <div class="h-full w-full relative">
+    <div class="flex justify-between h-full flex-col">
+      <button
+        class="absolute block md:hidden top-[20px] right-[20px]"
+        @click="$emit('close-sidebar')"
+      >
+        <UtSvg name="close" dim w="1.5rem" h="1.5rem" />
+      </button>
+      <div class="pt-[2.375rem] px-[1.125rem]">
+        <div class="px-[0.75rem]">
+          <UtSvg name="logo/tima" class="w-[6.125rem] h-[2.4375rem]" />
+        </div>
+        <div class="mt-[4.625rem]">
+          <DashboardNavigatorInfluencer
+            v-if="$route.params.type === constants.INFLUENCER"
           />
-          <DashboardNavigatorMenuItem label="Darkmode" icon="nav/darkmode">
-            <template #right>
-              <UiInputSwitch
-                v-model="mode"
-                true-value="light"
-                false-value="dark"
-              />
-            </template>
-          </DashboardNavigatorMenuItem>
+          <DashboardNavigatorAgency v-else />
+          <div class="mt-[1rem] flex flex-col gap-[1rem]">
+            <DashboardNavigatorMenuItem
+              label="Help/Support"
+              icon="nav/help"
+              :to="{
+                name: 'Help & Support',
+              }"
+            />
+            <DashboardNavigatorMenuItem label="Darkmode" icon="nav/darkmode">
+              <template #right>
+                <UiInputSwitch
+                  v-model="mode"
+                  true-value="light"
+                  false-value="dark"
+                />
+              </template>
+            </DashboardNavigatorMenuItem>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <div
-        class="px-[1.125rem] border-t-[0.025rem] border-solid border-[#999] dark:border-slate-900"
-      >
-        <div class="mt-[1rem] mb-[3.75rem] flex flex-col gap-[1rem]">
-          <DashboardNavigatorMenuItem
-            label="Settings"
-            icon="nav/setting"
-            :to="{
-              name: 'Settings',
-              params: {
-                type: $route.params.type,
-              },
-            }"
-          />
-          <DashboardNavigatorMenuItem
-            @click="logout"
-            :class="['text-red-600', loading && 'pulse-element']"
-            label="Log Out"
-            icon="nav/logout"
-          />
+      <div>
+        <div
+          class="px-[1.125rem] border-t-[0.025rem] border-solid border-[#999] dark:border-slate-900"
+        >
+          <div class="mt-[1rem] mb-[3.75rem] flex flex-col gap-[1rem]">
+            <DashboardNavigatorMenuItem
+              label="Settings"
+              icon="nav/setting"
+              :to="{
+                name: 'Settings',
+                params: {
+                  type: $route.params.type,
+                },
+              }"
+            />
+            <DashboardNavigatorMenuItem
+              @click="logout"
+              :class="['text-red-600', loading && 'pulse-element']"
+              label="Log Out"
+              icon="nav/logout"
+            />
+          </div>
         </div>
       </div>
     </div>

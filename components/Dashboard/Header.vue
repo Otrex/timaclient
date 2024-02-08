@@ -2,12 +2,19 @@
   <div
     class="w-full flex md:flex-row items-center gap-[1.875rem] justify-between py-[1rem] px-[1.75rem] border-b-[0.025rem] border-solid border-[#D6D6D6] dark:border-slate-900"
   >
-    <div class="whitespace-nowrap">
-      <slot name="left">
-        <h2>{{ routeName }}</h2>
-      </slot>
+    <div class="flex items-center flex-row gap-4">
+      <div class="flex md:hidden">
+        <button class="" @click="$emit('open-sidebar')">
+          <UtSvg name="menu" dim w="1.5rem" h="1.5rem" class="text-black" />
+        </button>
+      </div>
+      <div class="whitespace-nowrap">
+        <slot name="left">
+          <h2>{{ routeName }}</h2>
+        </slot>
+      </div>
     </div>
-    <div class="w-full justify-self-start max-w-[42.5rem]">
+    <div class="w-full hidden md:block justify-self-start max-w-[42.5rem]">
       <slot name="middle">
         <div
           class="flex gap-[1.25rem]"

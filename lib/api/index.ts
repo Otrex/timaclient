@@ -293,6 +293,13 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getDemographicsInsightById(publicId: string, socialMedia: string, data: { type: string }) {
+    return this.request<Response.GetDemographicsData>({
+      url: this.querify(`/agency/v1/social-media/${publicId}/demographic/${socialMedia}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
 
   async getCampaignApplicationsByStatus(
     data: Payload.Filter & {

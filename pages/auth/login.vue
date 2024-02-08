@@ -83,6 +83,8 @@ const {
   onSuccess() {
     const userType = authStore.authorization.userType;
 
+    console.log(userType);
+
     navigateTo(
       userType === constants.INFLUENCER
         ? {

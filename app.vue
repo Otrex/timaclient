@@ -1,7 +1,7 @@
 <template>
-  <div class="overflow-hidden h-screen">
+  <div class="overflow-hidden w-full h-screen">
     <NuxtLoadingIndicator color="red" :duration="500" />
-    <NuxtPage />
+    <NuxtPage class="w-full" />
   </div>
 </template>
 <script setup lang="ts">

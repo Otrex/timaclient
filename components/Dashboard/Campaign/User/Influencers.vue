@@ -26,7 +26,15 @@
         >
           <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-[1.1875rem]">
             <template v-for="(influencer, idx) in influencers" :key="idx">
-              <NuxtLink :to="`/dashboard/campaign/influencer/${idx}`">
+              <NuxtLink
+                :to="{
+                  name: 'Campaign >>> Influencers',
+                  query: {
+                    publicId: influencer.submittedBy,
+                    applicationId: influencer.applicationId,
+                  },
+                }"
+              >
                 <DashboardInfluencerCard
                   :name="influencer.fullName"
                   :socialMedia="influencer.socialMediaPlatform"

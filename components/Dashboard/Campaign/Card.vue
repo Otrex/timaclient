@@ -8,25 +8,27 @@
     <div
       class="rounded-[1.25rem] mb-[1.25rem] overflow-hidden h-[12.9375rem] relative"
     >
-      <button
-        v-if="authStore.authorization.userType !== 'BRAND' || !props.isBookmark"
-        style="--tw-ring-opacity: 0.2"
-        :class="[
-          'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
-          avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
-        ]"
-        @click.prevent.capture="() => execute()"
-      >
-        <UtSvg v-if="state === constants.LOADING" name="sunshine" />
-        <UtSvg
-          v-else
-          name="bookmark"
+      <template v-if="authStore.authorization.userType !== 'BRAND'">
+        <button
+          v-if="!props.isBookmark"
+          style="--tw-ring-opacity: 0.2"
           :class="[
-            'w-[1.5rem] h-[1.5rem]',
-            avgColor > 128 ? 'text-black' : 'text-white',
+            'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
+            avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
           ]"
-        />
-      </button>
+          @click.prevent.capture="() => execute()"
+        >
+          <UtSvg v-if="state === constants.LOADING" name="sunshine" />
+          <UtSvg
+            v-else
+            name="bookmark"
+            :class="[
+              'w-[1.5rem] h-[1.5rem]',
+              avgColor > 128 ? 'text-black' : 'text-white',
+            ]"
+          />
+        </button>
+      </template>
       <button
         v-if="props.isBookmark"
         style="--tw-ring-opacity: 0.2"

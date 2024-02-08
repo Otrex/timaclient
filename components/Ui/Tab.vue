@@ -16,7 +16,11 @@
     </div>
     <div :class="props.tabClass">
       <transition mode="out-in">
-        <component :is="currentComponent?.component" :bus="props.bus" />
+        <component
+          :is="currentComponent?.component"
+          :bus="props.bus"
+          v-bind="args"
+        />
       </transition>
     </div>
   </div>
@@ -33,6 +37,7 @@ const props = defineProps<{
   defaultTab: string;
   bus?: UseEventBusReturn<string, any>;
   ref?: any;
+  args?: { [key: string]: any };
   disabled?: boolean;
   menuItems: {
     name: string;

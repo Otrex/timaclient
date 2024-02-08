@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div id="fb-root"></div>
     <NuxtLayout name="auth">
       <div class="pb-[40px]">
         <div class="mb-[3.75rem]">
