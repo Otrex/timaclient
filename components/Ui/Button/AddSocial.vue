@@ -61,6 +61,7 @@ const props = defineProps<{
   label: string;
   id: string;
   modal?: boolean;
+  isCompleted?: boolean;
 }>();
 
 const $emit = defineEmits(["action", "open", "closeModal"]);

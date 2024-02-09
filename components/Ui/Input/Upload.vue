@@ -4,7 +4,7 @@
       @click="open"
       :class="[
         props.errorMessage && '!border-red-600',
-        'w-full flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]',
+        'w-full md:flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]',
       ]"
     >
       <div>
@@ -44,6 +44,7 @@
     <Teleport to="body">
       <UtModal
         v-model:state="modalState"
+        :prevent-backdrop-close="true"
         m-width="31.25rem"
         backdrop-color="rgba(0,0,0,.3)"
       >
@@ -64,6 +65,7 @@
                 'rounded-[0.5rem] mb-[1.5rem] outline-dashed outline-[#999999] pt-[1.25rem] pb-[1.8125rem]': true,
                 '!outline-red-600': error,
               }"
+              @click="openUploadFile"
             >
               <UtSvg name="upload" class="inline-block w-[4.5rem] h-[4.5rem]" />
 
@@ -77,6 +79,7 @@
                   type="file"
                   :accept="`${acceptsMime}*`"
                   class="hidden"
+                  ref="input"
                   @change="clickHandler"
                 />
               </label>
@@ -124,6 +127,11 @@ type DropEvent = DragEvent & ({ dataTransfer: DataTransfer } | any);
 const props = defineProps<IProps>();
 const progress = ref(0);
 const file = ref();
+const input = ref();
+
+const openUploadFile = () => {
+  input.value.click();
+};
 
 const emit = defineEmits(["update:file", "update:name", "update:url"]);
 

@@ -96,7 +96,9 @@ export const useAuthStore = defineStore('auth', {
       });
     },
 
-    async updateBrandInformation(payload: Omit<Payload.BrandBasicInformation, 'publicId' | 'email'>) {
+    async updateBrandInformation(
+      payload: Omit<Payload.BrandBasicInformation, 'publicId' | 'email'>
+    ) {
       await this.$api.brandBasicInformationUpdate({
         publicId: this.registration.publicId!,
         email: this.registration.email!,
@@ -104,7 +106,9 @@ export const useAuthStore = defineStore('auth', {
       });
     },
 
-    async updateInfluencerProfile(payload: Omit<Payload.InfluencerCompleteProfile, 'publicId' | 'email'>) {
+    async updateInfluencerProfile(
+      payload: Omit<Payload.InfluencerCompleteProfile, 'publicId' | 'email'>
+    ) {
       await this.$api.influencerCompleteProfileUpdate({
         publicId: this.registration.publicId!,
         email: this.registration.email!,
@@ -112,14 +116,18 @@ export const useAuthStore = defineStore('auth', {
       });
     },
 
-    async updateBrandAddressDoc(payload: Omit<Payload.BrandAddressDocumentation, 'publicId'>) {
+    async updateBrandAddressDoc(
+      payload: Omit<Payload.BrandAddressDocumentation, 'publicId'>
+    ) {
       await this.$api.brandAddressDocumentUpdate({
         publicId: this.registration.publicId!,
         ...payload,
       })
     },
 
-    async updateInfluencerBankDetails(payload: Omit<Payload.InfluencerBankDetails, 'publicId'>) {
+    async updateInfluencerBankDetails(
+      payload: Omit<Payload.InfluencerBankDetails, 'publicId'>
+    ) {
       await this.$api.influencerBankDetailsUpdate({
         publicId: this.registration.publicId!,
         ...payload,

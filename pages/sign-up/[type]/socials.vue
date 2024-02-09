@@ -16,12 +16,17 @@
           <template v-for="social in optionsStore.$socials" :key="social.icon">
             <UiButtonAddSocial
               class="w-full"
-              @open="onOpen"
               :label="`Connect ${getSocial(social.icon)?.name}`"
-              @closeModal="openModal[social.icon] = false"
-              :modal="openModal[social.icon]"
+              @open="onOpen"
+              :modal="getModal(social.icon)"
+              @closeModal="closeModal(social.icon)"
               :icon="social.icon"
               :id="social.icon"
+              :isCompleted="
+                authStore.connectedSocials.includes(
+                  getSocial(social.icon)?.name
+                )
+              "
             >
               <template #form>
                 <UtAddSocial
@@ -87,12 +92,20 @@ useHead({
 });
 
 const { notify } = useNotification();
+const openModal = ref<Record<string, boolean>>({});
+
 const optionsStore = useOptionsStore();
-const authStore = useAuthStore();
 const rules = useValidationRules();
+const authStore = useAuthStore();
+
 const api = useAPI();
 
-const openModal = ref<Record<string, boolean>>({});
+const closeModal = (key: string) => {
+  openModal.value[key] = false;
+};
+
+const getModal = (key: string) => openModal.value[key];
+
 const form = reactive({
   name: "",
   handle: "",
