@@ -8,10 +8,13 @@
     >
       <div
         class="w-[4rem] overflow-clip rounded-[0.625rem] aspect-square"
-        v-for="(image, idx) in props.images"
+        v-for="(influencer, idx) in props.influencers"
         :key="idx"
       >
-        <img :src="image" class="w-full h-full object-cover" />
+        <img
+          :src="influencer.profilePicture"
+          class="w-full h-full object-cover"
+        />
       </div>
     </div>
     <div class="text-right text-white text-[0.875rem]">
@@ -21,13 +24,16 @@
 </template>
 
 <script setup lang="ts">
+import type { Influencer } from "~/lib/interfaces/core";
+
 const props = defineProps<{
   bg: {
     from: string;
     to: string;
   };
   title: string;
-  images: string[];
+  images?: string[];
+  influencers?: Influencer[];
 }>();
 
 const bg = computed(() => ({

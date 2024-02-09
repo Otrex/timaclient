@@ -43,13 +43,19 @@
           </p>
 
           <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
-            <p class="nl">Campaign website: {{ campaign.overview.website }}</p>
             <p class="nl">
-              Planned Budget: {{ campaign.overview.plannedBudget }}
+              <b>Campaign website:</b> {{ campaign.overview.website }}
             </p>
-            <p class="nl">Cost per post: {{ campaign.overview.costPerPost }}</p>
+            <p class="nl">
+              <b>Planned Budget:</b>
+              {{ tools.formatCurrency(campaign.overview.plannedBudget) }}
+            </p>
+            <p class="nl">
+              <b>Cost per post:</b>
+              {{ tools.formatCurrency(campaign.overview.costPerPost) }}
+            </p>
             <div>
-              <p class="nl">Social media platform:</p>
+              <p class="nl"><b>Social media platform:</b></p>
               <div
                 v-for="(socials, idx) in campaign.overview.socialMediaPlatforms"
                 :key="idx"
@@ -68,17 +74,19 @@
           <h2 class="mb-[0.75rem] font-bold">Influencer requirement</h2>
           <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
             <p class="nl">
-              Category: {{ campaign.influencer.influencerCategory.join(", ") }}
+              <b>Category:</b>
+              {{ campaign.influencer.influencerCategory.join(", ") }}
             </p>
             <p class="nl">
-              Audience size: {{ campaign.influencer.audienceSize.join(", ") }}
+              <b>Audience size:</b>
+              {{ campaign.influencer.audienceSize.join(", ") }}
             </p>
             <p class="nl">
-              Audience gender:
+              <b>Audience gender:</b>
               {{ campaign.influencer.audienceGender.join(", ") }}
             </p>
             <p class="nl">
-              Audience location:
+              <b>Audience location:</b>
               {{ campaign.influencer.audienceLocation.join(", ") }}
             </p>
           </div>
@@ -87,34 +95,42 @@
         <section>
           <h2 class="mb-[0.75rem] font-bold">Creatives</h2>
           <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
-            <p class="nl">Payment type: {{ campaign.creative.paymentType }}</p>
             <p class="nl">
-              Campaign start date: {{ campaign.creative.startDate }}
-            </p>
-            <p class="nl">Campaign end date: {{ campaign.creative.endDate }}</p>
-            <p class="nl">Content type: {{ campaign.creative.contentType }}</p>
-            <p class="nl">
-              Content placement: {{ campaign.creative.contentPlacement }}
+              <b>Payment type: </b> {{ campaign.creative.paymentType }}
             </p>
             <p class="nl">
-              Creative brief: {{ campaign.creative.creativeBrief }}
+              <b>Campaign start date:</b> {{ campaign.creative.startDate }}
             </p>
             <p class="nl">
-              Creative tone: {{ campaign.creative.creativeTone }}
+              <b>Campaign end date:</b> {{ campaign.creative.endDate }}
             </p>
-            <p class="nl">Campaign rules: {{ campaign.creative.rules }}</p>
             <p class="nl">
-              Sample content reference link:
+              <b>Content type:</b> {{ campaign.creative.contentType }}
+            </p>
+            <p class="nl">
+              <b>Content placement:</b> {{ campaign.creative.contentPlacement }}
+            </p>
+            <p class="nl">
+              <b>Creative brief:</b> {{ campaign.creative.creativeBrief }}
+            </p>
+            <p class="nl">
+              <b>Creative tone:</b> {{ campaign.creative.creativeTone }}
+            </p>
+            <p class="nl">
+              <b>Campaign rules:</b> {{ campaign.creative.rules }}
+            </p>
+            <p class="nl">
+              <b>Sample content reference link:</b>
               <a :href="campaign.creative.referenceLink">{{
                 campaign.creative.referenceLink
               }}</a>
             </p>
             <p class="nl">
-              Campaign objective awareness:
+              <b>Campaign objective awareness:</b>
               {{ campaign.creative.awarenessObjective.join(", ") }}
             </p>
             <p class="nl">
-              Campaign objective acquisition:
+              <b>Campaign objective acquisition:</b>
               {{ campaign.creative.acquisitionObjective.join(", ") }}
             </p>
           </div>
@@ -164,15 +180,19 @@ const { execute: getCampaign, state } = useRequestState({
 
 async function extractColor() {
   const imageSrc = image.value?.src!;
-  image.value!.onload = async () => {
-    const value = await colorExtract.getAverageColor(imageSrc);
-    avgColor.value = value;
-  };
+  if (image.value) {
+    image.value!.onload = async () => {
+      const value = await colorExtract.getAverageColor(imageSrc);
+      avgColor.value = value;
+    };
+  }
 }
 
 onMounted(() => {
-  extractColor();
-  getCampaign();
+  try {
+    extractColor();
+    getCampaign();
+  } catch (error) {}
 });
 </script>
 

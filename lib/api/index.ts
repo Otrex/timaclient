@@ -377,7 +377,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getLatestInfluencers() {
-    return this.request<Response.GetCampaignPayments>({
+    return this.request<Response.GetInfluencers>({
       url: "/agency/v1/influencer/search/latest",
       requireAuth: true,
       method: 'GET',

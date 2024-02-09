@@ -124,9 +124,11 @@ const colorExtract = useImageColorExtract();
 const authStore = useAuthStore();
 
 onMounted(() => {
-  colorExtract.getAverageColor(image.value?.src!).then((value) => {
-    avgColor.value = value;
-  });
+  try {
+    colorExtract.getAverageColor(image.value?.src!).then((value) => {
+      avgColor.value = value;
+    });
+  } catch (error) {}
 });
 
 const { state, execute } = useRequestState({
