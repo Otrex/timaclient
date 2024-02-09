@@ -115,12 +115,12 @@
       <div>
         <label class="block mb-[0.875rem]">Max price per post</label>
         <UiInputTextSelect
-          :options="tools.generationOptions(['NOK', 'story'])"
+          :options="tools.generationOptions(['NOK', 'USD'])"
           class="w-full"
           placeholder="No greater than"
         />
       </div>
-      <div class="flex flex-row gap-[0.75rem]">
+      <!-- <div class="flex flex-row gap-[0.75rem]">
         <div>
           <label class="block mb-[0.875rem]">Min. reach</label>
           <UiInputText class="w-full" placeholder="At least" />
@@ -129,7 +129,7 @@
           <label class="block mb-[0.875rem]">Max. reach</label>
           <UiInputText class="w-full" placeholder="Up to" />
         </div>
-      </div>
+      </div> -->
       <div>
         <UiButtonDefault
           variant="primary"

@@ -38,7 +38,11 @@
         ]"
         @click.prevent.capture="() => deleteBookmark(props.title)"
       >
-        <UtSvg v-if="deleteState === constants.LOADING" name="sunshine" />
+        <UtSvg
+          v-if="deleteState === constants.LOADING"
+          name="sunshine"
+          class="w-[1.5rem] h-[1.5rem]"
+        />
         <UtSvg
           v-else
           name="trash"
@@ -48,11 +52,12 @@
           ]"
         />
       </button>
-      <img
+      <UiImg
         ref="image"
         class="w-full h-full object-cover"
         :src="props.image"
         alt="campaign banner"
+        lazy
       />
     </div>
     <div

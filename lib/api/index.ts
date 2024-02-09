@@ -1,5 +1,6 @@
 
 import type { Payload, Response } from "../interfaces";
+import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
 
@@ -379,6 +380,31 @@ export default class TimaAPI extends UploadAPI {
   async getLatestInfluencers() {
     return this.request<Response.GetInfluencers>({
       url: "/agency/v1/influencer/search/latest",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getTopInfluencers(data: Partial<Payload.Filter>) {
+    return this.request<Response.GetInfluencers>({
+      url: this.querify(`/agency/v1/influencer/search/top`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getTopCategories() {
+    return this.request<IResponse<string[]>>({
+      url: "/agency/v1/influencer/search/categories",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+
+  async getInfluencersByCategory(category: string) {
+    return this.request<Response.GetInfluencers>({
+      url: `/agency/v1/influencer/search/categories/${category}`,
       requireAuth: true,
       method: 'GET',
     });

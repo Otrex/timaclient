@@ -7,10 +7,11 @@
         <div
           class="w-[2.375rem] h-[2.375rem] overflow-hidden bg-[#FFCC9D] rounded-full"
         >
-          <img
+          <UiImg
             :src="tools.removeDuplicateURL(props.image)"
             class="object-cover w-full h-full"
             alt="avatar"
+            lazy
           />
         </div>
       </div>
@@ -19,9 +20,9 @@
         <!--<div class="text-xs">{{ props.type }}</div>-->
       </div>
     </div>
-    <div>
+    <!--    <div>
       <UtSvg name="down-caret" class="w-[0.75rem] h-[0.375rem] m-[0.375rem]" />
-    </div>
+    </div> -->
   </div>
 </template>
 

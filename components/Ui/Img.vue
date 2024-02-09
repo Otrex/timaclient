@@ -1,5 +1,9 @@
 <template>
-  <img :src="state?.src" />
+  <transition mode="out-in">
+    <img class="loading" v-if="isLoading" />
+    <img src="/favicon/favicon-16x16.png" v-else-if="error" />
+    <img :src="state?.src" ref="image" v-else />
+  </transition>
 </template>
 
 <script setup lang="ts">
@@ -17,11 +21,8 @@ const props = withDefaults(
   }
 );
 
-const image = ref(new Image());
-
-const source = computed(() => {});
-
-const avatarUrl = "https://place.dog/300/200";
+const image = ref();
+defineExpose(image);
 const { isLoading, error, state } = useImage({ src: props.src });
 </script>
 
@@ -29,5 +30,10 @@ const { isLoading, error, state } = useImage({ src: props.src });
 .vars {
   --width: v-bind(props.width);
   --height: v-bind(props.height);
+}
+.loading {
+  animation: loading 1.5s infinite ease-in-out;
+  width: 100%;
+  height: 100%;
 }
 </style>
