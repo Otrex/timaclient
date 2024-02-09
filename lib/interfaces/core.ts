@@ -159,6 +159,15 @@ export interface AgeDemographicsData {
   value3?: number;
 }
 
+export interface Influencer {
+  publicId: string;
+  username: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  profilePicture: string;
+}
+
 export interface FullCampaign {
   publicId: string;
   brandName: string;

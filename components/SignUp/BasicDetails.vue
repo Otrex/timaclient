@@ -28,6 +28,7 @@
       <UiInputText
         type="password"
         class="w-full"
+        password-toggle
         v-model="form.password"
         :autocomplete="false"
         placeholder="Password"

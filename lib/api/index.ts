@@ -366,6 +366,24 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  // Incomplete
+  async getInfluencersByIntent(payload: any) {
+    const { intent, data } = payload;
+    return this.request<Response.GetCampaignPayments>({
+      url: this.querify(`/agency/v1/influencer/search/${intent}`, data),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getLatestInfluencers() {
+    return this.request<Response.GetCampaignPayments>({
+      url: "/agency/v1/influencer/search/latest",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async updatePersonalProfile(
     data: Payload.InfluencerPersonalProfile
   ) {

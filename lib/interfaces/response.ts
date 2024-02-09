@@ -28,7 +28,7 @@ export interface GetPaymentStats extends IResponse<{
 }> { }
 
 
-
+export interface GetInfluencers extends IResponse<Core.Influencer[]> { }
 export interface GetDemographicsData extends IResponse<Core.AgeDemographicsData[]> { }
 export interface GetBookmarks extends IResponse<Core.FullCampaign[]> { }
 export interface UpdateSocials extends IResponse<Core.UserSocial> { }
