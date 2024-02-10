@@ -25,7 +25,7 @@
               ]"
             />
           </button>
-          <img
+          <UiImg
             ref="image"
             class="w-full h-full object-cover"
             :src="campaign.creative.thumbnail"
@@ -36,7 +36,7 @@
         <section>
           <h2 class="mb-[1rem] font-bold">Campaign Information</h2>
           <h3 class="mb-[1rem]">
-            {{ campaign.overview.name || "Nike" }} Campaign
+            {{ campaign.overview.name || "Nike" }}
           </h3>
           <p class="mb-[1.4375rem]">
             {{ campaign.overview.briefDescription }}
@@ -179,14 +179,25 @@ const { execute: getCampaign, state } = useRequestState({
 });
 
 async function extractColor() {
-  const imageSrc = image.value?.src!;
-  if (image.value) {
-    image.value!.onload = async () => {
-      const value = await colorExtract.getAverageColor(imageSrc);
-      avgColor.value = value;
-    };
+  if (campaign.value?.creative.thumbnail) {
+    const value = await colorExtract.getAverageColor(
+      campaign.value?.creative.thumbnail
+    );
+    avgColor.value = value;
   }
 }
+
+watch(
+  () => campaign.value?.creative.thumbnail,
+  async () => {
+    if (campaign.value?.creative.thumbnail) {
+      const value = await colorExtract.getAverageColor(
+        campaign.value!.creative.thumbnail
+      );
+      avgColor.value = value;
+    }
+  }
+);
 
 onMounted(() => {
   try {

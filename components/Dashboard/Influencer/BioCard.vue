@@ -10,7 +10,7 @@
         <div class="flex flex-row gap-[0.75rem] items-center">
           <div class="flex items-center">
             <div class="w-[4rem] h-[4rem] rounded-full overflow-hidden">
-              <img
+              <UiImg
                 :src="result?.profilePicture"
                 class="w-full h-full object-cover"
                 alt="user profile"
@@ -38,9 +38,9 @@
               />
             </button>
           </div>
-          <div class="w-[9.375rem]">
+          <!-- <div class="w-[9.375rem]">
             <Doughnut :data="data" class="inline-block" :options="options" />
-          </div>
+          </div> -->
         </div>
       </div>
 

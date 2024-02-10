@@ -3,7 +3,7 @@
     class="border border-solid bg-white dark:bg-slate-900 border-[#E7E7E7] dark:border-slate-600"
   >
     <div class="max-h-[9.5625rem] overflow-hidden">
-      <img
+      <UiImg
         :src="props.cover"
         class="w-full h-full object-cover object-center"
       />
@@ -14,7 +14,7 @@
           <div
             class="inline-block w-[2rem] h-[2rem] overflow-hidden rounded-full"
           >
-            <img
+            <UiImg
               :src="props.profilePicture"
               class="w-full h-full object-cover"
               alt="profile picture"

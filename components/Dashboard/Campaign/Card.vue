@@ -12,13 +12,21 @@
         <button
           v-if="!props.isBookmark"
           style="--tw-ring-opacity: 0.2"
+          :disabled="state === constants.LOADING"
           :class="[
             'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
             avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
           ]"
           @click.prevent.capture="() => execute()"
         >
-          <UtSvg v-if="state === constants.LOADING" name="sunshine" />
+          <UtSvg
+            v-if="state === constants.LOADING"
+            name="sunshine"
+            :class="[
+              'spinner w-[1.5rem] h-[1.5rem]',
+              avgColor > 128 ? 'text-black' : 'text-white',
+            ]"
+          />
           <UtSvg
             v-else
             name="bookmark"
@@ -32,6 +40,7 @@
       <button
         v-if="props.isBookmark"
         style="--tw-ring-opacity: 0.2"
+        :disabled="state === constants.LOADING"
         :class="[
           'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
           avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
@@ -41,7 +50,10 @@
         <UtSvg
           v-if="deleteState === constants.LOADING"
           name="sunshine"
-          class="w-[1.5rem] h-[1.5rem]"
+          :class="[
+            'spinner w-[1.5rem] h-[1.5rem]',
+            avgColor > 128 ? 'text-black' : 'text-white',
+          ]"
         />
         <UtSvg
           v-else
@@ -121,6 +133,8 @@ const props = defineProps<{
   isBookmark?: boolean;
 }>();
 
+const emit = defineEmits(["re-update"]);
+
 const api = useAPI();
 const avgColor = ref(0);
 const { notify } = useNotification();
@@ -130,7 +144,7 @@ const authStore = useAuthStore();
 
 onMounted(() => {
   try {
-    colorExtract.getAverageColor(image.value?.src!).then((value) => {
+    colorExtract.getAverageColor(props.image!).then((value) => {
       avgColor.value = value;
     });
   } catch (error) {}
@@ -172,6 +186,8 @@ const { state: deleteState, execute: deleteBookmark } = useRequestState({
       title: `${props.title} deleted`,
       text: "This campaign has been removed form the bookmark",
     });
+
+    emit("re-update");
   },
   onError(error) {
     notify({

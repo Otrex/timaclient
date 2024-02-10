@@ -109,7 +109,7 @@
 <script setup lang="ts">
 import type { Application } from "~/lib/interfaces/core";
 
-const filter = ref();
+const filter = ref("all");
 const api = useAPI();
 const route = useRoute();
 const { notify } = useNotification();

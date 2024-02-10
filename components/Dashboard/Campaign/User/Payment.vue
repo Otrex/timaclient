@@ -70,7 +70,7 @@
                       <div
                         class="bg-[#D9D9D9] rounded-full overflow-hidden aspect-square w-[1.875rem]"
                       >
-                        <img
+                        <UiImg
                           class="w-full h-full object-cover"
                           :src="transaction.profilePicture"
                           v-if="transaction.profilePicture"

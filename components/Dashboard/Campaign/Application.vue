@@ -6,7 +6,7 @@
       <div class="flex flex-row gap-[0.75rem]">
         <div class="flex flex-row items-center">
           <div class="w-[2rem] h-[2rem] rounded-full overflow-hidden">
-            <img
+            <UiImg
               :src="props.profilePicture"
               alt="profile picture"
               class="w-full h-full object-cover"

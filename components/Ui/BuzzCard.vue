@@ -14,10 +14,14 @@
         >
           <template v-if="typeof influencer === 'string'">
             <div
-              class="w-full relative tag h-full p-5 flex items-center justify-center text-[0.75rem] bg-red-600 text-white"
+              class="w-full relative font-bold tag h-full p-5 flex items-center justify-center text-[0.75rem] bg-white text-black"
             >
-              {{ init(influencer) }}
-              <div class="absolute tag-item bg-black">{{ influencer }}</div>
+              {{ init(influencer).toUpperCase() }}
+              <div
+                class="absolute whitespace-pre tag-item bg-red-600 text-white px-2 rounded-md"
+              >
+                {{ influencer }}
+              </div>
             </div>
           </template>
           <template v-else>
@@ -27,13 +31,15 @@
             /> -->
             <UiImg
               :src="influencer.profilePicture"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover bg-white"
             />
           </template>
         </div>
       </div>
       <div class="text-right text-white text-[0.875rem]">
-        <a class="underline underline-offset-2">See more</a>
+        <NuxtLink :to="props.seeMore" class="underline underline-offset-2"
+          >See more</NuxtLink
+        >
       </div>
     </template>
     <template v-else>
@@ -47,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+import type { RouteLocationRaw } from "vue-router";
 import type { Influencer } from "~/lib/interfaces/core";
 
 const props = defineProps<{
@@ -56,6 +63,7 @@ const props = defineProps<{
   };
   title: string;
   images?: string[];
+  seeMore?: RouteLocationRaw;
   influencers?: (Influencer | string)[];
 }>();
 

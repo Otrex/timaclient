@@ -294,9 +294,16 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getDemographicsInsightById(publicId: string, socialMedia: string, data: { type: string }) {
+  async getDemographicsInsightById(
+    publicId: string,
+    socialMedia: string,
+    data: { type: string }
+  ) {
     return this.request<Response.GetDemographicsData>({
-      url: this.querify(`/agency/v1/social-media/${publicId}/demographic/${socialMedia}`, data),
+      url: this.querify(
+        `/agency/v1/social-media/${publicId}/demographic/${socialMedia}`,
+        data
+      ),
       requireAuth: true,
       method: 'GET',
     });
@@ -329,6 +336,16 @@ export default class TimaAPI extends UploadAPI {
   async getBookmarks() {
     return this.request<Response.GetBookmarks>({
       url: `/agency/v1/bookmarks`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async searchInfluencers() { }
+
+  async getDemographyInsights(data: Payload.DemographyInsight) {
+    return this.request<Response.GetDemographyInsights>({
+      url: `/agency/v1/social-media/${data.influencerId}/demographic/${data.socialMedia}?type=${data.type}`,
       requireAuth: true,
       method: 'GET',
     });

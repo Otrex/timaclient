@@ -23,7 +23,7 @@
       </div>
       <section class="mt-[0.75rem]">
         <div class="h-[24.1875rem] w-full overflow-hidden">
-          <img
+          <UiImg
             :src="campaign?.creative.thumbnail"
             alt="campaign banner"
             class="w-full h-full object-cover object-center"

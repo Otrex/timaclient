@@ -123,6 +123,10 @@ export default {
     return result as Omit<T, K>;
   },
 
+  linkTo: (link: string, target = '_blank') => {
+    window.location.href = link;
+  },
+
   isEmpty<T = any>(value: T, elementIsEmpty?: (element: T) => boolean): boolean {
     if (value === null || value === undefined) {
       return true;

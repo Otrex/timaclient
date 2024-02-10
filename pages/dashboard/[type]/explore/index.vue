@@ -97,6 +97,46 @@
             </template>
           </div>
         </template>
+
+        <h2 class="text-[2rem] mt-[1.5rem] mb-[1.375rem]">Other Campaigns</h2>
+
+        <template
+          v-if="tools.requestState(getAllCampaigns) === constants.LOADING"
+        >
+          <div class="text-center">
+            <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
+            Fetching Campaigns
+          </div>
+        </template>
+        <template v-else-if="allCampaigns.length === 0">
+          <div>No Campaigns</div>
+        </template>
+        <template v-else>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
+          >
+            <template v-for="campaign in allCampaigns" :key="campaign.publicId">
+              <NuxtLink
+                :to="{
+                  params: { id: campaign.publicId, type: $route.params.type },
+                  name: 'Explore - Campaign',
+                }"
+              >
+                <DashboardCampaignCard
+                  :image="campaign.creative.thumbnail"
+                  :brand="campaign.overview.name"
+                  :budget="campaign.overview.plannedBudget"
+                  :category="campaign.creative.creativeTone"
+                  :description="campaign.overview.briefDescription"
+                  :deadline="campaign.creative.endDate"
+                  :completion="0"
+                  :public-id="campaign.publicId"
+                  :title="campaign.overview.name"
+                />
+              </NuxtLink>
+            </template>
+          </div>
+        </template>
       </div>
     </UtPermit>
     <UtPermit :user-type="constants.AGENCY">
@@ -112,6 +152,16 @@
                 :title="buzz.title"
                 :bg="buzz.bg"
                 :influencers="buzz.influencers"
+                :see-more="{
+                  name: 'Influencers',
+                  query: {
+                    title: buzz.title,
+                    type:
+                      typeof buzz.influencers?.at(0) === 'string'
+                        ? 'category'
+                        : 'influencers',
+                  },
+                }"
               />
             </template>
           </div>
@@ -125,7 +175,15 @@
                 class="w-full"
                 :title="buzz.title"
                 :bg="buzz.bg"
-                :influencers="buzz.influencers"
+                :influencers="buzz.data.influencers"
+                :see-more="{
+                  name: 'Influencers',
+                  query: {
+                    title: buzz.title,
+                    type: 'influencers',
+                    category: buzz.data.category,
+                  },
+                }"
               />
             </template>
           </div>
@@ -155,7 +213,7 @@ const search = ref({
 });
 
 const MAX_INFLUENCER_DISPLAY = 5;
-
+const allCampaigns = ref<GetCampaigns["data"]>([]);
 const buzzes = ref([
   {
     title: "New influencers on the block",
@@ -174,23 +232,19 @@ const buzzes = ref([
   },
 ]);
 
-const categories = ref([
-  {
-    title: "Travel Influencers",
-    bg: { from: "#FEB692", to: "#EA5455" },
-    influencers: [] as Influencer[],
-  },
-  {
-    title: "Technology Influencers",
-    bg: { from: "#FCCF31", to: "#F55555" },
-    influencers: [] as Influencer[],
-  },
-  {
-    title: "Food Influencers",
-    bg: { from: "#FAD7A1", to: "#E96D71" },
-    influencers: [] as Influencer[],
-  },
-]);
+const bgColor = [
+  { from: "#FEB692", to: "#EA5455" },
+  { from: "#FCCF31", to: "#F55555" },
+  { from: "#FAD7A1", to: "#E96D71" },
+];
+
+type Buzz = {
+  bg: (typeof bgColor)[0];
+  title: string;
+  data: { category: string; influencers: Influencer[] };
+};
+
+const categories = ref<Buzz[]>([]);
 
 const recommended = ref<GetCampaigns["data"]>([]);
 const topCampaigns = ref<GetCampaigns["data"]>([]);
@@ -232,27 +286,39 @@ const getTopInfluencers = useRequestState({
   },
 });
 
+const getAllCampaigns = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getCampaigns({
+      age: "",
+      type: "filter",
+      size: "",
+      location: "",
+      category: "",
+    }),
+  onSuccess(response) {
+    allCampaigns.value = response.data;
+  },
+});
+
 const getTopCategories = useRequestState({
   action: async () => {
     const response = await api.getTopCategories();
     const influencers = await Promise.all(
-      filterToRequired(response.data).map((j) => {
+      response.data.map((j) => {
         return api.getInfluencersByCategory(j);
       })
     );
 
-    return [
-      filterToRequired(response.data) || [],
-      influencers.map((e) => e.data) || [],
-    ] as const;
+    return [response.data || [], influencers.map((e) => e.data) || []] as const;
   },
   onSuccess: ([$categories, influencers]) => {
-    buzzes.value[2].influencers = $categories;
-    categories.value = categories.value.map((c, i) => {
+    buzzes.value[2].influencers = $categories; // This uses the 5 count number of category to display
+    categories.value = influencers.map((influencer, i) => {
       return {
         title: `${$categories[i]} Influencers`,
-        influencers: influencers[i],
-        bg: c.bg,
+        data: { category: $categories[i], influencers: influencer },
+        bg: bgColor[i % 3],
       };
     });
   },

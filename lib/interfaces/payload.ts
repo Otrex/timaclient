@@ -9,6 +9,12 @@ export interface CreateUser {
   userType: UserType;
 }
 
+export interface DemographyInsight {
+  socialMedia: string;
+  influencerId: string;
+  type: string;
+}
+
 export interface AddBookmark {
   title: string;
   campaignPublicId: string;

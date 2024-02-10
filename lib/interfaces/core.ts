@@ -53,6 +53,24 @@ export interface Authentication {
   refresh_token: string;
 }
 
+export interface DemographyInsight {
+  name: string;
+  value1?: number;
+  value2?: number;
+  value3?: number;
+}
+export interface SocialMediaInsight {
+  businessOwnerIgId: string;
+  businessIgId: string;
+  businessHandle: string;
+  businessName: string;
+  biography: string;
+  followers: number;
+  totalMedia: number;
+  totalComments: number;
+  totalLikes: number;
+}
+
 export interface Application {
   applicationId: string;
   campaignPublicId: string;

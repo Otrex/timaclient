@@ -64,7 +64,9 @@
       </UiInputOption>
     </div>
 
-    <div class="grid grid-cols-3 items-end gap-x-[3rem] gap-y-[1.75rem]">
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 items-end gap-x-[3rem] gap-y-[1.75rem]"
+    >
       <div>
         <label class="block mb-[0.875rem]">Category</label>
         <UiInputSelect
@@ -105,13 +107,17 @@
           :options="tools.generationOptions(['Main page', 'story'])"
           class="w-full"
           placeholder="-- Select --"
+          disabled
         />
       </div>
       <div>
         <UiButtonDefault
           variant="primary"
           label="Search"
+          :loading="state === constants.LOADING"
+          :disabled="state === constants.LOADING"
           class="w-full py-[0.75rem]"
+          @click="() => execute()"
         />
       </div>
     </div>
@@ -121,11 +127,14 @@
         <UtLoaderIndicator message="Fetching Your Campaigns" />
       </template>
       <template v-else-if="search.length === 0">
-        <UtNoResource message="No campaigns available" />
+        <div>&nbsp;</div>
       </template>
       <template v-else>
+        <div class="my-[1.25rem]">
+          <h1 class="font-bold mt-[1.25rem]">Search Result(s):</h1>
+        </div>
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
         >
           <NuxtLink
             v-for="campaign in search"
@@ -158,7 +167,6 @@
 
 <script setup lang="ts">
 import type { Core } from "~/lib/interfaces";
-import type { GetCampaigns } from "~/lib/interfaces/payload";
 
 const props = defineProps<{
   modelValue?: {
@@ -176,7 +184,6 @@ const optionsStore = useOptionsStore();
 const search = ref<Core.Campaign[]>([]);
 
 const form = reactive({
-  type: "filter",
   age: "",
   size: "",
   category: "",
@@ -198,7 +205,7 @@ const { state, execute } = useRequestState({
 });
 
 const categories = computed(
-  () => optionsStore.$creativesOptions[0]?.contentType || []
+  () => optionsStore.$creativesOptions[0]?.creativeTone || []
 );
 
 const contentType = computed(
@@ -210,6 +217,7 @@ const budgetRange = computed(
 );
 
 const size = computed(() => optionsStore.$campaignOptions[0]?.size || []);
+
 const emits = defineEmits(["update:state"]);
 </script>
 

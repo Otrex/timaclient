@@ -7,7 +7,7 @@
       >
         Thumbnail
       </div>
-      <img
+      <UiImg
         v-else
         :src="thumb(campaignStore.creative.thumbnail)"
         alt="logo"

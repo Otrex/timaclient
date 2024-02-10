@@ -63,6 +63,7 @@
             <UiInputSelect
               class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
               :options="tools.generationOptions(['all'])"
+              v-model="filter"
             />
           </div>
         </div>
@@ -88,7 +89,7 @@
                       <div
                         class="bg-[#D9D9D9] rounded-md overflow-hidden aspect-square w-[1.875rem]"
                       >
-                        <img
+                        <UiImg
                           class="w-full h-full object-cover"
                           :src="transaction.campaignImage"
                           v-if="transaction.campaignImage"
@@ -135,11 +136,13 @@
 </template>
 
 <script setup lang="ts">
+import { Bar } from "vue-chartjs";
+
 definePageMeta({
   name: "Payment",
 });
 
-import { Bar } from "vue-chartjs";
+const filter = ref("all");
 const data = ref({
   labels: [
     "Label 1",

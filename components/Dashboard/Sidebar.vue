@@ -53,8 +53,9 @@
             />
             <DashboardNavigatorMenuItem
               @click="logout"
-              :class="['text-red-600', loading && 'pulse-element']"
+              class="text-red-600"
               label="Log Out"
+              :loading="loading"
               icon="nav/logout"
             />
           </div>
@@ -95,9 +96,7 @@ const logout = async () => {
   try {
     loading.value = true;
     await authStore.logout();
-    navigateTo({
-      name: "login",
-    });
+    window.location.href = "/auth/login";
   } catch (error: any) {
     alert(error.message);
   } finally {

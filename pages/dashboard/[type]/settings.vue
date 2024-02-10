@@ -6,7 +6,7 @@
       <div
         class="w-[11.625rem] bg-white select-none transform translate-y-[41%] h-[11.625rem] relative rounded-full border-[0.3125rem] border-solid border-white"
       >
-        <img
+        <UiImg
           :src="tools.removeDuplicateURL(profile?.profilePicture)"
           class="object-cover w-full h-full rounded-full"
           alt="profile image"
@@ -85,6 +85,8 @@ const { state, execute } = useRequestState({
       title: "Update successful",
       text: "Profile picture updated",
     });
+
+    window.location.reload();
   },
   onError(error) {
     notify({

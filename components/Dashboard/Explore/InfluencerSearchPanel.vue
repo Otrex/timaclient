@@ -2,7 +2,10 @@
   <div>
     <div class="flex flex-row justify-between">
       <p class="nl mb-[1.125rem]">Select a social media channel</p>
-      <button class="flex items-center active:bg-slate-100">
+      <button
+        @click="emits('update:state', false)"
+        class="flex items-center active:bg-slate-100"
+      >
         <UtSvg name="close" class="w-[0.8125rem] h-[0.8125rem] text-black" />
         &nbsp; Clear filter
       </button>
@@ -142,6 +145,8 @@
 </template>
 
 <script setup lang="ts">
+import { Core } from "~/lib/interfaces";
+
 const props = defineProps<{
   modelValue?: {
     category: string;
@@ -150,13 +155,19 @@ const props = defineProps<{
     audienceDemography: string;
     campaignStatus: string;
   };
+  state?: boolean;
 }>();
-// Do it one one
-const form = computed({
-  get() {
-    return props.modelValue;
+
+const api = useAPI();
+const optionsStore = useOptionsStore();
+const search = ref<Core.Campaign[]>([]);
+const emits = defineEmits(["update:state"]);
+
+const { state, execute } = useRequestState({
+  action: () => api.searchInfluencers(),
+  onSuccess: (response) => {
+    // search.value = response.data;
   },
-  set(value) {},
 });
 </script>
 

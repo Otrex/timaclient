@@ -39,6 +39,7 @@ export interface UpdatePassword extends IResponse<string> { }
 export interface GetAddress extends IResponse<Core.Address> { }
 export interface GetBankList extends IResponse<Core.Bank[]> { }
 export interface GenericStringRes extends IResponse<string> { }
+export interface GetDemographyInsights extends IResponse<Core.DemographyInsight[]> { }
 export interface GetCampaign extends IResponse<Core.Campaign> { }
 export interface GetPaymentStatus extends IResponse<string[]> { }
 export interface SignIn extends IResponse<Core.Authentication> { }

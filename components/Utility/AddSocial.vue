@@ -3,7 +3,7 @@
     class="flex flex-col max-w-md mx-auto p-[1.25rem] pb-[3.125rem] gap-[0.625rem]"
   >
     <div class="w-[100px] mx-auto text-center h-[100px] overflow-hidden">
-      <img :src="props.social.logo" />
+      <UiImg :src="props.social.logo" />
     </div>
     <h1 class="font-bold text-center">
       {{ props.social.name }}

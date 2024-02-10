@@ -27,6 +27,7 @@
               :public-id="campaign.publicId"
               :title="campaign.overview.name"
               :is-bookmark="true"
+              @re-update="reRun"
             />
           </NuxtLink>
         </template>
@@ -45,13 +46,17 @@ definePageMeta({
 const api = useAPI();
 const bookmarks = ref<GetBookmarks["data"]>([]);
 
-const { state } = useRequestState({
+const { state, execute } = useRequestState({
   action: () => api.getBookmarks(),
   immediately: true,
   onSuccess(response) {
     bookmarks.value = response.data;
   },
 });
+
+async function reRun() {
+  await execute();
+}
 </script>
 
 <style></style>

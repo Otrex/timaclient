@@ -1,16 +1,14 @@
 <template>
-  <transition mode="out-in">
-    <img class="loading" v-if="isLoading" />
-    <img src="/favicon/favicon-16x16.png" v-else-if="error" />
-    <img :src="state?.src" ref="image" v-else />
-  </transition>
+  <img src="/favicon/favicon-16x16.png" class="bg-img" v-if="isLoading" />
+  <img src="/favicon/favicon-16x16.png" class="bg-img" v-else-if="error" />
+  <img :src="state?.src" :class="[$attrs.class]" v-else />
 </template>
 
 <script setup lang="ts">
 import { useImage } from "@vueuse/core";
 const props = withDefaults(
   defineProps<{
-    src: string;
+    src?: string;
     lazy?: boolean;
     width?: number | string;
     height?: number | string;
@@ -21,9 +19,7 @@ const props = withDefaults(
   }
 );
 
-const image = ref();
-defineExpose(image);
-const { isLoading, error, state } = useImage({ src: props.src });
+const { isLoading, error, state } = useImage({ src: props.src || "" });
 </script>
 
 <style scoped>
@@ -35,5 +31,13 @@ const { isLoading, error, state } = useImage({ src: props.src });
   animation: loading 1.5s infinite ease-in-out;
   width: 100%;
   height: 100%;
+}
+
+.bg-img {
+  background-image: url("/favicon/favicon-16x16.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-blend-mode: overlay;
 }
 </style>

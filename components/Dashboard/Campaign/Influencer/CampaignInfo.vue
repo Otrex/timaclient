@@ -116,7 +116,7 @@
           class="aspect-[250/327] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
         >
           <div class="absolute inset-0 z-[-1]">
-            <img
+            <UiImg
               src="https://s3-alpha-sig.figma.com/img/128e/110a/3e644d9a1277ab2f9c0f9b05ffa9a7d9?Expires=1704067200&Signature=a9H4L822~YsdF~aTRgwIMMiBy2eEdBZwxvuyd2BfM2BVvc7P2l2u80e~GNhfv98VhL1rGNn6zoupI8qwZUkcTNWqOuXiIpebNwzhjvFgtWZgPdu4RlzlxojLyWCu5h0sjhxdqxbcSUXuEq1NEmhocnCpvWYsYowj4Y5mrADkdKlozIr96tmQa03gDS9F3e6OROzAzum9qY5dOxuHL9BaQUutHjqunb9VhO1wa~b3~UU1ikDanmPKr2vAaqqanqTnhU9~Nj8dhy3TYUO-eY-3v9M-CcHCDiWy4v1BoSlqMSsIbWOCvtMfF9QunOgNQ15LnnQ-fA~RDg~DOTzd7vripA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
               alt="video cover"
               class="w-full h-full"
@@ -130,7 +130,7 @@
           class="aspect-[250/327] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
         >
           <div class="absolute inset-0 w-full aspect-[250/327] z-[-1]">
-            <img
+            <UiImg
               src="https://s3-alpha-sig.figma.com/img/dc6e/0ce5/024bad9890f34be89b61b0a4eaa4f996?Expires=1704067200&Signature=EHrt5q7UG~qet2QaOKFpP8nmgQd8Px2a37yUy-A1IeFLv~xw8bwKtcaWtXobZODqNxErZ0e2DHlClrcqjue4zHKHmKXm-CmuEDfe9ZyNwWfRBv3kNDUZjaZDvrjwT5dmLqGCrVVDpkKLHRAPuCoJQnP5zbSBVvrLMMT9mfm0F9VgvYQ98lva4pg7h9cGl7sfxUn3DeqOlC5TvgtP15jmKRAmsCKlU6iCO1ixzLDAhdtQZBNnWXzbWCZyKj2opj8hP0hlEwELNc4MTXiRfypg0DkzH5uU1jzsemjRg6djMT-HTYU3VhGwTAgkZiUE7PJDbvh9cQnlfhGd1kXqmvecDw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
               alt="video cover"
               class="w-full h-full"
@@ -144,7 +144,7 @@
           class="aspect-[250/327] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
         >
           <div class="absolute inset-0 w-full aspect-[250/327] z-[-1]">
-            <img
+            <UiImg
               src="https://s3-alpha-sig.figma.com/img/dc6e/0ce5/024bad9890f34be89b61b0a4eaa4f996?Expires=1704067200&Signature=EHrt5q7UG~qet2QaOKFpP8nmgQd8Px2a37yUy-A1IeFLv~xw8bwKtcaWtXobZODqNxErZ0e2DHlClrcqjue4zHKHmKXm-CmuEDfe9ZyNwWfRBv3kNDUZjaZDvrjwT5dmLqGCrVVDpkKLHRAPuCoJQnP5zbSBVvrLMMT9mfm0F9VgvYQ98lva4pg7h9cGl7sfxUn3DeqOlC5TvgtP15jmKRAmsCKlU6iCO1ixzLDAhdtQZBNnWXzbWCZyKj2opj8hP0hlEwELNc4MTXiRfypg0DkzH5uU1jzsemjRg6djMT-HTYU3VhGwTAgkZiUE7PJDbvh9cQnlfhGd1kXqmvecDw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
               alt="video cover"
               class="w-full h-full"
