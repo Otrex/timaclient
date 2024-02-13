@@ -81,7 +81,23 @@
             <th></th>
           </thead>
           <tbody>
-            <template v-for="(transaction, idx) in transactions" :key="idx">
+            <template
+              v-if="tools.requestState(getTransactions) === constants.LOADING"
+            >
+              <UtLoaderIndicator message="Fetching transactions" />
+            </template>
+            <template v-else-if="transactions.length === 0">
+              <tr>
+                <td colspan="7">
+                  <UtNoResource message="No transactions yet" />
+                </td>
+              </tr>
+            </template>
+            <template
+              v-else
+              v-for="(transaction, idx) in transactions"
+              :key="idx"
+            >
               <tr>
                 <td>
                   <div class="flex gap-[1rem] items-center flex-row">
@@ -104,27 +120,32 @@
                   {{ transaction.brandName }}
                 </td>
                 <td class="align-middle text-center">
-                  {{ tools.formatCurrency(transaction.earnings) }}
+                  {{ tools.formatCurrency(transaction.earning || 0) }}
                 </td>
                 <td class="align-middle text-center">
                   {{ tools.formatCurrency(transaction.balance) }}
                 </td>
                 <td class="align-middle text-center">
-                  {{ tools.formatDate(transaction.createdAt) }}
+                  {{
+                    tools.formatDate(transaction.transactionDate || new Date())
+                  }}
                 </td>
                 <td class="align-middle text-center">
-                  <template v-if="transaction.status === 'completed'">
+                  <template v-if="transaction.status === 'COMPLETED'">
                     <span class="text-[#2DBA62]">Completed</span>
                   </template>
-                  <template v-else-if="transaction.status === 'pending'">
+                  <template v-else-if="transaction.status === 'PENDING'">
                     <span class="text-[#FFCA5B]">Yet to be balanced</span>
+                  </template>
+                  <template v-else-if="transaction.status === 'PARTIAL'">
+                    <span class="text-blue-500">Part payment made</span>
                   </template>
                   <template v-else>
                     <span>--</span>
                   </template>
                 </td>
                 <td class="align-middle text-center">
-                  <UtMoreActions :data-id="transaction.id" />
+                  <UtMoreActions :data-id="transaction.publicId" />
                 </td>
               </tr>
             </template>
@@ -137,6 +158,7 @@
 
 <script setup lang="ts">
 import { Bar } from "vue-chartjs";
+import type { Core } from "~/lib/interfaces";
 
 definePageMeta({
   name: "Payment",
@@ -219,48 +241,15 @@ const options = ref<any>({
   },
 });
 
-const transactions = ref([
-  {
-    id: Math.random(),
-    campaignImage: "https://example.com/puma-basketball-shoes.jpg",
-    campaignName: "Puma Basketball Shoes",
-    brandName: "Puma",
-    earnings: 600000,
-    balance: 150000,
-    createdAt: new Date().toISOString(),
-    status: "completed",
+const api = useAPI();
+const transactions = ref<Core.InfluencerTransaction[]>([]);
+const getTransactions = useRequestState({
+  action: () => api.getInfluencerTransactions(),
+  immediately: true,
+  onSuccess: (response) => {
+    transactions.value = response.data;
   },
-  {
-    id: Math.random(),
-    campaignImage: undefined,
-    campaignName: "Nike lebron shoes",
-    brandName: "Nike",
-    earnings: 500000,
-    balance: 100000,
-    createdAt: new Date().toDateString(),
-    status: "completed",
-  },
-  {
-    id: Math.random(),
-    campaignImage: "url/to/image1.jpg",
-    campaignName: "Adidas running shoes",
-    brandName: "Adidas",
-    earnings: 300000,
-    balance: 120000,
-    createdAt: new Date().toISOString(),
-    status: "pending",
-  },
-  {
-    id: Math.random(),
-    campaignImage: "https://example.com/under-armour-training-shoes.jpg",
-    campaignName: "Under Armour Training Shoes",
-    brandName: "Under Armour",
-    earnings: 900000,
-    balance: 300000,
-    createdAt: new Date().toISOString(),
-    status: "completed",
-  },
-]);
+});
 </script>
 
 <style></style>

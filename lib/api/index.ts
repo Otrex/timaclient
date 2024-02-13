@@ -384,6 +384,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getInfluencerTransactions() {
+    return this.request<Response.GetInfluencerTransactions>({
+      url: "/payment/v1/transactions",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   // Incomplete
   async getInfluencersByIntent(payload: any) {
     const { intent, data } = payload;

@@ -15,7 +15,8 @@
             :to="{
               name: 'Campaign >>> Influencers',
               query: {
-                publicId: 0,
+                publicId: application?.submittedBy,
+                applicationId: application?.applicationId,
               },
             }"
           >
@@ -118,6 +119,12 @@
               {{ application?.userMotivationBrief }}
             </p>
           </article>
+
+          <p class="uppercase mb-[1.875rem]">Campaign Content</p>
+          <article class="max-w-[24.125rem] md:max-w-full mb-[3.125rem]">
+            <p class="nl">Reference Link:</p>
+            <p class="text-[color:--clr-grey-400]">No Reference Link</p>
+          </article>
         </div>
 
         <div class="w-full">
@@ -129,6 +136,7 @@
             <div class="bg-[color:--clr-grey-400] rounded-md overflow-hidden">
               <div
                 tabindex="1"
+                style="visibility: hidden"
                 class="aspect-[250/327] mx-auto h-[23.4375rem] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
               >
                 <div class="absolute inset-0 z-[-1]">

@@ -140,6 +140,18 @@ export interface CampaignTransaction {
   name: string;
 }
 
+export interface InfluencerTransaction {
+  publicId: string;
+  campaignName: string;
+  brandName: string;
+  earning: number;
+  balance: number;
+  status: string;
+  transactionDate: Date;
+  createdOn: string | Date | null;
+  campaignImage?: string;
+}
+
 export interface User {
   firstName: string;
   middleName: string;

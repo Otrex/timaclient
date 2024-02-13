@@ -58,5 +58,6 @@ export interface GetPaymentMethods extends IResponse<Core.PaymentMethod[]> { }
 export interface BrandAddressDocumentation extends IResponse<Core.Address> { };
 export interface GetCampaignOptions extends IResponse<Core.CampaignOptions[]> { }
 export interface GetCampaignPayments extends IResponse<Core.CampaignTransaction[]> { }
+export interface GetInfluencerTransactions extends IResponse<Core.InfluencerTransaction[]> { }
 
 
