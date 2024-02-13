@@ -245,14 +245,10 @@ type Buzz = {
 };
 
 const categories = ref<Buzz[]>([]);
-
+const viewSearchFilter = ref<boolean>(false);
 const recommended = ref<GetCampaigns["data"]>([]);
 const topCampaigns = ref<GetCampaigns["data"]>([]);
-const viewSearchFilter = ref<boolean>(false);
-
-function filterToRequired<T>(arr: T[]) {
-  return arr.filter((i, idx) => idx < MAX_INFLUENCER_DISPLAY);
-}
+const filterToRequired = tools.truncateList(MAX_INFLUENCER_DISPLAY);
 
 const getRecommended = useRequestState({
   action: () => api.getCampaigns({ type: "recommendation" }),
@@ -287,7 +283,6 @@ const getTopInfluencers = useRequestState({
 });
 
 const getAllCampaigns = useRequestState({
-  immediately: true,
   action: () =>
     api.getCampaigns({
       age: "",
@@ -326,11 +321,13 @@ const getTopCategories = useRequestState({
 
 const initForInfluencers = () => {
   getRecommended.execute();
+  getAllCampaigns.execute();
   getTop.execute();
 };
 
 const initForBrands = () => {
   getNewInfluencers.execute();
+  getTopInfluencers.execute();
   getTopCategories.execute();
 };
 

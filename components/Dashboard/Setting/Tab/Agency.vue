@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row w-full max-w-[72.25rem] justify-between">
+  <div class="flex flex-row flex-wrap w-full max-w-[72.25rem] justify-between">
     <UtTabMenuItem
       label="Brand Information"
       :name="constants.BRAND_INFORMATION"

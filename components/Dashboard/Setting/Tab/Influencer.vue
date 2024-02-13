@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-row w-full max-w-[72.25rem] justify-between">
+  <div
+    class="flex cont md:flex-row flex-wrap w-full max-w-[72.25rem] justify-between"
+  >
     <UtTabMenuItem
       label="Personal Information"
       :name="constants.PERSONAL_INFORMATION"
@@ -31,4 +33,8 @@
 
 <script setup lang="ts"></script>
 
-<style></style>
+<style>
+.cont > * {
+  @apply py-3 md:py-0;
+}
+</style>

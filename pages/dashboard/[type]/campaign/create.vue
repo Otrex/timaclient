@@ -1,6 +1,6 @@
 <template>
   <div class="flex md:flex-row h-full flex-col">
-    <div class="md:w-2/3 p-[1.625rem] h-full overflow-auto pb-[2.5rem]">
+    <div class="md:w-2/3 p-[1.625rem] h-full md:overflow-auto pb-[2.5rem]">
       <UiTab
         :menu-items="tabs"
         ref="currentScreen"

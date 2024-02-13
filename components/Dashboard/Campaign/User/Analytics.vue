@@ -19,7 +19,11 @@
       class="flex flex-col mb-[1.25rem] lg:flex-row gap-[1.25rem] mt-[1.25rem]"
     >
       <div class="w-full">
-        <StatsAudienceAgeRange bg="rgba(228, 243, 255, 0.5)" class="w-full" />
+        <StatsAudienceAgeRange
+          :data="[]"
+          bg="rgba(228, 243, 255, 0.5)"
+          class="w-full"
+        />
       </div>
       <div class="w-full">
         <StatsAudienceGenderDistribution bg="rgba(228, 243, 255, 0.5)" />
