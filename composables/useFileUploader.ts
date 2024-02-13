@@ -1,5 +1,5 @@
 import { RequestState } from "~/lib/enums";
-import type { UploadRequest } from "~/lib/interface/payload";
+import type { Payload } from "~/lib/interfaces";
 
 export default function (opts: {
   type: Payload.UploadRequest['type'],

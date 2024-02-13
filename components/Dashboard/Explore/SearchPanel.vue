@@ -77,10 +77,11 @@
         />
       </div>
       <div>
-        <label class="block mb-[0.875rem]">Campaign type</label>
+        <label class="block mb-[0.875rem]">Campaign size</label>
         <UiInputSelect
-          :options="tools.generationOptions(contentType)"
+          :options="tools.generationOptions(size)"
           class="w-full"
+          v-model="form.size"
           placeholder="-- Select --"
         />
       </div>
@@ -90,24 +91,25 @@
           :options="tools.generationOptions(budgetRange)"
           class="w-full"
           placeholder="-- Select --"
+          disabled
         />
       </div>
       <div>
         <label class="block mb-[0.875rem]">Audience demographics</label>
         <UiInputSelect
-          :options="tools.generationOptions(size)"
+          :options="tools.generationOptions(ageGroup)"
           class="w-full"
-          v-model="form.size"
+          v-model="form.age"
           placeholder="-- Select --"
         />
       </div>
       <div>
-        <label class="block mb-[0.875rem]">Campaign status</label>
+        <label class="block mb-[0.875rem]">Campaign location</label>
         <UiInputSelect
-          :options="tools.generationOptions(['Main page', 'story'])"
+          :options="locations"
           class="w-full"
+          v-model="form.location"
           placeholder="-- Select --"
-          disabled
         />
       </div>
       <div>
@@ -142,7 +144,7 @@
             class="w-full"
             :to="{
               params: { id: campaign.publicId },
-              name: 'Campaign',
+              name: 'Explore - Campaign',
             }"
           >
             <DashboardCampaignCard
@@ -204,8 +206,10 @@ const { state, execute } = useRequestState({
   },
 });
 
-const categories = computed(
-  () => optionsStore.$creativesOptions[0]?.creativeTone || []
+const categories = computed(() => optionsStore.$industries);
+
+const ageGroup = computed(
+  () => optionsStore.$campaignOptions[0]?.ageGroup || []
 );
 
 const contentType = computed(
@@ -215,6 +219,8 @@ const contentType = computed(
 const budgetRange = computed(
   () => optionsStore.$campaignOptions[0]?.monthlyIncome || []
 );
+
+const locations = computed(() => optionsStore.$countries);
 
 const size = computed(() => optionsStore.$campaignOptions[0]?.size || []);
 

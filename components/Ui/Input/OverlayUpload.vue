@@ -163,11 +163,23 @@ const checkFileType = (file: File) => {
   throw new Error("Invalid file type: " + file.type);
 };
 
+const getFileName = (file: File) => {
+  const name = file.name;
+  const type = file.type;
+
+  const realExtension = type.split("/")[1];
+
+  const [_, ...nameOnly] = name.split(".").reverse();
+  const namePart = nameOnly.reverse().join(".");
+
+  return `${namePart}.${realExtension}`;
+};
+
 const processFiles = (fileList: FileList | File[]) => {
   try {
     const files = Array.from(fileList);
     files.map((file) => checkFileType(file));
-    fileName.value = files.map((f) => f.name).join(", ");
+    fileName.value = files.map((f) => getFileName(f)).join(", ");
     updateFile(files);
     updateFileName();
   } catch (err: any) {

@@ -18,7 +18,7 @@ export default class UploadAPI extends Api {
     switch (type) {
       case "pics":
         return this.request<Response.GetSignedURL>({
-          url: `/user/v1/signed/url/pics/${fileMeta.name}/${fileMeta.extension}`,
+          url: `/user/v1/signed/url/pics/${fileMeta.name}/${file.type.split('/')[1]}`,
           method: "GET",
         })
 
@@ -27,7 +27,7 @@ export default class UploadAPI extends Api {
           url: `/agency/v1/campaigns/signed/url/thumbnail/${fileMeta.name}/${fileMeta.extension}`,
           method: "GET",
         })
-    
+
       default:
         return this.request<Response.GetSignedURL>({
           url: `/user/v1/signed/url/docs/${fileMeta.name}/${fileMeta.extension}`,
