@@ -6,6 +6,7 @@ function capitalize(str: string) {
 }
 
 export default {
+  truncateList: (max: number) => <T>(list: T[]) => list.filter((_, i) => i < max),
   generateSalt: (length: number, saltType: 'alphanumeric' | 'numeric') => {
     if (!['alphanumeric', 'numeric'].includes(saltType)) {
       throw new Error("Invalid salt type. Use 'alphanumeric' or 'numeric'.");

@@ -33,7 +33,12 @@
 
     <div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
       <div class="w-full">
-        <StatsAudienceAgeRange />
+        <StatsAudienceAgeRange
+          :loading="
+            tools.requestState(getAgeAudienceData) === constants.LOADING
+          "
+          :data="ageGenderData"
+        />
       </div>
       <div class="w-full">
         <StatsEthnicity />
@@ -47,7 +52,16 @@
         <StatsIncome />
       </div>
       <div class="w-full">
-        <StatsLocale />
+        <StatsLocale
+          :loading-countries="
+            tools.requestState(getCountriesData) === constants.LOADING
+          "
+          :loading-cities="
+            tools.requestState(getCitiesData) === constants.LOADING
+          "
+          :countries="countryData"
+          :cities="cityData"
+        />
       </div>
     </div>
 
@@ -182,32 +196,81 @@
 </template>
 
 <script setup lang="ts">
-import type { GetDemographyInsights } from "~/lib/interfaces/response";
-
 const props = defineProps<{ publicId: string }>();
 const api = useAPI();
 
-const demographyType = ["AGE_GENDER", "COUNTRY", "CITY"];
-const data = ref<{
-  [key: string]: GetDemographyInsights;
-}>();
-const con = useRequestState({
-  immediately: true,
-  action: async () => {
-    const data = await Promise.all(
-      demographyType.map((type) =>
-        api.getDemographyInsights({
-          type: type,
-          influencerId: props.publicId,
-          socialMedia: "Instagram",
-        })
-      )
-    );
+enum DemographyType {
+  AGE_GENDER = "AGE_GENDER",
+  COUNTRY = "COUNTRY",
+  CITY = "CITY",
+}
 
-    return Object.fromEntries(data.map((r, i) => [demographyType[i], r]));
-  },
+type AgeGenderData = {
+  ageRange: string;
+  male: number;
+  female: number;
+  percentage: number;
+};
+
+type LocaleData = {
+  name: string;
+  percentage: number;
+};
+
+const MAX_DATA_COUNT = 5;
+const cityData = ref<LocaleData[]>([]);
+const countryData = ref<LocaleData[]>([]);
+const ageGenderData = ref<AgeGenderData[]>([]);
+
+const truncList = tools.truncateList(MAX_DATA_COUNT);
+
+const getCountriesData = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getDemographyInsights({
+      type: DemographyType.COUNTRY,
+      influencerId: props.publicId,
+      socialMedia: "Instagram",
+    }),
   onSuccess(response) {
-    data.value = response;
+    countryData.value = truncList(response.data).map((d) => ({
+      percentage: d.value3 || 0,
+      name: d.name,
+    }));
+  },
+});
+
+const getCitiesData = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getDemographyInsights({
+      type: DemographyType.CITY,
+      influencerId: props.publicId,
+      socialMedia: "Instagram",
+    }),
+  onSuccess(response) {
+    cityData.value = truncList(response.data).map((d) => ({
+      percentage: d.value3 || 0,
+      name: d.name,
+    }));
+  },
+});
+
+const getAgeAudienceData = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getDemographyInsights({
+      type: DemographyType.AGE_GENDER,
+      influencerId: props.publicId,
+      socialMedia: "Instagram",
+    }),
+  onSuccess(response) {
+    ageGenderData.value = response.data.map((d) => ({
+      ageRange: d.name,
+      male: d.value2 || 0,
+      female: d.value1 || 0,
+      percentage: d.value3 || 0,
+    }));
   },
 });
 </script>

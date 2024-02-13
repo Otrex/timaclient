@@ -1,7 +1,14 @@
 <template>
   <section class="var bg-[--bg] p-[1.5rem] rounded-md">
     <h4 class="pl-3">Audience Age range</h4>
-    <Bar :data="data" class="inline-block" :options="options" />
+    <UtLoadPresenter
+      loading-message="Fetching age audience statistics"
+      not-found-message="No audience statistics found"
+      :data="props.data.length === 0"
+      :state="props.loading ? constants.LOADING : 'IDLE'"
+    >
+      <Bar :data="dataset" class="inline-block" :options="options" />
+    </UtLoadPresenter>
   </section>
 </template>
 
@@ -10,24 +17,32 @@ import { Bar } from "vue-chartjs";
 
 const props = defineProps<{
   bg?: string;
+  loading?: boolean;
+  data: {
+    male: number;
+    female: number;
+    percentage: number;
+    ageRange: string;
+  }[];
 }>();
-const data = ref({
-  labels: ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"],
+
+const dataset = computed(() => ({
+  labels: props.data.map((e) => e.ageRange),
   datasets: [
     {
-      label: "Men",
-      data: [10, 40, 15, 67, 50],
+      label: "Male",
+      data: props.data.map((e) => e.male),
       backgroundColor: "#AAD9FB",
       borderWidth: 0,
     },
     {
-      label: "Women",
-      data: [15, 10, 25, 55, 40],
+      label: "Female",
+      data: props.data.map((e) => e.female),
       backgroundColor: "#2AA2FD",
       borderWidth: 0,
     },
   ],
-});
+}));
 
 const options = ref<any>({
   scales: {

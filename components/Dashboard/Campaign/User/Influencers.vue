@@ -24,7 +24,7 @@
           :state="tools.requestState(getApplicationsInfluencer)"
           :data="influencers.length === 0"
         >
-          <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-[1.1875rem]">
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-[1.1875rem]">
             <template v-for="(influencer, idx) in influencers" :key="idx">
               <NuxtLink
                 :to="{
