@@ -142,7 +142,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async updateSocials(data: Payload.AddSocials) {
-      const res = await this.$api.updateSocialPlatforms(
+      await this.$api.updateSocialPlatforms(
         this.registration.publicId!,
         data
       );
@@ -150,12 +150,12 @@ export const useAuthStore = defineStore('auth', {
       this.$patch({
         connectedSocials: [
           ...this.connectedSocials,
-          res.data.name
+          data.name
         ]
       })
 
       return {
-        title: res.data.name
+        title: data.name
       }
     },
 
@@ -190,7 +190,7 @@ export const useAuthStore = defineStore('auth', {
       })
     }
   },
-  persist: ['registration', 'authorization'],
+  persist: ['registration', 'authorization', 'connectedSocials'],
   persistWith: tools.cookieStore(),
 })
 
