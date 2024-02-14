@@ -172,7 +172,12 @@ export const useProfileStore = defineStore('profile', {
     },
 
     async updateProfilePicture(picture: string) {
-      const response = await this.$api.updateProfilePictures(picture);
+      await this.$api.updateProfilePictures(picture);
+      await this.getUserDetails();
+    },
+
+    async updateCoverImage(picture: string) {
+      await this.$api.updateCoverImage(picture);
       await this.getUserDetails();
     },
 

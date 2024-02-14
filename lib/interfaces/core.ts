@@ -167,6 +167,7 @@ export interface User {
   notificationSetting: string;
   userid: null;
   createdOn: Date;
+  settingBackground?: string;
 }
 
 export interface ProfileInfo {

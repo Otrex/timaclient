@@ -60,7 +60,7 @@ export interface Filter {
 }
 
 export interface UploadRequest {
-  type: "docs" | "pics" | "thumb";
+  type: "docs" | "pics" | "thumb" | "settings";
   file: File,
 }
 

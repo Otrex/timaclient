@@ -83,7 +83,7 @@ interface IProps {
   file?: File | File[];
   name?: string;
   url?: string | string[];
-  type: "pics" | "docs";
+  type: "pics" | "docs" | "settings";
   multi?: boolean;
   placeholder?: string;
 }
@@ -99,6 +99,7 @@ const emit = defineEmits(["update:file", "update:name", "update:url"]);
 
 const accepts = {
   pics: "image/",
+  settings: "image/",
   docs: "application/",
 };
 

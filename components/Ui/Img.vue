@@ -19,7 +19,17 @@ const props = withDefaults(
   }
 );
 
-const { isLoading, error, state } = useImage({ src: props.src || "" });
+const resolveSrc = (src: string) => {
+  // if (src.startsWith("~")) {
+  //   return import(src);
+  // }
+
+  return src;
+};
+
+const { isLoading, error, state } = useImage({
+  src: resolveSrc(props.src || ""),
+});
 </script>
 
 <style scoped>

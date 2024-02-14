@@ -454,6 +454,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async updateCoverImage(fileName: string) {
+    return this.request<Response.GetUserProfile>({
+      url: `/user/v1/profile/setting/${fileName}`,
+      requireAuth: true,
+      method: 'PUT',
+    });
+  }
+
   async updateSocialPlatforms(
     publicId: string,
     data: Payload.AddSocials

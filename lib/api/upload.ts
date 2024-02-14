@@ -28,7 +28,14 @@ export default class UploadAPI extends Api {
           method: "GET",
         })
 
-      default:
+      case "settings":
+        return this.request<Response.GetSignedURL>({
+          url: `/user/v1/signed/url/settings/${fileMeta.name}/${fileMeta.extension}`,
+          method: "GET",
+          requireAuth: true
+        })
+
+      case "docs": default:
         return this.request<Response.GetSignedURL>({
           url: `/user/v1/signed/url/docs/${fileMeta.name}/${fileMeta.extension}`,
           method: "GET",
