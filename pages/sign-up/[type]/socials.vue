@@ -86,7 +86,7 @@ useHead({
       defer: true,
       nonce: "wreDQhen",
       crossorigin: "anonymous",
-      src: "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=1871358313281038",
+      src: "https://connect.facebook.net/en_US/sdk.js",
     },
   ],
 });
@@ -97,8 +97,6 @@ const openModal = ref<Record<string, boolean>>({});
 const optionsStore = useOptionsStore();
 const rules = useValidationRules();
 const authStore = useAuthStore();
-
-const api = useAPI();
 
 const closeModal = (key: string) => {
   openModal.value[key] = false;
@@ -120,7 +118,10 @@ onMounted(() => {
       xfbml: true,
       version: "v18.0",
     });
+  };
 
+  window.facebookLogin = function () {
+    const FB = window.FB;
     FB.login(
       (response: any) => {
         if (response.authResponse) {
@@ -146,12 +147,15 @@ function onOpen(id: string) {
     : id;
 }
 
-function getSocial(id: string) {
-  return optionsStore.$socialsByIcon(id) || ({} as Core.SocialType);
+function getSocial(id: string): Core.SocialType & { connected: boolean } {
+  const social = optionsStore.$socialsByIcon(id);
+  return social
+    ? { ...social, completed: authStore.connectedSocials.includes(social.name) }
+    : ({} as any);
 }
 
 function facebookLogin() {
-  window.fbAsyncInit();
+  window.facebookLogin();
 }
 
 async function addSocial() {

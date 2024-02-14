@@ -8,6 +8,7 @@ declare global {
     gtag: (...args: any[]) => void
     dataLayer: Record<string, any>;
     fbAsyncInit: any
+    facebookLogin: any;
     FB: any
   }
 }

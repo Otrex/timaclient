@@ -7,7 +7,8 @@
         <div v-if="props.icon">
           <UtSvg :name="props.icon" class="w-[1.5625rem] h-[1.5625rem]" />
         </div>
-        <p>{{ props.label }}</p>
+        <p v-if="!props.isCompleted">{{ props.label }}</p>
+        <p v-else>Connected!</p>
       </div>
       <div class="flex-1 max-w-[9.75rem]">
         <button
@@ -27,7 +28,7 @@
         backdrop-color="rgba(0,0,0,.3)"
       >
         <div class="model-wrapper rounded-lg relative">
-          <div class="flex justify-end">
+          <div :class="['flex justify-end', props.isCompleted && 'invisible']">
             <button
               class="active:ring-2 hover:ring-1 mb-1 hover:ring-slate-100 hover:rounded flex items-center justify-center active:ring-slate-50 active:rounded w-[25px] h-[25px]"
               @click="modalState = false"
