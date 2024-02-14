@@ -110,35 +110,7 @@ const form = reactive({
   accessToken: "",
 });
 
-onMounted(() => {
-  window.fbAsyncInit = function () {
-    const FB = window.FB;
-    FB.init({
-      appId: "1871358313281038",
-      xfbml: true,
-      version: "v18.0",
-    });
-  };
-
-  window.facebookLogin = function () {
-    const FB = window.FB;
-    FB.login(
-      (response: any) => {
-        if (response.authResponse) {
-          form.accessToken = response.authResponse.accessToken;
-          addSocial();
-        } else {
-          notify({
-            type: "error",
-            title: "Facebook Error",
-            text: "Facebook authorization failed",
-          });
-        }
-      },
-      { scope: "public_profile,instagram_basic" }
-    );
-  };
-});
+onMounted(() => {});
 
 function onOpen(id: string) {
   openModal.value[id] = true;
@@ -155,7 +127,32 @@ function getSocial(id: string): Core.SocialType & { connected: boolean } {
 }
 
 function facebookLogin() {
-  window.facebookLogin();
+  window.fbAsyncInit = function () {
+    const FB = window.FB;
+    FB.init({
+      appId: "1871358313281038",
+      xfbml: true,
+      version: "v18.0",
+    });
+
+    FB.login(
+      (response: any) => {
+        if (response.authResponse) {
+          form.accessToken = response.authResponse.accessToken;
+          addSocial();
+        } else {
+          notify({
+            type: "error",
+            title: "Facebook Error",
+            text: "Facebook authorization failed",
+          });
+        }
+      },
+      { scope: "public_profile,instagram_basic" }
+    );
+  };
+
+  window.fbAsyncInit();
 }
 
 async function addSocial() {
