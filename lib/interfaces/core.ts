@@ -65,11 +65,14 @@ export interface SocialMediaInsight {
   businessHandle: string;
   businessName: string;
   biography: string;
+  website: string;
   followers: number;
   totalMedia: number;
   totalComments: number;
   totalLikes: number;
+  avgEngagement: number;
 }
+
 
 export interface Application {
   applicationId: string;

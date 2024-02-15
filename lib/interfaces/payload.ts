@@ -20,6 +20,11 @@ export interface AddBookmark {
   campaignPublicId: string;
 }
 
+export interface AddInfluencerBookmark {
+  title: string;
+  bookmarkPublicId: string;
+}
+
 export interface ReviewApplication {
   status: string;
   applicationId: string;

@@ -5,15 +5,15 @@
     </p>
 
     <div class="flex flex-col md:flex-row mb-[2rem] gap-[1.25rem]">
-      <div class="w-full">
+      <div class="md:w-1/3 w-full">
         <DashboardCampaignDataSocialCard
           social="instagram"
-          :followers="4200000"
-          :engagement-rate="10"
-          :likes="600000"
+          :followers="instagramSMData?.followers || 0"
+          :engagement-rate="instagramSMData?.avgEngagement || 0"
+          :likes="instagramSMData?.totalLikes || 0"
         />
       </div>
-      <div class="w-full">
+      <!-- <div class="w-full">
         <DashboardCampaignDataSocialCard
           social="tiktok"
           :followers="3550000"
@@ -28,7 +28,7 @@
           :engagement-rate="10"
           :likes="600000"
         />
-      </div>
+      </div> -->
     </div>
 
     <div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
@@ -196,6 +196,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Core } from "~/lib/interfaces";
+
 const props = defineProps<{ publicId: string }>();
 const api = useAPI();
 
@@ -221,6 +223,7 @@ const MAX_DATA_COUNT = 5;
 const cityData = ref<LocaleData[]>([]);
 const countryData = ref<LocaleData[]>([]);
 const ageGenderData = ref<AgeGenderData[]>([]);
+const instagramSMData = ref<Core.SocialMediaInsight>();
 
 const truncList = tools.truncateList(MAX_DATA_COUNT);
 
@@ -271,6 +274,14 @@ const getAgeAudienceData = useRequestState({
       female: d.value1 || 0,
       percentage: d.value3 || 0,
     }));
+  },
+});
+
+const getSocialInsight = useRequestState({
+  immediately: true,
+  action: () => api.getSocialInsightById(props.publicId, "Instagram"),
+  onSuccess(response) {
+    instagramSMData.value = response.data;
   },
 });
 </script>

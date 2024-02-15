@@ -30,6 +30,7 @@ function clickHandler() {
   if (props.disabled) return;
   navigateTo({
     query: {
+      ...route.query,
       tab: tabName.value,
     },
   });

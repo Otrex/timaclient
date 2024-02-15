@@ -27,7 +27,7 @@ export interface GetPaymentStats extends IResponse<{
   totalBalance: number;
 }> { }
 
-
+export interface GetSocialMediaInsight extends IResponse<Core.SocialMediaInsight> { }
 export interface GetInfluencers extends IResponse<Core.Influencer[]> { }
 export interface GetDemographicsData extends IResponse<Core.AgeDemographicsData[]> { }
 export interface GetBookmarks extends IResponse<Core.FullCampaign[]> { }

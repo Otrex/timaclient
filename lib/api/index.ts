@@ -309,6 +309,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getSocialInsightById(publicId: string, socialMedia: string) {
+    return this.request<Response.GetSocialMediaInsight>({
+      url: `/agency/v1/social-media/${socialMedia}/insight?userPublicId=${publicId}`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async getCampaignApplicationsByStatus(
     data: Payload.Filter & {
       status: string;
@@ -358,6 +366,19 @@ export default class TimaAPI extends UploadAPI {
       method: 'POST',
       data,
     });
+  }
+
+  async bookmarkInfluencer(data: Payload.AddInfluencerBookmark) {
+    return this.request<Response.GetBookmarks>({
+      url: `/agency/v1/bookmarks/influencer`,
+      requireAuth: true,
+      method: 'POST',
+      data,
+    });
+  }
+
+  async getBookmarkedInfluencers() {
+    // TODO: 
   }
 
   async deleteBookmark(name: string) {

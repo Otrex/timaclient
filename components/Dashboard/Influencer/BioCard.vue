@@ -27,11 +27,23 @@
         <div class="text-right">
           <div>
             <button
+              :disabled="tools.requestState(addBookmark) === constants.LOADING"
+              @click="addBookmark.execute()"
               class="active:ring-2 inline-block hover:bg-slate-50 rounded-md active:ring-slate-100"
             >
               <UtSvg
                 name="bookmark-solid"
+                v-if="tools.requestState(addBookmark) !== constants.LOADING"
                 class="text-[#999]"
+                w="1.3125rem"
+                h="1.3125rem"
+                dim
+              />
+
+              <UtSvg
+                v-else
+                name="sunshine"
+                class="spinner text-[#999]"
                 w="1.3125rem"
                 h="1.3125rem"
                 dim
@@ -85,7 +97,7 @@ import type { GetApplication } from "~/lib/interfaces/response";
 
 const props = defineProps<{ publicId: string }>();
 
-const categories = ref(["fish", "obi", "eticulaoi"]);
+const categories = ref(["fish", "obi", "red"]);
 const stars = ref(0);
 const data = ref({
   labels: ["Hot", "Warm", "Cold"],
@@ -100,6 +112,7 @@ const data = ref({
   ],
 });
 
+const { notify } = useNotification();
 const api = useAPI();
 const result = ref<GetApplication["data"]>();
 const { state } = useRequestState({
@@ -107,6 +120,28 @@ const { state } = useRequestState({
   action: () => api.getApplicationById(props.publicId),
   onSuccess: (response) => {
     result.value = response.data;
+  },
+});
+
+const addBookmark = useRequestState({
+  action: () =>
+    api.bookmarkInfluencer({
+      title: "Bookmark",
+      bookmarkPublicId: result.value?.submittedBy!,
+    }),
+  onSuccess: (response) => {
+    notify({
+      type: "success",
+      title: "Bookmarked!!",
+      text: response.message,
+    });
+  },
+  onError: (error) => {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.description,
+    });
   },
 });
 
