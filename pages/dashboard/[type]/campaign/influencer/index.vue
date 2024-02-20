@@ -43,7 +43,7 @@ const tabs = [
   {
     name: constants.CAMPAIGN_INFLUENCER_CAMPAIGN_INFO,
     component: resolveComponent("LazyDashboardCampaignInfluencerCampaignInfo"),
-    label: "Campaign",
+    label: "Campaigns",
   },
 ];
 

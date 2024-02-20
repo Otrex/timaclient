@@ -9,6 +9,10 @@
   @apply mx-auto max-w-[calc(37.375rem_+_2.5rem)] px-[calc(2.5rem_/_2)];
 }
 
+* {
+  transition: all 0.3s;
+}
+
 /* TRANSITIONS & ANIMATIONS */
 @keyframes spin {
   from {
@@ -16,6 +20,18 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 

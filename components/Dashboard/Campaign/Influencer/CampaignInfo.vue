@@ -1,6 +1,83 @@
 <template>
   <div class="mt-[0.8125rem]">
-    <div class="bg-[#2B2B2B] mb-[1.3125rem] text-white px-[1rem] py-[1.25rem]">
+    <div class="bg-[#2B2B2B] p-5 pb-3">
+      <!-- <p class="text-[color:--clr-grey-300] mb-[1rem]">
+        Campaign experiences (45)
+      </p> -->
+
+      <div
+        :class="[
+          displayPartially
+            ? 'max-h-[4.375rem] overflow-y-clip'
+            : 'max-h-screen overflow-y-auto',
+        ]"
+        class="grid transition-all md:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
+      >
+        <div v-for="(campaign, idx) in campaigns" :key="idx">
+          <div
+            :data-id="campaign.id"
+            @click="selectCampaign(campaign.id)"
+            :class="[
+              'flex items-center hover:border-2 border-red-700 border-solid relative bg-white flex-row gap-[0.75rem]',
+              campaign.active && 'border-2 border-red-700 border-solid',
+            ]"
+          >
+            <div>
+              <div class="w-[3rem] h-[3rem] overflow-hidden rounded-md">
+                <UiImg
+                  class="w-full h-full object-cover"
+                  src="https://s3-alpha-sig.figma.com/img/5ebb/b7ac/d173c2ab9eac7e4886e5e3181567352f?Expires=1704067200&Signature=KT81KiEiH1ZoXZSZ3Zxg9uzkEriY~c3Cq34kSW-hV~f06XAZYV4RFOg-5fQNkVnKwFsVMXb6poL~3mozCr-evXFxSkhIenFxxFFWMADwan4GTkihcbxn2rVBGau4REue0fRmRraiT2OlPB-JuChvSMLtmBe~ja4RtpcFXiHXjVYjdNf6KBdPKXvlsDVX145tR4wEDmUqCMxHCET~mouPeecHxteV3oJEoAXyK5vtN6vmzs6sxhKQr8bsOKk7uykAUwGcHMWdHttz1ibwjpwocfRcZAScuLrCSZ~7Z-5K6UbU5cxNo0BSsKotjK0TBLhUTyNEtd1P6-6hWrNZhSyV4A__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div>
+              <p
+                style="text-overflow: ellipsis"
+                class="nl w-full pr-3 whitespace-nowrap"
+              >
+                {{ campaign.name }}
+              </p>
+              <p class="sm text-[color:--clr-grey-300]">
+                {{ tools.formatDate(campaign.startDate) }} -
+                {{ tools.formatDate(campaign.endDate) }}
+              </p>
+            </div>
+
+            <div
+              class="absolute bottom-0 right-0 p-1 pr-2"
+              v-if="campaign.active"
+            >
+              <UtSvg
+                name="check-sq"
+                dim
+                w="1rem"
+                h="1rem"
+                class="text-red-700 bg-white rounded-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button
+          @click="displayPartially = !displayPartially"
+          class="text-white inline-flex flex-row items-center hover:text-red-700 text-[0.75rem]"
+        >
+          {{ displayPartially ? "See more" : "Hide all" }}
+          <UtSvg
+            name="down-caret"
+            dim
+            w="0.75rem"
+            h="0.75rem"
+            class="ml-1 rounded-full transition-all"
+            :class="[displayPartially || 'rotate-[180deg]']"
+          />
+        </button>
+      </div>
+    </div>
+    <div class="bg-[#454545] mb-[1.3125rem] text-white px-[1rem] py-[1.25rem]">
       <p>Nike Campaign</p>
 
       <p class="nl">
@@ -157,7 +234,78 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const displayPartially = ref(true);
+const campaigns = ref([
+  {
+    name: "TIMA Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: true,
+  },
+  {
+    name: "NST Creative Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: false,
+  },
+  {
+    name: "Nike Creative Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: false,
+  },
+  {
+    name: "Brandon Creative Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: false,
+  },
+  {
+    name: "Ben Creative Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: false,
+  },
+  {
+    name: "Kate Creative Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: false,
+  },
+  {
+    name: "Nike Creative Campaign",
+    startDate: new Date("2000-02-02"),
+    endDate: new Date(),
+    id: Math.random(),
+    active: false,
+  },
+]);
+
+function selectCampaign(index: number) {
+  let selectedPosition = -1;
+  let selected: any = {};
+  campaigns.value.forEach((campaign, idx) => {
+    campaign.active = false;
+    if (campaign.id == index) {
+      campaign.active = true;
+      selectedPosition = idx;
+      selected = campaign;
+    }
+  });
+
+  if (selectedPosition !== -1) {
+    campaigns.value.splice(selectedPosition, 1); // Remove the element from its current position
+    campaigns.value.unshift(selected); // Add the element to the beginning of the list
+  }
+}
+</script>
 
 <style scoped>
 .video-content-bg {

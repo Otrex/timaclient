@@ -136,15 +136,13 @@
             <div class="bg-[color:--clr-grey-400] rounded-md overflow-hidden">
               <div
                 tabindex="1"
-                style="visibility: hidden"
                 class="aspect-[250/327] mx-auto h-[23.4375rem] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
               >
-                <div class="absolute inset-0 z-[-1]">
-                  <UiImg
-                    src="https://s3-alpha-sig.figma.com/img/128e/110a/3e644d9a1277ab2f9c0f9b05ffa9a7d9?Expires=1704067200&Signature=a9H4L822~YsdF~aTRgwIMMiBy2eEdBZwxvuyd2BfM2BVvc7P2l2u80e~GNhfv98VhL1rGNn6zoupI8qwZUkcTNWqOuXiIpebNwzhjvFgtWZgPdu4RlzlxojLyWCu5h0sjhxdqxbcSUXuEq1NEmhocnCpvWYsYowj4Y5mrADkdKlozIr96tmQa03gDS9F3e6OROzAzum9qY5dOxuHL9BaQUutHjqunb9VhO1wa~b3~UU1ikDanmPKr2vAaqqanqTnhU9~Nj8dhy3TYUO-eY-3v9M-CcHCDiWy4v1BoSlqMSsIbWOCvtMfF9QunOgNQ15LnnQ-fA~RDg~DOTzd7vripA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-                    alt="video cover"
-                    class="w-full h-full"
-                  />
+                <div class="absolute inset-0">
+                  <iframe
+                    src="http://localhost:3000"
+                    class="w-full h-full bg-white"
+                  ></iframe>
                 </div>
                 <UtSvg
                   name="play"

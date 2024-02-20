@@ -111,7 +111,7 @@ const metrics = ref([
     socials: ["instagram", "tiktok"],
     data: [
       {
-        label: "Instagram budget",
+        label: "Campaign budget",
         value: tools.formatCurrency(3_000_000),
       },
       {

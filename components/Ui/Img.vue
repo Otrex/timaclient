@@ -1,6 +1,10 @@
 <template>
-  <img src="/favicon/favicon-16x16.png" class="bg-img" v-if="isLoading" />
-  <img src="/favicon/favicon-16x16.png" class="bg-img" v-else-if="error" />
+  <img src="/favicon/favicon-16x16.png" class="bg-img pulse" v-if="isLoading" />
+  <img
+    src="/favicon/favicon-16x16.png"
+    class="bg-img error"
+    v-else-if="error"
+  />
   <img :src="state?.src" :class="[$attrs.class]" v-else />
 </template>
 
@@ -49,5 +53,13 @@ const { isLoading, error, state } = useImage({
   background-size: cover;
   background-position: center center;
   background-blend-mode: overlay;
+  filter: grayscale(1);
+}
+
+.pulse {
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 </style>
