@@ -38,9 +38,15 @@
         </div>
         <div>
           <select
+            v-model="paymentYear"
             class="border-none dark:bg-[rgba(228,_243,_255,_0.5)] rounded-md"
           >
-            <option value="2023">2023</option>
+            <template
+              v-for="(year, idx) in tools.range(2010, new Date().getFullYear())"
+              :key="idx"
+            >
+              <option :value="year">{{ year }}</option>
+            </template>
           </select>
         </div>
       </div>
@@ -157,60 +163,21 @@
 </template>
 
 <script setup lang="ts">
+import { watchThrottled } from "@vueuse/core";
 import { Bar } from "vue-chartjs";
 import type { Core } from "~/lib/interfaces";
+import defs from "~/utils/defs";
 
 definePageMeta({
   name: "Payment",
 });
 
+const BG_COLORS = ["#AAD9FB", "#2AA2FD", "#FFB009", "#AA7506", "#FFE5AD"];
+const paymentYear = ref("2024");
 const filter = ref("all");
 const data = ref({
-  labels: [
-    "Label 1",
-    "Label 2",
-    "Label 3",
-    "Label 4",
-    "Label 5",
-    "Label 6",
-    "Label 7",
-    "Label 8",
-    "Label 9",
-    "Label 10",
-    "Label 11",
-  ],
-  datasets: [
-    {
-      label: "Product 1",
-      data: [10, 40, 15, 67, 0, 51, 0, 10, 30, 30, 40],
-      backgroundColor: "#AAD9FB",
-      borderWidth: 0,
-    },
-    {
-      label: "Product 2",
-      data: [15, 10, 25, 55, 40, 55, 66, 10, 29, 10, 50],
-      backgroundColor: "#2AA2FD",
-      borderWidth: 0,
-    },
-    {
-      label: "Product 3",
-      data: [15, 10, 25, 0, 40, 55, 66, 0, 29, 10, 50],
-      backgroundColor: "#FFB009",
-      borderWidth: 0,
-    },
-    {
-      label: "Product 4",
-      data: [100, 10, 0, 0, 40, 0, 66, 0, 29, 10, 50],
-      backgroundColor: "#AA7506",
-      borderWidth: 0,
-    },
-    {
-      label: "Product 5",
-      data: [0, 10, 25, 0, 40, 55, 66, 0, 29, 10, 50],
-      backgroundColor: "#FFE5AD",
-      borderWidth: 0,
-    },
-  ],
+  labels: defs.monthsOfYear.map((e) => e.short),
+  datasets: [] as DataSet[],
 });
 
 const options = ref<any>({
@@ -250,6 +217,108 @@ const getTransactions = useRequestState({
     transactions.value = response.data;
   },
 });
+
+interface MonthData {
+  name: string;
+  index: number;
+  legends: Core.Legend[];
+  legend: Core.Legend;
+}
+
+interface GroupedData {
+  [key: string]: MonthData[];
+}
+
+interface DataSet {
+  label: string;
+  data: number[];
+  backgroundColor: string;
+  borderWidth: number;
+}
+
+function groupByMonth(data: MonthData[]) {
+  const grouped: GroupedData = {};
+  data.forEach((month) => {
+    if (!grouped[month.name]) {
+      grouped[month.name] = [];
+    }
+
+    grouped[month.name].push(month);
+  });
+
+  return grouped;
+}
+
+function groupByTitle(data: Core.PaymentStatistics[]) {
+  const grouped: GroupedData = {};
+
+  data.forEach((month) => {
+    month.legends.forEach((legend) => {
+      if (!grouped[legend.title]) {
+        grouped[legend.title] = [];
+      }
+      grouped[legend.title].push({
+        legend: legend,
+        ...month,
+      });
+    });
+  });
+
+  return grouped;
+}
+
+function regroup(data: Core.PaymentStatistics[]) {
+  const $data = groupByTitle(data);
+  const $result: Record<string, GroupedData> = {};
+
+  for (const title in { ...$data }) {
+    const el = $data[title];
+    $result[title] = groupByMonth(el);
+  }
+
+  return $result;
+}
+
+const getPaymentStatistics = useRequestState({
+  action: () => api.getPaymentStatistics(paymentYear.value),
+  immediately: true,
+  onSuccess: (response) => {
+    const largestLegend =
+      tools.findLargestArray(response.data.map((e) => e.legends)) || [];
+    if (largestLegend && largestLegend.length > BG_COLORS.length) {
+      const newColors = new Array(largestLegend.length - BG_COLORS.length)
+        .fill(null)
+        .map((e) => tools.getRandomHexColor(BG_COLORS));
+      BG_COLORS.push(...newColors);
+    }
+
+    // Get the dataset data
+    const $data = regroup(response.data);
+    const datasets: DataSet[] = [];
+    for (let i = 0; i < largestLegend.length; i++) {
+      const legend = largestLegend[i];
+      datasets.push({
+        borderWidth: 0,
+        label: legend.title,
+        backgroundColor: BG_COLORS[i],
+        data: [...defs.monthsOfYear].map((e) => {
+          const month = $data[legend.title][e.short];
+          return month ? month[0].legend.value : 0;
+        }),
+      });
+    }
+
+    data.value.datasets = datasets;
+  },
+});
+
+watchThrottled(
+  paymentYear,
+  () => {
+    getPaymentStatistics.execute();
+  },
+  { throttle: 1000 }
+);
 </script>
 
 <style></style>

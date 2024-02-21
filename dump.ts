@@ -70,6 +70,38 @@ const transactions = ref([
     paymentMethod: "Flutterwave",
   },
 ]);
+
+const paymentDataSet = [
+  {
+    label: "Product 1",
+    data: [10, 40, 15, 67, 0, 51, 0, 10, 30, 30, 40],
+    backgroundColor: "#AAD9FB",
+    borderWidth: 0,
+  },
+  {
+    label: "Product 2",
+    data: [15, 10, 25, 55, 40, 55, 66, 10, 29, 10, 50],
+    backgroundColor: "#2AA2FD",
+    borderWidth: 0,
+  },
+  {
+    label: "Product 3",
+    data: [15, 10, 25, 0, 40, 55, 66, 0, 29, 10, 50],
+    backgroundColor: "#FFB009",
+    borderWidth: 0,
+  },
+  {
+    label: "Product 4",
+    data: [100, 10, 0, 0, 40, 0, 66, 0, 29, 10, 50],
+    backgroundColor: "#AA7506",
+    borderWidth: 0,
+  },
+  {
+    label: "Product 5",
+    data: [0, 10, 25, 0, 40, 55, 66, 0, 29, 10, 50],
+    backgroundColor: "#FFE5AD",
+    borderWidth: 0,
+  }]
 const applications = ref([
   {
     name: "beautygoddess",

@@ -27,6 +27,11 @@ export default {
 
     return salt;
   },
+  range: (start: number, end: number, step = 1) => {
+    const r = new Array(Math.floor((end - start) / step)).fill(0).map((e, i) => start + (step * i));
+    r.push(end);
+    return r;
+  },
   json: {
     encode: (value: any) => {
       return JSON.stringify({ value });
@@ -150,9 +155,33 @@ export default {
     const { state } = d;
     return state.value;
   },
+  getRandomHexColor(exemptedColors: string[] = []): string {
+    const letters = "0123456789ABCDEF";
+    let color: string;
+    do {
+      color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+    } while (exemptedColors.includes(color));
 
+    return color;
+  },
   generationOptions(options: string[]) {
     return options.map(option => ({ label: capitalize(option), value: option }))
+  },
+  findLargestArray<T>(arrays: T[][]): T[] | undefined {
+    if (arrays.length === 0) return undefined;
+
+    let largestArray = arrays[0];
+
+    for (const array of arrays) {
+      if (array.length > largestArray.length) {
+        largestArray = array;
+      }
+    }
+
+    return largestArray;
   },
   capitalize: capitalize,
   truncate(inputString: string, maxLength: number) {

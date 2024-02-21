@@ -143,6 +143,17 @@ export interface CampaignTransaction {
   name: string;
 }
 
+export interface PaymentStatistics {
+  name: string;
+  index: number;
+  legends: Legend[];
+}
+
+export interface Legend {
+  title: string;
+  value: number;
+}
+
 export interface InfluencerTransaction {
   publicId: string;
   campaignName: string;

@@ -413,6 +413,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getPaymentStatistics(year?: string) {
+    return this.request<Response.GetPaymentStatistics>({
+      url: "/payment/v1/histories/influencer/graph?year=" + (year || (new Date()).getFullYear()),
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   // Incomplete
   async getInfluencersByIntent(payload: any) {
     const { intent, data } = payload;
