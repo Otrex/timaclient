@@ -73,6 +73,25 @@ export interface SocialMediaInsight {
   avgEngagement: number;
 }
 
+export interface InfluencerBookmark {
+  publicId: string;
+  username: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  profilePicture: string;
+}
+
+export interface SearchInfluencer {
+  publicId: string;
+  username: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  profilePicture: string;
+  completed: number;
+}
+
 
 export interface Application {
   applicationId: string;

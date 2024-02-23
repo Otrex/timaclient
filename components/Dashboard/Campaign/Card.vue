@@ -159,7 +159,7 @@ const { state, execute } = useRequestState({
     }
     return api.addBookmark({
       title: props.title,
-      campaignPublicId: props.publicId,
+      bookmarkPublicId: props.publicId,
     });
   },
   onSuccess() {

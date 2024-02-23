@@ -27,6 +27,8 @@ export interface GetPaymentStats extends IResponse<{
   totalBalance: number;
 }> { }
 
+
+export interface GetInfluencersBookmark extends IResponse<Core.InfluencerBookmark[]> { }
 export interface GetSocialMediaInsight extends IResponse<Core.SocialMediaInsight> { }
 export interface GetInfluencers extends IResponse<Core.Influencer[]> { }
 export interface GetDemographicsData extends IResponse<Core.AgeDemographicsData[]> { }
@@ -51,6 +53,7 @@ export interface BrandBasicInformation extends IResponse<Core.User> { };
 export interface UpdateBrandInformation extends IResponse<Core.User> { };
 export interface GetApplications extends IResponse<Core.Application[]> { }
 export interface GetApplication extends IResponse<Core.Application> { }
+export interface GetSearchInfluencer extends IResponse<Core.SearchInfluencer> { }
 export interface BankDetailUpdate extends IResponse<Core.BankDetails> { }
 export interface CreateApplication extends IResponse<Core.Application> { }
 export interface InfluencerCompleteProfile extends IResponse<Core.User> { };

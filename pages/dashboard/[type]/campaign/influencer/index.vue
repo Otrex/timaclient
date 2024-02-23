@@ -6,7 +6,10 @@
       class="w-full md:w-1/3 py-[1.4375rem] px-[1.4375rem] md:px-0 md:pl-[1.4375rem]"
     >
       <!--Change to applicant Id once the endpoint is ready-->
-      <DashboardInfluencerBioCard :publicId="applicationId" />
+      <DashboardInfluencerBioCard
+        :publicId="publicId"
+        :applicationId="applicationId"
+      />
     </aside>
     <aside
       class="w-full md:w-2/3 md:h-full pt-[1.4375rem] md:overflow-auto md:pr-[0.1875rem]"

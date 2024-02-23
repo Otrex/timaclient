@@ -17,7 +17,7 @@ export interface DemographyInsight {
 
 export interface AddBookmark {
   title: string;
-  campaignPublicId: string;
+  bookmarkPublicId: string;
 }
 
 export interface AddInfluencerBookmark {

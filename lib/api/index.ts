@@ -341,6 +341,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getInfluencerById(publicId: string) {
+    return this.request<Response.GetSearchInfluencer>({
+      url: `/agency/v1/influencer/search/id/${publicId}`,
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
+
   async getBookmarks() {
     return this.request<Response.GetBookmarks>({
       url: `/agency/v1/bookmarks`,
@@ -378,7 +386,11 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getBookmarkedInfluencers() {
-    // TODO: 
+    return this.request<Response.GetInfluencersBookmark>({
+      url: "/agency/v1/bookmarks/influencer",
+      requireAuth: true,
+      method: 'GET',
+    });
   }
 
   async deleteBookmark(name: string) {

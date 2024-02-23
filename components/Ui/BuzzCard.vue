@@ -44,7 +44,7 @@
     </template>
     <template v-else>
       <div
-        class="h-[calc(100%_-_2.5rem)] text-white flex items-center justify-center"
+        class="h-[calc(100%_-_2.5rem)] py-8 text-white flex items-center justify-center"
       >
         No Influencers
       </div>

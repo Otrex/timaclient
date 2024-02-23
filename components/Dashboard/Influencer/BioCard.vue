@@ -3,7 +3,11 @@
     not-found-message="Influencer data not found"
     loading-message="Fetching Influencer details"
     :data="result === null"
-    :state="state"
+    :state="
+      state === constants.LOADING || profileState === constants.LOADING
+        ? constants.LOADING
+        : 'IDLE'
+    "
   >
     <section class="bg-[#F7F7F7] p-[1.25rem] h-full rounded-md">
       <div class="flex flex-row mb-[2.5rem] justify-between">
@@ -92,10 +96,16 @@
 </template>
 
 <script setup lang="ts">
-import { Doughnut } from "vue-chartjs";
-import type { GetApplication } from "~/lib/interfaces/response";
+// import { Doughnut } from "vue-chartjs";
+import type {
+  GetApplication,
+  GetSearchInfluencer,
+} from "~/lib/interfaces/response";
 
-const props = defineProps<{ publicId: string }>();
+const props = defineProps<{
+  publicId: string;
+  applicationId?: string;
+}>();
 
 const categories = ref(["fish", "obi", "red"]);
 const stars = ref(0);
@@ -114,20 +124,37 @@ const data = ref({
 
 const { notify } = useNotification();
 const api = useAPI();
-const result = ref<GetApplication["data"]>();
-const { state } = useRequestState({
-  immediately: true,
-  action: () => api.getApplicationById(props.publicId),
+const result = ref<GetApplication["data"] | GetSearchInfluencer["data"]>();
+
+const { state, execute } = useRequestState({
+  action: () => api.getApplicationById(props.applicationId!),
   onSuccess: (response) => {
     result.value = response.data;
   },
+});
+
+const { state: profileState, execute: profileExecute } = useRequestState({
+  action: () => api.getInfluencerById(props.publicId),
+  onSuccess: (response) => {
+    result.value = response.data;
+  },
+});
+
+onMounted(() => {
+  if (props.applicationId) {
+    execute();
+  } else {
+    profileExecute();
+  }
 });
 
 const addBookmark = useRequestState({
   action: () =>
     api.bookmarkInfluencer({
       title: "Bookmark",
-      bookmarkPublicId: result.value?.submittedBy!,
+      bookmarkPublicId: props.publicId
+        ? props.publicId
+        : (result.value as any)?.submittedBy!,
     }),
   onSuccess: (response) => {
     notify({

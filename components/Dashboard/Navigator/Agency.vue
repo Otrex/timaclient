@@ -20,6 +20,13 @@
         },
       }"
     />
+    <DashboardNavigatorMenuItem
+      :to="{
+        name: 'Bookmark',
+      }"
+      label="Bookmark"
+      icon="nav/bookmark"
+    />
     <!--<DashboardNavigatorMenuItem
       label="Influencers"
       icon="nav/influencers"
