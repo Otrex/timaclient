@@ -1,5 +1,7 @@
 <template>
-  <article class="p-[1rem] rounded-[1.25rem] bg-[#F1F9FF]">
+  <article
+    class="p-[1rem] rounded-[1.25rem] bg-[#F1F9FF] dark:bg-slate-300 dark:text-black"
+  >
     <div class="mb-[1.8125rem]">
       <UtSvg :name="socials" dim w="1.3125rem" h="1.3125rem" />
     </div>

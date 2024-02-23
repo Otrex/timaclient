@@ -1,34 +1,49 @@
 <template>
   <div class="p-[1.25rem]">
-    <div class="grid grid-cols-4 gap-[1.25rem] mb-[1.25rem]">
-      <div
-        class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
-      >
-        <div class="text-center">
-          <h3 class="text-[2.1875rem]">100</h3>
-          <p>Total transactions</p>
+    <template v-if="tools.requestState(getStats) === constants.LOADING">
+      <div class="py-4 bg-[rgba(228,_243,_255,_0.5)]">
+        <UtLoaderIndicator message="Fetching Statistics" />
+      </div>
+    </template>
+    <template v-else-if="!paymentStats">
+      <UtNoResource message="No statistics yet" />
+    </template>
+    <template v-else>
+      <div class="grid grid-cols-4 gap-[1.25rem] mb-[1.25rem]">
+        <div
+          class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
+        >
+          <div class="text-center">
+            <h3 class="text-[2.1875rem]">
+              {{ paymentStats.totalTransactions }}
+            </h3>
+            <p>Total transactions</p>
+          </div>
+        </div>
+
+        <div
+          class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
+        >
+          <div class="text-center">
+            <h3 class="text-[2.1875rem]">
+              {{ paymentStats.completedTransactions }}
+            </h3>
+            <p>Complete Payment</p>
+          </div>
+        </div>
+
+        <div
+          class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
+        >
+          <div class="text-center">
+            <h3 class="text-[2.1875rem]">
+              {{ paymentStats.pendingTransactions }}
+            </h3>
+            <p>Yet to be balanced</p>
+          </div>
         </div>
       </div>
-
-      <div
-        class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
-      >
-        <div class="text-center">
-          <h3 class="text-[2.1875rem]">90</h3>
-          <p>Complete Payment</p>
-        </div>
-      </div>
-
-      <div
-        class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
-      >
-        <div class="text-center">
-          <h3 class="text-[2.1875rem]">10</h3>
-          <p>Yet to be balanced</p>
-        </div>
-      </div>
-    </div>
-
+    </template>
     <div
       class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
     >
@@ -177,7 +192,7 @@ const paymentYear = ref("2024");
 const filter = ref("all");
 const data = ref({
   labels: defs.monthsOfYear.map((e) => e.short),
-  datasets: [] as DataSet[],
+  datasets: [] as Core.DataSet[],
 });
 
 const options = ref<any>({
@@ -218,26 +233,17 @@ const getTransactions = useRequestState({
   },
 });
 
-interface MonthData {
-  name: string;
-  index: number;
-  legends: Core.Legend[];
-  legend: Core.Legend;
-}
+const paymentStats = ref<Core.InfluencerPaymentStats>();
+const getStats = useRequestState({
+  action: () => api.getInfluencerPaymentStats(),
+  immediately: true,
+  onSuccess: (response) => {
+    paymentStats.value = response.data;
+  },
+});
 
-interface GroupedData {
-  [key: string]: MonthData[];
-}
-
-interface DataSet {
-  label: string;
-  data: number[];
-  backgroundColor: string;
-  borderWidth: number;
-}
-
-function groupByMonth(data: MonthData[]) {
-  const grouped: GroupedData = {};
+function groupByMonth(data: Core.MonthData[]) {
+  const grouped: Core.GroupedData = {};
   data.forEach((month) => {
     if (!grouped[month.name]) {
       grouped[month.name] = [];
@@ -250,7 +256,7 @@ function groupByMonth(data: MonthData[]) {
 }
 
 function groupByTitle(data: Core.PaymentStatistics[]) {
-  const grouped: GroupedData = {};
+  const grouped: Core.GroupedData = {};
 
   data.forEach((month) => {
     month.legends.forEach((legend) => {
@@ -269,7 +275,7 @@ function groupByTitle(data: Core.PaymentStatistics[]) {
 
 function regroup(data: Core.PaymentStatistics[]) {
   const $data = groupByTitle(data);
-  const $result: Record<string, GroupedData> = {};
+  const $result: Record<string, Core.GroupedData> = {};
 
   for (const title in { ...$data }) {
     const el = $data[title];
@@ -279,22 +285,24 @@ function regroup(data: Core.PaymentStatistics[]) {
   return $result;
 }
 
+function generateBarColors(data: Core.PaymentStatistics[]) {
+  const legend = tools.findLargestArray(data.map((e) => e.legends)) || [];
+  if (legend && legend.length > BG_COLORS.length) {
+    const newColors = new Array(legend.length - BG_COLORS.length).fill(null);
+    newColors.map((e) => tools.getRandomHexColor(BG_COLORS));
+    BG_COLORS.push(...newColors);
+  }
+
+  return legend;
+}
+
 const getPaymentStatistics = useRequestState({
   action: () => api.getPaymentStatistics(paymentYear.value),
   immediately: true,
   onSuccess: (response) => {
-    const largestLegend =
-      tools.findLargestArray(response.data.map((e) => e.legends)) || [];
-    if (largestLegend && largestLegend.length > BG_COLORS.length) {
-      const newColors = new Array(largestLegend.length - BG_COLORS.length)
-        .fill(null)
-        .map((e) => tools.getRandomHexColor(BG_COLORS));
-      BG_COLORS.push(...newColors);
-    }
-
-    // Get the dataset data
+    const largestLegend = generateBarColors(response.data);
     const $data = regroup(response.data);
-    const datasets: DataSet[] = [];
+    const datasets: Core.DataSet[] = [];
     for (let i = 0; i < largestLegend.length; i++) {
       const legend = largestLegend[i];
       datasets.push({
@@ -307,8 +315,10 @@ const getPaymentStatistics = useRequestState({
         }),
       });
     }
-
-    data.value.datasets = datasets;
+    data.value = {
+      labels: defs.monthsOfYear.map((e) => e.short),
+      datasets,
+    };
   },
 });
 

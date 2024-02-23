@@ -92,6 +92,32 @@ export interface SearchInfluencer {
   completed: number;
 }
 
+export interface InfluencerPaymentStats {
+  totalTransactions: number;
+  completedTransactions: number;
+  pendingTransactions: number;
+}
+
+
+export interface MonthData {
+  name: string;
+  index: number;
+  legends: Legend[];
+  legend: Legend;
+}
+
+export interface GroupedData {
+  [key: string]: MonthData[];
+}
+
+export interface DataSet {
+  label: string;
+  data: number[];
+  backgroundColor: string;
+  borderWidth: number;
+}
+
+
 
 export interface Application {
   applicationId: string;

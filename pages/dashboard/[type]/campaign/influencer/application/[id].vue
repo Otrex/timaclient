@@ -83,7 +83,7 @@
       </template>
 
       <section
-        class="bg-[#F3FAFF] gap-[1.875rem] flex flex-row rounded-[2.0625rem] p-[1.875rem]"
+        class="bg-[#F3FAFF] dark:bg-slate-600 gap-[1.875rem] flex flex-row rounded-[2.0625rem] p-[1.875rem]"
       >
         <div class="w-full">
           <p class="uppercase mb-[1.875rem]">Campaign Information</p>

@@ -9,7 +9,9 @@
         : 'IDLE'
     "
   >
-    <section class="bg-[#F7F7F7] p-[1.25rem] h-full rounded-md">
+    <section
+      class="bg-[#F7F7F7] dark:bg-slate-300 dark:text-black p-[1.25rem] h-full rounded-md"
+    >
       <div class="flex flex-row mb-[2.5rem] justify-between">
         <div class="flex flex-row gap-[0.75rem] items-center">
           <div class="flex items-center">

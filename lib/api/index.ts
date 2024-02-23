@@ -333,6 +333,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getInfluencerPaymentStats() {
+    return this.request<Response.GetInfluencerPaymentStats>({
+      url: "/payment/v1/histories/influencer/dashboard",
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
+
   async getApplicationById(publicId: string) {
     return this.request<Response.GetApplication>({
       url: `/agency/v1/applications/${publicId}`,
