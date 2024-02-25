@@ -1,5 +1,17 @@
 import type { UserType } from "../enums";
 
+export type AgeGenderData = {
+  ageRange: string;
+  male: number;
+  female: number;
+  percentage: number;
+};
+
+export type LocaleData = {
+  name: string;
+  percentage: number;
+};
+
 export interface Bank {
   name: string;
   slug: string;

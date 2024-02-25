@@ -9,3 +9,8 @@ export enum RequestState {
   ERROR = "ERROR",
   COMPLETED = "COMPLETED",
 }
+export enum DemographyType {
+  AGE_GENDER = "AGE_GENDER",
+  COUNTRY = "COUNTRY",
+  CITY = "CITY",
+}

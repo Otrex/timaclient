@@ -68,28 +68,12 @@
 </template>
 
 <script setup lang="ts">
+import { DemographyType } from "~/lib/enums";
 import type { Core } from "~/lib/interfaces";
+import type { AgeGenderData, LocaleData } from "~/lib/interfaces/core";
 
 const props = defineProps<{ publicId: string }>();
 const api = useAPI();
-
-enum DemographyType {
-  AGE_GENDER = "AGE_GENDER",
-  COUNTRY = "COUNTRY",
-  CITY = "CITY",
-}
-
-type AgeGenderData = {
-  ageRange: string;
-  male: number;
-  female: number;
-  percentage: number;
-};
-
-type LocaleData = {
-  name: string;
-  percentage: number;
-};
 
 const MAX_DATA_COUNT = 5;
 const cityData = ref<LocaleData[]>([]);

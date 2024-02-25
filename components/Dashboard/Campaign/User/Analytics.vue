@@ -20,7 +20,10 @@
     >
       <div class="w-full">
         <StatsAudienceAgeRange
-          :data="[]"
+          :loading="
+            tools.requestState(getAgeAudienceData) === constants.LOADING
+          "
+          :data="ageGenderData"
           bg="rgba(228, 243, 255, 0.5)"
           class="w-full"
         />
@@ -37,6 +40,10 @@
 </template>
 
 <script setup lang="ts">
+import { DemographyType } from "~/lib/enums";
+import { Core } from "~/lib/interfaces";
+import type { AgeGenderData } from "~/lib/interfaces/core";
+
 const metrics = ref([
   {
     title: "MAIN KPIS",
@@ -121,6 +128,52 @@ const metrics = ref([
     ],
   },
 ]);
+
+const api = useAPI();
+const route = useRoute();
+const { notify } = useNotification();
+const influencers = ref<Core.Application[]>([]);
+
+const ageGenderData = ref<AgeGenderData[]>([]);
+
+const getAgeAudienceData = useRequestState({
+  action: (influencerId: string) =>
+    api.getDemographyInsights({
+      type: DemographyType.AGE_GENDER,
+      socialMedia: "Instagram",
+      influencerId,
+    }),
+  onSuccess(response) {
+    ageGenderData.value = response.data.map((d) => ({
+      ageRange: d.name,
+      male: d.value2 || 0,
+      female: d.value1 || 0,
+      percentage: d.value3 || 0,
+    }));
+  },
+});
+
+const getApplicationsInfluencer = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getApplicantsByCampaign(route.params.id as string, {
+      sortBy: "createdOn",
+      sortIn: "DESC",
+      page: 0,
+      size: 10,
+    }),
+  onSuccess: (response) => {
+    influencers.value = response.data;
+    response.data.map((a) => getAgeAudienceData.execute(a.submittedBy));
+  },
+  onError: (err) => {
+    notify({
+      type: "error",
+      title: err.title,
+      text: err.description,
+    });
+  },
+});
 </script>
 
 <style></style>
