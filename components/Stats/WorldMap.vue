@@ -48,10 +48,16 @@ import { topojson } from "chartjs-chart-geo";
 
 const props = defineProps<{
   bg?: string;
+  data: {
+    name: string;
+    value: string | number;
+  }[];
 }>();
 
 const bg = computed(() => props.bg || "#FFFDF9");
 const canvas = ref<HTMLCanvasElement>();
+
+const RIBBON_COLORS = ["#58E48C", "#EF4E4D", "#FFD784", "#55B4FE"];
 
 const data = ref({
   datasets: [
@@ -68,7 +74,7 @@ const data = ref({
     {
       label: "Netherlands",
       bgColor: "#FFD784",
-      stats: 10,
+      stats: 100,
     },
     {
       label: "South Africa",
@@ -96,11 +102,29 @@ const highestDataset = computed(() => findHighestStats(data.value.datasets));
 
 onMounted(async () => {
   const $countriesM = countriesM as any;
-  const countries = (
+  const $$countries = (
     topojson.feature($countriesM, $countriesM.objects.countries) as any
   ).features.reverse();
 
   const _2d = canvas.value?.getContext("2d")!;
+
+  const countries = $$countries
+    .map((c: any) => {
+      const n_country = props.data.find((el) => el.name === c.properties.name);
+      if (n_country) {
+        return {
+          ...c,
+          dataValue: n_country.value,
+        };
+      } else {
+        return {
+          ...c,
+          dataValue: 0,
+        };
+      }
+    })
+    .filter((el: any) => el);
+
   const chart = new Chart(_2d, {
     type: "choropleth",
     data: {
@@ -110,7 +134,7 @@ onMounted(async () => {
           label: "Countries",
           data: countries.map((d: any) => ({
             feature: d,
-            value: Math.random(),
+            value: d.dataValue,
           })),
         },
       ],
@@ -127,7 +151,7 @@ onMounted(async () => {
         projection: {
           axis: "y",
           projection: "equirectangular", // "naturalEarth1",
-          projectionScale: 1.2,
+          projectionScale: 1.3,
           bounds: "ticks",
           grid: {
             lineWidth: 0,

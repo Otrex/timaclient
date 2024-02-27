@@ -16,10 +16,7 @@
     </div>
     <div class="w-full hidden md:block justify-self-start max-w-[42.5rem]">
       <slot name="middle">
-        <div
-          class="flex gap-[1.25rem]"
-          v-if="['Campaign', 'Explore'].includes(routeName)"
-        >
+        <div class="flex gap-[1.25rem]" v-if="['Campaign'].includes(routeName)">
           <UiInputText class="w-full" placeholder="Search campaigns" search />
 
           <UiButtonDefault

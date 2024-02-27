@@ -32,7 +32,7 @@
               />
             </button>
             <span
-              class="tip bg-slate-700 dark:bg-slate-500 text-white px-2 text-sm inline-flex absolute rounded-xl"
+              class="tip bg-slate-700 z-40 dark:bg-slate-500 text-white px-2 text-sm inline-flex absolute rounded-xl"
             >
               Go Back
             </span>
@@ -65,10 +65,11 @@ const backMap: Record<string, string> = {
 const currentRoute = computed(() => $route.name as string);
 
 function goBack() {
-  if (!Object.keys(backMap).includes($route.name as string)) return;
-  $router.replace({
-    name: backMap[currentRoute.value],
-  });
+  if (!Object.keys(backMap).includes($route.name as string)) {
+    $router.back();
+    return;
+  }
+  $router.replace({ name: backMap[currentRoute.value] });
 }
 </script>
 

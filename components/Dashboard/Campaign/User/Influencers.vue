@@ -10,11 +10,11 @@
           placeholder="Search Influencers"
           class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
         />
-        <UiInputSelect
+        <!--<UiInputSelect
           class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
           :options="tools.generationOptions(['all'])"
           v-model="filter"
-        />
+        />-->
       </div>
 
       <section class="mt-[2rem]">
@@ -79,7 +79,7 @@
                   :id="application.applicationId"
                   type="Independent"
                   :name="application.username"
-                  :socials="application.socialMediaPlatform"
+                  :socials="application.socialMediaPlatforms"
                   :profilePicture="application.profilePicture"
                   :questionAndAnswers="QandA(application)"
                   @accept="triggerAccept"
@@ -115,7 +115,10 @@ const route = useRoute();
 const { notify } = useNotification();
 
 function trx(data: any) {
-  data.socialMediaPlatform = JSON.parse(data.socialMediaPlatform);
+  console.log(data);
+
+  if (!data) return data;
+  data.socialMediaPlatforms = JSON.parse(data.socialMediaPlatforms);
   return data;
 }
 
@@ -151,7 +154,7 @@ const getCampaignPendingApplications = useRequestState({
   onError: (err) => {
     notify({
       type: "error",
-      title: err.title,
+      title: err.title + "Testing",
       text: err.description,
     });
   },

@@ -67,14 +67,14 @@
     <div
       class="grid md:grid-cols-3 items-end sm:gap-x-[1.75rem] md:gap-x-[3rem] gap-y-[1.75rem]"
     >
-      <div>
+      <!--<div>
         <label class="block mb-[0.875rem]">Influencer location</label>
         <UiInputSelect
           :options="tools.generationOptions(['Main page', 'story'])"
           class="w-full"
           placeholder="-- Select --"
         />
-      </div>
+      </div>-->
       <div>
         <label class="block mb-[0.875rem]">Influencer size</label>
         <UiInputSelect
@@ -133,6 +133,7 @@
           <UiInputText class="w-full" placeholder="Up to" />
         </div>
       </div> -->
+      <div>&nbsp;</div>
       <div>
         <UiButtonDefault
           variant="primary"
@@ -140,6 +141,7 @@
           class="w-full py-[0.75rem]"
         />
       </div>
+      <div>&nbsp;</div>
     </div>
   </div>
 </template>

@@ -29,12 +29,20 @@
         />
       </div>
       <div class="w-full">
-        <StatsAudienceGenderDistribution bg="rgba(228, 243, 255, 0.5)" />
+        <StatsAudienceGenderDistribution
+          v-bind="audienceGenderPie"
+          bg="rgba(228, 243, 255, 0.5)"
+        />
       </div>
     </div>
 
     <div class="w-full">
-      <StatsWorldMap bg="rgba(228, 243, 255, 0.5)" class="w-full" />
+      <StatsWorldMap
+        v-if="countryDistribution?.length"
+        :data="countryDistribution || []"
+        bg="rgba(228, 243, 255, 0.5)"
+        class="w-full"
+      />
     </div>
   </section>
 </template>
@@ -199,12 +207,38 @@ const getInteractionSummary = useRequestState({
   },
 });
 
+const audienceGenderPie = ref({
+  men: 0,
+  women: 0,
+});
+
+const countryDistribution = ref<{ name: string; value: string | number }[]>();
+
 const getCampaignDistributions = useRequestState({
   immediately: true,
   action: () => api.getCampaignDistribution(route.params.id as string),
   onSuccess(response) {
-    const data = response.data;
-    console.log(data);
+    audienceGenderPie.value = {
+      men:
+        response.data.audienceDistributionGraph.genderPie.find(
+          (e) => e.name == "Male"
+        )?.value || 0,
+      women:
+        response.data.audienceDistributionGraph.genderPie.find(
+          (e) => e.name == "Female"
+        )?.value || 0,
+    };
+
+    metrics.value[2].data[0].value =
+      response.data.audienceDistributionSummary.topCountry;
+    metrics.value[2].data[1].value =
+      response.data.audienceDistributionSummary.topCity;
+    metrics.value[2].data[2].value =
+      response.data.audienceDistributionSummary.topGender;
+    metrics.value[2].data[3].value =
+      response.data.audienceDistributionSummary.topAge;
+
+    countryDistribution.value = response.data.audienceDistributionGraph.country;
   },
 });
 </script>

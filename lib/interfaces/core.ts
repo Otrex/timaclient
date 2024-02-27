@@ -199,7 +199,7 @@ export interface Application {
   email: string;
   phoneNumber: string;
   profilePicture: string;
-  socialMediaPlatform: string[];
+  socialMediaPlatforms: string[];
   collaboration: string;
   userExperience: string;
   userExperienceBrief: string;

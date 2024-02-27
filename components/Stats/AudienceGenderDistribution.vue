@@ -8,23 +8,32 @@
 <script setup lang="ts">
 import { Doughnut } from "vue-chartjs";
 
-const props = defineProps<{
-  bg?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    bg?: string;
+    men?: number;
+    women?: number;
+  }>(),
+  {
+    men: 0,
+    women: 0,
+    bg: "#FFFDF9",
+  }
+);
 
 const bg = computed(() => props.bg || "#FFFDF9");
 
-const data = ref({
+const data = computed(() => ({
   labels: ["Women", "Men"],
   datasets: [
     {
-      data: [100, 50],
+      data: [props.women, props.men],
       backgroundColor: ["#2BA2FD", "#00487F"],
       borderWidth: 0,
       pointStyle: "circle",
     },
   ],
-});
+}));
 
 const options = ref<any>({
   responsive: true,
