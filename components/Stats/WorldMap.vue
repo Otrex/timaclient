@@ -6,6 +6,21 @@
       ref="canvas"
     ></canvas>
 
+    <div class="inline-flex gap-3 pl-5 -mt-3 mb-6">
+      <button
+        class="inline-flex items-center justify-center rounded-md hover:bg-slate-200 active:bg-slate-400 bg-slate-300 w-[2rem] aspect-square font-semibold"
+        @click="() => zoom(0.3)"
+      >
+        +
+      </button>
+      <button
+        class="inline-flex items-center justify-center rounded-md hover:bg-slate-200 active:bg-slate-400 bg-slate-300 w-[2rem] aspect-square font-semibold"
+        @click="() => zoom(-0.3)"
+      >
+        -
+      </button>
+    </div>
+
     <div class="px-[3.5625rem]">
       <table class="w-full">
         <tbody>
@@ -28,7 +43,7 @@
                       class="bg-[--bg-clr] h-full w-[--w]"
                     ></div>
                     <p class="nl text-[color:var(--clr-grey-300)]">
-                      {{ set.stats }}%
+                      {{ getPercentage(set.stats) }}%
                     </p>
                   </div>
                 </div>
@@ -56,6 +71,8 @@ const props = defineProps<{
 
 const bg = computed(() => props.bg || "#FFFDF9");
 const canvas = ref<HTMLCanvasElement>();
+const chart = ref<Chart>();
+const zoomLevel = ref<number>(1.3);
 
 const RIBBON_COLORS = ["#58E48C", "#EF4E4D", "#FFD784", "#55B4FE"];
 
@@ -84,6 +101,14 @@ const data = ref({
   ],
 });
 
+function getPercentage(stats: number) {
+  const total = data.value.datasets
+    .map((e) => e.stats)
+    .reduce((a, c) => a + c, 0);
+
+  return Math.round((stats / (total || 1)) * 100);
+}
+
 function restorer(data: number): string {
   return `--w: ${(data / (highestDataset.value?.stats || 1)) * 100}%`;
 }
@@ -98,9 +123,14 @@ function findHighestStats(data: Array<{ stats: number; [key: string]: any }>) {
     data[0]
   );
 }
+
+const trim = tools.truncateList(5);
 const highestDataset = computed(() => findHighestStats(data.value.datasets));
 
-onMounted(async () => {
+const createChart = async (zoomRatio = 1.3) => {
+  if (chart.value) {
+    chart.value.destroy();
+  }
   const $countriesM = countriesM as any;
   const $$countries = (
     topojson.feature($countriesM, $countriesM.objects.countries) as any
@@ -123,9 +153,18 @@ onMounted(async () => {
         };
       }
     })
-    .filter((el: any) => el);
+    .filter((el: any) => el)
+    .sort((a: any, b: any) => b.dataValue - a.dataValue);
 
-  const chart = new Chart(_2d, {
+  data.value = {
+    datasets: trim(countries).map((c: any, i) => ({
+      label: c.properties.name,
+      stats: c.dataValue,
+      bgColor: RIBBON_COLORS[i],
+    })),
+  };
+
+  chart.value = new Chart(_2d, {
     type: "choropleth",
     data: {
       labels: countries.map((d: any) => d.properties.name),
@@ -151,7 +190,7 @@ onMounted(async () => {
         projection: {
           axis: "y",
           projection: "equirectangular", // "naturalEarth1",
-          projectionScale: 1.3,
+          projectionScale: zoomRatio,
           bounds: "ticks",
           grid: {
             lineWidth: 0,
@@ -160,7 +199,16 @@ onMounted(async () => {
       },
     },
   });
-});
+};
+
+onMounted(() => createChart());
+
+function zoom(baseZoom = 0.3) {
+  if (zoomLevel.value > 1 && zoomLevel.value < 30) {
+    zoomLevel.value += baseZoom;
+  }
+  createChart(zoomLevel.value);
+}
 </script>
 
 <style scoped>
