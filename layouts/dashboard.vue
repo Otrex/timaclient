@@ -3,26 +3,49 @@
     <div class="box">
       <aside
         :class="[
-          'bg-[--clr-light-blue] block md:hidden transition-all h-full dark:bg-slate-800',
+          'bg-[--clr-light-blue] block sm:hidden transition-all h-full dark:bg-slate-800',
           !sidebar && 'transform translate-x-[-100%]',
         ]"
       >
         <DashboardSidebar @close-sidebar="sidebar = false" />
       </aside>
       <aside
-        class="bg-[--clr-light-blue] hidden md:flex h-full dark:bg-slate-800"
+        class="bg-[--clr-light-blue] hidden sm:flex h-full dark:bg-slate-800"
       >
         <DashboardSidebar />
       </aside>
       <header class="dark:bg-slate-700 dark:text-white">
-        <DashboardHeader @open-sidebar="sidebar = true">
-          <template #left>
-            <slot name="indicator"></slot>
-          </template>
-          <template #middle>
-            <slot name="tab"></slot>
-          </template>
-        </DashboardHeader>
+        <div
+          class="flex flex-row items-center border-b-[0.025rem] border-solid border-[#D6D6D6]"
+        >
+          <div class="pl-[1.2rem] relative">
+            <button
+              @click="goBack"
+              class="w-[2.5rem] tooltip active:bg-[#d6d6d6a3] border-[0.15rem] hover:ring-2 hover:ring-[#D6D6D6] border-solid border-[#D6D6D6] aspect-square rounded-full flex items-center justify-center"
+            >
+              <UtSvg
+                name="down-caret"
+                class="rotate-90"
+                dim
+                w="1rem"
+                h="1rem"
+              />
+            </button>
+            <span
+              class="tip bg-slate-700 dark:bg-slate-500 text-white px-2 text-sm inline-flex absolute rounded-xl"
+            >
+              Go Back
+            </span>
+          </div>
+          <DashboardHeader @open-sidebar="sidebar = true">
+            <template #left>
+              <slot name="indicator"></slot>
+            </template>
+            <template #middle>
+              <slot name="tab"></slot>
+            </template>
+          </DashboardHeader>
+        </div>
       </header>
       <main class="overflow-y-auto dark:bg-slate-700 dark:text-white">
         <slot name="main"></slot>
@@ -33,6 +56,20 @@
 
 <script setup lang="ts">
 const sidebar = ref(false);
+const $router = useRouter();
+const $route = useRoute();
+const backMap: Record<string, string> = {
+  Campaign: "BrandCampaign",
+};
+// const routeNames = computed(() => $router.options.routes.map((r) => r.name));
+const currentRoute = computed(() => $route.name as string);
+
+function goBack() {
+  if (!Object.keys(backMap).includes($route.name as string)) return;
+  $router.replace({
+    name: backMap[currentRoute.value],
+  });
+}
 </script>
 
 <style scoped>
@@ -79,5 +116,16 @@ main {
 
 header {
   grid-area: header;
+}
+
+.tooltip ~ .tip {
+  display: none;
+  top: calc(100% + 10px);
+  left: 5px;
+  min-width: 60px;
+}
+
+.tooltip:hover ~ .tip {
+  display: inline-flex;
 }
 </style>

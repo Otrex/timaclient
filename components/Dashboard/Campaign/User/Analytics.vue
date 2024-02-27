@@ -51,11 +51,11 @@ const metrics = ref([
     data: [
       {
         label: "Account",
-        value: 33,
+        value: 0,
       },
       {
         label: "Followers",
-        value: tools.formatNumber(3300000),
+        value: tools.formatNumber(0),
       },
     ],
   },
@@ -72,10 +72,6 @@ const metrics = ref([
         value: "20,000",
       },
       {
-        label: "Engagement",
-        value: "50,000",
-      },
-      {
         label: "Likes",
         value: "10,000",
       },
@@ -84,7 +80,11 @@ const metrics = ref([
         value: "20",
       },
       {
-        label: "Saved",
+        label: "Shared",
+        value: "200",
+      },
+      {
+        label: "Impressions",
         value: "200",
       },
     ],
@@ -172,6 +172,39 @@ const getApplicationsInfluencer = useRequestState({
       title: err.title,
       text: err.description,
     });
+  },
+});
+
+const getKPI = useRequestState({
+  immediately: true,
+  action: () => api.getCampaignKPI(route.params.id as string),
+  onSuccess(response) {
+    const data = response.data;
+    metrics.value[0].data[0].value = data.accounts;
+    metrics.value[0].data[1].value = tools.formatNumber(data.followers);
+  },
+});
+
+const getInteractionSummary = useRequestState({
+  immediately: true,
+  action: () => api.getCampaignInteractionSummary(route.params.id as string),
+  onSuccess(response) {
+    const data = response.data;
+    metrics.value[1].data[0].value = tools.formatNumber(data.engagement);
+    metrics.value[1].data[1].value = tools.formatNumber(data.reach);
+    metrics.value[1].data[2].value = tools.formatNumber(data.likes);
+    metrics.value[1].data[3].value = tools.formatNumber(data.comments);
+    metrics.value[1].data[4].value = tools.formatNumber(data.shared);
+    metrics.value[1].data[5].value = tools.formatNumber(data.impressions);
+  },
+});
+
+const getCampaignDistributions = useRequestState({
+  immediately: true,
+  action: () => api.getCampaignDistribution(route.params.id as string),
+  onSuccess(response) {
+    const data = response.data;
+    console.log(data);
   },
 });
 </script>

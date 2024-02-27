@@ -30,22 +30,21 @@
                 :to="{
                   name: 'Campaign >>> Influencers',
                   query: {
-                    publicId: influencer.submittedBy,
                     applicationId: influencer.applicationId,
                   },
                 }"
               >
                 <DashboardInfluencerCard
-                  :name="influencer.fullName"
-                  :socialMedia="influencer.socialMediaPlatform"
+                  :name="influencer.userName"
+                  :socialMedia="influencer.socialMediaPlatforms"
                   :profilePicture="influencer.profilePicture"
                   :cover="influencer.profilePicture"
-                  :earnedMedia="0"
-                  :engagements="0"
-                  :comments="0"
-                  :likes="0"
-                  :saved="0"
-                  :date="String(influencer.createdOn)"
+                  :earnedMedia="influencer.insight.followers"
+                  :engagements="influencer.insight.avgEngagement"
+                  :comments="influencer.insight.totalComments"
+                  :likes="influencer.insight.totalLikes"
+                  :saved="influencer.insight.totalMedia"
+                  :date="String(influencer.applicationDate)"
                 />
               </NuxtLink>
             </template>
@@ -107,6 +106,7 @@
 </template>
 
 <script setup lang="ts">
+import { Core } from "~/lib/interfaces";
 import type { Application } from "~/lib/interfaces/core";
 
 const filter = ref("all");
@@ -157,12 +157,14 @@ const getCampaignPendingApplications = useRequestState({
   },
 });
 
-const influencers = ref<Application[]>([]);
+const influencers = ref<Core.ApprovedCampaignInfluencer[]>([]);
 const getApplicationsInfluencer = useRequestState({
   immediately: true,
   action: () =>
-    api.getApplicantsByCampaign(route.params.id as string, {
+    api.getCampaignApplicationsByStatus({
+      campaignId: route.params.id as string,
       sortBy: "createdOn",
+      status: "APPROVED",
       sortIn: "DESC",
       page: 0,
       size: 10,

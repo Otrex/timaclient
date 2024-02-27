@@ -24,7 +24,7 @@
                 :category="campaign.creative.creativeTone"
                 :description="campaign.overview.briefDescription"
                 :deadline="campaign.creative.endDate"
-                :completion="0"
+                :completion="campaign.status || 0"
                 :public-id="campaign.publicId"
                 :title="campaign.overview.name"
                 :is-bookmark="true"

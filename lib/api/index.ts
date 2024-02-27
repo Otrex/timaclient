@@ -1,5 +1,5 @@
 
-import type { Payload, Response } from "../interfaces";
+import type { Core, Payload, Response } from "../interfaces";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
@@ -244,6 +244,30 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCampaignKPI(campaignId: string) {
+    return this.request<IResponse<{ accounts: number, followers: number }>>({
+      url: `/agency/v1/campaigns/dashboard/kpi/${campaignId}`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getCampaignInteractionSummary(campaignId: string) {
+    return this.request<IResponse<Core.InteractionSummary>>({
+      url: `/agency/v1/campaigns/dashboard/interaction/${campaignId}`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getCampaignDistribution(campaignId: string) {
+    return this.request<IResponse<Core.CampaignDistribution>>({
+      url: `/agency/v1/campaigns/dashboard/distribution/${campaignId}`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
   async getApplicantsByCampaign(
     campaignId: string,
     data: Payload.Filter
@@ -319,11 +343,11 @@ export default class TimaAPI extends UploadAPI {
 
   async getCampaignApplicationsByStatus(
     data: Payload.Filter & {
-      status: string;
+      status: "PENDING" | "APPROVED";
       campaignId: string
     }
   ) {
-    return this.request<Response.GetApplications>({
+    return this.request<Response.GetApplications | Response.GetApprovedInfluencers>({
       url: this.querify(
         `/agency/v1/applications/search/filter`,
         data

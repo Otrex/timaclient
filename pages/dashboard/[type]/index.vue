@@ -29,7 +29,7 @@
             :deadline="campaign.creative.endDate"
             :public-id="campaign.publicId"
             :title="campaign.overview.name"
-            :completion="0"
+            :completion="campaign.status || 0"
           />
         </NuxtLink>
       </div>

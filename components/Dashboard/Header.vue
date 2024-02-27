@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full flex md:flex-row items-center gap-[1.875rem] justify-between py-[1rem] px-[1.75rem] border-b-[0.025rem] border-solid border-[#D6D6D6] dark:border-slate-900"
+    class="w-full flex md:flex-row items-center gap-[1.875rem] justify-between py-[1rem] px-[1.75rem] dark:border-slate-900"
   >
     <div class="flex items-center flex-row gap-4">
       <div class="flex md:hidden">

@@ -36,7 +36,7 @@
       >
         <div>
           <p class="sm">{{ props.earnedMedia }}</p>
-          <p class="sm text-[color:--clr-grey-300]">Earned media</p>
+          <p class="sm text-[color:--clr-grey-300]">Followers</p>
         </div>
         <div>
           <p class="sm">{{ props.engagements }}%</p>
@@ -52,7 +52,7 @@
         </div>
         <div>
           <p class="sm">{{ props.saved }}%</p>
-          <p class="sm text-[color:--clr-grey-300]">Saved</p>
+          <p class="sm text-[color:--clr-grey-300]">Total Media</p>
         </div>
       </div>
       <div>

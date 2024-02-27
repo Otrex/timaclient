@@ -1,7 +1,11 @@
 <template>
-  <img src="/favicon/favicon-16x16.png" class="bg-img pulse" v-if="isLoading" />
   <img
-    src="/favicon/favicon-16x16.png"
+    src="https://placehold.co/600x400.png?text=Placeholder"
+    class="bg-img pulse"
+    v-if="isLoading"
+  />
+  <img
+    src="https://placehold.co/600x400.png?text=Placeholder"
     class="bg-img error"
     v-else-if="error"
   />

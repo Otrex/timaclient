@@ -29,7 +29,7 @@ export interface Campaign {
   overview: Overview;
   influencer: Influencer;
   creative: Creative;
-  status: null;
+  status: number | null;
   createdOn: null;
 }
 
@@ -108,6 +108,63 @@ export interface InfluencerPaymentStats {
   totalTransactions: number;
   completedTransactions: number;
   pendingTransactions: number;
+}
+
+export interface InteractionSummary {
+  engagement: number;
+  reach: number;
+  impressions: number;
+  likes: number;
+  comments: number;
+  shared: number;
+}
+
+export interface CampaignDistribution {
+  audienceDistributionSummary: AudienceDistributionSummary;
+  audienceDistributionGraph: AudienceDistributionGraph;
+}
+
+export interface ApprovedCampaignInfluencer {
+  applicationId: string;
+  userName: string;
+  profilePicture: string;
+  socialMediaPlatforms: string[];
+  applicationDate: Date | string;
+  insight: Insight;
+}
+
+export interface Insight {
+  businessOwnerIgId: string;
+  businessIgId: string;
+  businessHandle: string;
+  businessName: string;
+  biography: string;
+  website: string;
+  profilePictureUrl: string;
+  followers: number;
+  totalMedia: number;
+  totalComments: number;
+  totalLikes: number;
+  avgEngagement: number;
+}
+
+
+export interface AudienceDistributionGraph {
+  ageRange: AgeRange[];
+  genderPie: AgeRange[];
+  country: AgeRange[];
+}
+
+export interface AgeRange {
+  name: string;
+  value: number;
+}
+
+export interface AudienceDistributionSummary {
+  topCountry: string;
+  topCity: string;
+  topGender: string;
+  topAge: string;
 }
 
 
