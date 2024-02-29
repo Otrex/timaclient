@@ -50,22 +50,22 @@
               :to="{
                 name: 'Campaign >>> Influencers',
                 query: {
-                  publicId: influencer.publicId,
+                  publicId: influencer.userPublicId,
                   applicationId: null,
                 },
               }"
             >
               <DashboardInfluencerCard
-                :name="influencer.fullName"
-                :socialMedia="[]"
-                :profilePicture="influencer.profilePicture"
+                :name="influencer.userName"
+                :socialMedia="influencer.socialMediaPlatforms"
+                :profilePicture="influencer.insight.profilePictureUrl"
                 :cover="influencer.profilePicture"
-                :earnedMedia="0"
-                :engagements="0"
-                :comments="0"
-                :likes="0"
-                :saved="0"
-                :date="String()"
+                :earnedMedia="influencer.insight.followers"
+                :engagements="influencer.insight.avgEngagement"
+                :comments="influencer.insight.totalComments"
+                :likes="influencer.insight.totalLikes"
+                :saved="influencer.insight.totalMedia"
+                :date="String(influencer.applicationDate)"
               />
             </NuxtLink>
           </template>
@@ -77,6 +77,7 @@
 
 <script setup lang="ts">
 import type {
+  GetApprovedInfluencers,
   GetBookmarks,
   GetInfluencersBookmark,
 } from "~/lib/interfaces/response";
@@ -88,7 +89,13 @@ definePageMeta({
 const api = useAPI();
 const authStore = useAuthStore();
 const bookmarks = ref<GetBookmarks["data"]>([]);
-const infleuncerBookmarks = ref<GetInfluencersBookmark["data"]>([]);
+const infleuncerBookmarks = ref<GetApprovedInfluencers["data"]>([]);
+
+function trx(data: any) {
+  if (!data) return data;
+  data.socialMediaPlatforms = JSON.parse(data.socialMediaPlatforms);
+  return data;
+}
 
 const { state, execute } = useRequestState({
   action: () => api.getBookmarks(),
@@ -100,7 +107,7 @@ const { state, execute } = useRequestState({
 const { state: bookmarkState, execute: bookmarkExecute } = useRequestState({
   action: () => api.getBookmarkedInfluencers(),
   onSuccess(response) {
-    infleuncerBookmarks.value = response.data;
+    infleuncerBookmarks.value = response.data.map(trx);
   },
 });
 

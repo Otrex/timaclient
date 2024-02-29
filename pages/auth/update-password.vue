@@ -82,7 +82,6 @@ const { execute, state } = useRequestState({
     );
   },
   onError(e) {
-    console.log(e);
     notify({
       type: "error",
       title: e.title,
@@ -90,16 +89,11 @@ const { execute, state } = useRequestState({
     });
   },
   onSuccess(response) {
-    console.log(response);
-
     notify({
       type: "success",
       title: "Request Successful!",
-      // text: response.data.message,
+      text: response.data.message,
     });
-    // navigateTo({
-    //   path: "/auth/login",
-    // });
   },
 });
 </script>

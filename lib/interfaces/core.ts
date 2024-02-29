@@ -131,6 +131,7 @@ export interface ApprovedCampaignInfluencer {
   socialMediaPlatforms: string[];
   applicationDate: Date | string;
   insight: Insight;
+  userPublicId: string;
 }
 
 export interface Insight {

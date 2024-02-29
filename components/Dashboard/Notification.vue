@@ -115,7 +115,6 @@ const notifications = ref<AppNotification[]>([]);
 
 onClickOutside(target, (event) => {
   open.value = false;
-  console.log("clicked outside");
 });
 
 const api = useAPI();

@@ -31,13 +31,17 @@
                   name: 'Campaign >>> Influencers',
                   query: {
                     applicationId: influencer.applicationId,
+                    publicId: influencer.userPublicId,
                   },
                 }"
               >
                 <DashboardInfluencerCard
                   :name="influencer.userName"
                   :socialMedia="influencer.socialMediaPlatforms"
-                  :profilePicture="influencer.profilePicture"
+                  :profilePicture="
+                    influencer.insight.profilePictureUrl ||
+                    influencer.profilePicture
+                  "
                   :cover="influencer.profilePicture"
                   :earnedMedia="influencer.insight.followers"
                   :engagements="influencer.insight.avgEngagement"
@@ -115,8 +119,6 @@ const route = useRoute();
 const { notify } = useNotification();
 
 function trx(data: any) {
-  console.log(data);
-
   if (!data) return data;
   data.socialMediaPlatforms = JSON.parse(data.socialMediaPlatforms);
   return data;

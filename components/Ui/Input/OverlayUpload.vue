@@ -213,7 +213,6 @@ function open() {
 }
 
 async function save() {
-  console.log("Saving", props.file);
   if (file.value) {
     await upload(file.value);
     // modalState.value = false;

@@ -27,7 +27,6 @@ export default function <T, R = any[], M = any, K extends Record<string, any> = 
   async function validate() {
     if (v$) {
       const isValid = await v$.value.$validate();
-      console.log(v$.value);
       if (!isValid) throw new Error('validation error');
     }
   }

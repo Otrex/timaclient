@@ -85,26 +85,7 @@ const {
     });
   },
   onSuccess() {
-    const userType = authStore.authorization.userType;
-
-    console.log(userType);
     window.location.href = "/dashboard/redirect";
-
-    // navigateTo(
-    //   userType === constants.INFLUENCER
-    //     ? {
-    //         name: "Explore",
-    //         params: {
-    //           type: userType,
-    //         },
-    //       }
-    //     : {
-    //         name: "BrandCampaign",
-    //         params: {
-    //           type: userType,
-    //         },
-    //       }
-    // );
   },
 });
 </script>

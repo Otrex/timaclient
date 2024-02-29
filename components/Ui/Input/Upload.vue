@@ -135,7 +135,7 @@ const openUploadFile = () => {
 
 const emit = defineEmits(["update:file", "update:name", "update:url"]);
 
-const accepts = {
+const accepts: Record<string, string> = {
   pics: "image/",
   thumb: "image/",
   docs: "application/",
@@ -219,7 +219,6 @@ const processFiles = (fileList: FileList | File[]) => {
     const files = Array.from(fileList);
     files.map((file) => checkFileType(file));
     fileName.value = files.map((f) => getFileName(f)).join(", ");
-    console.log(fileName.value);
 
     updateFile(files);
     updateFileName();
@@ -253,7 +252,6 @@ function open() {
 }
 
 async function save() {
-  console.log("Saving", props.file);
   if (file.value) {
     await upload(file.value);
     // modalState.value = false;

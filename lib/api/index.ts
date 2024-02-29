@@ -418,7 +418,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getBookmarkedInfluencers() {
-    return this.request<Response.GetInfluencersBookmark>({
+    return this.request<Response.GetApprovedInfluencers>({
       url: "/agency/v1/bookmarks/influencer",
       requireAuth: true,
       method: 'GET',
@@ -459,7 +459,9 @@ export default class TimaAPI extends UploadAPI {
 
   async getPaymentStatistics(year?: string) {
     return this.request<Response.GetPaymentStatistics>({
-      url: "/payment/v1/histories/influencer/graph?year=" + (year || (new Date()).getFullYear()),
+      url: "/payment/v1/histories/influencer/graph?year=" + (
+        year || (new Date()).getFullYear()
+      ),
       requireAuth: true,
       method: 'GET',
     });

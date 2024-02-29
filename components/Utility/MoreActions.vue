@@ -28,7 +28,6 @@ const target = ref<HTMLDivElement>();
 
 onClickOutside(target, (event) => {
   open.value = false;
-  console.log("clicked outside " + props.dataId);
 });
 </script>
 

@@ -45,8 +45,6 @@ function calculateDuration(start?: string | Date, end?: string | Date) {
   const difference = Math.abs(startDate - endDate);
   if (Number.isNaN(difference)) return "Infinite";
 
-  console.log(difference, startDate, endDate, start, end);
-
   const seconds = Math.floor(difference / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);

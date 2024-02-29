@@ -44,8 +44,6 @@ export default class Api {
       const requiresAuth = config.headers[this.REQUIRE_AUTH_HEADER];
       if (!requiresAuth) return config;
 
-      console.log("entererd");
-
 
       const accessToken = this.getStoreData(this.ACCESS_TOKEN_KEY);
       config.headers['Authorization'] = `Bearer ${accessToken}`;
