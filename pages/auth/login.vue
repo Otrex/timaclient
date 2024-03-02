@@ -59,6 +59,8 @@ const form = reactive({
   password: "",
 });
 
+const route = useRoute();
+
 const {
   execute: login,
   validate,
@@ -85,7 +87,8 @@ const {
     });
   },
   onSuccess() {
-    window.location.href = "/dashboard/redirect";
+    window.location.href =
+      (route.query.redirect as string) || "/dashboard/redirect";
   },
 });
 </script>

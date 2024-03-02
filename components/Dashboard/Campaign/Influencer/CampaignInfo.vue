@@ -11,9 +11,9 @@
             ? 'max-h-[4.375rem] overflow-y-clip'
             : 'max-h-screen overflow-y-auto',
         ]"
-        class="grid transition-all md:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
+        class="grid transition-all md:grid-cols-1 lg:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
       >
-        <div v-for="(campaign, idx) in campaigns" :key="idx">
+        <div v-for="(campaign, idx) in experiences" :key="idx">
           <div
             :data-id="campaign.id"
             @click="selectCampaign(campaign.id)"
@@ -235,6 +235,9 @@
 </template>
 
 <script setup lang="ts">
+import type { Core } from "~/lib/interfaces";
+
+const props = defineProps<{ publicId: string }>();
 const displayPartially = ref(true);
 const campaigns = ref([
   {
@@ -246,34 +249,6 @@ const campaigns = ref([
   },
   {
     name: "NST Creative Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: false,
-  },
-  {
-    name: "Nike Creative Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: false,
-  },
-  {
-    name: "Brandon Creative Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: false,
-  },
-  {
-    name: "Ben Creative Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: false,
-  },
-  {
-    name: "Kate Creative Campaign",
     startDate: new Date("2000-02-02"),
     endDate: new Date(),
     id: Math.random(),
@@ -305,6 +280,31 @@ function selectCampaign(index: number) {
     campaigns.value.unshift(selected); // Add the element to the beginning of the list
   }
 }
+
+const api = useAPI();
+const experiences = ref<
+  (Core.InfluencerCampaignExperience & {
+    active: boolean;
+    id: number;
+    name: string;
+  })[]
+>([]);
+
+useRequestState({
+  immediately: true,
+  action: () =>
+    api.getInfluencerCampaignExperience({
+      influencerPublicId: props.publicId,
+    }),
+  onSuccess(response) {
+    experiences.value = response.data.map((e) => ({
+      ...e,
+      name: e.campaignName,
+      active: false,
+      id: Math.random(),
+    }));
+  },
+});
 </script>
 
 <style scoped>

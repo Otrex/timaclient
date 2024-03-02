@@ -56,8 +56,9 @@
               <ul v-if="activeTab === 0">
                 <li
                   v-for="(notification, idx) in notifications"
-                  class="tima-notif py-[0.4375rem]"
+                  class="tima-notif hover:bg-slate-50 py-[0.4375rem]"
                   :key="idx"
+                  @click="openNotification"
                 >
                   <div>
                     <div class="flex flex-row items-center justify-between">
@@ -93,6 +94,7 @@
         </div>
       </div>
     </transition>
+    <UiModal> </UiModal>
   </div>
 </template>
 
@@ -152,6 +154,8 @@ async function getNotifications(iterate: boolean): Promise<any> {
   if (!iterate) return;
   return getNotifications(iterate);
 }
+
+async function openNotification() {}
 </script>
 
 <style scoped>

@@ -16,7 +16,7 @@ export default Object.freeze({
   INDUSTRY_INFORMATION: "industry-information",
   CONTENT_CATEGORY: "content-category",
   COMPLETE_PROFILE: "complete-profile",
-
+  CAMPAIGN: "campaign",
   BRAND_OVERVIEW: "brand-overview",
   BRAND_CREATIVE: "brand-creative",
   BRAND_INFLUENCERS: "brand-influencers",

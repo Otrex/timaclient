@@ -9,10 +9,6 @@
   @apply mx-auto max-w-[calc(37.375rem_+_2.5rem)] px-[calc(2.5rem_/_2)];
 }
 
-* {
-  transition: all 0.15s;
-}
-
 /* TRANSITIONS & ANIMATIONS */
 @keyframes spin {
   from {

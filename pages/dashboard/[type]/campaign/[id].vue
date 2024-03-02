@@ -71,7 +71,10 @@
         backdrop-color="rgba(0,0,0,.3)"
         v-model:state="openShare"
       >
-        <UiModalShare />
+        <UiModalShare
+          :type="constants.CAMPAIGN"
+          :publicId="campaign.publicId"
+        />
       </UtModal>
     </template>
   </div>

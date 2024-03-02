@@ -3,6 +3,12 @@ import type { Core, Payload, Response } from "../interfaces";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
+const defaultFilter = {
+  page: 0,
+  size: 5,
+  sortIn: 'desc',
+  sortBy: 'createdOn'
+};
 
 export default class TimaAPI extends UploadAPI {
   async refreshAuth(token: string) {
@@ -341,6 +347,16 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCampaignsByName(name: string, filter: Partial<Core.SearchFilter>) {
+    return this.request<IResponse<Core.CampaignByName[]>>({
+      url: this.querify(
+        `/agency/v1/influencer/search/campaign/${name}`,
+        { ...defaultFilter, ...filter }
+      ),
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
   async getCampaignApplicationsByStatus(
     data: Payload.Filter & {
       status: "PENDING" | "APPROVED";
@@ -389,7 +405,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async searchInfluencers() { }
+  async searchInfluencers(filter: Partial<Core.ExploreInfluencerFilter>) {
+    return this.request<Response.GetApprovedInfluencers>({
+      url: this.querify(`/agency/v1/influencer/search/campaign`, filter),
+      requireAuth: true,
+      method: 'GET',
+    });
+
+  }
 
   async getDemographyInsights(data: Payload.DemographyInsight) {
     return this.request<Response.GetDemographyInsights>({
@@ -415,6 +438,14 @@ export default class TimaAPI extends UploadAPI {
       method: 'POST',
       data,
     });
+  }
+
+  async deleteInfluencerBookmark(title: string) {
+    return this.request({
+      url: `/agency/v1/bookmarks/influencer/title/${title}`,
+      requireAuth: true,
+      method: 'DELETE'
+    })
   }
 
   async getBookmarkedInfluencers() {
@@ -505,6 +536,14 @@ export default class TimaAPI extends UploadAPI {
   async getInfluencersByCategory(category: string) {
     return this.request<Response.GetInfluencers>({
       url: `/agency/v1/influencer/search/categories/${category}`,
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getInfluencerCampaignExperience(data: Partial<Payload.Filter> & { influencerPublicId: string }) {
+    return this.request<IResponse<Core.InfluencerCampaignExperience[]>>({
+      url: this.querify(`/agency/v1/influencer/search/experiences`, data),
       requireAuth: true,
       method: 'GET',
     });

@@ -2,7 +2,63 @@
   <article
     class="border border-solid bg-white dark:bg-slate-900 border-[#E7E7E7] dark:border-slate-600"
   >
-    <div class="max-h-[9.5625rem] overflow-hidden">
+    <div class="max-h-[11.25rem] h-full relative overflow-hidden">
+      <template v-if="authStore.authorization.userType !== 'BRAND'">
+        <button
+          v-if="!props.isBookmark"
+          style="--tw-ring-opacity: 0.2"
+          :disabled="state === constants.LOADING"
+          :class="[
+            'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
+            avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
+          ]"
+          @click.prevent.capture="() => execute()"
+        >
+          <UtSvg
+            v-if="state === constants.LOADING"
+            name="sunshine"
+            :class="[
+              'spinner w-[1.5rem] h-[1.5rem]',
+              avgColor > 128 ? 'text-black' : 'text-white',
+            ]"
+          />
+          <UtSvg
+            v-else
+            name="bookmark"
+            :class="[
+              'w-[1.5rem] h-[1.5rem]',
+              avgColor > 128 ? 'text-black' : 'text-white',
+            ]"
+          />
+        </button>
+      </template>
+      <button
+        v-if="props.isBookmark"
+        style="--tw-ring-opacity: 0.2"
+        :disabled="state === constants.LOADING"
+        :class="[
+          'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
+          avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
+        ]"
+        @click.prevent.capture="() => deleteBookmark(props.name)"
+      >
+        <UtSvg
+          v-if="deleteState === constants.LOADING"
+          name="sunshine"
+          :class="[
+            'spinner w-[1.5rem] h-[1.5rem]',
+            avgColor > 128 ? 'text-black' : 'text-white',
+          ]"
+        />
+        <UtSvg
+          v-else
+          name="trash"
+          :class="[
+            'w-[1.5rem] h-[1.5rem]',
+            avgColor > 128 ? 'text-black' : 'text-white',
+          ]"
+        />
+      </button>
       <UiImg
         :src="props.cover"
         class="w-full h-full object-cover object-center"
@@ -12,7 +68,7 @@
       <div class="flex flex-row justify-between mb-[1.25rem]">
         <div class="flex gap-[0.75rem] items-center">
           <div
-            class="inline-block w-[2rem] h-[2rem] overflow-hidden rounded-full"
+            class="inline-block w-[2rem] relative h-[2rem] overflow-hidden rounded-full"
           >
             <UiImg
               :src="props.profilePicture"
@@ -76,9 +132,67 @@ const props = defineProps<{
   date: string;
   cover: string;
   profilePicture: string;
+  isBookmark?: boolean;
+  publicId: string;
 }>();
 
+const avgColor = ref(0);
+const authStore = useAuthStore();
+const colorExtract = useImageColorExtract();
 const socials = computed(() => props.socialMedia.map((s) => `socials/${s}-lg`));
+onMounted(() => {
+  try {
+    colorExtract.getAverageColor(props.cover!).then((value) => {
+      avgColor.value = value;
+    });
+  } catch (error) {}
+});
+
+const api = useAPI();
+const $emit = defineEmits(["refresh"]);
+const { notify } = useNotification();
+
+const { state, execute } = useRequestState({
+  action: () =>
+    api.bookmarkInfluencer({
+      title: "Bookmark",
+      bookmarkPublicId: props.publicId,
+    }),
+  onSuccess: (response) => {
+    notify({
+      type: "success",
+      title: "Bookmarked!!",
+      text: response.message,
+    });
+  },
+  onError: (error) => {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.description,
+    });
+  },
+});
+
+const { state: deleteState, execute: deleteBookmark } = useRequestState({
+  action: (title: string) => api.deleteInfluencerBookmark(title),
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "Deleted Bookmarked!!",
+      text: `Bookmark ${props.name} deleted successfully`,
+    });
+
+    $emit("refresh");
+  },
+  onError: (error) => {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.description,
+    });
+  },
+});
 </script>
 
 <style></style>

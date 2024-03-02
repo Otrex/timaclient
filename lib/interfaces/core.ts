@@ -7,6 +7,17 @@ export type AgeGenderData = {
   percentage: number;
 };
 
+export type ExploreInfluencerFilter = {
+  size: string;
+  ageGroup: string;
+  location: string;
+  gender: string;
+  socialMedia: string;
+  costPerPost: number;
+}
+
+export type SearchFilter = { page: number; size: number; sortIn: 'desc' | 'asc'; sortBy: string }
+
 export type LocaleData = {
   name: string;
   percentage: number;
@@ -39,6 +50,14 @@ export interface PaymentMethod {
   type: string;
   createdOn?: Date;
 }
+
+export interface CampaignByName {
+  campaignId: string;
+  name: string;
+  banner: string;
+  description: string;
+}
+
 
 
 export interface NotificationSetting {
@@ -327,6 +346,14 @@ export interface Influencer {
   phoneNumber: string;
   profilePicture: string;
 }
+
+export interface InfluencerCampaignExperience {
+  campaignName: string;
+  campaignBanner: string;
+  startDate: Date | string;
+  endDate: Date | string;
+}
+
 
 export interface FullCampaign {
   publicId: string;

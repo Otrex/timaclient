@@ -141,7 +141,7 @@
     </UtPermit>
     <UtPermit :user-type="constants.AGENCY">
       <div class="px-[1.625rem] mb-[2.5rem] pt-[1.875rem] pb-[2.5rem]">
-        <DashboardExploreInfluencerSearchPanel class="mb-[3.75rem]" />
+        <DashboardExploreInfluencerSearchPanel class="mb-[2rem]" />
 
         <section class="mb-[3.25rem]">
           <h2 class="text-[2rem] mb-[1.375rem]">The Buzz</h2>
@@ -169,7 +169,7 @@
 
         <section class="mb-[3.25rem]">
           <h2 class="text-[2rem] mb-[1.375rem]">Categories</h2>
-          <div class="flex flex-col md:flex-row gap-[1.125rem]">
+          <div class="grid md:grid-cols-3 gap-[1.125rem]">
             <template v-for="(buzz, idx) in categories" :key="idx">
               <UiBuzzCard
                 class="w-full"

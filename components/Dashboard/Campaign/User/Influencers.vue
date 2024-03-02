@@ -42,6 +42,7 @@
                     influencer.insight.profilePictureUrl ||
                     influencer.profilePicture
                   "
+                  :public-id="influencer.userPublicId"
                   :cover="influencer.profilePicture"
                   :earnedMedia="influencer.insight.followers"
                   :engagements="influencer.insight.avgEngagement"

@@ -153,7 +153,7 @@ onMounted(() => {
 const addBookmark = useRequestState({
   action: () =>
     api.bookmarkInfluencer({
-      title: "Bookmark",
+      title: result.value?.username || "Bookmark",
       bookmarkPublicId: props.publicId
         ? props.publicId
         : (result.value as any)?.submittedBy!,

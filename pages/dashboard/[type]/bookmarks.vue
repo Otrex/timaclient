@@ -66,6 +66,8 @@
                 :likes="influencer.insight.totalLikes"
                 :saved="influencer.insight.totalMedia"
                 :date="String(influencer.applicationDate)"
+                :public-id="influencer.userPublicId"
+                :is-bookmark="true"
               />
             </NuxtLink>
           </template>

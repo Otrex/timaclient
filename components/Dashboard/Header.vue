@@ -17,7 +17,14 @@
     <div class="w-full hidden md:block justify-self-start max-w-[42.5rem]">
       <slot name="middle">
         <div class="flex gap-[1.25rem]" v-if="['Campaign'].includes(routeName)">
-          <UiInputText class="w-full" placeholder="Search campaigns" search />
+          <UiInputText
+            class="w-full"
+            @keyup.prevent="() => search('campaign')"
+            :loading-state="searchState"
+            v-model="searchQuery"
+            placeholder="Search campaigns"
+            search
+          />
 
           <UiButtonDefault
             v-if="routeName === 'Campaign'"
@@ -49,7 +56,12 @@
 </template>
 
 <script setup lang="ts">
+import { useDebounce, useDebounceFn } from "@vueuse/core";
+
 const route = useRoute();
+
+const searchQuery = ref("");
+useDebounce;
 
 const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",
@@ -64,14 +76,29 @@ const routeName = computed(
 
 const profileStore = useProfileStore();
 const profile = computed(() => profileStore.$profile);
-</script>
 
-<style scoped>
-/* .influencer {
-  background: orange;
-}
-.brand {
-  background: red;
-  color: white;
-} */
-</style>
+const api = useAPI();
+const { notify } = useNotification();
+
+const { execute: searchForCampaigns, state: searchState } = useRequestState({
+  action: (name: string) => api.getCampaignsByName(name, {}),
+  onSuccess(response) {},
+  onError(error) {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.description,
+    });
+  },
+});
+
+const search = useDebounceFn(
+  (type: string) => {
+    if (type === "campaign") {
+      searchForCampaigns(searchQuery.value);
+    }
+  },
+  1000,
+  { maxWait: 5000 }
+);
+</script>
