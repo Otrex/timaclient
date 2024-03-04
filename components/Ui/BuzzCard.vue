@@ -1,6 +1,6 @@
 <template>
   <div
-    class="var p-[1.25rem] pt-[2.5rem] rounded-[1.25rem] bg-gradient-to-br from-[--from] to-[--to]"
+    class="var p-[1.25rem] pt-[2.5rem] flex flex-col justify-between rounded-[1.25rem] bg-gradient-to-br from-[--from] to-[--to]"
   >
     <h3 class="text-white text-[1.5rem]">{{ props.title }}</h3>
     <template v-if="$props.influencers && $props.influencers.length > 0">

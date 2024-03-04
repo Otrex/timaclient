@@ -15,6 +15,12 @@
         }"
       />
       <div
+        v-if="props.loading"
+        class="absolute top-[1px] bottom-[1px] right-[1px] bg-white flex items-center bg-inherit justify-center rounded-r-[2.5rem] w-[calc(2.5rem_+_0.75rem)]"
+      >
+        <UtSvg name="sunshine" dim w="1.5rem" h="1.5rem" class="spinner" />
+      </div>
+      <div
         v-if="props.passwordToggle"
         tabindex="1"
         class="absolute top-[1px] bottom-[1px] right-[1px] flex items-center bg-inherit justify-center rounded-r-[2.5rem] w-[calc(2.5rem_+_0.75rem)]"
@@ -45,6 +51,7 @@ const props = defineProps<{
   passwordToggle?: boolean;
   errorMessage?: string;
   search?: boolean;
+  loading?: boolean;
 }>();
 
 const input = ref<HTMLInputElement>();

@@ -23,7 +23,7 @@
           <UiInputText
             class="w-full"
             @keyup.prevent="() => search('campaign')"
-            :loading-state="searchState"
+            :loading="searchState === constants.LOADING"
             v-model="searchQuery"
             placeholder="Search campaigns"
             search
@@ -43,9 +43,10 @@
 
           <div
             v-if="searchResults.length"
-            class="absolute top-[109%] p-5 z-10 shadow-sm w-[100%] bg-white dark:bg-slate-600 dark:text-white"
+            class="absolute top-[calc(100%_+_15px)] rounded-[20px] p-5 z-10 shadow-sm w-[100%] bg-white dark:bg-slate-600 dark:text-white"
           >
-            <div class="flex justify-end">
+            <div class="flex justify-between items-center mb-3">
+              <p>Search Results:</p>
               <button
                 @click="searchResults = []"
                 class="active:ring-4 active:ring-slate-200"
@@ -59,8 +60,9 @@
               :key="idx"
             >
               <UiCampaignInfo
-                class="mb-3"
+                class="mb-3 p-3 rounded-md cursor-pointer dark:hover:bg-slate-800 hover:bg-slate-100"
                 :name="campaign.name"
+                @click="() => navigateToCampaign(campaign.campaignId)"
                 :banner="campaign.banner"
                 :description="campaign.description"
                 :public-id="campaign.campaignId"
@@ -117,6 +119,7 @@ const { execute: searchForCampaigns, state: searchState } = useRequestState({
     searchResults.value = response.data;
   },
   onError(error) {
+    if (!searchQuery.value) return;
     notify({
       type: "error",
       title: error.title,
@@ -134,4 +137,15 @@ const search = useDebounceFn(
   1000,
   { maxWait: 5000 }
 );
+
+function navigateToCampaign(campaignId: string) {
+  searchResults.value = [];
+  searchQuery.value = "";
+  navigateTo({
+    name: "Campaign",
+    params: {
+      id: campaignId,
+    },
+  });
+}
 </script>
