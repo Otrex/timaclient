@@ -16,7 +16,10 @@
     </div>
     <div class="w-full hidden md:block justify-self-start max-w-[42.5rem]">
       <slot name="middle">
-        <div class="flex gap-[1.25rem]" v-if="['Campaign'].includes(routeName)">
+        <div
+          class="flex gap-[1.25rem] relative"
+          v-if="['Campaign'].includes(routeName)"
+        >
           <UiInputText
             class="w-full"
             @keyup.prevent="() => search('campaign')"
@@ -37,6 +40,33 @@
             class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
             variant="primary"
           />
+
+          <div
+            v-if="searchResults.length"
+            class="absolute top-[109%] p-5 z-10 shadow-sm w-[100%] bg-white dark:bg-slate-600 dark:text-white"
+          >
+            <div class="flex justify-end">
+              <button
+                @click="searchResults = []"
+                class="active:ring-4 active:ring-slate-200"
+              >
+                <UtSvg name="close" dim w="1rem" h="1rem" />
+              </button>
+            </div>
+            <div
+              v-for="(campaign, idx) in searchResults"
+              class="w-full"
+              :key="idx"
+            >
+              <UiCampaignInfo
+                class="mb-3"
+                :name="campaign.name"
+                :banner="campaign.banner"
+                :description="campaign.description"
+                :public-id="campaign.campaignId"
+              />
+            </div>
+          </div>
         </div>
       </slot>
     </div>
@@ -56,12 +86,13 @@
 </template>
 
 <script setup lang="ts">
-import { useDebounce, useDebounceFn } from "@vueuse/core";
+import { useDebounceFn } from "@vueuse/core";
+import type { Core } from "~/lib/interfaces";
 
 const route = useRoute();
 
 const searchQuery = ref("");
-useDebounce;
+const searchResults = ref<Core.CampaignByName[]>([]);
 
 const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",
@@ -82,7 +113,9 @@ const { notify } = useNotification();
 
 const { execute: searchForCampaigns, state: searchState } = useRequestState({
   action: (name: string) => api.getCampaignsByName(name, {}),
-  onSuccess(response) {},
+  onSuccess(response) {
+    searchResults.value = response.data;
+  },
   onError(error) {
     notify({
       type: "error",
