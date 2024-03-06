@@ -67,9 +67,13 @@ const currentRoute = computed(() => $route.name as string);
 function goBack() {
   if (!Object.keys(backMap).includes($route.name as string)) {
     $router.back();
-    return;
+  } else if ("back" in $route.query) {
+    $router.replace($route.query.back as string);
+  } else {
+    $router.replace({ name: backMap[currentRoute.value] });
   }
-  $router.replace({ name: backMap[currentRoute.value] });
+
+  console.log($route.query);
 }
 </script>
 
