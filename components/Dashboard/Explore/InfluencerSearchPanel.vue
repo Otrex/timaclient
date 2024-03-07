@@ -193,6 +193,7 @@
             <div>No Influencers found</div>
           </div>
         </template>
+
         <template v-else-if="influencers.length">
           <div class="my-[1.25rem]">
             <h1 class="font-bold mt-[1.25rem]">Search Result(s):</h1>
@@ -204,10 +205,6 @@
               <NuxtLink
                 :to="{
                   name: 'Campaign >>> Influencers',
-                  query: {
-                    applicationId: influencer.applicationId,
-                    publicId: influencer.userPublicId,
-                  },
                 }"
               >
                 <DashboardInfluencerCard
@@ -266,7 +263,10 @@ const {
 } = useRequestState({
   action: () => api.searchInfluencers(form),
   onSuccess: (response) => {
-    influencers.value = response.data;
+    influencers.value = response.data.map((e) => ({
+      ...e,
+      socialMediaPlatforms: JSON.parse(e.socialMediaPlatforms as any),
+    }));
   },
 });
 
