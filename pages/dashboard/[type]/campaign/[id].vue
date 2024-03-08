@@ -1,5 +1,5 @@
 <template>
-  <div class="p-[1.75rem]">
+  <div class="p-[1.75rem] pt-[0rem]">
     <template v-if="state === constants.LOADING">
       <div class="text-center">
         <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
@@ -21,8 +21,8 @@
           <UiButtonDefault variant="info" label="Add Publications" p="0.625rem" />
         </div> -->
       </div>
-      <section class="mt-[0.75rem]">
-        <div class="h-[24.1875rem] w-full overflow-hidden">
+      <section class="">
+        <div class="h-[24.1875rem] rounded w-full overflow-hidden">
           <UiImg
             :src="campaign?.creative.thumbnail"
             alt="campaign banner"

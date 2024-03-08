@@ -684,4 +684,13 @@ export default class TimaAPI extends UploadAPI {
       method: "PUT",
     })
   }
+
+  async createContract(data: Payload.CreateContract) {
+    return this.request<IResponse<Core.ApplicationContract>>({
+      url: "/payment/v1/contracts",
+      requireAuth: true,
+      method: "POST",
+      data
+    })
+  }
 }

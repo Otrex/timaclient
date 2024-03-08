@@ -179,6 +179,19 @@ export interface AgeRange {
   name: string;
   value: number;
 }
+export interface ApplicationContract {
+  influencerPublicId: string;
+  campaignPublicId: string;
+  contractId: string;
+  influencerName: string;
+  campaignName: string;
+  brandName: string;
+  contractAmount: number;
+  balance: number;
+  status: string;
+  createdOn: Date;
+}
+
 
 export interface AudienceDistributionSummary {
   topCountry: string;
@@ -370,11 +383,11 @@ export interface Creative {
   paymentType: string;
   startDate: Date | string;
   endDate: string;
-  contentType: string;
-  contentPlacement: string;
+  contentType: string[];
+  contentPlacement: string[];
   creativeBrief: string;
   rules: string;
-  creativeTone: string;
+  creativeTone: string[];
   referenceLink: string;
   awarenessObjective: string[];
   acquisitionObjective: string[];

@@ -10,18 +10,16 @@
         <DashboardSidebar @close-sidebar="sidebar = false" />
       </aside>
       <aside
-        class="bg-[--clr-light-blue] hidden sm:flex h-full dark:bg-slate-800"
+        class="bg-[--clr-light-blue] border-r border-solid border-[#dcf0ff] dark:border-slate-600 hidden sm:flex h-full dark:bg-slate-800"
       >
         <DashboardSidebar />
       </aside>
       <header class="dark:bg-slate-700 dark:text-white">
-        <div
-          class="flex flex-row items-center border-b-[0.025rem] border-solid border-[#D6D6D6]"
-        >
+        <div class="flex flex-row items-center border-[#D6D6D6]">
           <div class="pl-[1.2rem] relative">
             <button
               @click="goBack"
-              class="w-[2.5rem] tooltip active:bg-[#d6d6d6a3] border-[0.15rem] hover:ring-2 hover:ring-[#D6D6D6] border-solid border-[#D6D6D6] aspect-square rounded-full flex items-center justify-center"
+              class="w-[2.5rem] tooltip active:bg-[#d6d6d6a3] hover:ring-2 hover:ring-[#D6D6D6] aspect-square rounded-full flex items-center justify-center"
             >
               <UtSvg
                 name="down-caret"
@@ -72,8 +70,6 @@ function goBack() {
   } else {
     $router.replace({ name: backMap[currentRoute.value] });
   }
-
-  console.log($route.query);
 }
 </script>
 
@@ -81,7 +77,7 @@ function goBack() {
 .box {
   @apply grid h-full w-full;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 250px 1fr;
   grid-template-areas:
     "aside header"
     "aside main";

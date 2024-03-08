@@ -20,6 +20,16 @@ export interface AddBookmark {
   bookmarkPublicId: string;
 }
 
+export interface CreateContract {
+  influencerPublicId: string;
+  campaignPublicId: string;
+  influencerName: string;
+  campaignName: string;
+  brandName: string;
+  contractAmount: number;
+}
+
+
 export interface AddInfluencerBookmark {
   title: string;
   bookmarkPublicId: string;

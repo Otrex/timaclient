@@ -2,11 +2,11 @@
   <div
     :class="[
       !noMaxWidth || 'max-w-[23.5rem]',
-      ' rounded-[1.25rem] h-full p-[1.25rem] border border-solid border-[#E7E7E7] dark:border-slate-500',
+      '  h-full dark:border-slate-500 rounded dark:bg-slate-800 outline-solid hover:outline-slate-300 hover:outline',
     ]"
   >
     <div
-      class="rounded-[1.25rem] mb-[1.25rem] overflow-hidden h-[12.9375rem] relative"
+      class="mb-[1.25rem] rounded rounded-b-none overflow-hidden h-[12.9375rem] relative"
     >
       <template v-if="authStore.authorization.userType !== 'BRAND'">
         <button
@@ -73,7 +73,7 @@
       />
     </div>
     <div
-      class="flex flex-col h-[calc(100%_-_12.9375rem_-_1.25rem)] justify-between"
+      class="flex flex-col h-[calc(100%_-_12.9375rem_-_1.25rem)] p-3 px-5 justify-between"
     >
       <div>
         <h3 class="!text-[1.3493rem] leading-3">{{ props.brand }}</h3>
@@ -121,7 +121,7 @@ import { ApiError } from "~/lib/core/Api";
 
 const props = defineProps<{
   image: string;
-  category: string;
+  category: string[];
   brand: string;
   description: string;
   budget: number;

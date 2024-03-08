@@ -51,7 +51,7 @@
         <label class="w-full block whitespace-nowrap"> Content type </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputSelect
+        <UiInputSelectMulti
           class="w-full"
           v-model="campaignStore.creative.contentType"
           :error-message="v$.contentType?.$errors[0]?.$message.toString()"
@@ -67,10 +67,10 @@
         </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputSelect
+        <UiInputSelectMulti
           class="w-full"
-          v-model="campaignStore.creative.contentPlacement"
           :error-message="v$.contentPlacement?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.creative.contentPlacement"
           :options="
             tools.generationOptions(dataOptions?.contentPlacement || [])
           "
@@ -97,7 +97,7 @@
         <label class="w-full block whitespace-nowrap"> Creative tone </label>
       </div>
       <div class="md:w-3/4">
-        <UiInputSelect
+        <UiInputSelectMulti
           v-model="campaignStore.creative.creativeTone"
           :error-message="v$.creativeTone?.$errors[0]?.$message.toString()"
           :options="tools.generationOptions(dataOptions?.creativeTone || [])"

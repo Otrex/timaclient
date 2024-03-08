@@ -2,7 +2,7 @@
   <div ref="target" class="inline-block">
     <button
       @click="open = !open"
-      class="p-[.8rem] hover:bg-slate-50 active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
+      class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
     >
       <UtSvg
         name="bell"
@@ -94,7 +94,7 @@
         </div>
       </div>
     </transition>
-    <UiModal> </UiModal>
+    <UtModal> </UtModal>
   </div>
 </template>
 
