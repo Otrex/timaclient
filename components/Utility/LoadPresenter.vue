@@ -1,5 +1,5 @@
 <template>
-  <transition>
+  <transition mode="out-in" name="fade-in">
     <template v-if="state === constants.LOADING">
       <UtLoaderIndicator :message="loadingMessage" />
     </template>

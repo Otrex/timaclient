@@ -7,6 +7,15 @@ function capitalize(str: string) {
 
 export default {
   isCertain: <T>(data?: T) => data as T,
+  trunc: (input: string, numWords: number): string => {
+    const words = input.split(' ');
+    if (words.length <= numWords) {
+      return input;
+    }
+    const truncatedWords = words.slice(0, numWords);
+    const truncatedString = truncatedWords.join(' ') + '...';
+    return truncatedString;
+  },
   truncateList: (max: number) => <T>(list: T[]) => list.filter((_, i) => i < max),
   generateSalt: (length: number, saltType: 'alphanumeric' | 'numeric') => {
     if (!['alphanumeric', 'numeric'].includes(saltType)) {

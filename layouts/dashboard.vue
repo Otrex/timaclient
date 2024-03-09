@@ -16,7 +16,7 @@
       </aside>
       <header class="dark:bg-slate-700 dark:text-white">
         <div class="flex flex-row items-center border-[#D6D6D6]">
-          <div class="pl-[1.2rem] relative">
+          <div class="pl-[1.2rem] hidden sm:block relative">
             <button
               @click="goBack"
               class="w-[2.5rem] tooltip active:bg-[#d6d6d6a3] hover:ring-2 hover:ring-[#D6D6D6] aspect-square rounded-full flex items-center justify-center"

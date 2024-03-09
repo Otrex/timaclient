@@ -3,7 +3,7 @@
     <vue3-reactive-tel-input
       divInputClass="w-full outline-none dark:text-black"
       :class="[
-        '!border !border-[#6B7280] dark:text-black !rounded-[2.5rem]',
+        '!border !border-[#6B7280] bg-[#efefef] dark:text-black !rounded-[2.5rem]',
         props.errorMessage && '!border-red-600',
       ]"
       :inputClass="[

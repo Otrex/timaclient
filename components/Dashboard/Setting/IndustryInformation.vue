@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-8">
+  <div class="mt-9">
     <div
-      class="flex text-center flex-wrap justify-center mb-[4.3125rem] gap-[1.25rem]"
+      class="flex text-center pt-3 flex-wrap justify-center mb-[4.3125rem] gap-[1.25rem]"
     >
       <UiInputOption
         class="!text-[1rem] min-w-[4.6875rem]"

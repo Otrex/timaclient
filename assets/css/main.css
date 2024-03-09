@@ -58,7 +58,7 @@
 
 .v-enter-active,
 .v-leave-active {
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 .v-enter-from,
 .v-leave-to {

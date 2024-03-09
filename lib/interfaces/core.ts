@@ -278,6 +278,40 @@ export interface Notification {
   createdOn: Date;
 }
 
+export interface InfluencerBookmark {
+  id: string;
+  campaignRecord: CampaignRecord;
+}
+
+export interface CampaignRecord {
+  publicId: string;
+  brandName: string;
+  overview: Overview;
+  influencer: Influencer;
+  creative: Creative;
+  status: number;
+  createdBy: string;
+  createdOn: Date;
+}
+
+export interface Influencer {
+  influencerCategory: string[];
+  audienceSize: string[];
+  audienceGender: string[];
+  audienceAgeGroup: string[];
+  audienceLocation: string[];
+}
+
+export interface Overview {
+  name: string;
+  briefDescription: string;
+  website: string;
+  plannedBudget: number;
+  costPerPost: number;
+  socialMediaPlatforms: string[];
+}
+
+
 
 export interface CampaignTransaction {
   transactionDate: Date;

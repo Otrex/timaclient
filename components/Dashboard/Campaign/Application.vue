@@ -1,56 +1,60 @@
 <template>
-  <article
-    class="border border-solid border-[#E7E7E7] px-[1.25rem] py-[0.9375rem]"
-  >
-    <div class="flex flex-row mb-[1.5625rem] justify-between">
-      <div class="flex flex-row gap-[0.75rem]">
-        <div class="flex flex-row items-center">
-          <div class="w-[2rem] h-[2rem] rounded-full overflow-hidden">
-            <UiImg
-              :src="props.profilePicture"
-              alt="profile picture"
-              class="w-full h-full object-cover"
-            />
+  <transition>
+    <article
+      :key="key"
+      v-show="key"
+      class="border border-solid border-[#E7E7E7] px-[1.25rem] py-[0.9375rem]"
+    >
+      <div class="flex flex-row mb-[1.5625rem] justify-between">
+        <div class="flex flex-row gap-[0.75rem]">
+          <div class="flex flex-row items-center">
+            <div class="w-[2rem] h-[2rem] rounded-full overflow-hidden">
+              <UiImg
+                :src="props.profilePicture"
+                alt="profile picture"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col justify-center">
+            <p class="nl">{{ props.name }}</p>
+            <p class="sm text-[color:--clr-grey-300]">{{ props.type }}</p>
           </div>
         </div>
-        <div class="flex flex-col justify-center">
-          <p class="nl">{{ props.name }}</p>
-          <p class="sm text-[color:--clr-grey-300]">{{ props.type }}</p>
+        <div class="flex items-center">
+          <div class="flex gap-[0.75rem]">
+            <template v-for="(social, idx) in socials" :key="idx">
+              <UtSvg :name="social" w="1.3125rem" h="1.3125rem" dim />
+            </template>
+          </div>
         </div>
       </div>
-      <div class="flex items-center">
-        <div class="flex gap-[0.75rem]">
-          <template v-for="(social, idx) in socials" :key="idx">
-            <UtSvg :name="social" w="1.3125rem" h="1.3125rem" dim />
-          </template>
-        </div>
+
+      <div class="flex flex-col gap-[2.25rem]">
+        <template v-for="(qa, idx) in props.questionAndAnswers" :key="idx">
+          <div>
+            <p class="nl mb-[1.3125rem]">Q: {{ qa.question }}</p>
+            <p class="nl">A: {{ qa.answer }}</p>
+          </div>
+        </template>
       </div>
-    </div>
 
-    <div class="flex flex-col gap-[2.25rem]">
-      <template v-for="(qa, idx) in props.questionAndAnswers" :key="idx">
-        <div>
-          <p class="nl mb-[1.3125rem]">Q: {{ qa.question }}</p>
-          <p class="nl">A: {{ qa.answer }}</p>
-        </div>
-      </template>
-    </div>
-
-    <div class="flex mt-[2rem] gap-[0.625rem] mb-[.5rem]">
-      <UiButtonDefault
-        @click.prevent="$emit('create-contract', props.id)"
-        label="Create Contract"
-        variant="primary"
-        class="px-[1rem]"
-      />
-      <UiButtonDefault
-        label="View"
-        variant="inverse-primary"
-        @click.capture="$emit('view', props.id)"
-        class="px-[1rem] !text-red-600"
-      />
-    </div>
-  </article>
+      <div class="flex mt-[2rem] gap-[0.625rem] mb-[.5rem]">
+        <UiButtonDefault
+          @click.prevent="$emit('create-contract', props.id)"
+          label="Create Contract"
+          variant="primary"
+          class="px-[1rem]"
+        />
+        <UiButtonDefault
+          label="View"
+          variant="inverse-primary"
+          @click.capture="$emit('view', props.id)"
+          class="px-[1rem] !text-red-600"
+        />
+      </div>
+    </article>
+  </transition>
 </template>
 
 <script setup lang="ts">
@@ -66,7 +70,12 @@ const props = defineProps<{
   }[];
 }>();
 
+const key = ref(0);
 const socials = computed(() => props.socials.map((s) => `socials/${s}-lg`));
+
+onMounted(() => {
+  key.value = 1;
+});
 </script>
 
 <style></style>

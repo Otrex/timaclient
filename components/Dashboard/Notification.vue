@@ -58,19 +58,19 @@
                   v-for="(notification, idx) in notifications"
                   class="tima-notif hover:bg-slate-50 py-[0.4375rem]"
                   :key="idx"
-                  @click="openNotification"
+                  @click="() => openNotification(notification)"
                 >
                   <div>
                     <div class="flex flex-row items-center justify-between">
                       <p class="nl">{{ notification.title }}</p>
-                      <div>
+                      <!--  <div>
                         <UtNotificationAction :data-id="notification.id" />
-                      </div>
+                      </div> -->
                     </div>
 
                     <div class="flex flex-row items-center justify-between">
                       <p class="nl text-[--clr-grey-300]">
-                        {{ tools.truncate(notification.content, 50) }}
+                        {{ tools.trunc(notification.content, 50) }}
                       </p>
                       <div class="flex">
                         <div
@@ -94,7 +94,19 @@
         </div>
       </div>
     </transition>
-    <UtModal> </UtModal>
+    <UtModal
+      v-model:state="modalState"
+      m-width="31.25rem"
+      content-class="mx-auto mt-[10%]"
+      backdrop-color="rgba(0,0,0,.05)"
+    >
+      <div class="bg-white rounded-[2.5rem] p-10">
+        <h1 class="font-bold mb-3">
+          {{ currentNotification?.title }}
+        </h1>
+        <p>{{ currentNotification?.content }}</p>
+      </div>
+    </UtModal>
   </div>
 </template>
 
@@ -112,6 +124,7 @@ type AppNotification = {
 const ONE_MINUTE = 1000 * 60;
 const activeTab = ref(0);
 const open = ref(false);
+const modalState = ref(false);
 const target = ref<HTMLDivElement>();
 const notifications = ref<AppNotification[]>([]);
 
@@ -155,7 +168,11 @@ async function getNotifications(iterate: boolean): Promise<any> {
   return getNotifications(iterate);
 }
 
-async function openNotification() {}
+const currentNotification = ref<AppNotification>();
+async function openNotification(notification: AppNotification) {
+  modalState.value = true;
+  currentNotification.value = notification;
+}
 </script>
 
 <style scoped>

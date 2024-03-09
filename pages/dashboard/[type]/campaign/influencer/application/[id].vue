@@ -178,7 +178,7 @@
             />
           </div>
         </div>
-        <UtModal v-model:state="contractModal">
+        <UtModal v-model:state="contractModal" backdrop-color="rgba(0,0,0,.3)">
           <ModalsCreateContract
             :influencer-name="tools.isCertain(application?.fullName)"
             :application-id="tools.isCertain(application?.applicationId)"

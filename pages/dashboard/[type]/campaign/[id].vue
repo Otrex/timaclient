@@ -1,13 +1,15 @@
 <template>
   <div class="p-[1.75rem] pt-[0rem]">
     <template v-if="state === constants.LOADING">
-      <div class="text-center">
-        <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-        Fetching Campaign
+      <div class="text-center relative">
+        <UtLoaderIndicator
+          class="absolute inset-0"
+          message="Fetching Campaign"
+        />
       </div>
     </template>
     <template v-else-if="!campaign">
-      <div>404 (No campaign found)</div>
+      <UtNoResource message="Campaign not found" />
     </template>
     <template v-else>
       <div class="flex justify-end">
@@ -47,7 +49,7 @@
           <div>
             <button
               @click="openShare = true"
-              class="bg-[#111] text-white px-[0.9375rem] rounded-lg p-[0.625rem]"
+              class="bg-[#111] text-white text-sm !px-[0.9375rem] rounded-4xl p-[0.625rem]"
             >
               Share Campaign
             </button>
