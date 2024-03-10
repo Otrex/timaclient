@@ -26,7 +26,9 @@
           <UtLoaderIndicator message="Fetching recommendations" />
         </template>
         <template v-else-if="recommended.length === 0">
-          <UtNoResource message="No Recommended Campaigns" />
+          <div>
+            <UtNoResource message="No Recommended Campaigns" />
+          </div>
         </template>
         <template v-else>
           <div
@@ -63,7 +65,11 @@
           <UtLoaderIndicator message="Fetching Top Campaigns" />
         </template>
         <template v-else-if="topCampaigns.length === 0">
-          <UtNoResource message="No Top Campaigns" />
+          <div class="h-[18.75rem]">
+            <div>
+              <UtNoResource message="No Top Campaigns" />
+            </div>
+          </div>
         </template>
         <template v-else>
           <div
@@ -100,7 +106,9 @@
           <UtLoaderIndicator message="Fetching Other Campaigns" />
         </template>
         <template v-else-if="allCampaigns.length === 0">
-          <UtNoResource message="No Campaigns" />
+          <div>
+            <UtNoResource message="No Campaigns" />
+          </div>
         </template>
         <template v-else>
           <div

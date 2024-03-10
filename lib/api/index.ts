@@ -161,6 +161,22 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCampaignMetrics(publicId: string) {
+    return this.request<IResponse<Core.CampaignMetrics[]>>({
+      url: `/agency/v1/social-media/Instagram/insight/metrics?userPublicId=${publicId}`,
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
+  async deleteCampaign(publicId: string) {
+    return this.request<Response.GetCampaign>({
+      url: `/agency/v1/campaigns/${publicId}`,
+      requireAuth: true,
+      method: "DELETE",
+    });
+  }
+
   async getCampaigns(payload: Payload.GetCampaigns) {
     const { type, ...data } = payload;
 

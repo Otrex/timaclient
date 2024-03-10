@@ -49,9 +49,15 @@
           <div>
             <button
               @click="openShare = true"
-              class="bg-[#111] text-white text-sm !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+              class="bg-[#111] text-white mr-3 text-sm !px-[0.9375rem] rounded-4xl p-[0.625rem]"
             >
               Share Campaign
+            </button>
+            <button
+              @click="confirmAccept.open()"
+              class="text-sm bg-slate-200 !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+            >
+              Delete Campaign
             </button>
           </div>
         </div>
@@ -78,6 +84,18 @@
           :publicId="campaign.publicId"
         />
       </UtModal>
+      <UiModalConfirmAction
+        :loading="deletingState === constants.LOADING"
+        @onapprove="deleteCampaign"
+        ref="confirmAccept"
+      >
+        <template #title>
+          <div>Delete Campaign</div>
+        </template>
+        <template #body>
+          <div>Are you sure you want to delete this campaign?</div>
+        </template>
+      </UiModalConfirmAction>
     </template>
   </div>
 </template>
@@ -91,13 +109,36 @@ definePageMeta({
 
 const api = useAPI();
 const route = useRoute();
+const confirmAccept = ref();
 const campaign = ref<GetCampaign["data"]>();
+const { notify } = useNotification();
 
 const { state } = useRequestState({
   action: () => api.getCampaign(route.params.id as string),
   immediately: true,
   onSuccess: (response) => {
     campaign.value = response.data;
+  },
+});
+
+const { state: deletingState, execute: deleteCampaign } = useRequestState({
+  action: () => api.deleteCampaign(route.params.id as string),
+  onSuccess: (response) => {
+    notify({
+      title: "Campaign deleted",
+      text: "Campaign has been deleted successfully",
+      type: "success",
+    });
+    navigateTo({
+      name: "BrandCampaign",
+    });
+  },
+  onError(error) {
+    notify({
+      title: "Review Failed",
+      text: error.description,
+      type: "error",
+    });
   },
 });
 

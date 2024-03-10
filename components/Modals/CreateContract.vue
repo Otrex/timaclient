@@ -5,16 +5,16 @@
       <b>{{ props.campaignName }}</b>
     </h2>
 
-    <div class="border p-4 mb-5 border-slate-200 rounded-4xl border-solid">
-      <div class="mb-3">
-        <label class="pl-3">Contract Amount:</label>
-        <UiInputText v-model="form.terms" class="w-full" />
-      </div>
+    <div class="mb-5">
+      <label class="pl-3">Contract Amount:</label>
+      <UiInputText type="number" v-model="contractAmount" class="w-full" />
+    </div>
+    <!--
       <div class="mb-3">
         <label class="pl-3">Contract Terms:</label>
         <UiInputTextArea v-model="form.terms" class="w-full h-[200px]" />
       </div>
-    </div>
+    -->
 
     <div>
       <UiButtonDefault

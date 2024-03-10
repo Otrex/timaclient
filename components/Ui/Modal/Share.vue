@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-[2rem]">
+  <div class="bg-white rounded-3xl p-[2rem]">
     <div class="mb-3">
       <h2 class="font-bold">
         Share {{ props.type === constants.CAMPAIGN ? "Campaign" : "Resource" }}

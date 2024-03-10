@@ -35,14 +35,7 @@
               Go Back
             </span>
           </div>
-          <DashboardHeader @open-sidebar="sidebar = true">
-            <template #left>
-              <slot name="indicator"></slot>
-            </template>
-            <template #middle>
-              <slot name="tab"></slot>
-            </template>
-          </DashboardHeader>
+          <DashboardHeader @open-sidebar="sidebar = true" />
         </div>
       </header>
       <main class="overflow-y-auto dark:bg-slate-700 dark:text-white">

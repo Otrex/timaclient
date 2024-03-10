@@ -33,6 +33,17 @@ export interface Bank {
   type: string;
 }
 
+export interface CampaignMetrics {
+  total_value: {
+    value: number;
+  };
+  id: string;
+  name: string;
+  period: string;
+  title: string;
+  description: string;
+}
+
 
 export interface Campaign {
   publicId: string;
@@ -396,6 +407,7 @@ export interface Influencer {
 
 export interface InfluencerCampaignExperience {
   campaignName: string;
+  campaignId: string;
   campaignBanner: string;
   startDate: Date | string;
   endDate: Date | string;
