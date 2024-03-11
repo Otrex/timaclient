@@ -1,9 +1,13 @@
 <template>
   <transition mode="in-out">
-    <img src="/favicon/favicon-16x16.png" class="bg-img pulse" v-if="loading" />
     <img
       src="/favicon/favicon-16x16.png"
-      class="bg-img error"
+      class="bg-img pulse object-cover"
+      v-if="loading"
+    />
+    <img
+      src="/favicon/favicon-16x16.png"
+      class="bg-img error object-cover"
       v-else-if="error"
     />
     <img :src="state?.src" :class="[$attrs.class]" v-else />
