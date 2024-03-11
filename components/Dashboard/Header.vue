@@ -147,7 +147,7 @@ function navigateToCampaign(campaignId: string) {
   searchResults.value = [];
   searchQuery.value = "";
   navigateTo({
-    name: "Campaign",
+    name: "Explore - Campaign",
     params: {
       id: campaignId,
     },

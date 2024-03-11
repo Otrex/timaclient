@@ -183,13 +183,12 @@ onMounted(() => {
 const { state: deleteState, execute: deleteBookmark } = useRequestState({
   action: (title: string) => api.deleteInfluencerBookmark(title),
   onSuccess() {
+    $emit("refresh");
     notify({
       type: "success",
       title: "Deleted Bookmarked!!",
       text: `Bookmark ${props.name} deleted successfully`,
     });
-
-    $emit("refresh");
   },
   onError: (error) => {
     notify({

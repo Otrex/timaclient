@@ -58,7 +58,7 @@ watch(
 .bg-img {
   background-image: url("/favicon/favicon-16x16.png");
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-position: center center;
   background-blend-mode: overlay;
   filter: grayscale(1);

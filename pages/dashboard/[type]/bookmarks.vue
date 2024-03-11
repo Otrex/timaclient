@@ -31,8 +31,9 @@
               :completion="campaign.campaignRecord.status || 0"
               :public-id="campaign.campaignRecord.publicId"
               :title="campaign.campaignRecord.overview.name"
+              :bookmark-id="campaign.id"
               :is-bookmark="true"
-              @re-update="reRun('influencer')"
+              @refresh="reRun('influencer')"
             />
           </NuxtLink>
         </div>

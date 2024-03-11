@@ -49,7 +49,7 @@
             'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
             avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
           ]"
-          @click.prevent.capture="() => deleteBookmark(props.title)"
+          @click.prevent.capture="() => deleteBookmark(c(props.bookmarkId))"
         >
           <UtSvg
             v-if="deleteState === constants.LOADING"
@@ -136,6 +136,7 @@ const props = defineProps<{
   publicId: string;
   noMaxWidth?: boolean;
   isBookmark?: boolean;
+  bookmarkId?: string;
 }>();
 
 const emit = defineEmits(["re-update"]);
@@ -147,6 +148,8 @@ const { notify } = useNotification();
 const image = ref<HTMLImageElement>();
 const colorExtract = useImageColorExtract();
 const authStore = useAuthStore();
+
+const c = <T>(e?: T) => e!;
 
 onMounted(() => {
   try {
