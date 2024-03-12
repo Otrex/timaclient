@@ -86,118 +86,153 @@
       </div>
     </div>
 
-    <div class="bg-[#454545] mb-[1.3125rem] text-white px-[1rem] py-[1.25rem]">
-      <UtLoadPresenter
-        :state="tools.requestState(getCampaignInfo)"
-        loading-message="Fetching campaign details..."
-        text-class="max-h-[250px]"
-        not-found-message="Please select a campaign experience"
-        :data="!campaignInfo"
+    <UtLoadPresenter
+      :state="tools.requestState(getCampaignInfo)"
+      loading-message="Fetching campaign details..."
+      text-class="max-h-[250px]"
+      not-found-message="Please select a campaign experience"
+      :data="!campaignInfo"
+    >
+      <div
+        class="bg-[#454545] mb-[1.3125rem] text-white px-[1rem] py-[1.25rem]"
       >
         <p>{{ campaignInfo?.brandName }} - {{ campaignInfo?.overview.name }}</p>
 
         <p class="nl">
           {{ campaignInfo?.overview.briefDescription }}
         </p>
-      </UtLoadPresenter>
-    </div>
+      </div>
 
-    <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
-      <div>
-        <p class="sm text-[color:--clr-grey-300]">Social Media Platform</p>
-        <div class="inline-flex flex-wrap gap-[0.625rem]">
-          <UtSvg name="socials/instagram-lg" dim w="1.3125rem" h="1.3125rem" />
-          <UtSvg name="socials/tiktok-lg" dim w="1.3125rem" h="1.3125rem" />
+      <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
+        <div class="inline-flex flex-row gap-[0.625rem] items-center">
+          <div>
+            <UtSvg name="yellow-eye" dim w="1rem" h="1rem" />
+          </div>
+          <div>
+            <p class="nl">{{ tools.formatNumber(reach) }}</p>
+            <p class="sm text-[color:--clr-grey-300]">Reach</p>
+          </div>
+        </div>
+
+        <div class="inline-flex flex-row gap-[0.625rem] items-center">
+          <div>
+            <UtSvg name="bad-message" dim w="1rem" h="1rem" />
+          </div>
+          <div>
+            <p class="nl">
+              {{ tools.formatNumber(comments) }}
+            </p>
+            <p class="sm text-[color:--clr-grey-300]">Comments</p>
+          </div>
+        </div>
+
+        <div class="inline-flex flex-row gap-[0.625rem] items-center">
+          <div>
+            <UtSvg name="like" dim w="1rem" h="1rem" />
+          </div>
+          <div>
+            <p class="nl">{{ tools.formatNumber(likes) }}</p>
+            <p class="sm text-[color:--clr-grey-300]">Likes</p>
+          </div>
+        </div>
+
+        <div class="inline-flex flex-row gap-[0.625rem] items-center">
+          <div>
+            <UtSvg name="bookmark-solid" dim w="1rem" h="1rem" />
+          </div>
+          <div>
+            <p class="nl">{{ tools.formatNumber(saves) }}</p>
+            <p class="sm text-[color:--clr-grey-300]">Saved</p>
+          </div>
+        </div>
+
+        <div class="inline-flex flex-row gap-[0.625rem] items-center">
+          <div>
+            <UtSvg name="share" dim w="1rem" h="1rem" />
+          </div>
+          <div>
+            <p class="nl">{{ tools.formatNumber(shares) }}</p>
+            <p class="sm text-[color:--clr-grey-300]">Share</p>
+          </div>
+        </div>
+
+        <div class="inline-flex flex-row gap-[0.625rem] items-center">
+          <div>
+            <UtSvg name="video-watch" dim w="1rem" h="1rem" />
+          </div>
+          <div>
+            <p class="nl">{{ tools.formatNumber(impressions) }}</p>
+            <p class="sm text-[color:--clr-grey-300]">Impressions</p>
+          </div>
         </div>
       </div>
 
-      <div>
-        <p class="sm text-[color:--clr-grey-300]">Date accepted</p>
-        <p class="nl">10th march, 2023</p>
-      </div>
-    </div>
-
-    <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
-      <div>
-        <p class="sm text-[color:--clr-grey-300]">Agreed payment</p>
-        <p class="nl">{{ tools.formatCurrency(100000, "₦") }}</p>
-      </div>
-
-      <div>
-        <p class="sm text-[color:--clr-grey-300]">Initial payment</p>
-        <p class="nl">{{ tools.formatCurrency(50000, "₦") }}</p>
-      </div>
-
-      <div>
-        <p class="sm text-[color:--clr-grey-300]">Balance to be paid</p>
-        <p class="nl">{{ tools.formatCurrency(50000, "₦") }}</p>
-      </div>
-
-      <div>
-        <p class="sm text-[color:--clr-grey-300]">Mode of payment</p>
-        <p class="nl">Flutterwave</p>
-      </div>
-    </div>
-
-    <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
-      <div class="inline-flex flex-row gap-[0.625rem] items-center">
+      <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
         <div>
-          <UtSvg name="yellow-eye" dim w="1rem" h="1rem" />
+          <p class="sm text-[color:--clr-grey-300]">Social Media Platform</p>
+          <div class="inline-flex flex-wrap gap-[0.625rem]">
+            <UtSvg
+              dim
+              v-for="(socials, idx) in campaignInfo?.overview
+                .socialMediaPlatforms || []"
+              w="1.3125rem"
+              :name="tools.resolveSocialsIcon(socials)"
+              h="1.3125rem"
+              :key="idx"
+            />
+          </div>
         </div>
+
         <div>
-          <p class="nl">{{ tools.formatNumber(532400) }}</p>
-          <p class="sm text-[color:--clr-grey-300]">Reach</p>
+          <p class="sm text-[color:--clr-grey-300]">Date accepted</p>
+          <p class="nl">
+            {{ tools.formatDate(new Date()) }}
+          </p>
         </div>
       </div>
 
-      <div class="inline-flex flex-row gap-[0.625rem] items-center">
+      <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
         <div>
-          <UtSvg name="bad-message" dim w="1rem" h="1rem" />
+          <p class="sm text-[color:--clr-grey-300]">Planned Budget</p>
+          <p class="nl">
+            {{
+              tools.formatCurrency(
+                campaignInfo?.overview.plannedBudget || 0,
+                "₦"
+              )
+            }}
+          </p>
         </div>
+        <!--
         <div>
-          <p class="nl">{{ tools.formatNumber(2000) }}</p>
-          <p class="sm text-[color:--clr-grey-300]">Comments</p>
+          <p class="sm text-[color:--clr-grey-300]">Agreed payment</p>
+          <p class="nl">{{ tools.formatCurrency(100000, "₦") }}</p>
+        </div>
+
+        <div>
+          <p class="sm text-[color:--clr-grey-300]">Initial payment</p>
+          <p class="nl">{{ tools.formatCurrency(50000, "₦") }}</p>
+        </div>
+
+        <div>
+          <p class="sm text-[color:--clr-grey-300]">Balance to be paid</p>
+          <p class="nl">{{ tools.formatCurrency(50000, "₦") }}</p>
+        </div>
+-->
+        <div>
+          <p class="sm text-[color:--clr-grey-300]">Mode of payment</p>
+          <p class="nl">{{ campaignInfo?.creative.paymentType }}</p>
         </div>
       </div>
-
-      <div class="inline-flex flex-row gap-[0.625rem] items-center">
-        <div>
-          <UtSvg name="like" dim w="1rem" h="1rem" />
-        </div>
-        <div>
-          <p class="nl">{{ tools.formatNumber(20400) }}</p>
-          <p class="sm text-[color:--clr-grey-300]">Likes</p>
-        </div>
-      </div>
-
-      <div class="inline-flex flex-row gap-[0.625rem] items-center">
-        <div>
-          <UtSvg name="bookmark-solid" dim w="1rem" h="1rem" />
-        </div>
-        <div>
-          <p class="nl">{{ tools.formatNumber(400) }}</p>
-          <p class="sm text-[color:--clr-grey-300]">Saved</p>
-        </div>
-      </div>
-
-      <div class="inline-flex flex-row gap-[0.625rem] items-center">
-        <div>
-          <UtSvg name="share" dim w="1rem" h="1rem" />
-        </div>
-        <div>
-          <p class="nl">{{ tools.formatNumber(532400) }}</p>
-          <p class="sm text-[color:--clr-grey-300]">Share</p>
-        </div>
-      </div>
-    </div>
-
+    </UtLoadPresenter>
+    <!--
     <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
       <div>
         <p class="sm text-[color:--clr-grey-300]">Publication type</p>
         <p class="nl">Video</p>
       </div>
     </div>
-
+    
     <div class="mb-[1.875rem]">
       <p class="sm text-[color:--clr-grey-300] mb-[0.375rem]">Content posted</p>
       <div class="grid grid-cols-3 gap-[0.75rem]">
@@ -243,7 +278,7 @@
           <UtSvg name="play" dim w="3.75rem" h="3.75rem" class="text-white" />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -279,7 +314,7 @@ function selectCampaign(index: number) {
     experiences.value.splice(selectedPosition, 1); // Remove the element from its current position
     experiences.value.unshift(selected); // Add the element to the beginning of the list
     getCampaignInfo.execute(selected.campaignId);
-    getCampaignMetrics.execute(selected.campaignId);
+    getCampaignMetrics.execute(props.publicId);
   }
 }
 
@@ -310,6 +345,24 @@ const getCampaignInfo = useRequestState({
     campaignInfo.value = response.data;
   },
 });
+
+const getMetric = (name?: string) => {
+  return (
+    campaignMetrics.value.find((m) => m.name == name) || {
+      total_value: { value: 0 },
+    }
+  );
+};
+
+const comments = computed(() => getMetric("comments")?.total_value.value || 0);
+const likes = computed(() => getMetric("likes")?.total_value.value || 0);
+const saves = computed(() => getMetric("saves")?.total_value.value || 0);
+const shares = computed(() => getMetric("shares")?.total_value.value || 0);
+const reach = computed(() => getMetric("reach")?.total_value.value || 0);
+
+const impressions = computed(
+  () => getMetric("impressions")?.total_value.value || 0
+);
 
 const campaignMetrics = ref<Core.CampaignMetrics[]>([]);
 const getCampaignMetrics = useRequestState({

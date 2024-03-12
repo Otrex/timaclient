@@ -17,11 +17,11 @@ const props = withDefaults(
   {
     men: 0,
     women: 0,
-    bg: "#FFFDF9",
+    bg: "#F7F7F7",
   }
 );
 
-const bg = computed(() => props.bg || "#FFFDF9");
+const bg = computed(() => props.bg || "#F7F7F7");
 
 const data = computed(() => ({
   labels: ["Women", "Men"],

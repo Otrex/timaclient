@@ -31,25 +31,25 @@
       </div> -->
     </div>
 
-    <div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
+    <!--<div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
+      <div class="w-full">
+        <StatsIncome />
+      </div>
+      <div class="w-full">
+        <StatsEthnicity />
+      </div>
+    </div> -->
+
+    <div class="flex mb-[2.625rem] flex-col items-center gap-[1.125rem]">
       <div class="w-full">
         <StatsAudienceAgeRange
           :loading="
             tools.requestState(getAgeAudienceData) === constants.LOADING
           "
           :data="ageGenderData"
+          bg="rgba(228, 243, 255, 0.5)"
+          :aspect-ratio="16 / 7"
         />
-      </div>
-      <div class="w-full">
-        <StatsEthnicity />
-      </div>
-    </div>
-
-    <div
-      class="flex mb-[2.625rem] flex-col items-center md:flex-row gap-[1.125rem]"
-    >
-      <div class="w-full">
-        <StatsIncome />
       </div>
       <div class="w-full">
         <StatsLocale

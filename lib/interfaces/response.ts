@@ -30,7 +30,7 @@ export interface GetPaymentStats extends IResponse<{
 
 export interface GetInfluencersBookmark extends IResponse<Core.InfluencerBookmark[]> { }
 export interface GetSocialMediaInsight extends IResponse<Core.SocialMediaInsight> { }
-export interface GetInfluencers extends IResponse<Core.Influencer[]> { }
+export interface GetInfluencers extends IResponse<Core.InfluencerByLatest[]> { }
 export interface GetDemographicsData extends IResponse<Core.AgeDemographicsData[]> { }
 export interface GetBookmarks extends IResponse<Core.FullCampaign[]> { }
 export interface UpdateSocials extends IResponse<Core.UserSocial> { }

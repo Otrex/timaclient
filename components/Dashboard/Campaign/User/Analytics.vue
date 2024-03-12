@@ -2,7 +2,7 @@
   <section>
     <div
       style="--clr: rgba(228, 243, 255, 0.5)"
-      class="bg-[--clr] rounded-b-md p-[1.25rem] mt-[0.375rem]"
+      class="bg-[--clr] rounded border border-solid dark:border-slate-600 border-[#dcf0ff] p-[1.25rem] mt-[0.625rem]"
     >
       <div class="flex flex-col gap-[1.25rem]">
         <template v-for="(metric, idx) in metrics" :key="idx">

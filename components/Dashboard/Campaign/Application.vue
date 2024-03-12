@@ -41,8 +41,8 @@
 
       <div class="flex mt-[2rem] gap-[0.625rem] mb-[.5rem]">
         <UiButtonDefault
-          @click.prevent="$emit('create-contract', props.id)"
-          label="Create Contract"
+          @click.prevent="$emit('accept', props.id)"
+          label="Accept"
           variant="primary"
           class="px-[1rem]"
         />

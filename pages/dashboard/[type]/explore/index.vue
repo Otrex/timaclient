@@ -151,6 +151,9 @@
                 :title="buzz.title"
                 :bg="buzz.bg"
                 :influencers="buzz.influencers"
+                :loading="
+                  tools.requestState(getTopInfluencers) === constants.LOADING
+                "
                 :see-more="{
                   name: 'Influencers',
                   query: {
@@ -167,7 +170,9 @@
         </section>
 
         <section class="mb-[3.25rem]">
-          <h2 class="text-[2rem] mb-[1.375rem]">Categories</h2>
+          <h2 v-show="categories.length" class="text-[2rem] mb-[1.375rem]">
+            Categories
+          </h2>
           <div class="grid md:grid-cols-3 gap-[1.125rem]">
             <template v-for="(buzz, idx) in categories" :key="idx">
               <UiBuzzCard
@@ -193,7 +198,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Influencer } from "~/lib/interfaces/core";
+import type { Influencer, InfluencerByLatest } from "~/lib/interfaces/core";
 import type { GetCampaigns } from "~/lib/interfaces/response";
 
 definePageMeta({
@@ -217,12 +222,12 @@ const buzzes = ref([
   {
     title: "New influencers on the block",
     bg: { from: "#00EAFF", to: "#3C8CE7" },
-    influencers: [] as Influencer[],
+    influencers: [] as (Influencer | InfluencerByLatest)[],
   },
   {
     title: "Top 100 influencers for the week",
     bg: { from: "#ABDCFF", to: "#0396FF" },
-    influencers: [] as Influencer[],
+    influencers: [] as (Influencer | InfluencerByLatest)[],
   },
   {
     title: "Top categories for the week",
@@ -240,7 +245,7 @@ const bgColor = [
 type Buzz = {
   bg: (typeof bgColor)[0];
   title: string;
-  data: { category: string; influencers: Influencer[] };
+  data: { category: string; influencers: (Influencer | InfluencerByLatest)[] };
 };
 
 const categories = ref<Buzz[]>([]);

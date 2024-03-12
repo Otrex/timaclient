@@ -1,7 +1,7 @@
 <template>
   <div class="flex !text-[1rem] flex-row gap-[3.75rem]">
     <div class="w-full">
-      <h4 class="mb-[1.125rem]">Top countries</h4>
+      <h4 class="mb-[1.125rem] font-bold">Top countries</h4>
       <table class="w-full">
         <UtLoadPresenter
           loading-message="Fetching countries statistics"
@@ -20,7 +20,7 @@
       </table>
     </div>
     <div class="w-full">
-      <h4 class="mb-[1.125rem]">Top cities</h4>
+      <h4 class="mb-[1.125rem] font-bold">Top cities</h4>
       <table class="w-full">
         <UtLoadPresenter
           loading-message="Fetching cities statistics"

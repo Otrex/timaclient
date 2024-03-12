@@ -7,7 +7,7 @@
     </div>
     <div>
       <h4>{{ props.name }}</h4>
-      <p>{{ props.description }}</p>
+      <p>{{ tools.trunc(props.description, 10) }}</p>
     </div>
   </div>
 </template>

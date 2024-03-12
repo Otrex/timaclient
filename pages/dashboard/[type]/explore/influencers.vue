@@ -6,12 +6,11 @@
         <b>Category:</b> {{ route.query.category }}
       </h1>
     </div>
-
     <UtLoadPresenter
       :state="isLoading ? constants.LOADING : 'IDLE'"
       loading-message="Fetching Influencers"
       not-found-message="No Influencers found"
-      :data="!!influencers.length"
+      :data="!influencers.length"
     >
       <div class="grid md:grid-cols-3 gap-3">
         <template v-if="isInfluencers">
@@ -20,12 +19,27 @@
               :to="{
                 name: 'Campaign >>> Influencers',
                 query: {
-                  publicId: influencer.publicId,
+                  publicId: influencer.userPublicId,
                   applicationId: null,
                 },
               }"
             >
-              <UiInfluencerInfo v-bind="influencer" />
+              <DashboardInfluencerCard
+                :name="influencer.userName"
+                :socialMedia="[influencer.socialMediaPlatforms]"
+                :profilePicture="
+                  influencer.insight.profilePictureUrl ||
+                  influencer.profilePicture
+                "
+                :public-id="influencer.userPublicId"
+                :cover="influencer.profilePicture"
+                :earnedMedia="influencer.insight.followers"
+                :engagements="influencer.insight.avgEngagement"
+                :comments="influencer.insight.totalComments"
+                :likes="influencer.insight.totalLikes"
+                :saved="influencer.insight.totalMedia"
+                :date="String(influencer.applicationDate)"
+              />
             </NuxtLink>
           </template>
         </template>
@@ -61,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Influencer } from "~/lib/interfaces/core";
+import type { Influencer, InfluencerByLatest } from "~/lib/interfaces/core";
 
 definePageMeta({
   name: "Influencers",
@@ -72,7 +86,7 @@ const api = useAPI();
 const isInfluencers = computed(
   () => (route.query.type as string) === "influencers"
 );
-const influencers = ref<Influencer[]>([]);
+const influencers = ref<InfluencerByLatest[]>([]);
 const categories = ref<string[]>([]);
 
 const isLoading = computed(() =>

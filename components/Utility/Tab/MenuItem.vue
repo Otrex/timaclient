@@ -2,7 +2,7 @@
   <button
     @click="clickHandler"
     :class="[
-      'text-[#A4A4A4] font-medium transition-all text-[1.125rem] hover:text-red-600 relative',
+      'text-[#A4A4A4] transition-all font-bold text-[1.125rem] hover:text-red-600 relative',
       active && 'active',
     ]"
   >

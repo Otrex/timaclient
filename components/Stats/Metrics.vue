@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-slate-700 p-[1rem] pb-[1.875rem]">
+  <div class="bg-white rounded dark:bg-slate-700 p-[1rem] pb-[1.875rem]">
     <h5 class="uppercase text-[1rem] !mb-0">{{ props.title }}</h5>
     <div
       v-if="socials.length"
@@ -16,7 +16,16 @@
     </div>
     <div v-else class="mb-[2.1875rem]">&nbsp;</div>
 
+    <template v-if="props.loading">
+      <div class="text-center">
+        <div class="inline-flex gap-3 items-center">
+          <UtSvg name="sunshine" class="spinner" dim w="1.5rem" h="1.5rem" />
+          <span> Fetching stats</span>
+        </div>
+      </div>
+    </template>
     <div
+      v-else
       :class="[
         'flex flex-wrap ',
         props.justified
@@ -43,6 +52,7 @@ const props = defineProps<{
     value: string | number;
   }[];
   justified?: boolean;
+  loading?: boolean;
 }>();
 </script>
 

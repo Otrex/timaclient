@@ -40,6 +40,22 @@
         </div>
       </div>
 
+      <div
+        v-if="authStore.authorization.userType === 'INFLUENCER'"
+        class="flex md:flex-row flex-col"
+      >
+        <div class="max-w-[22.125rem] w-full">
+          <label class="text-[1.25rem] font-medium">Bio</label>
+        </div>
+        <div class="flex items-center w-full">
+          <UiInputTextArea
+            :disabled="!props.isEditable"
+            v-model="form.bio"
+            class="w-full"
+          />
+        </div>
+      </div>
+
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">&nbsp;</div>
         <div class="flex items-center w-full">
@@ -67,9 +83,11 @@ import { UPDATE_INFLUENCER_USER_RULE } from "~/lib/validation/rules";
 
 const props = defineProps<{ isEditable?: boolean }>();
 const profileStore = useProfileStore();
+const authStore = useAuthStore();
 const { notify } = useNotification();
 
 const form = reactive({
+  bio: "",
   email: "",
   fullName: "",
   phoneNumber: "",
@@ -82,6 +100,7 @@ function updateForm() {
     form.phoneNumber = profile.phoneNumber;
     form.fullName = profile.totalFullName;
     form.email = profile.email;
+    form.bio = profile.bio || "";
   }
 }
 
@@ -102,6 +121,7 @@ const { execute, validate, state, v$ } = useRequestState({
       phoneNumber: phoneNumber,
       lastName: extract.lastName,
       firstName: extract.firstName,
+      bio: form.bio,
     };
 
     return profileStore.updatePersonalProfile({

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex cont md:flex-row flex-wrap w-full max-w-[72.25rem] justify-between"
-  >
+  <div class="flex cont md:flex-row flex-wrap w-full justify-between">
     <UtTabMenuItem
       label="Personal Information"
       :name="constants.PERSONAL_INFORMATION"

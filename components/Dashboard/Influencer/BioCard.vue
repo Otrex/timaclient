@@ -66,14 +66,10 @@
         Campaigns completed: 86
       </div>
 
-      <div class="mb-[2.1875rem]">
+      <div v-if="result?.biography" class="mb-[2.1875rem]">
         <p class="nl font-bold">Bio</p>
         <p class="nl">
-          Lorem ipsum dolor sit amet consectetur. Hendrerit varius tristique
-          scelerisque purus. Purus mauris lacus volutpat convallis elementum
-          fringilla nam vulputate phasellus. Volutpat pulvinar ac dolor mauris
-          mauris consequat mauris nibh. Tincidunt tincidunt sed eget natoque in
-          turpis neque auctor ullamcorper.
+          {{ result.biography }}
         </p>
       </div>
 
@@ -83,8 +79,14 @@
 
       <div>
         <p class="nl">Categories</p>
-        <div class="flex flex-wrap gap-3">
-          <template v-for="(category, idx) in categories" :key="idx">
+        <div
+          v-show="industries?.selectedIndustries.length"
+          class="flex flex-wrap gap-3"
+        >
+          <template
+            v-for="(category, idx) in industries?.selectedIndustries || []"
+            :key="idx"
+          >
             <div
               class="text-[0.875rem] rounded text-white bg-[#696969] px-[0.6875rem] py-[0.125rem]"
             >
@@ -99,6 +101,7 @@
 
 <script setup lang="ts">
 // import { Doughnut } from "vue-chartjs";
+import type { Core } from "~/lib/interfaces";
 import type {
   GetApplication,
   GetSearchInfluencer,
@@ -139,6 +142,15 @@ const { state: profileState, execute: profileExecute } = useRequestState({
   action: () => api.getInfluencerById(props.publicId),
   onSuccess: (response) => {
     result.value = response.data;
+  },
+});
+
+const industries = ref<Core.UserIndustry>();
+const { state: industryLoading, execute: getIndustry } = useRequestState({
+  immediately: true,
+  action: () => api.getUserIndustries(props.publicId),
+  onSuccess: (response) => {
+    industries.value = response.data;
   },
 });
 

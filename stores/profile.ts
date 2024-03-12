@@ -63,7 +63,6 @@ export const useProfileStore = defineStore('profile', {
         this.getUserDetails(),
         this.getBankDetails(),
         this.getAddressDetails(),
-        this.getUserIndustries(),
       ]);
     },
 
@@ -76,11 +75,13 @@ export const useProfileStore = defineStore('profile', {
         authStore.updateStoreUserType(
           response.data.profile?.userType
         );
+
+        await this.getUserIndustries();
       }
     },
 
     async getUserIndustries() {
-      const response = await this.$api.getUserIndustries();
+      const response = await this.$api.getUserIndustries(this.profile?.publicId!);
       if (response?.data) this.$patch({ industries: response.data?.selectedIndustries })
     },
 

@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import type { RouteLocationRaw } from "vue-router";
-import type { Influencer } from "~/lib/interfaces/core";
+import type { Influencer, InfluencerByLatest } from "~/lib/interfaces/core";
 
 const props = defineProps<{
   bg: {
@@ -64,7 +64,8 @@ const props = defineProps<{
   title: string;
   images?: string[];
   seeMore?: RouteLocationRaw;
-  influencers?: (Influencer | string)[];
+  loading?: boolean;
+  influencers?: (Influencer | InfluencerByLatest | string)[];
 }>();
 
 const bg = computed(() => ({

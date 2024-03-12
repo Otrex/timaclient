@@ -44,6 +44,12 @@ export interface CampaignMetrics {
   description: string;
 }
 
+export interface UserIndustry {
+  userPublicId: string;
+  selectedIndustries: string[];
+  createdOn: Date | string;
+}
+
 
 export interface Campaign {
   publicId: string;
@@ -130,6 +136,7 @@ export interface SearchInfluencer {
   fullName: string;
   email: string;
   phoneNumber: string;
+  biography?: string;
   profilePicture: string;
   completed: number;
 }
@@ -240,6 +247,8 @@ export interface Application {
   campaignDescription: string;
   username: string;
   fullName: string;
+  biography?: string;
+  referenceLink?: string;
   email: string;
   phoneNumber: string;
   profilePicture: string;
@@ -303,6 +312,32 @@ export interface CampaignRecord {
   status: number;
   createdBy: string;
   createdOn: Date;
+}
+
+export interface InfluencerByLatest {
+  userName: string;
+  profilePicture: string;
+  socialMediaPlatforms: string;
+  applicationDate: Date | string;
+  userPublicId: string;
+  insight: Insight;
+}
+
+export interface Insight {
+  businessOwnerIgId: string;
+  businessIgId: string;
+  businessHandle: string;
+  businessName: string;
+  biography: string;
+  website: string;
+  profilePictureUrl: string;
+  followers: number;
+  totalMedia: number;
+  totalComments: number;
+  avgComments: number;
+  totalLikes: number;
+  avgLikes: number;
+  avgEngagement: number;
 }
 
 export interface Influencer {
@@ -373,6 +408,7 @@ export interface User {
   notificationSetting: string;
   userid: null;
   createdOn: Date;
+  bio?: string;
   settingBackground?: string;
 }
 

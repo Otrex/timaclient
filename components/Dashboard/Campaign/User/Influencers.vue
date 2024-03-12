@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="mt-[0.6875rem] p-[1.25rem]"
+      class="mt-[0.6875rem] border border-solid dark:border-slate-600 border-[#dcf0ff] rounded p-[1.25rem]"
       style="background: rgba(228, 243, 255, 0.5)"
     >
       <div>
@@ -17,7 +17,7 @@
         />-->
       </div>
 
-      <section class="mt-[2rem]">
+      <section class="mt-[1.6rem]">
         <UtLoadPresenter
           loading-message="Fetching Influencers..."
           not-found-message="No Influencers"
@@ -105,7 +105,7 @@
               <div>Are you sure you want to accept this application?</div>
             </template>
           </UiModalConfirmAction>
-
+          <!--
           <UtModal
             v-model:state="showCreateContract"
             m-width="37.75rem"
@@ -122,6 +122,7 @@
               :campaign-public-id="tools.isCertain(action?.campaignPublicId)"
             />
           </UtModal>
+        -->
         </UtLoadPresenter>
       </section>
     </div>
@@ -133,10 +134,10 @@ import { Core } from "~/lib/interfaces";
 import type { Application } from "~/lib/interfaces/core";
 
 const filter = ref("all");
+
 const api = useAPI();
 const route = useRoute();
 const { notify } = useNotification();
-const showCreateContract = ref(false);
 
 function trx(data: any) {
   if (!data) return data;
@@ -219,7 +220,6 @@ const { state, execute: review } = useRequestState({
       status,
     }),
   onSuccess(response) {
-    getCampaignPendingApplications.execute();
     notify({
       title: "Successfully Reviewed Application",
       text: response.message,
@@ -241,17 +241,19 @@ const triggerAccept = (id: string) => {
   confirmAccept.value.open();
 };
 
+const accept = async () => {
+  await review("APPROVED");
+  confirmAccept.value.close();
+  getApplicationsInfluencer.execute();
+  getCampaignPendingApplications.execute();
+};
+
+const showCreateContract = ref(false);
 const confirmCreateContract = ref();
 const triggerCreateContract = (id: string) => {
   actionId.value = id;
   action.value = pendingApplication.value.find((e) => e.applicationId === id);
   showCreateContract.value = true;
-};
-
-const accept = () => {
-  review("APPROVED").then(() => {
-    confirmAccept.value.close();
-  });
 };
 
 const submitContract = () => {

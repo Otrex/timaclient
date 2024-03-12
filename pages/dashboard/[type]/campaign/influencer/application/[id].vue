@@ -164,18 +164,18 @@
               label="Decline"
               @click="triggerDecline"
             />
-            <!--<UiButtonDefault
+            <UiButtonDefault
               variant="primary"
               class="py-[0.625rem] px-[2.5rem]"
               label="Accept"
               @click="triggerAccept"
-            /> -->
-            <UiButtonDefault
+            />
+            <!--<UiButtonDefault
               variant="primary"
               class="py-[0.625rem] px-[2.5rem]"
               label="Create Contract"
               @click="triggerCreateContract"
-            />
+            />-->
           </div>
         </div>
         <UtModal v-model:state="contractModal" backdrop-color="rgba(0,0,0,.3)">

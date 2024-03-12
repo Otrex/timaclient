@@ -1,5 +1,5 @@
 <template>
-  <section class="var bg-[--bg] p-[1.5rem] rounded-md">
+  <section class="var bg-[--bg] dark:bg-slate-500 p-[1.5rem] rounded-md">
     <h4 class="pl-3">Audience Age range</h4>
     <UtLoadPresenter
       loading-message="Fetching age audience statistics"
@@ -18,6 +18,7 @@ import { Bar } from "vue-chartjs";
 const props = defineProps<{
   bg?: string;
   loading?: boolean;
+  aspectRatio?: number;
   data: {
     male: number;
     female: number;
@@ -54,7 +55,7 @@ const options = ref<any>({
     },
   },
   responsive: true,
-  aspectRatio: 1.5,
+  aspectRatio: props.aspectRatio || 1.5,
   plugins: {
     legend: {
       itemSpacing: 10,

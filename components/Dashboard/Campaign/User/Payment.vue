@@ -1,14 +1,15 @@
 <template>
-  <section class="mt-[0.375rem]">
+  <section class="mt-[0.625rem]">
     <div
       style="--clr: rgba(228, 243, 255, 0.5)"
-      class="bg-[--clr] p-[1.25rem] mb-[1.5rem]"
+      class="bg-[--clr] rounded border border-solid dark:border-slate-600 border-[#dcf0ff] p-[1.25rem] mb-[1.5rem]"
     >
       <div class="flex flex-col gap-[1.25rem]">
         <StatsMetrics
           title="PAYMENTS"
           :socials="[]"
           :data="metric.data"
+          :loading="tools.requestState(getPaymentStats) === constants.LOADING"
           justified
         />
       </div>
@@ -19,10 +20,10 @@
         <UiInputText
           search
           placeholder="Search Transactions"
-          class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
+          class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full !border-[#808080ad]"
         />
         <UiInputSelect
-          class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
+          class="max-w-[8.9375rem] w-full text-center !border-[#808080ad]"
           v-model="searchFilter"
           :options="[
             { value: '', label: 'ALL' },
@@ -40,7 +41,6 @@
             <th class="font-normal">Payment date</th>
             <th class="font-normal">Payment status</th>
             <th class="font-normal">Payment method</th>
-            <th></th>
           </thead>
           <tbody>
             <template
@@ -103,9 +103,6 @@
                 </td>
                 <td class="align-middle text-center">
                   {{ transaction.type }}
-                </td>
-                <td class="align-middle text-center">
-                  <UtPayBalance :data-id="transaction.publicId" />
                 </td>
               </tr>
             </template>

@@ -26,7 +26,9 @@
                 <span>New Campaign</span>
               </div>
             </UiButtonDefault>
-            <h2 v-if="routeName !== 'Campaign'">{{ routeName }}</h2>
+            <h2 class="font-bold" v-if="routeName !== 'Campaign'">
+              {{ routeName }}
+            </h2>
           </div>
         </slot>
       </div>
@@ -35,7 +37,10 @@
       <slot name="middle">
         <div
           class="flex gap-[1.25rem] relative"
-          v-if="['Explore'].includes(routeName)"
+          v-if="
+            ['Explore'].includes(routeName) &&
+            authUser.authorization.userType === 'INFLUENCER'
+          "
         >
           <UiInputText
             class="w-full"
@@ -48,10 +53,10 @@
 
           <div
             v-if="searchResults.length"
-            class="absolute top-[calc(100%_+_15px)] rounded-[20px] p-5 z-10 shadow-sm w-[100%] bg-white dark:bg-slate-600 dark:text-white"
+            class="absolute shadow-2xl top-[calc(100%_+_13px)] rounded-[20px] p-5 z-10 w-[100%] bg-white dark:bg-slate-600 dark:text-white"
           >
             <div class="flex justify-between items-center mb-3">
-              <p>Search Results:</p>
+              <p class="font-bold">Search Results:</p>
               <button
                 @click="searchResults = []"
                 class="active:ring-4 active:ring-slate-200"
@@ -65,7 +70,7 @@
               :key="idx"
             >
               <UiCampaignInfo
-                class="mb-3 p-3 rounded-md cursor-pointer dark:hover:bg-slate-800 hover:bg-slate-100"
+                class="mb-3 p-3 border border-solid border-[#e7e7e7] rounded-md cursor-pointer dark:hover:bg-slate-800 hover:bg-slate-100"
                 :name="campaign.name"
                 @click="() => navigateToCampaign(campaign.campaignId)"
                 :banner="campaign.banner"
@@ -105,6 +110,7 @@ const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",
   "Campaign Application Influencer": "Campaign Application",
   BrandCampaign: "Campaign",
+  "Campaign >>> influencers": "Influencer",
 };
 
 const routeName = computed(
@@ -112,6 +118,7 @@ const routeName = computed(
     routeNameMap[route.name as string] || tools.capitalize(route.name as string)
 );
 
+const authUser = useAuthStore();
 const profileStore = useProfileStore();
 const profile = computed(() => profileStore.$profile);
 

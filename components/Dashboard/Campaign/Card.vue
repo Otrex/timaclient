@@ -71,7 +71,7 @@
         <UiImg
           ref="image"
           class="w-full h-full object-cover"
-          :src="props.image"
+          :src="tools.removeDuplicateURL(props.image)"
           alt="campaign banner"
           lazy
         />

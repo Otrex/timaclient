@@ -153,6 +153,14 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getUserIndustry() {
+    return this.request<IResponse<Core.UserIndustry>>({
+      url: '/agency/v1/user/industry',
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
   async getCampaign(publicId: string) {
     return this.request<Response.GetCampaign>({
       url: `/agency/v1/campaigns/${publicId}`,
@@ -250,9 +258,9 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getUserIndustries() {
+  async getUserIndustries(publicId: string) {
     return this.request<Response.UpdateIndustries>({
-      url: "/agency/v1/user/industry",
+      url: `/agency/v1/user/industry/${publicId}`,
       requireAuth: true,
       method: 'GET',
     });
@@ -292,7 +300,7 @@ export default class TimaAPI extends UploadAPI {
 
   async getApplicantsByCampaign(
     campaignId: string,
-    data: Payload.Filter
+    data: Partial<Payload.Filter> = {}
   ) {
     return this.request<Response.GetApplications>({
       url: this.querify(

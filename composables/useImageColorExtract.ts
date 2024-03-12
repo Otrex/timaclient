@@ -1,7 +1,7 @@
 export default function () {
   function getImageObjectUrl(imageUrl: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      fetch(imageUrl)
+      fetch(tools.removeDuplicateURL(imageUrl))
         .then(response => {
           if (!response.ok) {
             throw new Error(`Failed to fetch image. Status: ${response.status}`);
@@ -13,6 +13,8 @@ export default function () {
           resolve(objectUrl);
         })
         .catch(error => {
+          console.log(error);
+
           reject(error);
         });
     });

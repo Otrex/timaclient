@@ -34,7 +34,7 @@
 
         <div class="flex flex-row justify-between mt-[1.125rem]">
           <div>
-            <h3>{{ campaign?.overview.name }} Campaign</h3>
+            <h2 class="font-bold">{{ campaign?.overview.name }} Campaign</h2>
             <div class="flex gap-[2rem]">
               <!--
               <p class="sm">34 publications</p>
@@ -49,15 +49,15 @@
           <div>
             <button
               @click="openShare = true"
-              class="bg-[#111] text-white mr-3 text-sm !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+              class="bg-slate-900 text-white text-sm !px-[0.9375rem] rounded-l-4xl p-[0.625rem]"
             >
-              Share Campaign
+              <UtSvg name="share-icon" dim w="1rem" h="1rem" />
             </button>
             <button
               @click="confirmAccept.open()"
-              class="text-sm bg-slate-200 !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+              class="text-sm bg-slate-200 !px-[0.9375rem] rounded-e-4xl p-[0.625rem] dark:text-[#1b3a8d] active:outline-2 active:outline-solid active:outline-[#bbb]"
             >
-              Delete Campaign
+              <UtSvg name="delete-trash" dim w="1rem" h="1rem" />
             </button>
           </div>
         </div>
@@ -88,6 +88,7 @@
         :loading="deletingState === constants.LOADING"
         @onapprove="deleteCampaign"
         ref="confirmAccept"
+        class="dark:text-black"
       >
         <template #title>
           <div>Delete Campaign</div>

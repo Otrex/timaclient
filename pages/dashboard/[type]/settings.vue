@@ -7,7 +7,7 @@
             tools.removeDuplicateURL(profile?.settingBackground) ||
             '/img/setting-backdrop.jpg'
           "
-          class="object-cover w-full h-full"
+          class="object-cover overflow-hidden w-full h-full"
           alt="profile image"
         />
         <UiInputOverlayUpload
@@ -37,7 +37,7 @@
       >
         <UiImg
           :src="tools.removeDuplicateURL(profile?.profilePicture)"
-          class="object-cover w-full h-full rounded-full"
+          class="object-cover w-full h-full overflow-hidden rounded-full"
           alt="profile image"
         />
 

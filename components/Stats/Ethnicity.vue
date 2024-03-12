@@ -1,5 +1,7 @@
 <template>
-  <section class="bg-[#FFFDF9] p-[1.3125rem] rounded-md">
+  <section
+    class="bg-[#FFFDF9] dark:text-white dark:bg-slate-500 p-[1.3125rem] rounded-md"
+  >
     <h4 class="pl-3">Ethnicity</h4>
     <Doughnut :data="data" class="inline-block" :options="options" />
   </section>

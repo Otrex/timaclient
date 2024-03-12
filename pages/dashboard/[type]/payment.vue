@@ -1,9 +1,11 @@
 <template>
-  <div class="p-[1.25rem]">
+  <div class="p-[1.25rem] pt-1">
     <transition mode="out-in">
       <template v-if="tools.requestState(getStats) === constants.LOADING">
         <div class="mb-4">
-          <div class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]">
+          <div
+            class="bg-[rgba(228,_243,_255,_0.5)] border border-solid border-[#dcf0ff] rounded-[0.75rem]"
+          >
             <UtLoaderIndicator message="Fetching Statistics" />
           </div>
         </div>
@@ -14,7 +16,7 @@
       <template v-else>
         <div class="grid sm:grid-cols-3 gap-[1.25rem] mb-[1.25rem]">
           <div
-            class="bg-[rgba(228,_243,_255,_0.5)] py-[40px] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
+            class="bg-[rgba(228,_243,_255,_0.5)] border border-solid border-[#dcf0ff] py-[40px] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
           >
             <div class="text-center">
               <h3 class="text-[2.1875rem]">
@@ -25,7 +27,7 @@
           </div>
 
           <div
-            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
+            class="bg-[rgba(228,_243,_255,_0.5)] border border-solid border-[#dcf0ff] rounded-[0.75rem] max-h-[250px] h-full flex items-center justify-center"
           >
             <div class="text-center">
               <h3 class="text-[2.1875rem]">
@@ -36,7 +38,7 @@
           </div>
 
           <div
-            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
+            class="bg-[rgba(228,_243,_255,_0.5)] border border-solid border-[#dcf0ff] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
           >
             <div class="text-center">
               <h3 class="text-[2.1875rem]">
@@ -49,7 +51,7 @@
       </template>
     </transition>
     <div
-      class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
+      class="p-[1.5625rem] mb-[2.625rem] border border-solid border-[#dcf0ff] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
     >
       <div class="flex flex-row justify-between mb-[0.75rem] items-center">
         <div>
@@ -77,7 +79,7 @@
 
     <div>
       <div class="flex mb-[1.875rem] flex-row items-center justify-between">
-        <div class="text-[1.25rem]">Transactions</div>
+        <div class="text-[1.25rem] font-bold">Transactions</div>
         <div class="max-w-[40rem] w-full">
           <div class="whitespace-nowrap inline-flex justify-end w-full">
             <UiInputText

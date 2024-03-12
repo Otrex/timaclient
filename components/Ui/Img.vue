@@ -66,7 +66,7 @@ watch(
   background-position: center center;
   background-blend-mode: overlay;
   filter: grayscale(1);
-  object-fit: contain !important;
+  object-fit: cover !important;
 }
 
 .pulse {

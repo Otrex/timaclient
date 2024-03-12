@@ -20,9 +20,9 @@
             class="flex flex-row w-full mb-[0.8125rem] justify-between items-center"
           >
             <h3 class="font-bold text-[1.5rem] !mb-0">Notifications</h3>
-            <button class="whitespace-nowrap text-[#B4B2B3] !mb-0">
+            <!-- <button class="whitespace-nowrap text-[#B4B2B3] !mb-0">
               Mark all as read
-            </button>
+            </button> -->
           </div>
 
           <div class="flex flex-row mb-[1.5rem] gap-[0.875rem]">
@@ -56,7 +56,7 @@
               <ul v-if="activeTab === 0">
                 <li
                   v-for="(notification, idx) in notifications"
-                  class="tima-notif hover:bg-slate-50 py-[0.4375rem]"
+                  class="tima-notif hover:bg-slate-100 rounded py-[0.4375rem]"
                   :key="idx"
                   @click="() => openNotification(notification)"
                 >
@@ -199,12 +199,12 @@ async function openNotification(notification: AppNotification) {
   background: rgba(5, 9, 28, 0.05);
   @apply text-black dark:text-white;
 }
-
+/* 
 .tima-notif {
   border-top: 1px solid #cdcbc9;
 }
 
 .tima-notif:last-child {
   border-bottom: 1px solid #cdcbc9;
-}
+} */
 </style>
