@@ -63,7 +63,7 @@
       </div>
 
       <div class="bg-[--clr-blue-100] mb-[1.5rem] py-[1.0625rem] text-center">
-        Campaigns completed: 86
+        Campaigns completed: {{ completedCampaign }}
       </div>
 
       <div v-if="result?.biography" class="mb-[2.1875rem]">
@@ -142,6 +142,18 @@ const { state: profileState, execute: profileExecute } = useRequestState({
   action: () => api.getInfluencerById(props.publicId),
   onSuccess: (response) => {
     result.value = response.data;
+  },
+});
+
+const completedCampaign = ref<number>(0);
+const influencerExperiences = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getInfluencerCampaignExperience({
+      influencerPublicId: props.publicId,
+    }),
+  onSuccess(response) {
+    completedCampaign.value = response.data.length;
   },
 });
 

@@ -18,14 +18,14 @@
               ? 'max-h-[4.375rem] overflow-y-clip'
               : 'max-h-screen overflow-y-auto',
           ]"
-          class="grid transition-all md:grid-cols-1 lg:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
+          class="grid transition-all w-full md:grid-cols-1 lg:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
         >
           <div v-for="(campaign, idx) in experiences" :key="idx">
             <div
               :data-id="campaign.id"
               @click="selectCampaign(campaign.id)"
               :class="[
-                'flex items-center hover:border-2 border-red-700 border-solid relative bg-white flex-row gap-[0.75rem]',
+                'flex items-center hover:border-2 border-red-700 border-solid break-words relative bg-white flex-row gap-[0.75rem]',
                 campaign.active && 'border-2 border-red-700 border-solid',
               ]"
             >
@@ -43,7 +43,7 @@
                   style="text-overflow: ellipsis"
                   class="nl w-full pr-3 whitespace-nowrap"
                 >
-                  {{ campaign.name }}
+                  {{ tools.trunc(campaign.name, 3) }}
                 </p>
                 <p class="sm text-[color:--clr-grey-300]">
                   {{ tools.formatDate(campaign.startDate) }} -

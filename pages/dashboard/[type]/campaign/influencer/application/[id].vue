@@ -120,11 +120,15 @@
             </p>
           </article>
 
-          <p class="uppercase mb-[1.875rem]">Campaign Content</p>
-          <article class="max-w-[24.125rem] md:max-w-full mb-[3.125rem]">
-            <p class="nl">Reference Link:</p>
-            <p class="text-[color:--clr-grey-400]">No Reference Link</p>
-          </article>
+          <template v-if="application?.referenceLink">
+            <p class="uppercase mb-[1.875rem]">Campaign Content</p>
+            <article class="max-w-[24.125rem] md:max-w-full mb-[3.125rem]">
+              <p class="nl">Reference Link:</p>
+              <p class="text-[color:--clr-grey-400]">
+                {{ application?.referenceLink }}
+              </p>
+            </article>
+          </template>
         </div>
 
         <div class="w-full">
@@ -140,7 +144,7 @@
               >
                 <div class="absolute inset-0">
                   <iframe
-                    src="http://localhost:3000"
+                    :src="application?.referenceLink"
                     class="w-full h-full bg-white"
                   ></iframe>
                 </div>

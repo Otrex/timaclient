@@ -7,6 +7,7 @@
       <div>
         <UiInputText
           search
+          v-model="q"
           placeholder="Search Influencers"
           class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full !border-[#808080ad]"
         />
@@ -22,10 +23,10 @@
           loading-message="Fetching Influencers..."
           not-found-message="No Influencers"
           :state="tools.requestState(getApplicationsInfluencer)"
-          :data="influencers.length === 0"
+          :data="filteredApproved.length === 0"
         >
           <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-[1.1875rem]">
-            <template v-for="(influencer, idx) in influencers" :key="idx">
+            <template v-for="(influencer, idx) in filteredApproved" :key="idx">
               <NuxtLink
                 :to="{
                   name: 'Campaign >>> Influencers',
@@ -88,7 +89,6 @@
                   :profilePicture="application.profilePicture"
                   :questionAndAnswers="QandA(application)"
                   @accept="triggerAccept"
-                  @create-contract="triggerCreateContract"
                 />
               </NuxtLink>
             </template>
@@ -133,7 +133,7 @@
 import { Core } from "~/lib/interfaces";
 import type { Application } from "~/lib/interfaces/core";
 
-const filter = ref("all");
+const q = ref("");
 
 const api = useAPI();
 const route = useRoute();
@@ -144,6 +144,14 @@ function trx(data: any) {
   data.socialMediaPlatforms = JSON.parse(data.socialMediaPlatforms);
   return data;
 }
+
+const filteredApproved = computed(() =>
+  [...influencers.value].filter((e) =>
+    e.userName.toLowerCase().includes(q.value.toLowerCase())
+  )
+);
+
+const approvedFilter = (approved: Core.ApprovedCampaignInfluencer[]) => {};
 
 function QandA(data: Application) {
   return [
@@ -159,7 +167,6 @@ function QandA(data: Application) {
 }
 
 const actionId = ref();
-const action = ref<Application>();
 const pendingApplication = ref<Application[]>([]);
 const getCampaignPendingApplications = useRequestState({
   immediately: true,
@@ -246,19 +253,6 @@ const accept = async () => {
   confirmAccept.value.close();
   getApplicationsInfluencer.execute();
   getCampaignPendingApplications.execute();
-};
-
-const showCreateContract = ref(false);
-const confirmCreateContract = ref();
-const triggerCreateContract = (id: string) => {
-  actionId.value = id;
-  action.value = pendingApplication.value.find((e) => e.applicationId === id);
-  showCreateContract.value = true;
-};
-
-const submitContract = () => {
-  ///
-  showCreateContract.value = false;
 };
 </script>
 
