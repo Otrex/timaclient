@@ -83,11 +83,7 @@
 
 <script setup lang="ts">
 import type { Core } from "~/lib/interfaces";
-import type {
-  GetApprovedInfluencers,
-  GetBookmarks,
-  GetInfluencersBookmark,
-} from "~/lib/interfaces/response";
+import type { GetApprovedInfluencers } from "~/lib/interfaces/response";
 
 definePageMeta({
   name: "Bookmark",
@@ -119,13 +115,7 @@ const { state: bookmarkState, execute: bookmarkExecute } = useRequestState({
 });
 
 const reRun = (reRunType: "influencer" | "agency") => async () => {
-  console.log("Entered");
-
-  if (reRunType === "influencer") {
-    await execute();
-  } else {
-    await bookmarkExecute();
-  }
+  (reRunType === "influencer" ? execute : bookmarkExecute)();
 };
 
 onMounted(() => {

@@ -48,10 +48,7 @@ const form = reactive({
   body: "",
 });
 
-const fullMessage = computed(
-  () =>
-    `mailto:${appConfig.supportEmail}?subject=${form.subject}&body=${form.body}`
-);
+const fullMessage = computed(() => `mailto:${appConfig.supportEmail}`);
 
 const sendMessage = () => {
   loading.value = true;
