@@ -9,7 +9,7 @@
       </div>
       <UiImg
         v-else
-        :src="thumb(campaignStore.creative.thumbnail)"
+        :src="thumbnail"
         alt="logo"
         class="w-full h-full object-cover"
       />
@@ -115,17 +115,16 @@
 </template>
 
 <script setup lang="ts">
-import type { UseEventBusReturn } from "@vueuse/core";
-
-const props = defineProps<{
-  bus?: UseEventBusReturn<string, any>;
-}>();
-
 const campaignStore = useCampaignStore();
 const { notify } = useNotification();
 const successModal = ref();
 
-const { state, execute } = useRequestState({
+const appCfg = useAppConfig();
+const thumbnail = computed(
+  () => `${appCfg.thumbnailBaseUrl}/${campaignStore.creative.thumbnail}`
+);
+
+const { execute: next } = useRequestState({
   action: () => campaignStore.createCampaign(),
   onSuccess: () => {
     successModal.value.open();
@@ -152,13 +151,7 @@ const { state, execute } = useRequestState({
   },
 });
 
-props.bus?.on(() => {
-  execute();
-});
-
-const appCfg = useAppConfig();
-
-const thumb = (img: string) => `${appCfg.thumbnailBaseUrl}/${img}`;
+defineExpose({ next });
 </script>
 
 <style></style>

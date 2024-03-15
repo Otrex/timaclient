@@ -159,17 +159,11 @@
 </template>
 
 <script setup lang="ts">
-import type { UseEventBusReturn } from "@vueuse/core";
-import type { Core } from "~/lib/interfaces";
 import type { UnPartial } from "~/lib/interfaces/utils";
-
-const props = defineProps<{
-  bus?: UseEventBusReturn<string, any>;
-}>();
+import type { Core } from "~/lib/interfaces";
 
 const rules = useValidationRules();
 const campaignStore = useCampaignStore();
-const overview = computed(() => campaignStore.overview);
 
 const v$ = useValidator(
   rules.CREATE_CAMPAIGN_OVERVIEW,
@@ -177,18 +171,16 @@ const v$ = useValidator(
   { $autoDirty: true }
 );
 
-async function proceed() {
-  const v = await v$.value.$validate();
-  if (!v) return;
-  navigateTo({
-    query: {
-      tab: constants.BRAND_INFLUENCERS,
-    },
-  });
-}
-
-props.bus?.on(() => {
-  proceed();
+defineExpose({
+  next: async () => {
+    const v = await v$.value.$validate();
+    if (!v) return;
+    navigateTo({
+      query: {
+        tab: constants.BRAND_INFLUENCERS,
+      },
+    });
+  },
 });
 </script>
 

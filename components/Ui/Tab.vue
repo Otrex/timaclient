@@ -19,6 +19,7 @@
         <component
           :is="currentComponent?.component"
           :bus="props.bus"
+          ref="component"
           v-bind="args"
         />
       </transition>
@@ -36,6 +37,7 @@ const props = defineProps<{
   routeKey?: string;
   defaultTab: string;
   bus?: UseEventBusReturn<string, any>;
+  create?: UseEventBusReturn<string, any>;
   ref?: any;
   args?: { [key: string]: any };
   disabled?: boolean;
@@ -47,6 +49,11 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits(["change"]);
+const component = ref<{ next: Function }>();
+
+defineExpose({
+  component,
+});
 
 const currentTab = computed(() => {
   const routeTab = route.query[props.routeKey || "tab"] as Routes;

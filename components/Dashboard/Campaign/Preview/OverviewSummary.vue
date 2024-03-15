@@ -1,5 +1,5 @@
 <template>
-  <UiLayoutPreview title="SUMMARY" :hide-back="true" @next="props.bus?.emit()">
+  <UiLayoutPreview title="SUMMARY" :hide-back="true" @next="$emit('next')">
     <div class="flex flex-col gap-3">
       <p><b>Campaign name:</b> {{ campaignStore.overview.name }}</p>
       <p>
@@ -16,12 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import type { UseEventBusReturn } from "@vueuse/core";
-
-const props = defineProps<{
-  bus?: UseEventBusReturn<string, any>;
-}>();
-
 const campaignStore = useCampaignStore();
 </script>
 

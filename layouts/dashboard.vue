@@ -14,7 +14,9 @@
       >
         <DashboardSidebar />
       </aside>
-      <header class="dark:bg-slate-700 dark:text-white">
+      <header
+        class="dark:bg-slate-700 border-b border-solid border-transparent dark:text-white"
+      >
         <div class="flex flex-row items-center border-[#D6D6D6]">
           <div class="pl-[1.2rem] hidden sm:block relative">
             <button

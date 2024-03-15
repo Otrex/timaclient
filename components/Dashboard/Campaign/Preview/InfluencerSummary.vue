@@ -8,7 +8,7 @@
         },
       })
     "
-    @next="props.bus?.emit()"
+    @next="$emit('next')"
   >
     <div class="flex flex-col gap-3">
       <p>
@@ -35,12 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import type { UseEventBusReturn } from "@vueuse/core";
-
-const props = defineProps<{
-  bus?: UseEventBusReturn<string, any>;
-}>();
-
 const campaignStore = useCampaignStore();
 </script>
 

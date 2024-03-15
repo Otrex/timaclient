@@ -8,7 +8,7 @@
         },
       })
     "
-    @next="props.bus?.emit()"
+    @next="checkout"
   >
     <div>
       <p class="mb-[2.5rem]">
@@ -62,13 +62,13 @@
 </template>
 
 <script setup lang="ts">
-import type { UseEventBusReturn } from "@vueuse/core";
+import { useThrottleFn } from "@vueuse/core";
 
-const props = defineProps<{
-  bus?: UseEventBusReturn<string, any>;
-}>();
+const emits = defineEmits(["next"]);
 
-const campaignStore = useCampaignStore();
+const checkout = useThrottleFn(() => {
+  emits("next");
+}, 1000);
 </script>
 
 <style></style>

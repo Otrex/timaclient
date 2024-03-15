@@ -2,30 +2,30 @@
   <div class="flex md:flex-row h-full flex-col">
     <div class="md:w-2/3 p-[1.625rem] h-full md:overflow-auto pb-[2.5rem]">
       <UiTab
+        class="w-full"
+        :disabled="true"
         :menu-items="tabs"
         ref="currentScreen"
-        :bus="bus"
-        :disabled="true"
-        class="w-full"
-        @change="tabChange"
+        @change="(tab) => (currentTab = tab)"
         :default-tab="constants.BRAND_OVERVIEW"
       />
     </div>
+
     <transition mode="out-in">
       <DashboardCampaignPreviewOverviewSummary
-        :bus="bus"
+        @next="goNext"
         v-if="currentTab === constants.BRAND_OVERVIEW || !currentTab"
       />
       <DashboardCampaignPreviewInfluencerSummary
-        :bus="bus"
+        @next="goNext"
         v-else-if="currentTab === constants.BRAND_INFLUENCERS"
       />
       <DashboardCampaignPreviewCreativeSummary
-        :bus="bus"
+        @next="goNext"
         v-else-if="currentTab === constants.BRAND_CREATIVE"
       />
       <DashboardCampaignPreviewSummary
-        :bus="bus"
+        @next="goNext"
         v-else-if="currentTab === constants.BRAND_PREVIEW"
       />
     </transition>
@@ -40,30 +40,35 @@ definePageMeta({
 });
 
 const bus = useEventBus<string>("tab-switch");
+
 const tabs = [
   {
     name: constants.BRAND_OVERVIEW,
-    component: resolveComponent("DashboardCampaignOverview"),
+    component: resolveComponent("LazyDashboardCampaignOverview"),
     label: "Overview",
   },
   {
     name: constants.BRAND_INFLUENCERS,
-    component: resolveComponent("DashboardCampaignInfluencers"),
+    component: resolveComponent("LazyDashboardCampaignInfluencers"),
     label: "Influencers",
   },
   {
     name: constants.BRAND_CREATIVE,
-    component: resolveComponent("DashboardCampaignCreative"),
+    component: resolveComponent("LazyDashboardCampaignCreative"),
     label: "Creative",
   },
   {
     name: constants.BRAND_PREVIEW,
-    component: resolveComponent("DashboardCampaign_Preview"),
+    component: resolveComponent("LazyDashboardCampaign_Preview"),
     label: "Preview",
   },
 ];
 
-const currentScreen = ref<{ next: Function }>();
+const currentScreen = ref<{ component: { next: Function } }>();
+
+const goNext = async () => {
+  await currentScreen.value?.component.next();
+};
 
 const currentTab = ref();
 

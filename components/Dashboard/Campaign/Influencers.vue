@@ -85,13 +85,8 @@
 </template>
 
 <script setup lang="ts">
-import type { UseEventBusReturn } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
 import type { UnPartial } from "~/lib/interfaces/utils";
-
-const props = defineProps<{
-  bus?: UseEventBusReturn<string, any>;
-}>();
 
 const rules = useValidationRules();
 const optionsStore = useOptionsStore();
@@ -107,18 +102,16 @@ const v$ = useValidator(
   { $autoDirty: true }
 );
 
-async function proceed() {
-  const v = await v$.value.$validate();
-  if (!v) return;
-  navigateTo({
-    query: {
-      tab: constants.BRAND_CREATIVE,
-    },
-  });
-}
-
-props.bus?.on(() => {
-  proceed();
+defineExpose({
+  next: async () => {
+    const v = await v$.value.$validate();
+    if (!v) return;
+    navigateTo({
+      query: {
+        tab: constants.BRAND_CREATIVE,
+      },
+    });
+  },
 });
 </script>
 
