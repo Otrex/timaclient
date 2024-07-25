@@ -1,4 +1,5 @@
 
+import { UserType } from "~/lib/enums"
 import type { Core, Payload, Response } from "../../interfaces"
 import type { IResponse } from "../../interfaces/utils"
 import { auth, mockBankList, mockCountries, mockIndustries, mockProfileInfo, mockUserIndustry } from "../mockdata"
@@ -18,6 +19,10 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async signIn(data: Payload.SignIn): Promise<Response.SignIn> {
+    const res = prompt('which type of account do you want?', UserType.INFLUENCER)
+    console.log({ res }, res?.toLowerCase().includes(UserType.INFLUENCER.toLowerCase()));
+
+    localStorage.setItem('---userType', res?.toLowerCase().includes(UserType.INFLUENCER.toLowerCase()) ? UserType.INFLUENCER : UserType.BRAND)
     return response(auth)
   }
 
@@ -116,7 +121,8 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getUserProfile(): Promise<Response.GetUserProfile> {
-    return response(mockProfileInfo[0])
+    const userType = localStorage.getItem('---userType') as UserType
+    return response(mockProfileInfo(userType))
   }
 
   async getAddress(): Promise<Response.GetAddress> {

@@ -36,7 +36,7 @@ export const mockUserIndustry: UserIndustry[] = Array.from({ length: 3 }, (_, in
 }))
 
 
-export const mockProfileInfo: ProfileInfo[] = Array.from({ length: 3 }, (_, index) => ({
+export const mockProfileInfo: ((u: UserType, i?: number) => ProfileInfo) = (userType: UserType, index = Math.ceil(Math.random() * 10)) => ({
   username: `user${index + 1}`,
   publicId: `public-id-${index + 1}`,
   profile: {
@@ -45,7 +45,7 @@ export const mockProfileInfo: ProfileInfo[] = Array.from({ length: 3 }, (_, inde
     lastName: `Doe${index + 1}`,
     email: `john${index + 1}@example.com`,
     phoneNumber: `+1234567890${index + 1}`,
-    userType: UserType.INFLUENCER,
+    userType,
     companyName: `Company ${index + 1}`,
     website: `https://www.example${index + 1}.com`,
     language: null,
@@ -57,7 +57,7 @@ export const mockProfileInfo: ProfileInfo[] = Array.from({ length: 3 }, (_, inde
     bio: `This is a mock bio for user ${index + 1}`,
     settingBackground: `https://example.com/background${index + 1}.jpg`
   }
-}))
+})
 
 export const mockIndustries: Industry[] = [
   {
