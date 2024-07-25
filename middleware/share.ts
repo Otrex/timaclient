@@ -10,6 +10,9 @@ export default defineNuxtRouteMiddleware((to) => {
   const type = to.params.type;
   const publicId = to.params.publicId;
 
+  console.log({ type, c: authStore.authorization.userType });
+
+
   if (authStore.authorization.userType === constants.AGENCY) {
     return navigateTo({
       name: "Campaign",

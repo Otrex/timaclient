@@ -2,7 +2,13 @@
   <div>
     <div class="mb-[3.75rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Industry selection</h1>
-      <p>Select the industry that best describes your Brand (max. of 2)</p>
+      <p>
+        Select the industry that best describes your
+        {{
+          $route.params.type === constants.INFLUENCER ? "Influencing" : "Brand"
+        }}
+        (max. of 2)
+      </p>
     </div>
 
     <div class="flex flex-wrap justify-center mb-[4.3125rem] gap-[1.25rem]">
