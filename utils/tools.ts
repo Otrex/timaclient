@@ -177,8 +177,8 @@ export default {
 
     return color;
   },
-  generationOptions(options: string[]) {
-    return options.map(option => ({ label: capitalize(option), value: option }))
+  generationOptions(options: string[] = []) {
+    return (options || []).map(option => ({ label: capitalize(option), value: option }))
   },
   findLargestArray<T>(arrays: T[][]): T[] | undefined {
     if (arrays.length === 0) return undefined;

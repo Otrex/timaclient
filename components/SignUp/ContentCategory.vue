@@ -60,7 +60,7 @@ const form = reactive({
 });
 
 const disable = (value: string) => {
-  return form.selection.length >= 2 && !form.selection.includes(value);
+  return form?.selection?.length >= 2 && !form.selection.includes(value);
 };
 </script>
 

@@ -58,7 +58,7 @@ export interface Campaign {
   influencer: Influencer;
   creative: Creative;
   status: number | null;
-  createdOn: null;
+  createdOn: null | string | Date;
 }
 
 
@@ -259,9 +259,9 @@ export interface Application {
   userMotivationBrief: string;
   status: string;
   applicationDate: Date;
-  approvedBy: null;
+  approvedBy: null | string;
   submittedBy: string;
-  reviewedBy: null;
+  reviewedBy: null | string;
   createdOn: Date;
   editedOn: Date;
 }

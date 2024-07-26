@@ -49,10 +49,10 @@ const form = reactive({
 });
 
 const disable = (value: string) => {
-  return form.selection.length >= 2 && !form.selection.includes(value);
+  return form?.selection?.length >= 2 && !form.selection.includes(value);
 };
 
-const isReady = computed(() => form.selection.length);
+const isReady = computed(() => form?.selection?.length);
 
 const { execute: proceed, state } = useRequestState({
   action: () => authStore.updateBrandIndustries(form.selection),

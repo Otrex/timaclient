@@ -49,7 +49,7 @@ const form = useWatchedForm({
 });
 
 const disable = (value: string) => {
-  return form.selection.length >= 2 && !form.selection.includes(value);
+  return form?.selection?.length >= 2 && !form.selection.includes(value);
 };
 
 const { execute: proceed, state } = useRequestState({

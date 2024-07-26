@@ -2,15 +2,19 @@
 import { UserType } from "~/lib/enums"
 import type { Core, Payload, Response } from "../../interfaces"
 import type { IResponse } from "../../interfaces/utils"
-import { auth, mockBankList, mockCountries, mockIndustries, mockProfileInfo, mockUserIndustry } from "../mockdata"
+import { auth, generateMockAddress, generateMockApplications, generateMockBankDetails, generateMockCampaignMetrics, generateMockInfluencerBookmarks, generateMockNotification, generateRandomIndustries, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
 import MockUploadAPI from "./upload"
 
 const response = <T>(data: T, message = 'Success') => {
-  return {
-    status: true,
-    message,
-    data
-  }
+  return new Promise<IResponse<T>>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        status: true,
+        message,
+        data
+      })
+    }, Math.ceil(Math.random() * 2000))
+  })
 }
 
 export default class MockTimaAPI extends MockUploadAPI {
@@ -20,33 +24,40 @@ export default class MockTimaAPI extends MockUploadAPI {
 
   async signIn(data: Payload.SignIn): Promise<Response.SignIn> {
     const res = prompt('which type of account do you want?', UserType.INFLUENCER)
-    console.log({ res }, res?.toLowerCase().includes(UserType.INFLUENCER.toLowerCase()));
-
     localStorage.setItem('---userType', res?.toLowerCase().includes(UserType.INFLUENCER.toLowerCase()) ? UserType.INFLUENCER : UserType.BRAND)
     return response(auth)
   }
 
   async createUser(data: Payload.CreateUser): Promise<Response.CreateUser> {
-    return { success: true, data: { message: "User created successfully" } }
+    return response({ message: "User created successfully", publicId: "mock_public_id" })
   }
 
   async verifyOTP(data: Payload.VerifyOTP): Promise<Response.CreateUser> {
-    return { success: true, data: { message: "OTP verified successfully" } }
+    return response({ message: "OTP verified successfully", publicId: "mock_public_id" })
   }
 
   async resendOTP(data: Payload.ResendOTP): Promise<Response.CreateUser> {
-    return { success: true, data: { message: "OTP resent successfully" } }
+    return response({
+      message: "OTP resent successfully",
+      publicId: "mock_public_id"
+    })
   }
 
   async passwordReset(data: Payload.PasswordReset): Promise<Response.CreateUser> {
-    return { success: true, data: { message: "Password reset initiated" } }
+    return response({
+      message: "Password reset initiated",
+      publicId: "mock_public_id"
+    })
   }
 
   async completePasswordReset(
     data: Payload.CompletePasswordReset,
     headers: Payload.CompletePasswordResetHeaders
   ): Promise<Response.CreateUser> {
-    return { success: true, data: { message: "Password reset completed" } }
+    return response({
+      message: "Password reset completed",
+      publicId: "mock_public_id"
+    })
   }
 
   async brandBasicInformationUpdate(
@@ -64,7 +75,8 @@ export default class MockTimaAPI extends MockUploadAPI {
   async influencerCompleteProfileUpdate(
     data: Payload.InfluencerCompleteProfile
   ): Promise<Response.InfluencerCompleteProfile> {
-    return { success: true, data: { message: "Influencer profile updated" } }
+    const profileData = mockProfileInfo(UserType.INFLUENCER).profile
+    return response(profileData)
   }
 
   async getCampaignsOptions(): Promise<Response.GetCampaignOptions> {
@@ -75,13 +87,16 @@ export default class MockTimaAPI extends MockUploadAPI {
     publicId: string,
     industries: string[]
   ): Promise<Response.GetIndustry> {
-    return { success: true, data: { industries: [] } }
+    return response(generateRandomIndustries(15));
   }
 
   async influencerBankDetailsUpdate(
     data: Payload.InfluencerBankDetails
   ): Promise<Response.CreateUser> {
-    return { success: true, data: { message: "Bank details updated" } }
+    return response({
+      message: "Bank details updated",
+      publicId: "mock_public_id"
+    })
   }
 
   async getCountries(): Promise<Response.GetCountries> {
@@ -89,7 +104,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getIndustries(): Promise<Response.GetIndustry> {
-    return response(mockIndustries)
+    return response(generateRandomIndustries(20))
   }
 
   async getBanks(): Promise<Response.GetBankList> {
@@ -101,23 +116,23 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCampaign(publicId: string): Promise<Response.GetCampaign> {
-    return { success: true, data: {} as Core.Campaign }
+    return response(mockCampaign(0))
   }
 
   async getCampaignMetrics(publicId: string): Promise<IResponse<Core.CampaignMetrics[]>> {
-    return { success: true, data: [] }
+    return response(generateMockCampaignMetrics(10))
   }
 
   async deleteCampaign(publicId: string): Promise<Response.GetCampaign> {
-    return { success: true, data: {} as Core.Campaign }
+    return response(mockCampaign(0))
   }
 
   async getCampaigns(payload: Payload.GetCampaigns): Promise<Response.GetCampaigns> {
-    return { success: true, data: { campaigns: [], total: 0 } }
+    return response((new Array(3)).fill(0).map(e => mockCampaign(e)))
   }
 
   async getBrandCampaigns(payload: Payload.GetBrandCampaigns): Promise<Response.GetCampaigns> {
-    return { success: true, data: { campaigns: [], total: 0 } }
+    return response((new Array(10)).fill(0).map(e => mockCampaign(e)))
   }
 
   async getUserProfile(): Promise<Response.GetUserProfile> {
@@ -126,15 +141,15 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getAddress(): Promise<Response.GetAddress> {
-    return { success: true, data: {} as Core.Address }
+    return response(generateMockAddress())
   }
 
   async getBankDetails(): Promise<Response.BankDetailUpdate> {
-    return { success: true, data: {} as Core.BankDetail }
+    return response(generateMockBankDetails())
   }
 
   async getSocials(): Promise<Response.GetSocialTypes> {
-    return { success: true, data: { socials: [] } }
+    return response(generateRandomSocialTypes(7))
   }
 
   async getCreativesOptions(): Promise<Response.GetCreativesOptions> {
@@ -169,25 +184,25 @@ export default class MockTimaAPI extends MockUploadAPI {
     campaignId: string,
     data: Partial<Payload.Filter> = {}
   ): Promise<Response.GetApplications> {
-    return { success: true, data: { applications: [], total: 0 } }
+    return response(generateMockApplications(10))
   }
 
   async getCampaignApplicants(
     campaignId: string,
     data: Payload.Filter
   ): Promise<Response.GetApplications> {
-    return { success: true, data: { applications: [], total: 0 } }
+    return response(generateMockApplications(20))
   }
 
   async getCampaignPendingApplications(
     status: string,
     data: Payload.Filter
   ): Promise<Response.GetApplications> {
-    return { success: true, data: { applications: [], total: 0 } }
+    return response(generateMockApplications(10))
   }
 
   async getNotifications(data: Payload.Filter): Promise<Response.GetNotifications> {
-    return { success: true, data: { notifications: [], total: 0 } }
+    return response(new Array(10).fill(0).map(() => generateMockNotification()))
   }
 
   async getDemographicsInsightById(
@@ -220,15 +235,15 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getApplicationById(publicId: string): Promise<Response.GetApplication> {
-    return { success: true, data: {} as Core.Application }
+    return response(generateMockApplications(1)[0])
   }
 
   async getInfluencerById(publicId: string): Promise<Response.GetSearchInfluencer> {
-    return { success: true, data: {} as Core.Influencer }
+    return response(mockInfluencer)
   }
 
   async getBookmarks(): Promise<IResponse<Core.InfluencerBookmark[]>> {
-    return { success: true, data: [] }
+    return response(generateMockInfluencerBookmarks(5));
   }
 
   async searchInfluencers(filter: Partial<Core.ExploreInfluencerFilter>): Promise<Response.GetApprovedInfluencers> {
