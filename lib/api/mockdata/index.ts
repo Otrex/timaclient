@@ -1,5 +1,5 @@
 import { UserType } from "~/lib/enums";
-import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry } from "~/lib/interfaces/core";
+import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName } from "~/lib/interfaces/core";
 import { type ProfileInfo, type User } from "~/lib/interfaces/core"
 
 const freeImageUrls = [
@@ -404,3 +404,66 @@ export function generateMockNotification(): Notification {
     createdOn: new Date(Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000),
   }
 }
+
+
+export function generateMockCampaignOptions(): CampaignOptions {
+  return {
+    size: ['Nano', 'Micro', 'Macro', 'Mega'],
+    gender: ['Male', 'Female', 'Non-binary', 'All'],
+    ageGroup: ['13-17', '18-24', '25-34', '35-44', '45-54', '55+'],
+    location: ['North America', 'Europe', 'Asia', 'Africa', 'South America', 'Australia'],
+    monthlyIncome: ['$0-$1000', '$1001-$3000', '$3001-$5000', '$5001-$10000', '$10001+']
+  }
+}
+
+
+export function generateMockCampaignStrategies(): {
+  contentType: string[]
+  contentPlacement: string[]
+  creativeTone: string[]
+  objectiveAwareness: string[]
+  objectiveAcquisition: string[]
+} {
+  return {
+    contentType: ['Video', 'Image', 'Text', 'Carousel', 'Story'],
+    contentPlacement: ['Feed', 'Stories', 'Reels', 'Explore', 'In-Stream'],
+    creativeTone: ['Humorous', 'Serious', 'Inspirational', 'Informative', 'Emotional'],
+    objectiveAwareness: ['Brand Awareness', 'Reach', 'Video Views', 'Ad Recall Lift'],
+    objectiveAcquisition: ['Website Traffic', 'App Installs', 'Lead Generation', 'Conversions', 'Store Traffic']
+  }
+}
+
+export function generateMockPaymentMethod(): PaymentMethod {
+  const paymentTypes = ['Credit Card', 'Debit Card', 'PayPal', 'Bank Transfer']
+
+  return {
+    name: `Payment Method ${Math.floor(Math.random() * 1000)}`,
+    type: paymentTypes[Math.floor(Math.random() * paymentTypes.length)],
+    createdOn: new Date()
+  }
+}
+
+export function generateRandomPaymentMethods(num: number): PaymentMethod[] {
+  const paymentMethods = []
+  for (let i = 0; i < num; i++) {
+    paymentMethods.push(generateMockPaymentMethod())
+  }
+  return paymentMethods
+}
+
+
+export function generateMockCampaignsByName(num: number): CampaignByName[] {
+  const campaigns: CampaignByName[] = []
+  for (let i = 0; i < num; i++) {
+    campaigns.push({
+      campaignId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
+      name: `Campaign ${i + 1}`,
+      banner: `https://example.com/banner-${i + 1}.jpg`,
+      description: `This is a mock description for Campaign ${i + 1}.`
+    })
+  }
+  return campaigns
+}
+
+
+

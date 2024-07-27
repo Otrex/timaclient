@@ -2,7 +2,7 @@
 import { UserType } from "~/lib/enums"
 import type { Core, Payload, Response } from "../../interfaces"
 import type { IResponse } from "../../interfaces/utils"
-import { auth, generateMockAddress, generateMockApplications, generateMockBankDetails, generateMockCampaignMetrics, generateMockInfluencerBookmarks, generateMockNotification, generateRandomIndustries, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
+import { auth, generateMockAddress, generateMockApplications, generateMockBankDetails, generateMockCampaignMetrics, generateMockCampaignOptions, generateMockCampaignsByName, generateMockCampaignStrategies, generateMockInfluencerBookmarks, generateMockNotification, generateRandomIndustries, generateRandomPaymentMethods, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
 import MockUploadAPI from "./upload"
 
 const response = <T>(data: T, message = 'Success') => {
@@ -80,7 +80,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCampaignsOptions(): Promise<Response.GetCampaignOptions> {
-    return { success: true, data: { options: [] } }
+    return response([generateMockCampaignOptions()])
   }
 
   async brandIndustryUpdate(
@@ -136,8 +136,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getUserProfile(): Promise<Response.GetUserProfile> {
-    const userType = localStorage.getItem('---userType') as UserType
-    return response(mockProfileInfo(userType))
+    return response(mockProfileInfo(localStorage.getItem('---userType') as UserType))
   }
 
   async getAddress(): Promise<Response.GetAddress> {
@@ -153,11 +152,11 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCreativesOptions(): Promise<Response.GetCreativesOptions> {
-    return { success: true, data: { options: [] } }
+    return response([generateMockCampaignStrategies()])
   }
 
   async getPaymentMethods(): Promise<Response.GetPaymentMethods> {
-    return { success: true, data: { methods: [] } }
+    return response(generateRandomPaymentMethods(10))
   }
 
   async getUserIndustries(publicId: string): Promise<Response.UpdateIndustries> {
@@ -218,7 +217,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCampaignsByName(name: string, filter: Partial<Core.SearchFilter>): Promise<IResponse<Core.CampaignByName[]>> {
-    return { success: true, data: [] }
+    return response(generateMockCampaignsByName(10))
   }
 
   async getCampaignApplicationsByStatus(

@@ -269,9 +269,9 @@ const search = () => {
   }
 };
 
-const searchFilter = (inf: Core.InfluencerTransaction[]) => {
+const searchFilter = (inf: Core.InfluencerTransaction[] = []) => {
   const regex = new RegExp(searchQuery.value, "i");
-  return inf.filter((str) => regex.test(str.campaignName));
+  return (inf || []).filter((str) => regex.test(str.campaignName));
 };
 
 const paymentStats = ref<Core.InfluencerPaymentStats>();
