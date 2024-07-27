@@ -465,5 +465,16 @@ export function generateMockCampaignsByName(num: number): CampaignByName[] {
   return campaigns
 }
 
+export function generateMockPaymentStatsData() {
+  const randomNumber = () => Math.floor(Math.random() * 10000) + 1000; // Generates a random number between 1000 and 10000
+
+  return {
+    totalBudget: randomNumber(),
+    totalClientPaid: randomNumber(),
+    totalAmountPaid: randomNumber(),
+    totalBalance: randomNumber()
+  };
+}
+
 
 

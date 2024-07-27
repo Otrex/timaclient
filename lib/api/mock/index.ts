@@ -2,7 +2,7 @@
 import { UserType } from "~/lib/enums"
 import type { Core, Payload, Response } from "../../interfaces"
 import type { IResponse } from "../../interfaces/utils"
-import { auth, generateMockAddress, generateMockApplications, generateMockBankDetails, generateMockCampaignMetrics, generateMockCampaignOptions, generateMockCampaignsByName, generateMockCampaignStrategies, generateMockInfluencerBookmarks, generateMockNotification, generateRandomIndustries, generateRandomPaymentMethods, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
+import { auth, generateMockAddress, generateMockApplications, generateMockBankDetails, generateMockCampaignMetrics, generateMockCampaignOptions, generateMockCampaignsByName, generateMockCampaignStrategies, generateMockInfluencerBookmarks, generateMockNotification, generateMockPaymentStatsData, generateRandomIndustries, generateRandomPaymentMethods, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
 import MockUploadAPI from "./upload"
 
 const response = <T>(data: T, message = 'Success') => {
@@ -160,7 +160,11 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getUserIndustries(publicId: string): Promise<Response.UpdateIndustries> {
-    return { success: true, data: { industries: [] } }
+    return response({
+      userPublicId: 'xxxxxxx',
+      selectedIndustries: [],
+      createdOn: new Date(),
+    })
   }
 
   async getPaymentStatus(): Promise<Response.GetPaymentStatus> {
@@ -274,7 +278,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getPaymentStats(): Promise<Response.GetPaymentStats> {
-    return { success: true, data: {} as Core.PaymentStats }
+    return response(generateMockPaymentStatsData())
   }
 
   async getCampaignTransactions(): Promise<Response.GetCampaignPayments> {
