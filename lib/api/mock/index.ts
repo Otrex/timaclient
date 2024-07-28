@@ -47,11 +47,11 @@ const response = <T>(data: T, message = "Success") => {
       resolve({
         status: true,
         message,
-        data
-      })
-    }, Math.ceil(Math.random() * 1500))
-  })
-}
+        data,
+      });
+    }, Math.ceil(Math.random() * 1500));
+  });
+};
 
 export default class MockTimaAPI extends MockUploadAPI {
   async refreshAuth(token: string = "mock_token"): Promise<Response.SignIn> {
@@ -115,13 +115,16 @@ export default class MockTimaAPI extends MockUploadAPI {
   async brandBasicInformationUpdate(
     data: Payload.BrandBasicInformation
   ): Promise<Response.BrandBasicInformation> {
-    return response(mockProfileInfo(UserType.BRAND).profile, "Brand basic information updated")
+    return response(
+      mockProfileInfo(UserType.BRAND).profile,
+      "Brand basic information updated"
+    );
   }
 
   async brandAddressDocumentUpdate(
     data: Payload.BrandAddressDocumentation
   ): Promise<Response.BrandAddressDocumentation> {
-    return response(generateMockAddress(), "Brand address document updated")
+    return response(generateMockAddress(), "Brand address document updated");
   }
 
   async influencerCompleteProfileUpdate(
@@ -355,8 +358,12 @@ export default class MockTimaAPI extends MockUploadAPI {
     );
   }
 
-  async bookmarkInfluencer(data: Payload.AddInfluencerBookmark): Promise<Response.GetBookmarks> {
-    return response(new Array(10).fill(0).map(e => generateMockFullCampaign()))
+  async bookmarkInfluencer(
+    data: Payload.AddInfluencerBookmark
+  ): Promise<Response.GetBookmarks> {
+    return response(
+      new Array(10).fill(0).map((e) => generateMockFullCampaign())
+    );
   }
 
   async deleteInfluencerBookmark(title: string): Promise<void> {
@@ -364,7 +371,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getBookmarkedInfluencers(): Promise<Response.GetApprovedInfluencers> {
-    return response(generateMockApprovedInfluencersData(10))
+    return response(generateMockApprovedInfluencersData(10));
   }
 
   async deleteBookmark(name: string): Promise<void> {
@@ -376,23 +383,29 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCampaignTransactions(): Promise<Response.GetCampaignPayments> {
-    return response(generateMockCampaignTransactions())
+    return response(generateMockCampaignTransactions());
   }
 
   async getInfluencerTransactions(): Promise<Response.GetInfluencerTransactions> {
-    return response(generateMockInfluencerTransactions(5))
+    return response(generateMockInfluencerTransactions(5));
   }
 
-  async getInfluencerTransactionsByStatus(status: string): Promise<Response.GetInfluencerTransactions> {
-    return response(generateMockInfluencerTransactions(5, status))
+  async getInfluencerTransactionsByStatus(
+    status: string
+  ): Promise<Response.GetInfluencerTransactions> {
+    return response(generateMockInfluencerTransactions(5, status));
   }
 
-  async getPaymentStatistics(year?: string): Promise<Response.GetPaymentStatistics> {
-    return response(generateMockPaymentStatistics(12))
+  async getPaymentStatistics(
+    year?: string
+  ): Promise<Response.GetPaymentStatistics> {
+    return response(generateMockPaymentStatistics(12));
   }
 
-  async getInfluencersByIntent(payload: any): Promise<Response.GetCampaignPayments> {
-    return response(generateMockCampaignTransactions())
+  async getInfluencersByIntent(
+    payload: any
+  ): Promise<Response.GetCampaignPayments> {
+    return response(generateMockCampaignTransactions());
   }
 
   async getLatestInfluencers(): Promise<Response.GetInfluencers> {
@@ -493,7 +506,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   async updateBrandInformation(
     data: Payload.UpdateBrandInformation
   ): Promise<Response.UpdateBrandInformation> {
-    return { success: true, data: { message: "Brand information updated" } };
+    return response(generateMockUser(1)[0]);
   }
 
   async createCampaign(
