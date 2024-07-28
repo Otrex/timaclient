@@ -32,7 +32,8 @@ import {
   generateMockFullCampaign,
   generateMockCampaignTransactions,
   generateMockInfluencerTransactions,
-  generateMockPaymentStatistics
+  generateMockPaymentStatistics,
+  generateMockCampaignData
 } from "../mockdata"
 import MockUploadAPI from "./upload"
 
