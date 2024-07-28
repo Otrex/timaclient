@@ -1,4 +1,5 @@
 import { UserType } from "~/lib/enums";
+import type { Core } from "~/lib/interfaces";
 import type {
   Address,
   Application,
@@ -24,9 +25,6 @@ import type {
   SocialMediaInsight,
   DemographyInsight,
   FullCampaign,
-  CampaignTransaction,
-  InfluencerTransaction,
-  PaymentStatistics,
 } from "~/lib/interfaces/core";
 import { type ProfileInfo, type User } from "~/lib/interfaces/core";
 
@@ -222,7 +220,7 @@ export const generateRandomSocialTypes = (count: number): SocialType[] => {
     // { name: 'Twitter', logo: 'twitter-logo.png' },
     // { name: 'LinkedIn', logo: 'linkedin-logo.png' },
     // { name: 'YouTube', logo: 'youtube-logo.png' },
-    { name: "TicTok", logo: "tiktok-logo.png" },
+    // { name: 'TicTok', logo: 'tiktok-logo.png' }
   ];
   return socialTypes;
 };
@@ -389,7 +387,7 @@ export function generateMockApplications(count: number): Application[] {
       phoneNumber: `+1 (555) ${String(100 + i).padStart(3, "0")}-${String(
         1000 + i
       ).slice(1)}`,
-      profilePicture: getRandomImage(),
+      profilePicture: `https://example.com/profile-${i + 1}.jpg`,
       socialMediaPlatforms: ["Instagram", "TikTok", "YouTube"]
         .sort(() => 0.5 - Math.random())
         .slice(0, 2),
@@ -660,7 +658,7 @@ export function generateMockCampaignsByName(num: number): CampaignByName[] {
     campaigns.push({
       campaignId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
       name: `Campaign ${i + 1}`,
-      banner: getRandomImage(),
+      banner: `https://example.com/banner-${i + 1}.jpg`,
       description: `This is a mock description for Campaign ${i + 1}.`,
     });
   }
@@ -750,7 +748,7 @@ export function generateMockApplicationsData(num: number): Application[] {
           : undefined,
       email: `influencer${i + 1}@example.com`,
       phoneNumber: `+1${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-      profilePicture: getRandomImage(),
+      profilePicture: `https://example.com/profile-${i + 1}.jpg`,
       socialMediaPlatforms: ["Instagram", "TikTok", "YouTube"]
         .sort(() => 0.5 - Math.random())
         .slice(0, Math.floor(Math.random() * 3) + 1),
@@ -762,7 +760,7 @@ export function generateMockApplicationsData(num: number): Application[] {
       ],
       userExperienceBrief: `Mock experience brief for Influencer ${i + 1}.`,
       userMotivationBrief: `Mock motivation brief for Influencer ${i + 1}.`,
-      status: ["Pending", "Approved", "Rejected"].map((e) => e.toUpperCase())[
+      status: ["Pending", "Approved", "Rejected"][
         Math.floor(Math.random() * 3)
       ],
       applicationDate: new Date(
@@ -952,7 +950,9 @@ export function generateMockFullCampaign(): FullCampaign {
       phoneNumber: `+1${Math.floor(Math.random() * 1000000000)
         .toString()
         .padStart(10, "0")}`,
-      profilePicture: getRandomImage(),
+      profilePicture: `https://example.com/profile_${Math.random()
+        .toString(36)
+        .substr(2, 8)}.jpg`,
     },
     creative: {
       paymentType: ["Fixed", "Per Post", "Performance Based"][
@@ -993,7 +993,9 @@ export function generateMockFullCampaign(): FullCampaign {
       ]
         .sort(() => 0.5 - Math.random())
         .slice(0, Math.floor(Math.random() * 3) + 1),
-      thumbnail: getRandomImage(),
+      thumbnail: `https://example.com/thumbnail_${Math.random()
+        .toString(36)
+        .substr(2, 8)}.jpg`,
       visibility: Math.random() < 0.5,
     },
     status: Math.floor(Math.random() * 5),
@@ -1004,107 +1006,76 @@ export function generateMockFullCampaign(): FullCampaign {
   };
 }
 
-export function generateMockCampaignTransactions(
-  count: number = 10
-): CampaignTransaction[] {
-  const transactions: CampaignTransaction[] = [];
+export function generateMockCampaignData(count: number): Core.Campaign[] {
+  const statuses = [null, 0, 1, 2]; // Example statuses
+
+  const mockData: Core.Campaign[] = [];
 
   for (let i = 0; i < count; i++) {
-    const transaction: CampaignTransaction = {
-      transactionDate: new Date(
-        Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000
-      ),
-      reference: `REF-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
-      amount: Math.floor(Math.random() * 10000) + 100,
-      balance: Math.floor(Math.random() * 50000) + 1000,
-      status: ["Pending", "Completed", "Failed"].map((e) => e.toUpperCase())[
-        Math.floor(Math.random() * 3)
-      ],
-      publicId: `TRANS-${Math.random().toString(36).substr(2, 9)}`,
-      type: ["Credit", "Debit"][Math.floor(Math.random() * 2)],
-      name: `Transaction ${i + 1}`,
+    const entity: Core.Campaign = {
+      publicId: generateRandomString(8),
+      brandName: `Brand ${generateRandomString(5)}`,
+      overview: {
+        name: `Overview Name ${generateRandomString(5)}`,
+        briefDescription: `This is a brief description for entity ${i + 1}.`,
+        website: `https://website${i + 1}.com`,
+        plannedBudget: Math.floor(Math.random() * 1000000),
+        costPerPost: Math.floor(Math.random() * 10000),
+        socialMediaPlatforms: ["Facebook", "Instagram", "Twitter"],
+      },
+      influencer: {
+        influencerCategory: ["Lifestyle", "Tech", "Fitness"],
+        audienceSize: ["Small", "Medium", "Large"],
+        audienceGender: ["Male", "Female", "Non-binary"],
+        audienceAgeGroup: ["18-24", "25-34", "35-44", "45+"],
+        audienceLocation: ["USA", "Canada", "UK", "Australia"],
+        publicId: "dshhhd",
+        username: "nsmskks",
+        fullName: "sjsjjs",
+        email: "rfgh@ghhs.com",
+        phoneNumber: "1232333",
+        profilePicture: "hsgshshhshshshshh",
+      },
+      creative: {
+        paymentType: "Fixed",
+        startDate: generateRandomDate(),
+        endDate: generateRandomDate(),
+        contentType: ["Video", "Image", "Text"],
+        contentPlacement: ["Feed", "Story", "Reels"],
+        creativeBrief: `This is the creative brief for entity ${i + 1}.`,
+        rules: `These are the rules for entity ${i + 1}.`,
+        creativeTone: ["Serious", "Humorous", "Inspirational"],
+        referenceLink: `https://reference${i + 1}.com`,
+        awarenessObjective: ["Brand Awareness", "Engagement"],
+        acquisitionObjective: ["Leads", "Sales"],
+        thumbnail: `https://thumbnail${i + 1}.com`,
+        visibility: Math.random() < 0.5,
+      },
+      status: statuses[Math.floor(Math.random() * statuses.length)],
+      createdOn: generateRandomDate(),
     };
 
-    transactions.push(transaction);
+    mockData.push(entity);
   }
-
-  return transactions;
+  return mockData;
 }
 
-export function generateMockInfluencerTransactions(
-  count: number = 10,
-  status?: any
-): InfluencerTransaction[] {
-  const transactions: InfluencerTransaction[] = [];
-
-  for (let i = 0; i < count; i++) {
-    const transaction: InfluencerTransaction = {
-      publicId: `INFL-TRANS-${Math.random().toString(36).substr(2, 9)}`,
-      campaignName: `Campaign ${Math.floor(Math.random() * 100) + 1}`,
-      brandName: `Brand ${Math.floor(Math.random() * 50) + 1}`,
-      earning: Math.floor(Math.random() * 10000) + 100,
-      balance: Math.floor(Math.random() * 50000) + 1000,
-      status:
-        status ||
-        ["pending", "completed", "failed"].map((e) => e.toUpperCase())[
-          Math.floor(Math.random() * 3)
-        ],
-      transactionDate: new Date(
-        Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000
-      ),
-      createdOn: new Date(
-        Date.now() - Math.floor(Math.random() * 180) * 24 * 60 * 60 * 1000
-      ),
-      campaignImage: getRandomImage(),
-    };
-
-    transactions.push(transaction);
+function generateRandomString(length: number): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-
-  return transactions;
+  return result;
 }
 
-export function generateMockPaymentStatistics(
-  count: number = 5
-): PaymentStatistics[] {
-  const paymentStats: PaymentStatistics[] = [];
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ].map((e) => e.substring(0, 3));
-
-  for (let i = 0; i < count; i++) {
-    const paymentStat: PaymentStatistics = {
-      name: months[i % 12],
-      index: i,
-      legends: [
-        {
-          title: "Completed".toUpperCase(),
-          value: Math.floor(Math.random() * 1000) + 100,
-        },
-        {
-          title: "Pending".toUpperCase(),
-          value: Math.floor(Math.random() * 500) + 50,
-        },
-        {
-          title: "Failed".toUpperCase(),
-          value: Math.floor(Math.random() * 100) + 10,
-        },
-      ],
-    };
-
-    paymentStats.push(paymentStat);
-  }
-
-  return paymentStats;
+function generateRandomDate(): string {
+  const start = new Date(2000, 0, 1);
+  const end = new Date();
+  const date = new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+  return date.toISOString();
 }
