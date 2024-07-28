@@ -182,10 +182,12 @@ const getCampaignPendingApplications = useRequestState({
   onSuccess: (response) => {
     pendingApplication.value = response.data.map((e) => ({
       ...(e as any),
-      socialMediaPlatforms: JSON.parse((e as any).socialMediaPlatform),
+      socialMediaPlatforms: JSON.parse((e as any).socialMediaPlatforms),
     }));
   },
   onError: (err) => {
+    console.log(err);
+
     if (err.title) {
       notify({
         type: "error",

@@ -532,7 +532,7 @@ export function generateMockApplicationsData(num: number): Application[] {
       email: `influencer${i + 1}@example.com`,
       phoneNumber: `+1${Math.floor(1000000000 + Math.random() * 9000000000)}`,
       profilePicture: getRandomImage(),
-      socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      socialMediaPlatforms: JSON.stringify(['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1)) as any,
       collaboration: ['Paid', 'Unpaid', 'Product Exchange'][Math.floor(Math.random() * 3)],
       userExperience: ['Beginner', 'Intermediate', 'Expert'][Math.floor(Math.random() * 3)],
       userExperienceBrief: `Mock experience brief for Influencer ${i + 1}.`,
@@ -662,7 +662,7 @@ export function generateMockFullCampaign(): FullCampaign {
       website: `https://www.${Math.random().toString(36).substr(2, 8)}.com`,
       plannedBudget: Math.floor(Math.random() * 100000) + 10000,
       costPerPost: Math.floor(Math.random() * 1000) + 100,
-      socialMediaPlatforms: ['Instagram', 'Facebook', 'Twitter'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      socialMediaPlatforms: JSON.stringify(['Instagram', 'Facebook', 'Twitter'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1)) as any,
     },
     influencer: {
       influencerCategory: ['Fashion', 'Beauty', 'Lifestyle', 'Travel', 'Food'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
