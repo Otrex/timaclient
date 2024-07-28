@@ -1,6 +1,6 @@
 import { UserType } from "~/lib/enums";
 import type { Core } from "~/lib/interfaces";
-import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer, CampaignDistribution, InteractionSummary, SocialMediaInsight, DemographyInsight, FullCampaign, CampaignTransaction, InfluencerTransaction, PaymentStatistics } from "~/lib/interfaces/core";
+import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer, CampaignDistribution, InteractionSummary, SocialMediaInsight, DemographyInsight, FullCampaign, CampaignTransaction, InfluencerTransaction, PaymentStatistics, InfluencerByLatest, InfluencerCampaignExperience } from "~/lib/interfaces/core";
 import { type ProfileInfo, type User } from "~/lib/interfaces/core"
 
 const freeImageUrls = [
@@ -860,4 +860,73 @@ export function generateMockPaymentStatistics(count: number = 5): PaymentStatist
   return paymentStats
 }
 
+export function generateMockInfluencerByLatest(count: number = 5): InfluencerByLatest[] {
+  const influencers: InfluencerByLatest[] = []
 
+  for (let i = 0; i < count; i++) {
+    const influencer: InfluencerByLatest = {
+      userName: `influencer${i + 1}`,
+      profilePicture: getRandomImage(),
+      socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'][Math.floor(Math.random() * 3)],
+      applicationDate: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString(),
+      userPublicId: `user-${Math.random().toString(36).substr(2, 9)}`,
+      insight: {
+        businessOwnerIgId: `owner${i + 1}`,
+        businessIgId: `business${i + 1}`,
+        businessHandle: `@business${i + 1}`,
+        businessName: `Business ${i + 1}`,
+        biography: `This is the biography for Business ${i + 1}`,
+        website: `https://www.business${i + 1}.com`,
+        profilePictureUrl: getRandomImage(),
+        followers: Math.floor(Math.random() * 100000) + 1000,
+        totalMedia: Math.floor(Math.random() * 1000) + 100,
+        totalComments: Math.floor(Math.random() * 10000) + 1000,
+        avgComments: Math.floor(Math.random() * 100) + 10,
+        totalLikes: Math.floor(Math.random() * 100000) + 10000,
+        avgLikes: Math.floor(Math.random() * 1000) + 100,
+        avgEngagement: Math.ceil(Math.random() * 10 + 1)
+      }
+    }
+
+    influencers.push(influencer)
+  }
+
+  return influencers
+}
+
+export function generateMockTopCategories(count: number = 10): string[] {
+  const possibleCategories = [
+    'Fashion', 'Beauty', 'Lifestyle', 'Travel', 'Food', 'Fitness', 'Technology',
+    'Gaming', 'Music', 'Art', 'Photography', 'Business', 'Education', 'Entertainment',
+    'Sports', 'Parenting', 'Pets', 'Home Decor', 'Automotive', 'Wellness'
+  ]
+
+  const categories: string[] = [];
+
+  for (let i = 0; i < count; i++) {
+    categories.push(possibleCategories[Math.floor(Math.random() * possibleCategories.length)])
+  }
+
+  return [...new Set(categories)]
+}
+
+export function generateMockInfluencerCampaignExperience(count: number = 5): InfluencerCampaignExperience[] {
+  const experiences: InfluencerCampaignExperience[] = []
+
+  for (let i = 0; i < count; i++) {
+    const startDate = new Date(Date.now() - Math.floor(Math.random() * 365) * 24 * 60 * 60 * 1000)
+    const endDate = new Date(startDate.getTime() + Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000)
+
+    const experience: InfluencerCampaignExperience = {
+      campaignName: `Campaign ${i + 1}`,
+      campaignId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
+      campaignBanner: getRandomImage(),
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString()
+    }
+
+    experiences.push(experience)
+  }
+
+  return experiences
+}
