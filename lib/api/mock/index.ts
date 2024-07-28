@@ -28,7 +28,9 @@ import {
   mockCampaign,
   mockCountries,
   mockProfileInfo,
-  mockUserIndustry
+  mockUserIndustry,
+  generateMockDemographyInsight,
+  generateMockFullCampaign
 } from "../mockdata"
 import MockUploadAPI from "./upload"
 
@@ -287,11 +289,11 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getDemographyInsights(data: Payload.DemographyInsight): Promise<Response.GetDemographyInsights> {
-    return { success: true, data: {} as Core.DemographyInsights }
+    return response(new Array(10).fill(0).map(e => generateMockDemographyInsight()))
   }
 
   async addBookmark(data: Payload.AddBookmark): Promise<Response.GetBookmarks> {
-    return { success: true, data: { bookmarks: [] } }
+    return response(new Array(10).fill(0).map(e => generateMockFullCampaign()))
   }
 
   async bookmarkInfluencer(data: Payload.AddInfluencerBookmark): Promise<Response.GetBookmarks> {

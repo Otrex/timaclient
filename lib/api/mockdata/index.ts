@@ -1,5 +1,5 @@
 import { UserType } from "~/lib/enums";
-import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer, CampaignDistribution, InteractionSummary, SocialMediaInsight } from "~/lib/interfaces/core";
+import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer, CampaignDistribution, InteractionSummary, SocialMediaInsight, DemographyInsight, FullCampaign } from "~/lib/interfaces/core";
 import { type ProfileInfo, type User } from "~/lib/interfaces/core"
 
 const freeImageUrls = [
@@ -642,4 +642,58 @@ export function generateMockSocialMediaInsight(): SocialMediaInsight {
 }
 
 
+export function generateMockDemographyInsight(): DemographyInsight {
+  return {
+    name: `Demographic ${Math.random().toString(36).substr(2, 6)}`,
+    value1: Math.floor(Math.random() * 100),
+    value2: Math.floor(Math.random() * 100),
+    value3: Math.floor(Math.random() * 100),
+  }
+}
+
+export function generateMockFullCampaign(): FullCampaign {
+  return {
+    publicId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
+    brandName: `Brand ${Math.random().toString(36).substr(2, 6)}`,
+    overview: {
+      name: `Campaign ${Math.random().toString(36).substr(2, 6)}`,
+      briefDescription: `This is a mock campaign description for ${Math.random().toString(36).substr(2, 6)}`,
+      website: `https://www.${Math.random().toString(36).substr(2, 8)}.com`,
+      plannedBudget: Math.floor(Math.random() * 100000) + 10000,
+      costPerPost: Math.floor(Math.random() * 1000) + 100,
+      socialMediaPlatforms: ['Instagram', 'Facebook', 'Twitter'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+    },
+    influencer: {
+      influencerCategory: ['Fashion', 'Beauty', 'Lifestyle', 'Travel', 'Food'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      audienceSize: ['1K-10K', '10K-50K', '50K-100K', '100K+'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 2) + 1),
+      audienceGender: ['Male', 'Female', 'Other'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      audienceAgeGroup: ['13-17', '18-24', '25-34', '35-44', '45+'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      audienceLocation: ['USA', 'UK', 'Canada', 'Australia', 'Other'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      publicId: `user-${Math.random().toString(36).substr(2, 9)}`,
+      username: `user_${Math.random().toString(36).substr(2, 8)}`,
+      fullName: `${['John', 'Jane', 'Alex', 'Emma', 'Michael'][Math.floor(Math.random() * 5)]} ${['Smith', 'Johnson', 'Williams', 'Brown', 'Jones'][Math.floor(Math.random() * 5)]}`,
+      email: `${Math.random().toString(36).substr(2, 8)}@example.com`,
+      phoneNumber: `+1${Math.floor(Math.random() * 1000000000).toString().padStart(10, '0')}`,
+      profilePicture: `https://example.com/profile_${Math.random().toString(36).substr(2, 8)}.jpg`
+    },
+    creative: {
+      paymentType: ['Fixed', 'Per Post', 'Performance Based'][Math.floor(Math.random() * 3)],
+      startDate: new Date(Date.now() + Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+      endDate: new Date(Date.now() + (Math.floor(Math.random() * 60) + 30) * 24 * 60 * 60 * 1000) as any,
+      contentType: ['Photo', 'Video', 'Story', 'Reel'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      contentPlacement: ['Feed', 'Story', 'IGTV'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      creativeBrief: `This is a mock creative brief for ${Math.random().toString(36).substr(2, 6)}`,
+      rules: `These are mock rules for ${Math.random().toString(36).substr(2, 6)}`,
+      creativeTone: ['Casual', 'Professional', 'Humorous', 'Serious'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      referenceLink: `https://www.${Math.random().toString(36).substr(2, 8)}.com/reference`,
+      awarenessObjective: ['Brand Awareness', 'Reach'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 2) + 1),
+      acquisitionObjective: ['Traffic', 'Engagement', 'App Installs', 'Video Views'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      thumbnail: `https://example.com/thumbnail_${Math.random().toString(36).substr(2, 8)}.jpg`,
+      visibility: Math.random() < 0.5,
+    },
+    status: Math.floor(Math.random() * 5),
+    createdBy: `user-${Math.random().toString(36).substr(2, 9)}`,
+    createdOn: new Date(Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000),
+  }
+}
 
