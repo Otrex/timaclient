@@ -34,9 +34,12 @@ import {
   generateMockInfluencerTransactions,
   generateMockPaymentStatistics,
   generateMockCampaignData,
-  generateMockUser,
-} from "../mockdata";
-import MockUploadAPI from "./upload";
+  generateMockInfluencerByLatest,
+  generateMockTopCategories,
+  generateMockInfluencerCampaignExperience
+} from "../mockdata"
+import MockUploadAPI from "./upload"
+
 
 const response = <T>(data: T, message = "Success") => {
   return new Promise<IResponse<T>>((resolve) => {
@@ -416,7 +419,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getTopCategories(): Promise<IResponse<string[]>> {
-    return response(generateMockTopCategories(5));
+    return response(generateMockTopCategories(5))
   }
 
   async getInfluencersByCategory(
@@ -441,20 +444,18 @@ export default class MockTimaAPI extends MockUploadAPI {
     fileName: string
   ): Promise<Response.GetUserProfile> {
     return response({
-      username: "user001",
-      publicId: "xxxxxxxx",
-      profile: mockProfileInfo(localStorage.getItem("---userType") as UserType)
-        .profile,
-    });
+      username: 'user001',
+      publicId: 'xxxxxxxx',
+      profile: mockProfileInfo(localStorage.getItem("---userType") as UserType).profile
+    })
   }
 
   async updateCoverImage(fileName: string): Promise<Response.GetUserProfile> {
     return response({
-      username: "user001",
-      publicId: "xxxxxxxx",
-      profile: mockProfileInfo(localStorage.getItem("---userType") as UserType)
-        .profile,
-    });
+      username: 'user001',
+      publicId: 'xxxxxxxx',
+      profile: mockProfileInfo(localStorage.getItem("---userType") as UserType).profile
+    })
   }
 
   async updateSocialPlatforms(
