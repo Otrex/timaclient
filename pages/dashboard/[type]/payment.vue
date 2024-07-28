@@ -343,6 +343,7 @@ const getPaymentStatistics = useRequestState({
   onSuccess: (response) => {
     const largestLegend = generateBarColors(response.data);
     const $data = regroup(response.data);
+
     const datasets: Core.DataSet[] = [];
     for (let i = 0; i < largestLegend.length; i++) {
       const legend = largestLegend[i];
