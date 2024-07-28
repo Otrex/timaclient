@@ -1,32 +1,7 @@
 import { UserType } from "~/lib/enums";
-import type { Core } from "~/lib/interfaces";
-import type {
-  Address,
-  Application,
-  Notification,
-  Authentication,
-  Bank,
-  BankDetails,
-  Campaign,
-  CampaignMetrics,
-  Country,
-  Industry,
-  InfluencerBookmark,
-  SocialType,
-  UserIndustry,
-  CampaignOptions,
-  PaymentMethod,
-  CampaignByName,
-  AgeDemographicsData,
-  SearchInfluencer,
-  ApprovedCampaignInfluencer,
-  CampaignDistribution,
-  InteractionSummary,
-  SocialMediaInsight,
-  DemographyInsight,
-  FullCampaign,
-} from "~/lib/interfaces/core";
-import { type ProfileInfo, type User } from "~/lib/interfaces/core";
+
+import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer, CampaignDistribution, InteractionSummary, SocialMediaInsight, DemographyInsight, FullCampaign, CampaignTransaction, InfluencerTransaction, PaymentStatistics } from "~/lib/interfaces/core";
+import { type ProfileInfo, type User } from "~/lib/interfaces/core"
 
 const freeImageUrls = [
   "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2FtcGFpZ258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
@@ -220,10 +195,10 @@ export const generateRandomSocialTypes = (count: number): SocialType[] => {
     // { name: 'Twitter', logo: 'twitter-logo.png' },
     // { name: 'LinkedIn', logo: 'linkedin-logo.png' },
     // { name: 'YouTube', logo: 'youtube-logo.png' },
-    // { name: 'TicTok', logo: 'tiktok-logo.png' }
-  ];
-  return socialTypes;
-};
+    { name: 'TicTok', logo: 'tiktok-logo.png' }
+  ]
+  return socialTypes
+}
 
 export const mockCountries: Country[] = [
   {
@@ -384,15 +359,11 @@ export function generateMockApplications(count: number): Application[] {
       biography: `Biography for User ${i + 1}`,
       referenceLink: `https://example.com/reference-${i + 1}`,
       email: `user${i + 1}@example.com`,
-      phoneNumber: `+1 (555) ${String(100 + i).padStart(3, "0")}-${String(
-        1000 + i
-      ).slice(1)}`,
-      profilePicture: `https://example.com/profile-${i + 1}.jpg`,
-      socialMediaPlatforms: ["Instagram", "TikTok", "YouTube"]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 2),
-      collaboration: ["Paid", "Unpaid", "Product Exchange"][i % 3],
-      userExperience: ["Beginner", "Intermediate", "Expert"][i % 3],
+      phoneNumber: `+1 (555) ${String(100 + i).padStart(3, '0')}-${String(1000 + i).slice(1)}`,
+      profilePicture: getRandomImage(),
+      socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, 2),
+      collaboration: ['Paid', 'Unpaid', 'Product Exchange'][i % 3],
+      userExperience: ['Beginner', 'Intermediate', 'Expert'][i % 3],
       userExperienceBrief: `Experience brief for User ${i + 1}`,
       userMotivationBrief: `Motivation brief for User ${i + 1}`,
       status: ["Pending", "Approved", "Rejected"][i % 3],
@@ -658,9 +629,9 @@ export function generateMockCampaignsByName(num: number): CampaignByName[] {
     campaigns.push({
       campaignId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
       name: `Campaign ${i + 1}`,
-      banner: `https://example.com/banner-${i + 1}.jpg`,
-      description: `This is a mock description for Campaign ${i + 1}.`,
-    });
+      banner: getRandomImage(),
+      description: `This is a mock description for Campaign ${i + 1}.`
+    })
   }
   return campaigns;
 }
@@ -748,28 +719,15 @@ export function generateMockApplicationsData(num: number): Application[] {
           : undefined,
       email: `influencer${i + 1}@example.com`,
       phoneNumber: `+1${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-      profilePicture: `https://example.com/profile-${i + 1}.jpg`,
-      socialMediaPlatforms: ["Instagram", "TikTok", "YouTube"]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 1),
-      collaboration: ["Paid", "Unpaid", "Product Exchange"][
-        Math.floor(Math.random() * 3)
-      ],
-      userExperience: ["Beginner", "Intermediate", "Expert"][
-        Math.floor(Math.random() * 3)
-      ],
+      profilePicture: getRandomImage(),
+      socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      collaboration: ['Paid', 'Unpaid', 'Product Exchange'][Math.floor(Math.random() * 3)],
+      userExperience: ['Beginner', 'Intermediate', 'Expert'][Math.floor(Math.random() * 3)],
       userExperienceBrief: `Mock experience brief for Influencer ${i + 1}.`,
       userMotivationBrief: `Mock motivation brief for Influencer ${i + 1}.`,
-      status: ["Pending", "Approved", "Rejected"][
-        Math.floor(Math.random() * 3)
-      ],
-      applicationDate: new Date(
-        Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000
-      ),
-      approvedBy:
-        Math.random() > 0.5
-          ? `admin-${Math.random().toString(36).substr(2, 9)}`
-          : null,
+      status: ['Pending', 'Approved', 'Rejected'].map(e => e.toUpperCase())[Math.floor(Math.random() * 3)],
+      applicationDate: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+      approvedBy: Math.random() > 0.5 ? `admin-${Math.random().toString(36).substr(2, 9)}` : null,
       submittedBy: `user-${Math.random().toString(36).substr(2, 9)}`,
       reviewedBy:
         Math.random() > 0.5
@@ -947,55 +905,22 @@ export function generateMockFullCampaign(): FullCampaign {
         ]
       }`,
       email: `${Math.random().toString(36).substr(2, 8)}@example.com`,
-      phoneNumber: `+1${Math.floor(Math.random() * 1000000000)
-        .toString()
-        .padStart(10, "0")}`,
-      profilePicture: `https://example.com/profile_${Math.random()
-        .toString(36)
-        .substr(2, 8)}.jpg`,
+      phoneNumber: `+1${Math.floor(Math.random() * 1000000000).toString().padStart(10, '0')}`,
+      profilePicture: getRandomImage()
     },
     creative: {
-      paymentType: ["Fixed", "Per Post", "Performance Based"][
-        Math.floor(Math.random() * 3)
-      ],
-      startDate: new Date(
-        Date.now() + Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000
-      ),
-      endDate: new Date(
-        Date.now() + (Math.floor(Math.random() * 60) + 30) * 24 * 60 * 60 * 1000
-      ) as any,
-      contentType: ["Photo", "Video", "Story", "Reel"]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 1),
-      contentPlacement: ["Feed", "Story", "IGTV"]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 1),
-      creativeBrief: `This is a mock creative brief for ${Math.random()
-        .toString(36)
-        .substr(2, 6)}`,
-      rules: `These are mock rules for ${Math.random()
-        .toString(36)
-        .substr(2, 6)}`,
-      creativeTone: ["Casual", "Professional", "Humorous", "Serious"]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 1),
-      referenceLink: `https://www.${Math.random()
-        .toString(36)
-        .substr(2, 8)}.com/reference`,
-      awarenessObjective: ["Brand Awareness", "Reach"]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 2) + 1),
-      acquisitionObjective: [
-        "Traffic",
-        "Engagement",
-        "App Installs",
-        "Video Views",
-      ]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 1),
-      thumbnail: `https://example.com/thumbnail_${Math.random()
-        .toString(36)
-        .substr(2, 8)}.jpg`,
+      paymentType: ['Fixed', 'Per Post', 'Performance Based'][Math.floor(Math.random() * 3)],
+      startDate: new Date(Date.now() + Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+      endDate: new Date(Date.now() + (Math.floor(Math.random() * 60) + 30) * 24 * 60 * 60 * 1000) as any,
+      contentType: ['Photo', 'Video', 'Story', 'Reel'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      contentPlacement: ['Feed', 'Story', 'IGTV'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      creativeBrief: `This is a mock creative brief for ${Math.random().toString(36).substr(2, 6)}`,
+      rules: `These are mock rules for ${Math.random().toString(36).substr(2, 6)}`,
+      creativeTone: ['Casual', 'Professional', 'Humorous', 'Serious'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      referenceLink: `https://www.${Math.random().toString(36).substr(2, 8)}.com/reference`,
+      awarenessObjective: ['Brand Awareness', 'Reach'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 2) + 1),
+      acquisitionObjective: ['Traffic', 'Engagement', 'App Installs', 'Video Views'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      thumbnail: getRandomImage(),
       visibility: Math.random() < 0.5,
     },
     status: Math.floor(Math.random() * 5),
@@ -1078,4 +1003,90 @@ function generateRandomDate(): string {
     start.getTime() + Math.random() * (end.getTime() - start.getTime())
   );
   return date.toISOString();
+}
+
+export function generateMockCampaignTransactions(count: number = 10): CampaignTransaction[] {
+  const transactions: CampaignTransaction[] = []
+
+  for (let i = 0; i < count; i++) {
+    const transaction: CampaignTransaction = {
+      transactionDate: new Date(Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000),
+      reference: `REF-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
+      amount: Math.floor(Math.random() * 10000) + 100,
+      balance: Math.floor(Math.random() * 50000) + 1000,
+      status: ['Pending', 'Completed', 'Failed'].map(e => e.toUpperCase())[Math.floor(Math.random() * 3)],
+      publicId: `TRANS-${Math.random().toString(36).substr(2, 9)}`,
+      type: ['Credit', 'Debit'][Math.floor(Math.random() * 2)],
+      name: `Transaction ${i + 1}`,
+    }
+
+    transactions.push(transaction)
+  }
+
+  return transactions
+}
+
+export function generateMockInfluencerTransactions(count: number = 10, status?: any): InfluencerTransaction[] {
+  const transactions: InfluencerTransaction[] = []
+
+  for (let i = 0; i < count; i++) {
+    const transaction: InfluencerTransaction = {
+      publicId: `INFL-TRANS-${Math.random().toString(36).substr(2, 9)}`,
+      campaignName: `Campaign ${Math.floor(Math.random() * 100) + 1}`,
+      brandName: `Brand ${Math.floor(Math.random() * 50) + 1}`,
+      earning: Math.floor(Math.random() * 10000) + 100,
+      balance: Math.floor(Math.random() * 50000) + 1000,
+      status: status || ['pending', 'completed', 'failed'].map(e => e.toUpperCase())[Math.floor(Math.random() * 3)],
+      transactionDate: new Date(Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000),
+      createdOn: new Date(Date.now() - Math.floor(Math.random() * 180) * 24 * 60 * 60 * 1000),
+      campaignImage: getRandomImage()
+    }
+
+    transactions.push(transaction)
+  }
+
+  return transactions
+}
+
+
+export function generateMockPaymentStatistics(count: number = 5): PaymentStatistics[] {
+  const paymentStats: PaymentStatistics[] = []
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ].map(e => e.substring(0, 3))
+
+  for (let i = 0; i < count; i++) {
+    const paymentStat: PaymentStatistics = {
+      name: months[i % 12], index: i,
+      legends: [
+        {
+          title: 'Completed'.toUpperCase(),
+          value: Math.floor(Math.random() * 1000) + 100
+        },
+        {
+          title: 'Pending'.toUpperCase(),
+          value: Math.floor(Math.random() * 500) + 50
+        },
+        {
+          title: 'Failed'.toUpperCase(),
+          value: Math.floor(Math.random() * 100) + 10
+        }
+      ]
+    }
+
+    paymentStats.push(paymentStat)
+  }
+
+  return paymentStats
 }

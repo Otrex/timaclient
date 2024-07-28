@@ -30,9 +30,12 @@ import {
   mockUserIndustry,
   generateMockDemographyInsight,
   generateMockFullCampaign,
-  generateMockCampaignData,
-} from "../mockdata";
-import MockUploadAPI from "./upload";
+  generateMockCampaignTransactions,
+  generateMockInfluencerTransactions,
+  generateMockPaymentStatistics
+} from "../mockdata"
+import MockUploadAPI from "./upload"
+
 
 const response = <T>(data: T, message = "Success") => {
   return new Promise<IResponse<T>>((resolve) => {
@@ -40,11 +43,11 @@ const response = <T>(data: T, message = "Success") => {
       resolve({
         status: true,
         message,
-        data,
-      });
-    }, Math.ceil(Math.random() * 2000));
-  });
-};
+        data
+      })
+    }, Math.ceil(Math.random() * 1500))
+  })
+}
 
 export default class MockTimaAPI extends MockUploadAPI {
   async refreshAuth(token: string = "mock_token"): Promise<Response.SignIn> {
@@ -108,16 +111,13 @@ export default class MockTimaAPI extends MockUploadAPI {
   async brandBasicInformationUpdate(
     data: Payload.BrandBasicInformation
   ): Promise<Response.BrandBasicInformation> {
-    return { success: true, data: { message: "Brand information updated" } };
+    return response(mockProfileInfo(UserType.BRAND).profile, "Brand basic information updated")
   }
 
   async brandAddressDocumentUpdate(
     data: Payload.BrandAddressDocumentation
   ): Promise<Response.BrandAddressDocumentation> {
-    return {
-      success: true,
-      data: { message: "Brand address and documents updated" },
-    };
+    return response(generateMockAddress(), "Brand address document updated")
   }
 
   async influencerCompleteProfileUpdate(
@@ -351,10 +351,8 @@ export default class MockTimaAPI extends MockUploadAPI {
     );
   }
 
-  async bookmarkInfluencer(
-    data: Payload.AddInfluencerBookmark
-  ): Promise<Response.GetBookmarks> {
-    return { success: true, data: { bookmarks: [] } };
+  async bookmarkInfluencer(data: Payload.AddInfluencerBookmark): Promise<Response.GetBookmarks> {
+    return response(new Array(10).fill(0).map(e => generateMockFullCampaign()))
   }
 
   async deleteInfluencerBookmark(title: string): Promise<void> {
@@ -362,7 +360,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getBookmarkedInfluencers(): Promise<Response.GetApprovedInfluencers> {
-    return { success: true, data: { influencers: [], total: 0 } };
+    return response(generateMockApprovedInfluencersData(10))
   }
 
   async deleteBookmark(name: string): Promise<void> {
@@ -374,29 +372,23 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCampaignTransactions(): Promise<Response.GetCampaignPayments> {
-    return { success: true, data: { transactions: [], total: 0 } };
+    return response(generateMockCampaignTransactions())
   }
 
   async getInfluencerTransactions(): Promise<Response.GetInfluencerTransactions> {
-    return { success: true, data: { transactions: [], total: 0 } };
+    return response(generateMockInfluencerTransactions(5))
   }
 
-  async getInfluencerTransactionsByStatus(
-    status: string
-  ): Promise<Response.GetInfluencerTransactions> {
-    return { success: true, data: { transactions: [], total: 0 } };
+  async getInfluencerTransactionsByStatus(status: string): Promise<Response.GetInfluencerTransactions> {
+    return response(generateMockInfluencerTransactions(5, status))
   }
 
-  async getPaymentStatistics(
-    year?: string
-  ): Promise<Response.GetPaymentStatistics> {
-    return { success: true, data: {} as Core.PaymentStatistics };
+  async getPaymentStatistics(year?: string): Promise<Response.GetPaymentStatistics> {
+    return response(generateMockPaymentStatistics(12))
   }
 
-  async getInfluencersByIntent(
-    payload: any
-  ): Promise<Response.GetCampaignPayments> {
-    return { success: true, data: { transactions: [], total: 0 } };
+  async getInfluencersByIntent(payload: any): Promise<Response.GetCampaignPayments> {
+    return response(generateMockCampaignTransactions())
   }
 
   async getLatestInfluencers(): Promise<Response.GetInfluencers> {
