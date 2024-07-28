@@ -178,6 +178,8 @@ export default {
     return color;
   },
   generationOptions(options: string[] = []) {
+    console.log({ options });
+
     return (options || []).map(option => ({ label: capitalize(option), value: option }))
   },
   findLargestArray<T>(arrays: T[][]): T[] | undefined {
@@ -209,7 +211,8 @@ export default {
   timeAgo: useTimeAgo,
   formatCurrency(number: number, currencySymbol = "₦", decimalPlaces = 0) {
     if (typeof number !== 'number' || isNaN(number)) {
-      throw new Error('Invalid input. Please provide a valid number.');
+      // throw new Error('Invalid input. Please provide a valid number.');
+      return 0
     }
 
     const formattedNumber = number.toLocaleString('en-US', {

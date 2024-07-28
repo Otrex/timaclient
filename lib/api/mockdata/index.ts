@@ -1,5 +1,5 @@
 import { UserType } from "~/lib/enums";
-import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName } from "~/lib/interfaces/core";
+import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer } from "~/lib/interfaces/core";
 import { type ProfileInfo, type User } from "~/lib/interfaces/core"
 
 const freeImageUrls = [
@@ -13,6 +13,7 @@ const freeImageUrls = [
   'https://images.pexels.com/photos/3182746/pexels-photo-3182746.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGNhbXBhaWdufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
   'https://images.pexels.com/photos/3182759/pexels-photo-3182759.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  ...(new Array(100).fill(0).map((e, i) => `https://picsum.photos/200/200?random=${i + 1}`)),
 ]
 
 function getRandomImage() {
@@ -102,7 +103,7 @@ export const mockCampaign: ((index?: number) => Campaign) = (index = Math.ceil(M
   creative: {
     paymentType: 'Fixed',
     startDate: new Date(`2023-06-${index < 10 ? '0' + index : index}T00:00:00Z`),
-    endDate: new Date(`2023-07-${index < 10 ? '0' + index : index}T00:00:00Z`).toISOString(),
+    endDate: new Date(`2023-07-${index < 10 ? '0' + index : index}T00:00:00Z`) as unknown as string,
     contentType: ['Photo', 'Video'],
     contentPlacement: ['Feed', 'Story'],
     creativeBrief: `Creative brief for Campaign ${index}`,
@@ -474,6 +475,111 @@ export function generateMockPaymentStatsData() {
     totalAmountPaid: randomNumber(),
     totalBalance: randomNumber()
   };
+}
+
+export function generateMockAgeDemographicsData(num: number): AgeDemographicsData[] {
+  const ageGroups = ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+']
+  const mockData: AgeDemographicsData[] = []
+
+  for (let i = 0; i < num; i++) {
+    const randomAgeGroup = ageGroups[Math.floor(Math.random() * ageGroups.length)]
+    mockData.push({
+      name: randomAgeGroup,
+      value1: Math.floor(Math.random() * 100),
+      value2: Math.floor(Math.random() * 100),
+      value3: Math.floor(Math.random() * 100)
+    })
+  }
+
+  return mockData
+}
+
+export function generateMockSearchInfluencer(num: number): SearchInfluencer[] {
+  const mockInfluencers: SearchInfluencer[] = []
+
+  for (let i = 0; i < num; i++) {
+    mockInfluencers.push({
+      publicId: `influencer-${Math.random().toString(36).substr(2, 9)}`,
+      username: `user${i + 1}`,
+      fullName: `Influencer ${i + 1}`,
+      email: `influencer${i + 1}@example.com`,
+      phoneNumber: `+1${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+      biography: Math.random() > 0.5 ? `This is a mock biography for Influencer ${i + 1}.` : undefined,
+      profilePicture: `https://example.com/profile-${i + 1}.jpg`,
+      completed: Math.floor(Math.random() * 101)
+    })
+  }
+
+  return mockInfluencers
+}
+
+
+export function generateMockApplicationsData(num: number): Application[] {
+  const mockApplications: Application[] = []
+
+  for (let i = 0; i < num; i++) {
+    mockApplications.push({
+      applicationId: `app-${Math.random().toString(36).substr(2, 9)}`,
+      campaignPublicId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
+      campaignName: `Campaign ${i + 1}`,
+      campaignBudget: Math.floor(Math.random() * 10000) + 1000,
+      campaignDescription: `This is a mock description for Campaign ${i + 1}.`,
+      username: `user${i + 1}`,
+      fullName: `Influencer ${i + 1}`,
+      biography: Math.random() > 0.5 ? `This is a mock biography for Influencer ${i + 1}.` : undefined,
+      referenceLink: Math.random() > 0.5 ? `https://example.com/reference-${i + 1}` : undefined,
+      email: `influencer${i + 1}@example.com`,
+      phoneNumber: `+1${Math.floor(1000000000 + Math.random() * 9000000000)}`,
+      profilePicture: `https://example.com/profile-${i + 1}.jpg`,
+      socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      collaboration: ['Paid', 'Unpaid', 'Product Exchange'][Math.floor(Math.random() * 3)],
+      userExperience: ['Beginner', 'Intermediate', 'Expert'][Math.floor(Math.random() * 3)],
+      userExperienceBrief: `Mock experience brief for Influencer ${i + 1}.`,
+      userMotivationBrief: `Mock motivation brief for Influencer ${i + 1}.`,
+      status: ['Pending', 'Approved', 'Rejected'][Math.floor(Math.random() * 3)],
+      applicationDate: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+      approvedBy: Math.random() > 0.5 ? `admin-${Math.random().toString(36).substr(2, 9)}` : null,
+      submittedBy: `user-${Math.random().toString(36).substr(2, 9)}`,
+      reviewedBy: Math.random() > 0.5 ? `reviewer-${Math.random().toString(36).substr(2, 9)}` : null,
+      createdOn: new Date(Date.now() - Math.floor(Math.random() * 60) * 24 * 60 * 60 * 1000),
+      editedOn: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+    })
+  }
+
+  return mockApplications
+}
+
+export function generateMockApprovedInfluencersData(num: number): ApprovedCampaignInfluencer[] {
+  const mockApprovedInfluencers: ApprovedCampaignInfluencer[] = []
+
+  for (let i = 0; i < num; i++) {
+    mockApprovedInfluencers.push({
+      applicationId: `app-${Math.random().toString(36).substr(2, 9)}`,
+      userName: `user${i + 1}`,
+      profilePicture: `https://picsum.photos/200/200?random=${i + 1}`,
+      socialMediaPlatforms: JSON.stringify(['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1)) as unknown as any,
+      applicationDate: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+      insight: {
+        businessOwnerIgId: `igowner-${Math.random().toString(36).substr(2, 9)}`,
+        businessIgId: `igbusiness-${Math.random().toString(36).substr(2, 9)}`,
+        businessHandle: `@business${i + 1}`,
+        businessName: `Business ${i + 1}`,
+        biography: `This is a mock biography for Business ${i + 1}.`,
+        website: `https://www.business${i + 1}.com`,
+        profilePictureUrl: `https://picsum.photos/200/200?random=${i + 1}`,
+        followers: Math.floor(Math.random() * 100000) + 1000,
+        totalMedia: Math.floor(Math.random() * 1000) + 100,
+        totalComments: Math.floor(Math.random() * 10000) + 100,
+        totalLikes: Math.floor(Math.random() * 100000) + 1000,
+        avgEngagement: Math.ceil(Math.random() * 10),
+        avgComments: Math.ceil(Math.random() * 10),
+        avgLikes: Math.ceil(Math.random() * 10),
+      },
+      userPublicId: `user-${Math.random().toString(36).substr(2, 9)}`,
+    })
+  }
+
+  return mockApprovedInfluencers
 }
 
 

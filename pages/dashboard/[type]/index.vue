@@ -58,6 +58,11 @@ const profileStore = useProfileStore();
 const getCampaigns = useRequestState({
   action: async () => {
     if (!profileStore.$profile?.companyName) return;
+    console.log(
+      "profileStore.$profile?.companyName => ",
+      profileStore.$profile?.companyName
+    );
+
     return api.getBrandCampaigns({
       name: profileStore.$profile?.companyName!,
       size: 10,
@@ -65,12 +70,19 @@ const getCampaigns = useRequestState({
     });
   },
   onSuccess: (response) => {
+    console.log(response);
+
     if (!response) return;
     campaigns.value = response.data;
+  },
+  onError(error) {
+    console.log(error);
   },
 });
 
 onMounted(() => {
+  console.log("response => ", profileStore.$profile?.companyName);
+
   getCampaigns.execute();
 });
 </script>

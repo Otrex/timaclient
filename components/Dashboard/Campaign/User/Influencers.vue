@@ -212,6 +212,8 @@ const getApplicationsInfluencer = useRequestState({
     influencers.value = response.data.map(trx);
   },
   onError: (err) => {
+    console.log(err);
+
     notify({
       type: "error",
       title: err.title,

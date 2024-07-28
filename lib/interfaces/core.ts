@@ -75,8 +75,6 @@ export interface CampaignByName {
   description: string;
 }
 
-
-
 export interface NotificationSetting {
   campaignUpdateAlert: boolean;
   emailAlert: boolean;

@@ -2,7 +2,7 @@
 import { UserType } from "~/lib/enums"
 import type { Core, Payload, Response } from "../../interfaces"
 import type { IResponse } from "../../interfaces/utils"
-import { auth, generateMockAddress, generateMockApplications, generateMockBankDetails, generateMockCampaignMetrics, generateMockCampaignOptions, generateMockCampaignsByName, generateMockCampaignStrategies, generateMockInfluencerBookmarks, generateMockNotification, generateMockPaymentStatsData, generateRandomIndustries, generateRandomPaymentMethods, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
+import { auth, generateMockAddress, generateMockAgeDemographicsData, generateMockApplications, generateMockApplicationsData, generateMockApprovedInfluencersData, generateMockBankDetails, generateMockCampaignMetrics, generateMockCampaignOptions, generateMockCampaignsByName, generateMockCampaignStrategies, generateMockInfluencerBookmarks, generateMockNotification, generateMockPaymentStatsData, generateMockSearchInfluencer, generateRandomIndustries, generateRandomPaymentMethods, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
 import MockUploadAPI from "./upload"
 
 const response = <T>(data: T, message = 'Success') => {
@@ -132,7 +132,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getBrandCampaigns(payload: Payload.GetBrandCampaigns): Promise<Response.GetCampaigns> {
-    return response((new Array(10)).fill(0).map(e => mockCampaign(e)))
+    return response((new Array(10)).fill(0).map((e, i) => mockCampaign(i + 1)))
   }
 
   async getUserProfile(): Promise<Response.GetUserProfile> {
@@ -168,11 +168,11 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getPaymentStatus(): Promise<Response.GetPaymentStatus> {
-    return { success: true, data: { statuses: [] } }
+    return response(['pending', 'paid', 'failed', 'cancelled'])
   }
 
   async getCampaignKPI(campaignId: string): Promise<IResponse<{ accounts: number, followers: number }>> {
-    return { success: true, data: { accounts: 0, followers: 0 } }
+    return response({ accounts: 100, followers: 1000 })
   }
 
   async getCampaignInteractionSummary(campaignId: string): Promise<IResponse<Core.InteractionSummary>> {
@@ -213,7 +213,7 @@ export default class MockTimaAPI extends MockUploadAPI {
     socialMedia: string,
     data: { type: string }
   ): Promise<Response.GetDemographicsData> {
-    return { success: true, data: {} as Core.DemographicsData }
+    return response(generateMockAgeDemographicsData(2))
   }
 
   async getSocialInsightById(publicId: string, socialMedia: string): Promise<Response.GetSocialMediaInsight> {
@@ -230,11 +230,17 @@ export default class MockTimaAPI extends MockUploadAPI {
       campaignId: string
     }
   ): Promise<Response.GetApplications | Response.GetApprovedInfluencers> {
-    return { success: true, data: { applications: [], total: 0 } }
+    return data.status === "PENDING"
+      ? response(generateMockApplicationsData(10))
+      : response(generateMockApprovedInfluencersData(10))
   }
 
   async getInfluencerPaymentStats(): Promise<Response.GetInfluencerPaymentStats> {
-    return { success: true, data: {} as Core.InfluencerPaymentStats }
+    return response({
+      totalTransactions: Math.ceil(Math.random() * 1000),
+      completedTransactions: Math.ceil(Math.random() * 10),
+      pendingTransactions: Math.ceil(Math.random() * 100),
+    });
   }
 
   async getApplicationById(publicId: string): Promise<Response.GetApplication> {
@@ -242,7 +248,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getInfluencerById(publicId: string): Promise<Response.GetSearchInfluencer> {
-    return response(mockInfluencer)
+    return response(generateMockSearchInfluencer(10)[2])
   }
 
   async getBookmarks(): Promise<IResponse<Core.InfluencerBookmark[]>> {
