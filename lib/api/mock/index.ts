@@ -33,7 +33,10 @@ import {
   generateMockCampaignTransactions,
   generateMockInfluencerTransactions,
   generateMockPaymentStatistics,
-  generateMockCampaignData
+  generateMockCampaignData,
+  generateMockInfluencerByLatest,
+  generateMockTopCategories,
+  generateMockInfluencerCampaignExperience
 } from "../mockdata"
 import MockUploadAPI from "./upload"
 
@@ -393,45 +396,53 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getLatestInfluencers(): Promise<Response.GetInfluencers> {
-    return { success: true, data: { influencers: [], total: 0 } };
+    return response(generateMockInfluencerByLatest(10));
   }
 
   async getTopInfluencers(
     data: Partial<Payload.Filter>
   ): Promise<Response.GetInfluencers> {
-    return { success: true, data: { influencers: [], total: 0 } };
+    return response(generateMockInfluencerByLatest(10));
   }
 
   async getTopCategories(): Promise<IResponse<string[]>> {
-    return { success: true, data: [] };
+    return response(generateMockTopCategories(5))
   }
 
   async getInfluencersByCategory(
     category: string
   ): Promise<Response.GetInfluencers> {
-    return { success: true, data: { influencers: [], total: 0 } };
+    return response(generateMockInfluencerByLatest(10));
   }
 
   async getInfluencerCampaignExperience(
     data: Partial<Payload.Filter> & { influencerPublicId: string }
   ): Promise<IResponse<Core.InfluencerCampaignExperience[]>> {
-    return { success: true, data: [] };
+    return response(generateMockInfluencerCampaignExperience(10));
   }
 
   async updatePersonalProfile(
     data: Payload.InfluencerPersonalProfile
   ): Promise<Response.InfluencerCompleteProfile> {
-    return { success: true, data: { message: "Profile updated successfully" } };
+    return response(mockProfileInfo(UserType.INFLUENCER).profile);
   }
 
   async updateProfilePictures(
     fileName: string
   ): Promise<Response.GetUserProfile> {
-    return { success: true, data: {} as Core.User };
+    return response({
+      username: 'user001',
+      publicId: 'xxxxxxxx',
+      profile: mockProfileInfo(localStorage.getItem("---userType") as UserType).profile
+    })
   }
 
   async updateCoverImage(fileName: string): Promise<Response.GetUserProfile> {
-    return { success: true, data: {} as Core.User };
+    return response({
+      username: 'user001',
+      publicId: 'xxxxxxxx',
+      profile: mockProfileInfo(localStorage.getItem("---userType") as UserType).profile
+    })
   }
 
   async updateSocialPlatforms(
