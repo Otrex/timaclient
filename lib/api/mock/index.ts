@@ -2,7 +2,34 @@
 import { UserType } from "~/lib/enums"
 import type { Core, Payload, Response } from "../../interfaces"
 import type { IResponse } from "../../interfaces/utils"
-import { auth, generateMockAddress, generateMockAgeDemographicsData, generateMockApplications, generateMockApplicationsData, generateMockApprovedInfluencersData, generateMockBankDetails, generateMockCampaignMetrics, generateMockCampaignOptions, generateMockCampaignsByName, generateMockCampaignStrategies, generateMockInfluencerBookmarks, generateMockNotification, generateMockPaymentStatsData, generateMockSearchInfluencer, generateRandomIndustries, generateRandomPaymentMethods, generateRandomSocialTypes, mockBankList, mockCampaign, mockCountries, mockProfileInfo, mockUserIndustry } from "../mockdata"
+import {
+  auth,
+  generateMockAddress,
+  generateMockSocialMediaInsight,
+  generateMockAgeDemographicsData,
+  generateMockApplications,
+  generateMockApplicationsData,
+  generateMockApprovedInfluencersData,
+  generateMockBankDetails,
+  generateMockCampaignDistribution,
+  generateMockCampaignMetrics,
+  generateMockCampaignOptions,
+  generateMockCampaignsByName,
+  generateMockCampaignStrategies,
+  generateMockInfluencerBookmarks,
+  generateMockInteractionSummary,
+  generateMockNotification,
+  generateMockPaymentStatsData,
+  generateMockSearchInfluencer,
+  generateRandomIndustries,
+  generateRandomPaymentMethods,
+  generateRandomSocialTypes,
+  mockBankList,
+  mockCampaign,
+  mockCountries,
+  mockProfileInfo,
+  mockUserIndustry
+} from "../mockdata"
 import MockUploadAPI from "./upload"
 
 const response = <T>(data: T, message = 'Success') => {
@@ -176,11 +203,11 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getCampaignInteractionSummary(campaignId: string): Promise<IResponse<Core.InteractionSummary>> {
-    return { success: true, data: {} as Core.InteractionSummary }
+    return response(generateMockInteractionSummary())
   }
 
   async getCampaignDistribution(campaignId: string): Promise<IResponse<Core.CampaignDistribution>> {
-    return { success: true, data: {} as Core.CampaignDistribution }
+    return response(generateMockCampaignDistribution())
   }
 
   async getApplicantsByCampaign(
@@ -217,7 +244,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async getSocialInsightById(publicId: string, socialMedia: string): Promise<Response.GetSocialMediaInsight> {
-    return { success: true, data: {} as Core.SocialMediaInsight }
+    return response(generateMockSocialMediaInsight())
   }
 
   async getCampaignsByName(name: string, filter: Partial<Core.SearchFilter>): Promise<IResponse<Core.CampaignByName[]>> {
@@ -256,7 +283,7 @@ export default class MockTimaAPI extends MockUploadAPI {
   }
 
   async searchInfluencers(filter: Partial<Core.ExploreInfluencerFilter>): Promise<Response.GetApprovedInfluencers> {
-    return { success: true, data: { influencers: [], total: 0 } }
+    return response(generateMockApprovedInfluencersData(10))
   }
 
   async getDemographyInsights(data: Payload.DemographyInsight): Promise<Response.GetDemographyInsights> {

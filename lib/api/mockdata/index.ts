@@ -1,5 +1,5 @@
 import { UserType } from "~/lib/enums";
-import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer } from "~/lib/interfaces/core";
+import type { Address, Application, Notification, Authentication, Bank, BankDetails, Campaign, CampaignMetrics, Country, Industry, InfluencerBookmark, SocialType, UserIndustry, CampaignOptions, PaymentMethod, CampaignByName, AgeDemographicsData, SearchInfluencer, ApprovedCampaignInfluencer, CampaignDistribution, InteractionSummary, SocialMediaInsight } from "~/lib/interfaces/core";
 import { type ProfileInfo, type User } from "~/lib/interfaces/core"
 
 const freeImageUrls = [
@@ -580,6 +580,65 @@ export function generateMockApprovedInfluencersData(num: number): ApprovedCampai
   }
 
   return mockApprovedInfluencers
+}
+
+export function generateMockCampaignDistribution(): CampaignDistribution {
+  return {
+    audienceDistributionSummary: {
+      topCountry: ['USA', 'UK', 'Canada', 'Australia'][Math.floor(Math.random() * 4)],
+      topCity: ['New York', 'London', 'Toronto', 'Sydney'][Math.floor(Math.random() * 4)],
+      topGender: Math.random() > 0.5 ? 'Male' : 'Female',
+      topAge: ['18-24', '25-34', '35-44', '45-54'][Math.floor(Math.random() * 4)],
+    },
+    audienceDistributionGraph: {
+      ageRange: [
+        { name: '18-24', value: Math.floor(Math.random() * 100) },
+        { name: '25-34', value: Math.floor(Math.random() * 100) },
+        { name: '35-44', value: Math.floor(Math.random() * 100) },
+        { name: '45-54', value: Math.floor(Math.random() * 100) },
+        { name: '55+', value: Math.floor(Math.random() * 100) },
+      ],
+      genderPie: [
+        { name: 'Male', value: Math.floor(Math.random() * 100) },
+        { name: 'Female', value: Math.floor(Math.random() * 100) },
+      ],
+      country: [
+        { name: 'USA', value: Math.floor(Math.random() * 100) },
+        { name: 'UK', value: Math.floor(Math.random() * 100) },
+        { name: 'Canada', value: Math.floor(Math.random() * 100) },
+        { name: 'Australia', value: Math.floor(Math.random() * 100) },
+        { name: 'Other', value: Math.floor(Math.random() * 100) },
+      ],
+    },
+  }
+}
+
+export function generateMockInteractionSummary(): InteractionSummary {
+  return {
+    engagement: Math.random() * 10,
+    reach: Math.floor(Math.random() * 1000000) + 100000,
+    impressions: Math.floor(Math.random() * 2000000) + 200000,
+    likes: Math.floor(Math.random() * 100000) + 10000,
+    comments: Math.floor(Math.random() * 10000) + 1000,
+    shared: Math.floor(Math.random() * 5000) + 500,
+  }
+}
+
+
+export function generateMockSocialMediaInsight(): SocialMediaInsight {
+  return {
+    businessOwnerIgId: `owner-${Math.random().toString(36).substr(2, 9)}`,
+    businessIgId: `business-${Math.random().toString(36).substr(2, 9)}`,
+    businessHandle: `@business_${Math.random().toString(36).substr(2, 6)}`,
+    businessName: `Business ${Math.random().toString(36).substr(2, 6)}`,
+    biography: `This is a mock biography for ${Math.random().toString(36).substr(2, 6)}`,
+    website: `https://www.${Math.random().toString(36).substr(2, 8)}.com`,
+    followers: Math.floor(Math.random() * 1000000) + 1000,
+    totalMedia: Math.floor(Math.random() * 1000) + 50,
+    totalComments: Math.floor(Math.random() * 100000) + 1000,
+    totalLikes: Math.floor(Math.random() * 1000000) + 10000,
+    avgEngagement: Math.ceil(Math.random() * 10),
+  }
 }
 
 
