@@ -17,8 +17,254 @@ const freeImageUrls = [
   ...(new Array(100).fill(0).map((e, i) => `https://picsum.photos/200/200?random=${i + 1}`)),
 ]
 
-function getRandomImage() {
-  return freeImageUrls[Math.floor(Math.random() * freeImageUrls.length)]
+const brandImages = [
+  {
+    "fileName": "100680_1.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325146/apdr2rtsqnudlqfofgxr.jpg"
+    }
+  },
+  {
+    "fileName": "1_Heritage-day-Campaign-1-750x375.png",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325148/hcvih7ipo2chwxbrddbu.png"
+    }
+  },
+  {
+    "fileName": "2d446196972621.5ebd105b1d183.png",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325152/ywcyngokiiholz47q3vp.png"
+    }
+  },
+  {
+    "fileName": "5DD3CDE5-03CB-4C7C-9D97-7C0517EF48DD (1).webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325159/qpf89rycuvhdte1ish65.webp"
+    }
+  },
+  {
+    "fileName": "5DD3CDE5-03CB-4C7C-9D97-7C0517EF48DD.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325162/u12xu3vnuurpehs1jyfl.webp"
+    }
+  },
+  {
+    "fileName": "636844.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325164/yiwuowhzygaywvvesbwe.webp"
+    }
+  },
+  {
+    "fileName": "7_Vodafone_Change_The_Face_Campaign4.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325166/ziomjqdeskql9s82eusl.jpg"
+    }
+  },
+  {
+    "fileName": "833fb2b2dafe4aa4917b92f7c5384f2d.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325168/dhxfazrei40bjuc2d8hv.webp"
+    }
+  },
+  {
+    "fileName": "Davido-new-ambassador-of-Travelbeta.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325170/mebnos9roy3glo0yjcxx.jpg"
+    }
+  },
+  {
+    "fileName": "FNB-Zero-Interest-Campaign-16x9-02_1024x1024.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325174/amfrwfbvgfi8syzojrjy.webp"
+    }
+  },
+  {
+    "fileName": "FPutvBFWUAQlUK9.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325176/uhcsetexmdyisug1os0g.jpg"
+    }
+  },
+  {
+    "fileName": "GET-YOUR-VOTE-ON_Horizontal-1.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325180/orfs1egm5y6jnujid4hp.jpg"
+    }
+  },
+  {
+    "fileName": "Jumia-Black-Friday.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325183/rtdtvieitkb5suy3vu52.jpg"
+    }
+  },
+  {
+    "fileName": "OMA_WC_PR_ZA_1.png",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325200/ysypjkw3jcrhsuk6ep1d.png"
+    }
+  },
+  {
+    "fileName": "SW-Blogpost-Visual.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325203/lfapyi9z12zvualn9dtl.jpg"
+    }
+  },
+  {
+    "fileName": "bet9ja-welcome-bonus.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325205/af2kocnipuobsetljckr.jpg"
+    }
+  },
+  {
+    "fileName": "download.jpeg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325207/ujddsyjspps4xrgc92kl.jpg"
+    }
+  },
+  {
+    "fileName": "jumia.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325209/v7c5jwpcp1xjtrmdtfbw.webp"
+    }
+  },
+  {
+    "fileName": "jumia_black_fridays_2020.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325212/alk4ywutiypmvifc8ahy.jpg"
+    }
+  },
+  {
+    "fileName": "kv-img.png",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325215/fhtikoksfe4wi9eryqti.png"
+    }
+  },
+  {
+    "fileName": "lifekeepsmoving_bolt.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325218/aozha62l6m4ya44mv6h0.jpg"
+    }
+  },
+  {
+    "fileName": "tiktok-viral-dance-challenge-video-design-template-81a48fe79e4d5ce7cb3757ff59864c5a_screen.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325220/l6oqp0lugmaypkmzezuq.jpg"
+    }
+  },
+  {
+    "fileName": "titok-dance-challenge.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325224/zfgnwuki0zomlrdptjor.jpg"
+    }
+  },
+  {
+    "fileName": "unnamed.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722325226/mkicgoykeybixa2rnawr.jpg"
+    }
+  }
+].map(e => e.response.url);
+
+const influencerImages = [
+  {
+    "fileName": "0B7D02BD-748D-4419-96D8-6F68D355B4D0.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324787/ebgmimg7ujjjdxxwsj7x.webp"
+    }
+  },
+  {
+    "fileName": "1595185756-57_2.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324790/j4k241olwadjagjv7xsm.jpg"
+    }
+  },
+  {
+    "fileName": "2C6EF3EA-BB46-4D1D-A346-C5D12EB775AD-e1644012959448.jpeg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324794/xcj2adpduy3cbeub01bl.jpg"
+    }
+  },
+  {
+    "fileName": "FHtp8e7WYAoka6r.jpg_large.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324798/kjia8znckdftbm0vkmrj.jpg"
+    }
+  },
+  {
+    "fileName": "IMG-20230811-WA0011_-_MissTechy_Media-removebg-preview-e1696236184628.png",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324800/zh8acmlurkpahbnpg0rg.png"
+    }
+  },
+  {
+    "fileName": "IMG-20231204-WA0004.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324802/eanmxdaozrsxjeiar3kz.jpg"
+    }
+  },
+  {
+    "fileName": "MERCY-EKE.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324804/jladc6343prx10ioqx8y.jpg"
+    }
+  },
+  {
+    "fileName": "MTI-Tayo-Aina-3-768x432.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324807/fd4xhqahr1nt74x0uopk.jpg"
+    }
+  },
+  {
+    "fileName": "OdNktkpTURBXy8yN2ZlNDA3Y2EzZTc2ZmNkZjA0NzMyMzQ2ZjdkZTNjZC5qcGeSlQMAzN7NBDjNAl-TBc0EsM0Cdg.jpeg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324808/rvp0krx0c1wm8wj4gq1g.jpg"
+    }
+  },
+  {
+    "fileName": "PHOTO-2024-05-27-11-06-12-e1716924623914.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324809/czy2hc9khwqm7hux4dap.webp"
+    }
+  },
+  {
+    "fileName": "Steven_Ndukwu.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324811/ig2pdsi7h3ywwsho7c7r.jpg"
+    }
+  },
+  {
+    "fileName": "Untitled-design-63.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324813/lplno8nmgp1gso0vf6nv.webp"
+    }
+  },
+  {
+    "fileName": "YmKYaoqSzjvSOLOuCuQbrEmFnHPBNWGkml2TH1l7.jpeg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324815/swk0orjqusgcnfndsbet.jpg"
+    }
+  },
+  {
+    "fileName": "image003.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324817/logrlzj4dzwmjkvzfbeq.jpg"
+    }
+  },
+  {
+    "fileName": "kagan-tech-penshotpublications.webp",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324818/ryvpu7h1j8q12stskryn.webp"
+    }
+  },
+  {
+    "fileName": "rBEevF8SFjCARlBeAABo_PS5L0s050.jpg",
+    "response": {
+      "url": "https://res.cloudinary.com/dfhfrajtp/image/upload/v1722324820/issgow2d0annto4sro8d.jpg"
+    }
+  }
+].map(e => e.response.url)
+
+function getRandomImage(images = freeImageUrls) {
+  return images[Math.floor(Math.random() * freeImageUrls.length)]
 }
 
 export const auth: Authentication = {
@@ -67,7 +313,7 @@ export const mockProfileInfo: ((u: UserType, i?: number) => ProfileInfo) = (user
     companyName: `Company ${index + 1}`,
     website: `https://www.example${index + 1}.com`,
     language: null,
-    profilePicture: getRandomImage(),
+    profilePicture: getRandomImage(userType === UserType.INFLUENCER ? influencerImages : brandImages),
     registeredDocument: null,
     notificationSetting: `{"emailNotifications": true, "pushNotifications": false}`,
     userid: null,
@@ -99,7 +345,7 @@ export const mockCampaign: ((index?: number) => Campaign) = (index = Math.ceil(M
     fullName: "ZBzen Hemm",
     email: "o@gmail.com",
     phoneNumber: "09025615232",
-    profilePicture: `https://picsum.photos/200/200?random=${index}`,
+    profilePicture: getRandomImage(influencerImages),
   },
   creative: {
     paymentType: 'Fixed',
@@ -113,7 +359,7 @@ export const mockCampaign: ((index?: number) => Campaign) = (index = Math.ceil(M
     referenceLink: `https://reference.campaign${index}.com`,
     awarenessObjective: ['Brand Awareness', 'Reach'],
     acquisitionObjective: ['Website Traffic', 'App Installs'],
-    thumbnail: getRandomImage(),
+    thumbnail: getRandomImage(brandImages),
     visibility: true
   },
   status: index % 3,
@@ -326,7 +572,7 @@ export function generateMockApplications(count: number): Application[] {
       phoneNumber: `+1 (555) ${String(100 + i).padStart(3, "0")}-${String(
         1000 + i
       ).slice(1)}`,
-      profilePicture: getRandomImage(),
+      profilePicture: getRandomImage(influencerImages),
       socialMediaPlatforms: ["Instagram", "TikTok", "YouTube"]
         .sort(() => 0.5 - Math.random())
         .slice(0, 2),
@@ -479,7 +725,7 @@ export function generateMockCampaignsByName(num: number): CampaignByName[] {
     campaigns.push({
       campaignId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
       name: `Campaign ${i + 1}`,
-      banner: getRandomImage(),
+      banner: getRandomImage(brandImages),
       description: `This is a mock description for Campaign ${i + 1}.`,
     });
   }
@@ -550,7 +796,7 @@ export function generateMockApplicationsData(num: number): Application[] {
       referenceLink: Math.random() > 0.5 ? `https://example.com/reference-${i + 1}` : undefined,
       email: `influencer${i + 1}@example.com`,
       phoneNumber: `+1${Math.floor(1000000000 + Math.random() * 9000000000)}`,
-      profilePicture: getRandomImage(),
+      profilePicture: getRandomImage(influencerImages),
       socialMediaPlatforms: JSON.stringify(['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1)) as any,
       collaboration: ['Paid', 'Unpaid', 'Product Exchange'][Math.floor(Math.random() * 3)],
       userExperience: ['Beginner', 'Intermediate', 'Expert'][Math.floor(Math.random() * 3)],
@@ -703,7 +949,7 @@ export function generateMockFullCampaign(): FullCampaign {
       phoneNumber: `+1${Math.floor(Math.random() * 1000000000)
         .toString()
         .padStart(10, "0")}`,
-      profilePicture: getRandomImage(),
+      profilePicture: getRandomImage(influencerImages),
     },
     creative: {
       paymentType: ["Fixed", "Per Post", "Performance Based"][
@@ -744,7 +990,7 @@ export function generateMockFullCampaign(): FullCampaign {
       ]
         .sort(() => 0.5 - Math.random())
         .slice(0, Math.floor(Math.random() * 3) + 1),
-      thumbnail: getRandomImage(),
+      thumbnail: getRandomImage(brandImages),
       visibility: Math.random() < 0.5,
     },
     status: Math.floor(Math.random() * 5),
@@ -872,7 +1118,7 @@ export function generateMockInfluencerTransactions(
       status:
         status ||
         ["pending", "completed", "failed"].map((e) => e.toUpperCase())[
-          Math.floor(Math.random() * 3)
+        Math.floor(Math.random() * 3)
         ],
       transactionDate: new Date(
         Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000
@@ -880,7 +1126,7 @@ export function generateMockInfluencerTransactions(
       createdOn: new Date(
         Date.now() - Math.floor(Math.random() * 180) * 24 * 60 * 60 * 1000
       ),
-      campaignImage: getRandomImage(),
+      campaignImage: getRandomImage(brandImages),
     };
 
     transactions.push(transaction);
@@ -963,7 +1209,7 @@ export function generateMockUser(count: number): User[] {
       phoneNumber: generateRandomPhoneNumber(),
       userType:
         Object.values(UserType)[
-          Math.floor(Math.random() * Object.values(UserType).length)
+        Math.floor(Math.random() * Object.values(UserType).length)
         ],
       companyName: `Company${generateRandomString(5)}`,
       website: `https://website${generateRandomString(5)}.com`,
@@ -995,7 +1241,7 @@ export function generateMockInfluencerByLatest(count: number = 5): InfluencerByL
   for (let i = 0; i < count; i++) {
     const influencer: InfluencerByLatest = {
       userName: `influencer${i + 1}`,
-      profilePicture: getRandomImage(),
+      profilePicture: getRandomImage(influencerImages),
       socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'][Math.floor(Math.random() * 3)],
       applicationDate: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString(),
       userPublicId: `user-${Math.random().toString(36).substr(2, 9)}`,
@@ -1006,7 +1252,7 @@ export function generateMockInfluencerByLatest(count: number = 5): InfluencerByL
         businessName: `Business ${i + 1}`,
         biography: `This is the biography for Business ${i + 1}`,
         website: `https://www.business${i + 1}.com`,
-        profilePictureUrl: getRandomImage(),
+        profilePictureUrl: getRandomImage(influencerImages),
         followers: Math.floor(Math.random() * 100000) + 1000,
         totalMedia: Math.floor(Math.random() * 1000) + 100,
         totalComments: Math.floor(Math.random() * 10000) + 1000,
