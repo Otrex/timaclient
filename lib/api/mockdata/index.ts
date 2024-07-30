@@ -160,54 +160,69 @@ export const generateRandomSocialTypes = (count: number): SocialType[] => {
 
 export const mockCountries: Country[] = [
   {
-    name: "United States",
-    language: ["English"],
-    currency: "USD"
-  },
-  {
-    name: "Canada",
-    language: ["English", "French"],
-    currency: "CAD"
-  },
-  {
-    name: "United Kingdom",
-    language: ["English"],
-    currency: "GBP"
-  },
-  {
-    name: "Australia",
-    language: ["English"],
-    currency: "AUD"
-  },
-  {
-    name: "Germany",
-    language: ["German"],
-    currency: "EUR"
-  },
-  {
-    name: "France",
+    name: "Benin",
     language: ["French"],
-    currency: "EUR"
+    currency: "XOF"
   },
   {
-    name: "Japan",
-    language: ["Japanese"],
-    currency: "JPY"
+    name: "Cameroon",
+    language: ["French", "English"],
+    currency: "XAF"
   },
   {
-    name: "Brazil",
-    language: ["Portuguese"],
-    currency: "BRL"
+    name: "Congo",
+    language: ["French"],
+    currency: "XAF"
   },
   {
-    name: "India",
-    language: ["Hindi", "English"],
-    currency: "INR"
+    name: "Eswatini",
+    language: ["Swazi", "English"],
+    currency: "SZL"
   },
   {
-    name: "China",
-    language: ["Mandarin"],
-    currency: "CNY"
+    name: "Ghana",
+    language: ["English"],
+    currency: "GHS"
+  },
+  {
+    name: "Ivory Coast",
+    language: ["French"],
+    currency: "XOF"
+  },
+  {
+    name: "Liberia",
+    language: ["English"],
+    currency: "LRD"
+  },
+  {
+    name: "Nigeria",
+    language: ["English"],
+    currency: "NGN"
+  },
+  {
+    name: "Rwanda",
+    language: ["Kinyarwanda", "English", "French"],
+    currency: "RWF"
+  },
+  {
+    name: "South Africa",
+    language: ["Afrikaans", "English", "Zulu", "Xhosa"],
+    currency: "ZAR"
+  },
+  {
+    name: "South Sudan",
+    language: ["English"],
+    currency: "SSP"
+  },
+  {
+    name: "Uganda",
+    language: ["English", "Swahili"],
+    currency: "UGX"
+  },
+  {
+    name: "Zambia",
+    language: ["English"],
+    currency: "ZMW"
   }
 ]
 
