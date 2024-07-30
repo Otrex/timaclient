@@ -153,10 +153,10 @@ export const generateRandomSocialTypes = (count: number): SocialType[] => {
     // { name: 'Twitter', logo: 'twitter-logo.png' },
     // { name: 'LinkedIn', logo: 'linkedin-logo.png' },
     // { name: 'YouTube', logo: 'youtube-logo.png' },
-    { name: 'TicTok', logo: 'tiktok-logo.png' }
-  ]
-  return socialTypes
-}
+    { name: "TicTok", logo: "tiktok-logo.png" },
+  ];
+  return socialTypes;
+};
 
 export const mockCountries: Country[] = [
   {
@@ -323,11 +323,15 @@ export function generateMockApplications(count: number): Application[] {
       biography: `Biography for User ${i + 1}`,
       referenceLink: `https://example.com/reference-${i + 1}`,
       email: `user${i + 1}@example.com`,
-      phoneNumber: `+1 (555) ${String(100 + i).padStart(3, '0')}-${String(1000 + i).slice(1)}`,
+      phoneNumber: `+1 (555) ${String(100 + i).padStart(3, "0")}-${String(
+        1000 + i
+      ).slice(1)}`,
       profilePicture: getRandomImage(),
-      socialMediaPlatforms: ['Instagram', 'TikTok', 'YouTube'].sort(() => 0.5 - Math.random()).slice(0, 2),
-      collaboration: ['Paid', 'Unpaid', 'Product Exchange'][i % 3],
-      userExperience: ['Beginner', 'Intermediate', 'Expert'][i % 3],
+      socialMediaPlatforms: ["Instagram", "TikTok", "YouTube"]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 2),
+      collaboration: ["Paid", "Unpaid", "Product Exchange"][i % 3],
+      userExperience: ["Beginner", "Intermediate", "Expert"][i % 3],
       userExperienceBrief: `Experience brief for User ${i + 1}`,
       userMotivationBrief: `Motivation brief for User ${i + 1}`,
       status: ['Pending', 'Approved', 'Rejected'][i % 3],
@@ -476,8 +480,8 @@ export function generateMockCampaignsByName(num: number): CampaignByName[] {
       campaignId: `campaign-${Math.random().toString(36).substr(2, 9)}`,
       name: `Campaign ${i + 1}`,
       banner: getRandomImage(),
-      description: `This is a mock description for Campaign ${i + 1}.`
-    })
+      description: `This is a mock description for Campaign ${i + 1}.`,
+    });
   }
   return campaigns
 }
@@ -552,9 +556,16 @@ export function generateMockApplicationsData(num: number): Application[] {
       userExperience: ['Beginner', 'Intermediate', 'Expert'][Math.floor(Math.random() * 3)],
       userExperienceBrief: `Mock experience brief for Influencer ${i + 1}.`,
       userMotivationBrief: `Mock motivation brief for Influencer ${i + 1}.`,
-      status: ['Pending', 'Approved', 'Rejected'].map(e => e.toUpperCase())[Math.floor(Math.random() * 3)],
-      applicationDate: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
-      approvedBy: Math.random() > 0.5 ? `admin-${Math.random().toString(36).substr(2, 9)}` : null,
+      status: ["Pending", "Approved", "Rejected"].map((e) => e.toUpperCase())[
+        Math.floor(Math.random() * 3)
+      ],
+      applicationDate: new Date(
+        Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000
+      ),
+      approvedBy:
+        Math.random() > 0.5
+          ? `admin-${Math.random().toString(36).substr(2, 9)}`
+          : null,
       submittedBy: `user-${Math.random().toString(36).substr(2, 9)}`,
       reviewedBy: Math.random() > 0.5 ? `reviewer-${Math.random().toString(36).substr(2, 9)}` : null,
       createdOn: new Date(Date.now() - Math.floor(Math.random() * 60) * 24 * 60 * 60 * 1000),
@@ -689,21 +700,50 @@ export function generateMockFullCampaign(): FullCampaign {
       username: `user_${Math.random().toString(36).substr(2, 8)}`,
       fullName: `${['John', 'Jane', 'Alex', 'Emma', 'Michael'][Math.floor(Math.random() * 5)]} ${['Smith', 'Johnson', 'Williams', 'Brown', 'Jones'][Math.floor(Math.random() * 5)]}`,
       email: `${Math.random().toString(36).substr(2, 8)}@example.com`,
-      phoneNumber: `+1${Math.floor(Math.random() * 1000000000).toString().padStart(10, '0')}`,
-      profilePicture: getRandomImage()
+      phoneNumber: `+1${Math.floor(Math.random() * 1000000000)
+        .toString()
+        .padStart(10, "0")}`,
+      profilePicture: getRandomImage(),
     },
     creative: {
-      paymentType: ['Fixed', 'Per Post', 'Performance Based'][Math.floor(Math.random() * 3)],
-      startDate: new Date(Date.now() + Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
-      endDate: new Date(Date.now() + (Math.floor(Math.random() * 60) + 30) * 24 * 60 * 60 * 1000) as any,
-      contentType: ['Photo', 'Video', 'Story', 'Reel'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
-      contentPlacement: ['Feed', 'Story', 'IGTV'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
-      creativeBrief: `This is a mock creative brief for ${Math.random().toString(36).substr(2, 6)}`,
-      rules: `These are mock rules for ${Math.random().toString(36).substr(2, 6)}`,
-      creativeTone: ['Casual', 'Professional', 'Humorous', 'Serious'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
-      referenceLink: `https://www.${Math.random().toString(36).substr(2, 8)}.com/reference`,
-      awarenessObjective: ['Brand Awareness', 'Reach'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 2) + 1),
-      acquisitionObjective: ['Traffic', 'Engagement', 'App Installs', 'Video Views'].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
+      paymentType: ["Fixed", "Per Post", "Performance Based"][
+        Math.floor(Math.random() * 3)
+      ],
+      startDate: new Date(
+        Date.now() + Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000
+      ),
+      endDate: new Date(
+        Date.now() + (Math.floor(Math.random() * 60) + 30) * 24 * 60 * 60 * 1000
+      ) as any,
+      contentType: ["Photo", "Video", "Story", "Reel"]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 3) + 1),
+      contentPlacement: ["Feed", "Story", "IGTV"]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 3) + 1),
+      creativeBrief: `This is a mock creative brief for ${Math.random()
+        .toString(36)
+        .substr(2, 6)}`,
+      rules: `These are mock rules for ${Math.random()
+        .toString(36)
+        .substr(2, 6)}`,
+      creativeTone: ["Casual", "Professional", "Humorous", "Serious"]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 3) + 1),
+      referenceLink: `https://www.${Math.random()
+        .toString(36)
+        .substr(2, 8)}.com/reference`,
+      awarenessObjective: ["Brand Awareness", "Reach"]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 2) + 1),
+      acquisitionObjective: [
+        "Traffic",
+        "Engagement",
+        "App Installs",
+        "Video Views",
+      ]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 3) + 1),
       thumbnail: getRandomImage(),
       visibility: Math.random() < 0.5,
     },
@@ -789,29 +829,38 @@ function generateRandomDate(): string {
   return date.toISOString();
 }
 
-export function generateMockCampaignTransactions(count: number = 10): CampaignTransaction[] {
-  const transactions: CampaignTransaction[] = []
+export function generateMockCampaignTransactions(
+  count: number = 10
+): CampaignTransaction[] {
+  const transactions: CampaignTransaction[] = [];
 
   for (let i = 0; i < count; i++) {
     const transaction: CampaignTransaction = {
-      transactionDate: new Date(Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000),
+      transactionDate: new Date(
+        Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000
+      ),
       reference: `REF-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
       amount: Math.floor(Math.random() * 10000) + 100,
       balance: Math.floor(Math.random() * 50000) + 1000,
-      status: ['Pending', 'Completed', 'Failed'].map(e => e.toUpperCase())[Math.floor(Math.random() * 3)],
+      status: ["Pending", "Completed", "Failed"].map((e) => e.toUpperCase())[
+        Math.floor(Math.random() * 3)
+      ],
       publicId: `TRANS-${Math.random().toString(36).substr(2, 9)}`,
-      type: ['Credit', 'Debit'][Math.floor(Math.random() * 2)],
+      type: ["Credit", "Debit"][Math.floor(Math.random() * 2)],
       name: `Transaction ${i + 1}`,
-    }
+    };
 
-    transactions.push(transaction)
+    transactions.push(transaction);
   }
 
-  return transactions
+  return transactions;
 }
 
-export function generateMockInfluencerTransactions(count: number = 10, status?: any): InfluencerTransaction[] {
-  const transactions: InfluencerTransaction[] = []
+export function generateMockInfluencerTransactions(
+  count: number = 10,
+  status?: any
+): InfluencerTransaction[] {
+  const transactions: InfluencerTransaction[] = [];
 
   for (let i = 0; i < count; i++) {
     const transaction: InfluencerTransaction = {
@@ -820,59 +869,124 @@ export function generateMockInfluencerTransactions(count: number = 10, status?: 
       brandName: `Brand ${Math.floor(Math.random() * 50) + 1}`,
       earning: Math.floor(Math.random() * 10000) + 100,
       balance: Math.floor(Math.random() * 50000) + 1000,
-      status: status || ['pending', 'completed', 'failed'].map(e => e.toUpperCase())[Math.floor(Math.random() * 3)],
-      transactionDate: new Date(Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000),
-      createdOn: new Date(Date.now() - Math.floor(Math.random() * 180) * 24 * 60 * 60 * 1000),
-      campaignImage: getRandomImage()
-    }
+      status:
+        status ||
+        ["pending", "completed", "failed"].map((e) => e.toUpperCase())[
+          Math.floor(Math.random() * 3)
+        ],
+      transactionDate: new Date(
+        Date.now() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000
+      ),
+      createdOn: new Date(
+        Date.now() - Math.floor(Math.random() * 180) * 24 * 60 * 60 * 1000
+      ),
+      campaignImage: getRandomImage(),
+    };
 
-    transactions.push(transaction)
+    transactions.push(transaction);
   }
 
-  return transactions
+  return transactions;
 }
 
-
-export function generateMockPaymentStatistics(count: number = 5): PaymentStatistics[] {
-  const paymentStats: PaymentStatistics[] = []
+export function generateMockPaymentStatistics(
+  count: number = 5
+): PaymentStatistics[] {
+  const paymentStats: PaymentStatistics[] = [];
   const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ].map(e => e.substring(0, 3))
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ].map((e) => e.substring(0, 3));
 
   for (let i = 0; i < count; i++) {
     const paymentStat: PaymentStatistics = {
-      name: months[i % 12], index: i,
+      name: months[i % 12],
+      index: i,
       legends: [
         {
-          title: 'Completed'.toUpperCase(),
-          value: Math.floor(Math.random() * 1000) + 100
+          title: "Completed".toUpperCase(),
+          value: Math.floor(Math.random() * 1000) + 100,
         },
         {
-          title: 'Pending'.toUpperCase(),
-          value: Math.floor(Math.random() * 500) + 50
+          title: "Pending".toUpperCase(),
+          value: Math.floor(Math.random() * 500) + 50,
         },
         {
-          title: 'Failed'.toUpperCase(),
-          value: Math.floor(Math.random() * 100) + 10
-        }
-      ]
-    }
+          title: "Failed".toUpperCase(),
+          value: Math.floor(Math.random() * 100) + 10,
+        },
+      ],
+    };
 
-    paymentStats.push(paymentStat)
+    paymentStats.push(paymentStat);
   }
 
-  return paymentStats
+  return paymentStats;
+}
+
+function generateRandomEmail(firstName: string, lastName: string): string {
+  const domains = ["example.com", "test.com", "mock.com"];
+  const domain = domains[Math.floor(Math.random() * domains.length)];
+  return `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${domain}`;
+}
+
+function generateRandomPhoneNumber(): string {
+  const areaCode = Math.floor(Math.random() * 900) + 100;
+  const centralOfficeCode = Math.floor(Math.random() * 900) + 100;
+  const lineNumber = Math.floor(Math.random() * 9000) + 1000;
+  return `${areaCode}-${centralOfficeCode}-${lineNumber}`;
+}
+
+export function generateMockUser(count: number): User[] {
+  const mockUsers: User[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const firstName = `FirstName${generateRandomString(5)}`;
+    const middleName = `MiddleName${generateRandomString(5)}`;
+    const lastName = `LastName${generateRandomString(5)}`;
+
+    const user: User = {
+      firstName,
+      middleName,
+      lastName,
+      email: generateRandomEmail(firstName, lastName),
+      phoneNumber: generateRandomPhoneNumber(),
+      userType:
+        Object.values(UserType)[
+          Math.floor(Math.random() * Object.values(UserType).length)
+        ],
+      companyName: `Company${generateRandomString(5)}`,
+      website: `https://website${generateRandomString(5)}.com`,
+      language: null,
+      profilePicture: `https://profilepictures.com/pic${generateRandomString(
+        5
+      )}`,
+      registeredDocument: null,
+      notificationSetting: `Notification${generateRandomString(5)}`,
+      userid: null,
+      createdOn: new Date(),
+      bio:
+        Math.random() < 0.5 ? `This is the bio for user ${i + 1}.` : undefined,
+      settingBackground:
+        Math.random() < 0.5
+          ? `Background${generateRandomString(5)}`
+          : undefined,
+    };
+
+    mockUsers.push(user);
+  }
+
+  return mockUsers;
 }
 
 export function generateMockInfluencerByLatest(count: number = 5): InfluencerByLatest[] {
