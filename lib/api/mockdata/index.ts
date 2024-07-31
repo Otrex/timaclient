@@ -264,7 +264,7 @@ const influencerImages = [
 ].map(e => e.response.url)
 
 function getRandomImage(images = freeImageUrls) {
-  return images[Math.floor(Math.random() * freeImageUrls.length)]
+  return images[Math.floor(Math.random() * images.length)]
 }
 
 export const auth: Authentication = {
@@ -319,7 +319,7 @@ export const mockProfileInfo: ((u: UserType, i?: number) => ProfileInfo) = (user
     userid: null,
     createdOn: new Date(`2023-05-0${index + 1}T00:00:00Z`),
     bio: `This is a mock bio for user ${index + 1}`,
-    settingBackground: getRandomImage()
+    settingBackground: getRandomImage(userType === UserType.INFLUENCER ? influencerImages : brandImages),
   }
 })
 
