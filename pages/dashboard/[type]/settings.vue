@@ -81,7 +81,7 @@
           v-if="route.params.type === constants.INFLUENCER"
         />
         <DashboardSettingTabAgency v-else />
-        <div class="max-w-[65.875rem]">
+        <div>
           <transition mode="out-in">
             <component :is="tabMap[currentTab]" :is-editable="isEditable" />
           </transition>

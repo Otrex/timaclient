@@ -1,12 +1,14 @@
 <template>
-  <UiLayoutPreview title="SUMMARY" @next="props.bus?.emit()">
+  <UiLayoutPreview title="SUMMARY" :hide-back="true" @next="props.bus?.emit()">
     <div class="flex flex-col gap-3">
-      <p>Campaign name: {{ campaignStore.overview.name }}</p>
-      <p>About campaign: {{ campaignStore.overview.briefDescription }}</p>
-      <p>Planned budget: {{ campaignStore.overview.plannedBudget }}</p>
-      <p>Cost per post: {{ campaignStore.overview.costPerPost }}</p>
+      <p><b>Campaign name:</b> {{ campaignStore.overview.name }}</p>
       <p>
-        Social media platforms:
+        <b>About campaign:</b> {{ campaignStore.overview.briefDescription }}
+      </p>
+      <p><b>Planned budget:</b> {{ campaignStore.overview.plannedBudget }}</p>
+      <p><b>Cost per post:</b> {{ campaignStore.overview.costPerPost }}</p>
+      <p>
+        <b>Social media platforms:</b>
         {{ campaignStore.overview.socialMediaPlatforms?.join(", ") }}
       </p>
     </div>

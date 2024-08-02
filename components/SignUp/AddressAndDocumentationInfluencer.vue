@@ -39,12 +39,14 @@
         class="w-full"
         v-model="form.country"
         placeholder="Country"
+        :error-message="v$.country?.$errors[0]?.$message.toString()"
         :options="optionsStore.$countries"
       />
       <UiInputSelect
         class="w-full"
         v-model="form.language"
         placeholder="Language"
+        :error-message="v$.language?.$errors[0]?.$message.toString()"
         :options="optionsStore.$countryLanguages(form.country)"
       />
       <UiInputUpload

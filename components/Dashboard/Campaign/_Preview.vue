@@ -25,10 +25,12 @@
       <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
         <p class="nl">Campaign website: {{ campaignStore.overview.website }}</p>
         <p class="nl">
-          Planned Budget: {{ campaignStore.overview.plannedBudget }}
+          Planned Budget:
+          {{ tools.formatCurrency(campaignStore.overview.plannedBudget || 0) }}
         </p>
         <p class="nl">
-          Cost per post: {{ campaignStore.overview.costPerPost }}
+          Cost per post:
+          {{ tools.formatCurrency(campaignStore.overview.costPerPost || 0) }}
         </p>
         <div>
           <p class="nl">Social media platform:</p>

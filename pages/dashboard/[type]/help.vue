@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center h-full mt-[100px]">
+  <div class="flex justify-center h-[calc(100%_-_200px)] mt-[100px]">
     <div class="max-w-[400px] w-full">
       <h1 class="font-bold text-center">Help & Support</h1>
       <p class="mb-3 text-center">Send us your request or complains</p>

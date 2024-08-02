@@ -1,10 +1,10 @@
 <template>
-  <transition>
+  <transition mode="out-in" name="fade-in">
     <template v-if="state === constants.LOADING">
-      <UtLoaderIndicator :message="loadingMessage" />
+      <UtLoaderIndicator :class="textClass" :message="loadingMessage" />
     </template>
     <template v-else-if="data">
-      <UtNoResource :message="notFoundMessage" />
+      <UtNoResource :class="textClass" :message="notFoundMessage" />
     </template>
     <template v-else>
       <div><slot> </slot></div>
@@ -18,6 +18,7 @@ defineProps<{
   notFoundMessage: string;
   state: string;
   data: boolean;
+  textClass?: string;
 }>();
 </script>
 

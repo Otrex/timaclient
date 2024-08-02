@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-[3.4375rem]">
+  <div class="pt-[3.4375rem] max-w-[65.875rem]">
     <div class="flex flex-col gap-[1.5rem]">
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">

@@ -43,22 +43,22 @@ const bus = useEventBus<string>("tab-switch");
 const tabs = [
   {
     name: constants.BRAND_OVERVIEW,
-    component: resolveComponent("LazyDashboardCampaignOverview"),
+    component: resolveComponent("DashboardCampaignOverview"),
     label: "Overview",
   },
   {
     name: constants.BRAND_INFLUENCERS,
-    component: resolveComponent("LazyDashboardCampaignInfluencers"),
+    component: resolveComponent("DashboardCampaignInfluencers"),
     label: "Influencers",
   },
   {
     name: constants.BRAND_CREATIVE,
-    component: resolveComponent("LazyDashboardCampaignCreative"),
+    component: resolveComponent("DashboardCampaignCreative"),
     label: "Creative",
   },
   {
     name: constants.BRAND_PREVIEW,
-    component: resolveComponent("LazyDashboardCampaign_Preview"),
+    component: resolveComponent("DashboardCampaign_Preview"),
     label: "Preview",
   },
 ];

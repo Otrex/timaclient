@@ -33,6 +33,17 @@ export interface Bank {
   type: string;
 }
 
+export interface CampaignMetrics {
+  total_value: {
+    value: number;
+  };
+  id: string;
+  name: string;
+  period: string;
+  title: string;
+  description: string;
+}
+
 
 export interface Campaign {
   publicId: string;
@@ -179,6 +190,19 @@ export interface AgeRange {
   name: string;
   value: number;
 }
+export interface ApplicationContract {
+  influencerPublicId: string;
+  campaignPublicId: string;
+  contractId: string;
+  influencerName: string;
+  campaignName: string;
+  brandName: string;
+  contractAmount: number;
+  balance: number;
+  status: string;
+  createdOn: Date;
+}
+
 
 export interface AudienceDistributionSummary {
   topCountry: string;
@@ -265,6 +289,40 @@ export interface Notification {
   createdOn: Date;
 }
 
+export interface InfluencerBookmark {
+  id: string;
+  campaignRecord: CampaignRecord;
+}
+
+export interface CampaignRecord {
+  publicId: string;
+  brandName: string;
+  overview: Overview;
+  influencer: Influencer;
+  creative: Creative;
+  status: number;
+  createdBy: string;
+  createdOn: Date;
+}
+
+export interface Influencer {
+  influencerCategory: string[];
+  audienceSize: string[];
+  audienceGender: string[];
+  audienceAgeGroup: string[];
+  audienceLocation: string[];
+}
+
+export interface Overview {
+  name: string;
+  briefDescription: string;
+  website: string;
+  plannedBudget: number;
+  costPerPost: number;
+  socialMediaPlatforms: string[];
+}
+
+
 
 export interface CampaignTransaction {
   transactionDate: Date;
@@ -349,6 +407,7 @@ export interface Influencer {
 
 export interface InfluencerCampaignExperience {
   campaignName: string;
+  campaignId: string;
   campaignBanner: string;
   startDate: Date | string;
   endDate: Date | string;
@@ -370,11 +429,11 @@ export interface Creative {
   paymentType: string;
   startDate: Date | string;
   endDate: string;
-  contentType: string;
-  contentPlacement: string;
+  contentType: string[];
+  contentPlacement: string[];
   creativeBrief: string;
   rules: string;
-  creativeTone: string;
+  creativeTone: string[];
   referenceLink: string;
   awarenessObjective: string[];
   acquisitionObjective: string[];

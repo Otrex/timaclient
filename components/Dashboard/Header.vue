@@ -2,7 +2,7 @@
   <div
     class="w-full flex md:flex-row items-center gap-[1.875rem] justify-between py-[1rem] px-[1.75rem] dark:border-slate-900"
   >
-    <div class="flex items-center flex-row gap-4">
+    <div class="flex items-center flex-row gap-3">
       <div class="flex md:hidden">
         <button class="" @click="$emit('open-sidebar')">
           <UtSvg name="menu" dim w="1.5rem" h="1.5rem" class="text-black" />
@@ -10,7 +10,24 @@
       </div>
       <div class="whitespace-nowrap">
         <slot name="left">
-          <h2>{{ routeName }}</h2>
+          <div class="flex items-center gap-3">
+            <UiButtonDefault
+              v-if="routeName === 'Campaign'"
+              @click="
+                navigateTo({
+                  name: 'CreateCampaign',
+                })
+              "
+              class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
+              variant="primary"
+            >
+              <div class="flex items-center gap-3">
+                <UtSvg name="plus-circle" dim w="1.5rem" h="1.5rem" />
+                <span>New Campaign</span>
+              </div>
+            </UiButtonDefault>
+            <h2 v-if="routeName !== 'Campaign'">{{ routeName }}</h2>
+          </div>
         </slot>
       </div>
     </div>
@@ -18,7 +35,7 @@
       <slot name="middle">
         <div
           class="flex gap-[1.25rem] relative"
-          v-if="['Campaign'].includes(routeName)"
+          v-if="['Explore'].includes(routeName)"
         >
           <UiInputText
             class="w-full"
@@ -27,18 +44,6 @@
             v-model="searchQuery"
             placeholder="Search campaigns"
             search
-          />
-
-          <UiButtonDefault
-            v-if="routeName === 'Campaign'"
-            @click="
-              navigateTo({
-                name: 'CreateCampaign',
-              })
-            "
-            label="+ New campaign"
-            class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
-            variant="primary"
           />
 
           <div
@@ -142,7 +147,7 @@ function navigateToCampaign(campaignId: string) {
   searchResults.value = [];
   searchQuery.value = "";
   navigateTo({
-    name: "Campaign",
+    name: "Explore - Campaign",
     params: {
       id: campaignId,
     },

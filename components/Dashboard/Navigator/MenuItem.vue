@@ -13,7 +13,7 @@
         <UtSvg
           :name="props.icon"
           v-if="!props.loading"
-          class="w-[1.2rem] h-[1.2rem]"
+          class="w-[1.25rem] h-[1.25rem]"
         />
         <UtSvg name="sunshine" v-else class="spinner w-[1.2rem] h-[1.2rem]" />
       </div>

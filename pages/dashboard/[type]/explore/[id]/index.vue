@@ -1,11 +1,15 @@
 <template>
-  <div class="p-[1.625rem]">
-    <transition>
-      <div class="text-center" v-if="state === constants.LOADING">
-        <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-        Fetching Campaign
+  <div class="p-[1.625rem] pt-0">
+    <transition mode="out-in">
+      <div class="text-center relative" v-if="state === constants.LOADING">
+        <UtLoaderIndicator
+          class="absolute inset-0"
+          message="Fetching Campaign"
+        />
       </div>
-      <div v-else-if="!campaign">404 (No campaign found)</div>
+      <div v-else-if="!campaign">
+        <UtNoResource message="Campaign not found" />
+      </div>
       <div v-else>
         <div class="mb-[1.25rem] overflow-hidden h-[29.3125rem] relative">
           <button

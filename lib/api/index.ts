@@ -161,6 +161,22 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getCampaignMetrics(publicId: string) {
+    return this.request<IResponse<Core.CampaignMetrics[]>>({
+      url: `/agency/v1/social-media/Instagram/insight/metrics?userPublicId=${publicId}`,
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
+  async deleteCampaign(publicId: string) {
+    return this.request<Response.GetCampaign>({
+      url: `/agency/v1/campaigns/${publicId}`,
+      requireAuth: true,
+      method: "DELETE",
+    });
+  }
+
   async getCampaigns(payload: Payload.GetCampaigns) {
     const { type, ...data } = payload;
 
@@ -398,7 +414,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getBookmarks() {
-    return this.request<Response.GetBookmarks>({
+    return this.request<IResponse<Core.InfluencerBookmark[]>>({
       url: `/agency/v1/bookmarks`,
       requireAuth: true,
       method: 'GET',
@@ -458,7 +474,7 @@ export default class TimaAPI extends UploadAPI {
 
   async deleteBookmark(name: string) {
     return this.request({
-      url: `/agency/v1/bookmarks/${name}`,
+      url: `/agency/v1/bookmarks/title/${name}`,
       requireAuth: true,
       method: 'DELETE',
     })
@@ -483,6 +499,14 @@ export default class TimaAPI extends UploadAPI {
   async getInfluencerTransactions() {
     return this.request<Response.GetInfluencerTransactions>({
       url: "/payment/v1/transactions",
+      requireAuth: true,
+      method: 'GET',
+    });
+  }
+
+  async getInfluencerTransactionsByStatus(status: string) {
+    return this.request<Response.GetInfluencerTransactions>({
+      url: `/payment/v1/transactions/status/${status}`,
       requireAuth: true,
       method: 'GET',
     });
@@ -682,6 +706,15 @@ export default class TimaAPI extends UploadAPI {
       ),
       requireAuth: true,
       method: "PUT",
+    })
+  }
+
+  async createContract(data: Payload.CreateContract) {
+    return this.request<IResponse<Core.ApplicationContract>>({
+      url: "/payment/v1/contracts",
+      requireAuth: true,
+      method: "POST",
+      data
     })
   }
 }

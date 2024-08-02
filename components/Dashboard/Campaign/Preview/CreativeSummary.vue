@@ -1,5 +1,15 @@
 <template>
-  <UiLayoutPreview title="SUMMARY" @next="props.bus?.emit()">
+  <UiLayoutPreview
+    title="SUMMARY"
+    @back="
+      navigateTo({
+        query: {
+          tab: constants.BRAND_INFLUENCERS,
+        },
+      })
+    "
+    @next="props.bus?.emit()"
+  >
     <div class="flex flex-col gap-3">
       <p>Payment type: {{ creative.paymentType }}</p>
       <p>
