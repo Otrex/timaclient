@@ -1,8 +1,10 @@
 <template>
   <div
-    class="inline-block p-0 m-0 border-none outline-none bg-transparent relative"
+    class="inline-block p-0 m-0 border-none w-full outline-none bg-transparent relative"
   >
-    <div class="p-0 m-0 border-none outline-none bg-transparent relative">
+    <div
+      class="p-0 m-0 border-none w-full outline-none bg-transparent relative"
+    >
       <input
         ref="input"
         v-bind="$attrs"
@@ -57,6 +59,10 @@ const props = defineProps<{
 const input = ref<HTMLInputElement>();
 const typeState = ref("password");
 const emits = defineEmits(["update:modelValue"]);
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 function update(e: any) {
   emits("update:modelValue", e.target.value);

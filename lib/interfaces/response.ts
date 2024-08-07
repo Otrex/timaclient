@@ -2,8 +2,8 @@ import * as Core from "./core";
 import type { IResponse } from "./utils";
 
 export interface CreateUser extends IResponse<{
-  message: string;
-  publicId: string;
+  user: Core.User
+  token: string
 }> { }
 
 export interface Login extends IResponse<{
@@ -55,7 +55,7 @@ export interface GetCampaign extends IResponse<Core.Campaign> { }
 export interface GetPaymentStatus extends IResponse<string[]> { }
 export interface SignIn extends IResponse<Core.Authentication> { }
 export interface GetCountries extends IResponse<Core.Country[]> { };
-export interface GetIndustry extends IResponse<Core.Industry[]> { }
+export interface GetIndustry extends IResponse<string[]> { }
 export interface GetCampaigns extends IResponse<Core.Campaign[]> { }
 export interface GetUserProfile extends IResponse<Core.ProfileInfo> { };
 export interface BrandBasicInformation extends IResponse<Core.User> { };

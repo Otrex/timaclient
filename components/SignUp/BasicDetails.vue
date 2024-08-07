@@ -9,14 +9,38 @@
     </div>
 
     <div class="flex flex-col gap-[1rem]">
-      <UiInputText
-        type="text"
-        class="w-full"
-        v-model="form.userName"
-        :autocomplete="false"
-        placeholder="Username"
-        :error-message="v$.userName.$errors[0]?.$message.toString()"
-      />
+      <div class="text-left">
+        <div class="flex flex-row items-center transition-all">
+          <UiInputText
+            type="text"
+            class="w-full"
+            :class="
+              isValidUserName ? '!border-green-500 !border !border-solid' : ''
+            "
+            v-model="form.userName"
+            @keyup.prevent="() => verify()"
+            :autocomplete="false"
+            placeholder="Username"
+            :error-message="
+              v$.userName.$errors[0]?.$message.toString() ||
+              (isValidUserName === false && 'Username already in use')
+            "
+          />
+          <div>
+            <UtSvg
+              name="sunshine"
+              class="spinner ml-4 w-[1.5rem] h-[1.5rem]"
+              v-show="verifying == constants.LOADING"
+            />
+          </div>
+        </div>
+        <span
+          class="text-green-500 !text-left text-sm"
+          v-if="isValidUserName && !v$.userName.$errors[0]?.$message.toString()"
+        >
+          Your username is good to go!</span
+        >
+      </div>
       <UiInputText
         type="email"
         class="w-full"
@@ -36,7 +60,8 @@
       />
       <UiInputPhone
         class="w-full"
-        v-model="form.phoneNumber"
+        :model-value="form.phoneNumber"
+        @update:model-value="(data) => (form.phoneNumber = data.number)"
         :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
         placeholder="234 803 443 3833"
       />
@@ -66,11 +91,14 @@
 </template>
 
 <script setup lang="ts">
+import { useDebounceFn } from "@vueuse/core";
 import { CREATE_USER_RULE } from "~/lib/validation/rules";
 
 const { notify } = useNotification();
 const authStore = useAuthStore();
 const agreed = ref(false);
+const isValidUserName = ref<boolean | null>(null);
+const api = useAPI();
 
 const form = reactive({
   emailAddress: "",
@@ -78,6 +106,24 @@ const form = reactive({
   phoneNumber: "",
   userName: "",
 });
+
+const { execute: verifyUsername, state: verifying } = useRequestState({
+  action: (value: string) => api.verifyUsername(value),
+  onError(e) {
+    if (e.__error?.response?.data?.message) {
+      isValidUserName.value = false;
+    }
+  },
+  onSuccess(response) {
+    isValidUserName.value = response.statusCode === 200 ? true : false;
+  },
+});
+
+const verify = useDebounceFn(
+  () => form.userName && verifyUsername(form.userName),
+  1000,
+  { maxWait: 2000 }
+);
 
 const { execute, validate, state, v$ } = useRequestState({
   action: () => authStore.createUser(form),

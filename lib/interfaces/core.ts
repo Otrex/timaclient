@@ -125,6 +125,11 @@ export interface Industry {
   description: string;
 }
 
+// export interface Industry {
+//   name: string;
+//   description: string;
+// }
+
 export interface Country {
   name: string;
   language: string[];
