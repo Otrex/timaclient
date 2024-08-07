@@ -1,5 +1,53 @@
 import type { UserType } from "../enums";
 
+export interface UserProfile {
+  country: string
+  website: string
+  address: string
+  profileSetupProgress: string
+  city: string
+  companyName: string
+  profileImage: string
+  userId: string
+  createdAt: string
+  referralCode: string
+  hasSetTransactionPin: boolean
+  id: string
+  state: string
+  updatedAt: string
+}
+
+export interface User {
+  createdAt: string
+  emailAddress: string
+  phoneNumber: string
+  role: string
+  user_id: string
+  hasVerifiedPhone: boolean
+  invited: boolean
+  hasVerifiedEmail: boolean
+  userName: string
+  updatedAt: string
+}
+
+export interface AccountWallet {
+  createdAt: string
+  wallet_id: string
+  wallet: number
+  userId: string
+  updatedAt: string
+}
+
+export interface UserData {
+  profile: UserProfile
+  user: User
+  accountWallet: AccountWallet
+  token: string
+}
+
+
+// OLD
+
 export type AgeGenderData = {
   ageRange: string;
   male: number;

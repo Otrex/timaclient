@@ -3,10 +3,11 @@ import type { UserType } from "../enums";
 import type * as Core from "./core";
 
 export interface CreateUser {
-  username: string;
+  userName: string;
   password: string;
-  email: string;
-  userType: UserType;
+  phoneNumber: string;
+  emailAddress: string;
+  role: UserType;
 }
 
 export interface DemographyInsight {
@@ -70,7 +71,7 @@ export interface UploadRequest {
 }
 
 export interface SignIn {
-  username: string;
+  emailAddress: string;
   password: string;
 }
 

@@ -1,6 +1,8 @@
 export enum UserType {
   BRAND = "BRAND",
   INFLUENCER = "INFLUENCER",
+  SUPERADMIN = 'SUPERADMIN',
+  ADMIN = 'ADMIN'
 }
 
 export enum RequestState {
