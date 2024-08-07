@@ -96,7 +96,6 @@
 import { useDebounceFn } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
 import { useAuthStore } from "~/stores/auth";
-import { UserType } from "~/lib/enums";
 
 const route = useRoute();
 
@@ -115,8 +114,8 @@ const routeName = computed(
 );
 
 const authStore = useAuthStore();
-const profile = computed(() => authStore.profile);
-const user = computed(() => authStore.user);
+const profile = computed(() => authStore.profile || null);
+const user = computed(() => authStore.user || null);
 
 const userIdentifier = computed(() => authStore.user?.userName || "");
 

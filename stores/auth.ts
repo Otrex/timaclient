@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { UserType } from "~/lib/enums";
 import type { Payload } from "~/lib/interfaces";
+import type { AccountWallet, User, UserProfile } from "~/lib/interfaces/core";
 
 type IState = {
   registration: {
@@ -10,6 +11,9 @@ type IState = {
     username?: string;
     country?: string;
   };
+  user?: User;
+  profile?: UserProfile;
+  wallet?: AccountWallet;
   authorization: {
     accessToken?: string;
     userType?: UserType;
@@ -26,9 +30,9 @@ export const useAuthStore = defineStore("auth", {
       username: undefined,
       country: undefined,
     },
-    user: {} as unknown as User,
-    profile: {} as unknown as UserProfile,
-    wallet: {} as unknown as AccountWallet,
+    user: undefined,
+    profile: undefined,
+    wallet: undefined,
     authorization: {
       accessToken: undefined,
       userType: undefined,
@@ -61,10 +65,12 @@ export const useAuthStore = defineStore("auth", {
 
       this.$patch({
         authorization: {
-          accessToken: response.data.access_token,
-          refreshToken: response.data.refresh_token,
-          expiresIn: response.data.expires_in,
+          accessToken: response.data.token,
+          userType: response.data.user.role,
         },
+        user: response.data.user,
+        profile: response.data.profile,
+        wallet: response.data.accountWallet,
       });
     },
 
@@ -76,8 +82,6 @@ export const useAuthStore = defineStore("auth", {
       this.$patch({
         authorization: {
           accessToken: response.data.access_token,
-          refreshToken: response.data.refresh_token,
-          expiresIn: response.data.expires_in,
         },
       });
     },
@@ -171,9 +175,10 @@ export const useAuthStore = defineStore("auth", {
           },
           authorization: {
             accessToken: undefined,
-            refreshToken: undefined,
-            expiresIn: undefined,
           },
+          user: undefined,
+          profile: undefined,
+          wallet: undefined,
         });
 
         setTimeout(() => {
@@ -183,7 +188,7 @@ export const useAuthStore = defineStore("auth", {
       });
     },
   },
-  persist: ["registration", "authorization", "connectedSocials"],
+  persist: ["registration", "authorization", "user", "profile", "connectedSocials"],
   persistWith: tools.cookieStore(),
 });
 
