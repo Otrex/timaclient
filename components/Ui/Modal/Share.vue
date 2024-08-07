@@ -1,14 +1,14 @@
 <template>
-  <div class="bg-white p-[2rem]">
+  <div class="bg-white rounded-3xl p-[2rem]">
     <div class="mb-3">
       <h2 class="font-bold">
         Share {{ props.type === constants.CAMPAIGN ? "Campaign" : "Resource" }}
       </h2>
     </div>
-    <UiInputText
+    <UiInputTextArea
       type="text"
       ref="input"
-      class="w-full mb-2"
+      class="w-full"
       @click="selectUrl"
       disabled
       :model-value="url"
@@ -70,4 +70,9 @@ const startCopy = () => {
 };
 </script>
 
-<style></style>
+<style scoped>
+[type="text"] {
+  padding: 0;
+  border: 0px;
+}
+</style>

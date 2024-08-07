@@ -1,5 +1,15 @@
 <template>
-  <UiLayoutPreview title="PREVIEW THE CAMPAIGN" @next="props.bus?.emit()">
+  <UiLayoutPreview
+    title="PREVIEW THE CAMPAIGN"
+    @back="
+      navigateTo({
+        query: {
+          tab: constants.BRAND_CREATIVE,
+        },
+      })
+    "
+    @next="props.bus?.emit()"
+  >
     <div>
       <p class="mb-[2.5rem]">
         Congrats on reaching the preview page! Your campaign is almost ready to

@@ -73,8 +73,8 @@ select option[disabled] {
 }
 
 :root {
-  --clr-light-blue: #f3faff;
-  --input-border-color: #aaa;
+  --clr-light-blue: #f3faff; /* #dcf0ff; /* #f3faff; */
+  --input-border-color: #eee;
 
   --clr-grey-400: #777;
   --clr-grey-300: #999;

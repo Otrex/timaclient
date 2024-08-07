@@ -1,15 +1,17 @@
 <template>
-  <img
-    src="https://placehold.co/600x400.png?text=Placeholder"
-    class="bg-img pulse"
-    v-if="isLoading"
-  />
-  <img
-    src="https://placehold.co/600x400.png?text=Placeholder"
-    class="bg-img error"
-    v-else-if="error"
-  />
-  <img :src="state?.src" :class="[$attrs.class]" v-else />
+  <transition mode="in-out">
+    <img
+      src="/favicon/favicon-16x16.png"
+      class="bg-img pulse object-cover"
+      v-if="loading"
+    />
+    <img
+      src="/favicon/favicon-16x16.png"
+      class="bg-img error object-cover"
+      v-else-if="error"
+    />
+    <img :src="state?.src" :class="[$attrs.class]" v-else />
+  </transition>
 </template>
 
 <script setup lang="ts">
@@ -27,17 +29,23 @@ const props = withDefaults(
   }
 );
 
-const resolveSrc = (src: string) => {
-  // if (src.startsWith("~")) {
-  //   return import(src);
-  // }
-
-  return src;
-};
+const resolveSrc = (src: string) => src;
+const loading = ref(true);
 
 const { isLoading, error, state } = useImage({
   src: resolveSrc(props.src || ""),
 });
+
+watch(
+  () => isLoading.value,
+  () => {
+    if (!isLoading.value) {
+      setTimeout(() => {
+        loading.value = isLoading.value;
+      }, 2000);
+    }
+  }
+);
 </script>
 
 <style scoped>
@@ -58,6 +66,7 @@ const { isLoading, error, state } = useImage({
   background-position: center center;
   background-blend-mode: overlay;
   filter: grayscale(1);
+  object-fit: contain !important;
 }
 
 .pulse {

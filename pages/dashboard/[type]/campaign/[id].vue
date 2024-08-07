@@ -1,13 +1,15 @@
 <template>
-  <div class="p-[1.75rem]">
+  <div class="p-[1.75rem] pt-[0rem]">
     <template v-if="state === constants.LOADING">
-      <div class="text-center">
-        <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-        Fetching Campaign
+      <div class="text-center relative">
+        <UtLoaderIndicator
+          class="absolute inset-0"
+          message="Fetching Campaign"
+        />
       </div>
     </template>
     <template v-else-if="!campaign">
-      <div>404 (No campaign found)</div>
+      <UtNoResource message="Campaign not found" />
     </template>
     <template v-else>
       <div class="flex justify-end">
@@ -21,8 +23,8 @@
           <UiButtonDefault variant="info" label="Add Publications" p="0.625rem" />
         </div> -->
       </div>
-      <section class="mt-[0.75rem]">
-        <div class="h-[24.1875rem] w-full overflow-hidden">
+      <section class="">
+        <div class="h-[24.1875rem] rounded w-full overflow-hidden">
           <UiImg
             :src="campaign?.creative.thumbnail"
             alt="campaign banner"
@@ -47,9 +49,15 @@
           <div>
             <button
               @click="openShare = true"
-              class="bg-[#111] text-white px-[0.9375rem] rounded-lg p-[0.625rem]"
+              class="bg-[#111] text-white mr-3 text-sm !px-[0.9375rem] rounded-4xl p-[0.625rem]"
             >
               Share Campaign
+            </button>
+            <button
+              @click="confirmAccept.open()"
+              class="text-sm bg-slate-200 !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+            >
+              Delete Campaign
             </button>
           </div>
         </div>
@@ -76,6 +84,18 @@
           :publicId="campaign.publicId"
         />
       </UtModal>
+      <UiModalConfirmAction
+        :loading="deletingState === constants.LOADING"
+        @onapprove="deleteCampaign"
+        ref="confirmAccept"
+      >
+        <template #title>
+          <div>Delete Campaign</div>
+        </template>
+        <template #body>
+          <div>Are you sure you want to delete this campaign?</div>
+        </template>
+      </UiModalConfirmAction>
     </template>
   </div>
 </template>
@@ -89,13 +109,36 @@ definePageMeta({
 
 const api = useAPI();
 const route = useRoute();
+const confirmAccept = ref();
 const campaign = ref<GetCampaign["data"]>();
+const { notify } = useNotification();
 
 const { state } = useRequestState({
   action: () => api.getCampaign(route.params.id as string),
   immediately: true,
   onSuccess: (response) => {
     campaign.value = response.data;
+  },
+});
+
+const { state: deletingState, execute: deleteCampaign } = useRequestState({
+  action: () => api.deleteCampaign(route.params.id as string),
+  onSuccess: (response) => {
+    notify({
+      title: "Campaign deleted",
+      text: "Campaign has been deleted successfully",
+      type: "success",
+    });
+    navigateTo({
+      name: "BrandCampaign",
+    });
+  },
+  onError(error) {
+    notify({
+      title: "Review Failed",
+      text: error.description,
+      type: "error",
+    });
   },
 });
 

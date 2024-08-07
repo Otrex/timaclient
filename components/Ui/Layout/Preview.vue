@@ -10,10 +10,11 @@
     </div>
     <div class="self-center mb-[2.5rem] gap-3">
       <button
+        v-if="!props.hideBack"
         class="text-red-600 rounded-[1.25rem] mr-[0.3125rem] active:ring-4 min-w-[9.375rem] py-[0.625rem]"
-        @click="emits('cancel')"
+        @click="emits('back')"
       >
-        Cancel
+        Go Back
       </button>
       <button
         class="bg-red-600 rounded-[1.25rem] text-white active:ring-4 min-w-[9.375rem] py-[0.625rem] active:ring-red-400"
@@ -26,9 +27,10 @@
 </template>
 
 <script setup lang="ts">
-const emits = defineEmits(["cancel", "next"]);
+const emits = defineEmits(["cancel", "next", "back"]);
 const props = defineProps<{
   title: string;
+  hideBack?: boolean;
 }>();
 </script>
 

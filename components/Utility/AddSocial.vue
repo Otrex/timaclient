@@ -12,7 +12,10 @@
     <div class="flex flex-col">
       <div class="transform z-10 translate-x-5 translate-y-3">
         <label
-          :class="['bg-white px-3', props.formErrorMessage && 'text-red-600']"
+          :class="[
+            'bg-[#efefef] text-[#888] rounded-md px-2',
+            props.formErrorMessage && 'text-red-600',
+          ]"
           >Enter your handle:</label
         >
       </div>

@@ -1,49 +1,53 @@
 <template>
   <div class="p-[1.25rem]">
-    <template v-if="tools.requestState(getStats) === constants.LOADING">
-      <div class="py-4 bg-[rgba(228,_243,_255,_0.5)]">
-        <UtLoaderIndicator message="Fetching Statistics" />
-      </div>
-    </template>
-    <template v-else-if="!paymentStats">
-      <UtNoResource message="No statistics yet" />
-    </template>
-    <template v-else>
-      <div class="grid grid-cols-4 gap-[1.25rem] mb-[1.25rem]">
-        <div
-          class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
-        >
-          <div class="text-center">
-            <h3 class="text-[2.1875rem]">
-              {{ paymentStats.totalTransactions }}
-            </h3>
-            <p>Total transactions</p>
+    <transition mode="out-in">
+      <template v-if="tools.requestState(getStats) === constants.LOADING">
+        <div class="mb-4">
+          <div class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]">
+            <UtLoaderIndicator message="Fetching Statistics" />
           </div>
         </div>
+      </template>
+      <template v-else-if="!paymentStats">
+        <UtNoResource message="No statistics yet" />
+      </template>
+      <template v-else>
+        <div class="grid sm:grid-cols-3 gap-[1.25rem] mb-[1.25rem]">
+          <div
+            class="bg-[rgba(228,_243,_255,_0.5)] py-[40px] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
+          >
+            <div class="text-center">
+              <h3 class="text-[2.1875rem]">
+                {{ paymentStats.totalTransactions }}
+              </h3>
+              <p>Total transactions</p>
+            </div>
+          </div>
 
-        <div
-          class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
-        >
-          <div class="text-center">
-            <h3 class="text-[2.1875rem]">
-              {{ paymentStats.completedTransactions }}
-            </h3>
-            <p>Complete Payment</p>
+          <div
+            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
+          >
+            <div class="text-center">
+              <h3 class="text-[2.1875rem]">
+                {{ paymentStats.completedTransactions }}
+              </h3>
+              <p>Complete Payment</p>
+            </div>
           </div>
-        </div>
 
-        <div
-          class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] aspect-[310/214] flex items-center justify-center"
-        >
-          <div class="text-center">
-            <h3 class="text-[2.1875rem]">
-              {{ paymentStats.pendingTransactions }}
-            </h3>
-            <p>Yet to be balanced</p>
+          <div
+            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
+          >
+            <div class="text-center">
+              <h3 class="text-[2.1875rem]">
+                {{ paymentStats.pendingTransactions }}
+              </h3>
+              <p>Yet to be balanced</p>
+            </div>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
+    </transition>
     <div
       class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
     >
@@ -83,8 +87,13 @@
             />
             <UiInputSelect
               class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
-              :options="tools.generationOptions(['all'])"
-              v-model="filter"
+              :options="[
+                { label: 'All', value: 'ALL' },
+                { label: 'Partial', value: 'PARTIAL' },
+                { label: 'Completed', value: 'COMPLETED' },
+              ]"
+              @change="search"
+              v-model="searchStatus"
             />
           </div>
         </div>
@@ -103,9 +112,16 @@
           </thead>
           <tbody>
             <template
-              v-if="tools.requestState(getTransactions) === constants.LOADING"
+              v-if="
+                tools.requestState(getTransactions) === constants.LOADING ||
+                tools.requestState(searchTransactions) === constants.LOADING
+              "
             >
-              <UtLoaderIndicator message="Fetching transactions" />
+              <tr>
+                <td colspan="7">
+                  <UtLoaderIndicator message="Fetching transactions" />
+                </td>
+              </tr>
             </template>
             <template v-else-if="transactions.length === 0">
               <tr>
@@ -116,7 +132,7 @@
             </template>
             <template
               v-else
-              v-for="(transaction, idx) in transactions"
+              v-for="(transaction, idx) in searchFilter(transactions)"
               :key="idx"
             >
               <tr>
@@ -189,7 +205,7 @@ definePageMeta({
 
 const BG_COLORS = ["#AAD9FB", "#2AA2FD", "#FFB009", "#AA7506", "#FFE5AD"];
 const paymentYear = ref("2024");
-const filter = ref("all");
+
 const data = ref({
   labels: defs.monthsOfYear.map((e) => e.short),
   datasets: [] as Core.DataSet[],
@@ -205,7 +221,7 @@ const options = ref<any>({
     },
   },
   responsive: true,
-  aspectRatio: 1156 / 561,
+  aspectRatio: 1156 / 500,
   barPercentage: 0.8,
   categoryPercentage: 0.8,
   plugins: {
@@ -232,6 +248,29 @@ const getTransactions = useRequestState({
     transactions.value = response.data;
   },
 });
+
+const searchQuery = ref<string>("");
+const searchStatus = ref<string>("");
+const searchTransactions = useRequestState({
+  action: () => api.getInfluencerTransactionsByStatus(searchStatus.value),
+  immediately: true,
+  onSuccess: (response) => {
+    transactions.value = response.data;
+  },
+});
+
+const search = () => {
+  if (searchStatus.value && searchStatus.value !== "ALL") {
+    searchTransactions.execute();
+  } else {
+    getTransactions.execute();
+  }
+};
+
+const searchFilter = (inf: Core.InfluencerTransaction[]) => {
+  const regex = new RegExp(searchQuery.value, "i");
+  return inf.filter((str) => regex.test(str.campaignName));
+};
 
 const paymentStats = ref<Core.InfluencerPaymentStats>();
 const getStats = useRequestState({

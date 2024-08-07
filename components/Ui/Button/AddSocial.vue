@@ -24,27 +24,18 @@
     <Teleport to="body">
       <UtModal
         v-model:state="modalState"
-        m-width="50.25rem"
+        m-width="37.75rem"
         :preventBackdropClose="true"
         content-class="mx-auto mt-[10%]"
         backdrop-color="rgba(0,0,0,.3)"
       >
         <div class="model-wrapper rounded-lg relative">
-          <div :class="['flex justify-end']">
-            <button
-              class="active:ring-2 hover:ring-1 mb-1 hover:ring-slate-100 hover:rounded flex items-center justify-center active:ring-slate-50 active:rounded w-[25px] h-[25px]"
-              @click="modalState = false"
-            >
-              <UtSvg
-                name="close"
-                dim
-                w=".9rem"
-                h=".9rem"
-                class="text-white dark:text-slate-500"
-              />
-            </button>
-          </div>
-          <div class="bg-white">
+          <div class="bg-white pt-6 !rounded-[2.5rem]">
+            <div class="absolute top-[2rem] right-[2rem]">
+              <button @click="modalState = false">
+                <UtSvg name="close" class="w-[1.125rem] h-[1.125rem]" />
+              </button>
+            </div>
             <slot name="form">
               <div class="p-[1.25rem] text-center">
                 <h1 class="font-bold">404</h1>

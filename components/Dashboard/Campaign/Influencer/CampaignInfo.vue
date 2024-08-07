@@ -5,60 +5,68 @@
         Campaign experiences (45)
       </p> -->
 
-      <div
-        :class="[
-          displayPartially
-            ? 'max-h-[4.375rem] overflow-y-clip'
-            : 'max-h-screen overflow-y-auto',
-        ]"
-        class="grid transition-all md:grid-cols-1 lg:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
+      <UtLoadPresenter
+        :state="tools.requestState(influencerExperiences)"
+        loading-message="Fetching experiences"
+        text-class="text-white max-h-[250px]"
+        not-found-message="No experiences found"
+        :data="!experiences.length"
       >
-        <div v-for="(campaign, idx) in experiences" :key="idx">
-          <div
-            :data-id="campaign.id"
-            @click="selectCampaign(campaign.id)"
-            :class="[
-              'flex items-center hover:border-2 border-red-700 border-solid relative bg-white flex-row gap-[0.75rem]',
-              campaign.active && 'border-2 border-red-700 border-solid',
-            ]"
-          >
-            <div>
-              <div class="w-[3rem] h-[3rem] overflow-hidden rounded-md">
-                <UiImg
-                  class="w-full h-full object-cover"
-                  src="https://s3-alpha-sig.figma.com/img/5ebb/b7ac/d173c2ab9eac7e4886e5e3181567352f?Expires=1704067200&Signature=KT81KiEiH1ZoXZSZ3Zxg9uzkEriY~c3Cq34kSW-hV~f06XAZYV4RFOg-5fQNkVnKwFsVMXb6poL~3mozCr-evXFxSkhIenFxxFFWMADwan4GTkihcbxn2rVBGau4REue0fRmRraiT2OlPB-JuChvSMLtmBe~ja4RtpcFXiHXjVYjdNf6KBdPKXvlsDVX145tR4wEDmUqCMxHCET~mouPeecHxteV3oJEoAXyK5vtN6vmzs6sxhKQr8bsOKk7uykAUwGcHMWdHttz1ibwjpwocfRcZAScuLrCSZ~7Z-5K6UbU5cxNo0BSsKotjK0TBLhUTyNEtd1P6-6hWrNZhSyV4A__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-                  alt=""
+        <div
+          :class="[
+            displayPartially
+              ? 'max-h-[4.375rem] overflow-y-clip'
+              : 'max-h-screen overflow-y-auto',
+          ]"
+          class="grid transition-all md:grid-cols-1 lg:grid-cols-3 gap-x-[1.25rem] items-center gap-y-[1.375rem]"
+        >
+          <div v-for="(campaign, idx) in experiences" :key="idx">
+            <div
+              :data-id="campaign.id"
+              @click="selectCampaign(campaign.id)"
+              :class="[
+                'flex items-center hover:border-2 border-red-700 border-solid relative bg-white flex-row gap-[0.75rem]',
+                campaign.active && 'border-2 border-red-700 border-solid',
+              ]"
+            >
+              <div>
+                <div class="w-[3rem] h-[3rem] overflow-hidden rounded-md">
+                  <UiImg
+                    class="w-full h-full object-cover"
+                    src="https://s3-alpha-sig.figma.com/img/5ebb/b7ac/d173c2ab9eac7e4886e5e3181567352f?Expires=1704067200&Signature=KT81KiEiH1ZoXZSZ3Zxg9uzkEriY~c3Cq34kSW-hV~f06XAZYV4RFOg-5fQNkVnKwFsVMXb6poL~3mozCr-evXFxSkhIenFxxFFWMADwan4GTkihcbxn2rVBGau4REue0fRmRraiT2OlPB-JuChvSMLtmBe~ja4RtpcFXiHXjVYjdNf6KBdPKXvlsDVX145tR4wEDmUqCMxHCET~mouPeecHxteV3oJEoAXyK5vtN6vmzs6sxhKQr8bsOKk7uykAUwGcHMWdHttz1ibwjpwocfRcZAScuLrCSZ~7Z-5K6UbU5cxNo0BSsKotjK0TBLhUTyNEtd1P6-6hWrNZhSyV4A__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div>
+                <p
+                  style="text-overflow: ellipsis"
+                  class="nl w-full pr-3 whitespace-nowrap"
+                >
+                  {{ campaign.name }}
+                </p>
+                <p class="sm text-[color:--clr-grey-300]">
+                  {{ tools.formatDate(campaign.startDate) }} -
+                  {{ tools.formatDate(campaign.endDate) }}
+                </p>
+              </div>
+
+              <div
+                class="absolute bottom-0 right-0 p-1 pr-2"
+                v-if="campaign.active"
+              >
+                <UtSvg
+                  name="check-sq"
+                  dim
+                  w="1rem"
+                  h="1rem"
+                  class="text-red-700 bg-white rounded-full"
                 />
               </div>
             </div>
-            <div>
-              <p
-                style="text-overflow: ellipsis"
-                class="nl w-full pr-3 whitespace-nowrap"
-              >
-                {{ campaign.name }}
-              </p>
-              <p class="sm text-[color:--clr-grey-300]">
-                {{ tools.formatDate(campaign.startDate) }} -
-                {{ tools.formatDate(campaign.endDate) }}
-              </p>
-            </div>
-
-            <div
-              class="absolute bottom-0 right-0 p-1 pr-2"
-              v-if="campaign.active"
-            >
-              <UtSvg
-                name="check-sq"
-                dim
-                w="1rem"
-                h="1rem"
-                class="text-red-700 bg-white rounded-full"
-              />
-            </div>
           </div>
         </div>
-      </div>
+      </UtLoadPresenter>
 
       <div class="text-center">
         <button
@@ -77,16 +85,21 @@
         </button>
       </div>
     </div>
-    <div class="bg-[#454545] mb-[1.3125rem] text-white px-[1rem] py-[1.25rem]">
-      <p>Nike Campaign</p>
 
-      <p class="nl">
-        Lorem ipsum dolor sit amet consectetur. Hendrerit varius tristique
-        scelerisque purus. Purus mauris lacus volutpat convallis elementum
-        fringilla nam vulputate phasellus. Volutpat pulvinar ac dolor mauris
-        mauris consequat mauris nibh. Tincidunt tincidunt sed eget natoque in
-        turpis neque auctor ullamcorper.
-      </p>
+    <div class="bg-[#454545] mb-[1.3125rem] text-white px-[1rem] py-[1.25rem]">
+      <UtLoadPresenter
+        :state="tools.requestState(getCampaignInfo)"
+        loading-message="Fetching campaign details..."
+        text-class="max-h-[250px]"
+        not-found-message="Please select a campaign experience"
+        :data="!campaignInfo"
+      >
+        <p>{{ campaignInfo?.brandName }} - {{ campaignInfo?.overview.name }}</p>
+
+        <p class="nl">
+          {{ campaignInfo?.overview.briefDescription }}
+        </p>
+      </UtLoadPresenter>
     </div>
 
     <div class="flex flex-wrap gap-[3.75rem] mb-[1.875rem]">
@@ -235,38 +248,25 @@
 </template>
 
 <script setup lang="ts">
+import { ApiError } from "~/lib/core/Api";
 import type { Core } from "~/lib/interfaces";
+import type { GetCampaign } from "~/lib/interfaces/response";
+
+type Experience = Core.InfluencerCampaignExperience & {
+  active: boolean;
+  id: number;
+  name: string;
+};
 
 const props = defineProps<{ publicId: string }>();
 const displayPartially = ref(true);
-const campaigns = ref([
-  {
-    name: "TIMA Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: true,
-  },
-  {
-    name: "NST Creative Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: false,
-  },
-  {
-    name: "Nike Creative Campaign",
-    startDate: new Date("2000-02-02"),
-    endDate: new Date(),
-    id: Math.random(),
-    active: false,
-  },
-]);
+
+const campaignInfo = ref<GetCampaign["data"]>();
 
 function selectCampaign(index: number) {
   let selectedPosition = -1;
-  let selected: any = {};
-  campaigns.value.forEach((campaign, idx) => {
+  let selected: Experience | undefined;
+  experiences.value.forEach((campaign, idx) => {
     campaign.active = false;
     if (campaign.id == index) {
       campaign.active = true;
@@ -275,34 +275,47 @@ function selectCampaign(index: number) {
     }
   });
 
-  if (selectedPosition !== -1) {
-    campaigns.value.splice(selectedPosition, 1); // Remove the element from its current position
-    campaigns.value.unshift(selected); // Add the element to the beginning of the list
+  if (selectedPosition !== -1 && selected) {
+    experiences.value.splice(selectedPosition, 1); // Remove the element from its current position
+    experiences.value.unshift(selected); // Add the element to the beginning of the list
+    getCampaignInfo.execute(selected.campaignId);
+    getCampaignMetrics.execute(selected.campaignId);
   }
 }
 
 const api = useAPI();
-const experiences = ref<
-  (Core.InfluencerCampaignExperience & {
-    active: boolean;
-    id: number;
-    name: string;
-  })[]
->([]);
+const experiences = ref<Experience[]>([]);
 
-useRequestState({
+const influencerExperiences = useRequestState({
   immediately: true,
   action: () =>
     api.getInfluencerCampaignExperience({
       influencerPublicId: props.publicId,
     }),
   onSuccess(response) {
-    experiences.value = response.data.map((e) => ({
+    experiences.value = response.data.map((e, i) => ({
       ...e,
       name: e.campaignName,
       active: false,
       id: Math.random(),
     }));
+
+    selectCampaign(experiences.value[0].id);
+  },
+});
+
+const getCampaignInfo = useRequestState({
+  action: async (id: string) => api.getCampaign(id),
+  onSuccess: (response) => {
+    campaignInfo.value = response.data;
+  },
+});
+
+const campaignMetrics = ref<Core.CampaignMetrics[]>([]);
+const getCampaignMetrics = useRequestState({
+  action: (id: string) => api.getCampaignMetrics(id),
+  onSuccess: (response) => {
+    campaignMetrics.value = response.data;
   },
 });
 </script>

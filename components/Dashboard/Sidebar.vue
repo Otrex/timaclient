@@ -7,9 +7,9 @@
       >
         <UtSvg name="close" dim w="1.5rem" h="1.5rem" />
       </button>
-      <div class="pt-[2.375rem] px-[1.125rem]">
+      <div class="pt-[1.75rem] px-[1.125rem]">
         <div class="px-[0.75rem]">
-          <UtSvg name="logo/tima" class="w-[6.125rem] h-[2.4375rem]" />
+          <UtSvg name="logo/tima-2" class="w-[8rem] aspect-[3/1]" />
         </div>
         <div class="mt-[4.625rem]">
           <DashboardNavigatorInfluencer
@@ -37,9 +37,7 @@
         </div>
       </div>
       <div>
-        <div
-          class="px-[1.125rem] border-t-[0.025rem] border-solid border-[#999] dark:border-slate-900"
-        >
+        <div class="px-[1.125rem] dark:border-slate-900">
           <div class="mt-[1rem] mb-[3.75rem] flex flex-col gap-[1rem]">
             <DashboardNavigatorMenuItem
               label="Settings"

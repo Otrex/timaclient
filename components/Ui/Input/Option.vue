@@ -10,7 +10,7 @@
       />
       <div
         :class="[
-          'p-[0.6875rem] rounded-[2.5rem] border border-solid border-[--input-border-color] dark:border-[#eee] hover:ring-4 hover:ring-slate-300',
+          'p-[0.6875rem] px-[1rem] dark:text-black bg-[#efefef] rounded-[2.5rem] border border-solid border-[--input-border-color] dark:border-[#eee] hover:ring-4 hover:ring-slate-300',
           props.mainClass,
           isActive &&
             (props.activeClass || variantActiveCSS[props.variant || 'primary']),

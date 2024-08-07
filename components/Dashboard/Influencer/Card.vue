@@ -1,5 +1,6 @@
 <template>
   <article
+    :key="key"
     class="border border-solid bg-white dark:bg-slate-900 border-[#E7E7E7] dark:border-slate-600"
   >
     <div class="max-h-[11.25rem] h-full relative overflow-hidden">
@@ -136,6 +137,7 @@ const props = defineProps<{
   publicId: string;
 }>();
 
+const key = ref(0);
 const avgColor = ref(0);
 const authStore = useAuthStore();
 const colorExtract = useImageColorExtract();
@@ -174,16 +176,19 @@ const { state, execute } = useRequestState({
   },
 });
 
+onMounted(() => {
+  key.value = 1;
+});
+
 const { state: deleteState, execute: deleteBookmark } = useRequestState({
   action: (title: string) => api.deleteInfluencerBookmark(title),
   onSuccess() {
+    $emit("refresh");
     notify({
       type: "success",
       title: "Deleted Bookmarked!!",
       text: `Bookmark ${props.name} deleted successfully`,
     });
-
-    $emit("refresh");
   },
   onError: (error) => {
     notify({

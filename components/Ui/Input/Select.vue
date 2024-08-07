@@ -3,7 +3,7 @@
     <select
       :class="[
         props.errorMessage && '!border-red-600',
-        'px-[1.5rem] py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
+        'px-[1.5rem] bg-[#efefef] py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
       ]"
       v-bind="$attrs"
       v-model="value"

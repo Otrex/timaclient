@@ -4,21 +4,21 @@
       @click="open"
       :class="[
         props.errorMessage && '!border-red-600',
-        'w-full md:flex items-center gap-[0.625rem] justify-between p-[0.375rem] border border-solid border-[#6B7280] !rounded-[2.5rem]',
+        'w-full md:flex items-center gap-[0.625rem] justify-between p-[0.375rem] bg-[#efefef] border border-solid border-[#efefef] !rounded-[2.5rem]',
       ]"
     >
       <div>
         <transition>
           <span
             v-show="fileName"
-            class="text-[1.1875rem] pl-[0.75rem] w-full"
+            class="text-[1.1875rem] !text-left pl-[0.75rem] w-full"
             >{{ fileName }}</span
           >
         </transition>
         <transition>
           <span
             v-show="!fileName"
-            class="text-[#999999] text-[1.1875rem] pl-[0.75rem] w-full"
+            class="text-[#888] text-[1.1875rem] pl-[0.75rem] w-full"
             >{{ props.placeholder || "Select a file to upload" }}</span
           >
         </transition>
@@ -26,7 +26,7 @@
       <div>
         <button
           @click="open"
-          class="!rounded-[2.5rem] bg-[#F59594] text-[19px] px-[3.125rem] py-[0.25rem] text-[#fff] min-w-[4.375rem]"
+          class="!rounded-[2.5rem] bg-[#fa7471] text-[19px] px-[3.125rem] py-[0.25rem] text-[#fff] min-w-[4.375rem]"
         >
           Upload
         </button>
@@ -65,7 +65,7 @@
                 'rounded-[0.5rem] mb-[1.5rem] outline-dashed outline-[#999999] pt-[1.25rem] pb-[1.8125rem]': true,
                 '!outline-red-600': error,
               }"
-              @click="openUploadFile"
+              @click.capture="openUploadFile"
             >
               <UtSvg name="upload" class="inline-block w-[4.5rem] h-[4.5rem]" />
 
@@ -74,7 +74,7 @@
               <label
                 class="text-[#0077D3] w-full block px-4 overflow-clip text-[1.1875rem]"
               >
-                {{ fileName || "Only jpeg & png files with max size of 15mb" }}
+                {{ "Only jpeg & png files with max size of 15mb" }}
                 <input
                   type="file"
                   :accept="`${acceptsMime}*`"
@@ -83,6 +83,12 @@
                   @change="clickHandler"
                 />
               </label>
+              <div
+                v-if="fileName"
+                class="bg-[#0077D3] text-white py-2 w-full block px-4 overflow-clip text-[1.1875rem]"
+              >
+                {{ fileName }}
+              </div>
 
               <label
                 v-show="error"
@@ -95,10 +101,10 @@
               variant="primary"
               :loading="requestState === constants.LOADING"
               :disabled="requestState === constants.LOADING"
-              @click="save"
+              @click="() => (!file ? openUploadFile() : save())"
               class="py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
             >
-              {{ progress ? `${progress}%` : "Save" }}
+              {{ !file ? "Select File" : progress ? `${progress}%` : "Save" }}
             </ui-button-default>
           </div>
         </div>

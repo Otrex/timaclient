@@ -23,13 +23,12 @@
         <template
           v-if="tools.requestState(getRecommended) === constants.LOADING"
         >
-          <div class="text-center">
-            <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-            Fetching recommendations
-          </div>
+          <UtLoaderIndicator message="Fetching recommendations" />
         </template>
         <template v-else-if="recommended.length === 0">
-          <div>No Recommended Campaigns</div>
+          <div>
+            <UtNoResource message="No Recommended Campaigns" />
+          </div>
         </template>
         <template v-else>
           <div
@@ -59,17 +58,18 @@
           </div>
         </template>
 
-        <h2 class="text-[2rem] mt-[1.5rem] mb-[1.375rem]">
+        <h2 class="text-[2rem] mt-[3rem] mb-[1.375rem]">
           Top Campaigns for the week
         </h2>
         <template v-if="tools.requestState(getTop) === constants.LOADING">
-          <div class="text-center">
-            <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-            Fetching Top Campaigns
-          </div>
+          <UtLoaderIndicator message="Fetching Top Campaigns" />
         </template>
         <template v-else-if="topCampaigns.length === 0">
-          <div>No Top Campaigns</div>
+          <div class="h-[18.75rem]">
+            <div>
+              <UtNoResource message="No Top Campaigns" />
+            </div>
+          </div>
         </template>
         <template v-else>
           <div
@@ -98,18 +98,17 @@
           </div>
         </template>
 
-        <h2 class="text-[2rem] mt-[1.5rem] mb-[1.375rem]">Other Campaigns</h2>
+        <h2 class="text-[2rem] mt-[3rem] mb-[1.375rem]">Other Campaigns</h2>
 
         <template
           v-if="tools.requestState(getAllCampaigns) === constants.LOADING"
         >
-          <div class="text-center">
-            <UtSvg name="sunshine" class="spinner w-[1.5rem] h-[1.5rem]" />
-            Fetching Campaigns
-          </div>
+          <UtLoaderIndicator message="Fetching Other Campaigns" />
         </template>
         <template v-else-if="allCampaigns.length === 0">
-          <div>No Campaigns</div>
+          <div>
+            <UtNoResource message="No Campaigns" />
+          </div>
         </template>
         <template v-else>
           <div

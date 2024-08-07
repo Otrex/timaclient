@@ -10,28 +10,32 @@
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
         >
-          <template v-for="campaign in bookmarks" :key="campaign.publicId">
-            <NuxtLink
-              :to="{
-                params: { id: campaign.publicId, type: $route.params.type },
-                name: 'Explore - Campaign',
-              }"
-            >
-              <DashboardCampaignCard
-                :image="campaign.creative.thumbnail"
-                :brand="campaign.overview.name"
-                :budget="campaign.overview.plannedBudget"
-                :category="campaign.creative.creativeTone"
-                :description="campaign.overview.briefDescription"
-                :deadline="campaign.creative.endDate"
-                :completion="campaign.status || 0"
-                :public-id="campaign.publicId"
-                :title="campaign.overview.name"
-                :is-bookmark="true"
-                @re-update="reRun('influencer')"
-              />
-            </NuxtLink>
-          </template>
+          <NuxtLink
+            v-for="campaign in bookmarks"
+            :key="campaign.publicId"
+            :to="{
+              params: {
+                id: campaign.campaignRecord.publicId,
+                type: $route.params.type,
+              },
+              name: 'Explore - Campaign',
+            }"
+          >
+            <DashboardCampaignCard
+              :image="campaign.campaignRecord.creative.thumbnail"
+              :brand="campaign.campaignRecord.overview.name"
+              :budget="campaign.campaignRecord.overview.plannedBudget"
+              :category="campaign.campaignRecord.creative.creativeTone"
+              :description="campaign.campaignRecord.overview.briefDescription"
+              :deadline="campaign.campaignRecord.creative.endDate"
+              :completion="campaign.campaignRecord.status || 0"
+              :public-id="campaign.campaignRecord.publicId"
+              :title="campaign.campaignRecord.overview.name"
+              :bookmark-id="campaign.id"
+              :is-bookmark="true"
+              @refresh="reRun('influencer')"
+            />
+          </NuxtLink>
         </div>
       </UtLoadPresenter>
     </UtPermit>
@@ -78,6 +82,7 @@
 </template>
 
 <script setup lang="ts">
+import type { Core } from "~/lib/interfaces";
 import type {
   GetApprovedInfluencers,
   GetBookmarks,
@@ -90,7 +95,7 @@ definePageMeta({
 
 const api = useAPI();
 const authStore = useAuthStore();
-const bookmarks = ref<GetBookmarks["data"]>([]);
+const bookmarks = ref<Core.InfluencerBookmark[]>([]);
 const infleuncerBookmarks = ref<GetApprovedInfluencers["data"]>([]);
 
 function trx(data: any) {
@@ -114,6 +119,8 @@ const { state: bookmarkState, execute: bookmarkExecute } = useRequestState({
 });
 
 const reRun = (reRunType: "influencer" | "agency") => async () => {
+  console.log("Entered");
+
   if (reRunType === "influencer") {
     await execute();
   } else {
@@ -129,5 +136,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style></style>

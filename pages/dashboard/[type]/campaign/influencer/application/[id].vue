@@ -136,7 +136,7 @@
             <div class="bg-[color:--clr-grey-400] rounded-md overflow-hidden">
               <div
                 tabindex="1"
-                class="aspect-[250/327] mx-auto h-[23.4375rem] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
+                class="w-full h-[23.4375rem] overflow-hidden z-[1] relative video-content-bg flex items-center justify-center"
               >
                 <div class="absolute inset-0">
                   <iframe
@@ -164,14 +164,32 @@
               label="Decline"
               @click="triggerDecline"
             />
-            <UiButtonDefault
+            <!--<UiButtonDefault
               variant="primary"
               class="py-[0.625rem] px-[2.5rem]"
               label="Accept"
               @click="triggerAccept"
+            /> -->
+            <UiButtonDefault
+              variant="primary"
+              class="py-[0.625rem] px-[2.5rem]"
+              label="Create Contract"
+              @click="triggerCreateContract"
             />
           </div>
         </div>
+        <UtModal v-model:state="contractModal" backdrop-color="rgba(0,0,0,.3)">
+          <ModalsCreateContract
+            :influencer-name="tools.isCertain(application?.fullName)"
+            :application-id="tools.isCertain(application?.applicationId)"
+            :brand-name="tools.isCertain(application?.campaignName)"
+            :campaign-name="tools.isCertain(application?.campaignName)"
+            :influencer-public-id="tools.isCertain(application?.submittedBy)"
+            :campaign-public-id="tools.isCertain(application?.campaignPublicId)"
+            :name="application?.fullName"
+            @submit="closeContractModal"
+          />
+        </UtModal>
         <UiModalConfirmAction
           :loading="state === constants.LOADING"
           @onapprove="decline"
@@ -210,6 +228,7 @@ definePageMeta({
 
 const api = useAPI();
 const route = useRoute();
+const contractModal = ref(false);
 const confirmAccept = ref();
 const confirmDecline = ref();
 const application = ref<Application>();
@@ -250,6 +269,10 @@ const triggerAccept = () => {
   confirmAccept.value.open();
 };
 
+const triggerCreateContract = () => {
+  contractModal.value = true;
+};
+
 const triggerDecline = () => {
   confirmDecline.value.open();
 };
@@ -264,6 +287,8 @@ const accept = () => {
     confirmAccept.value.close();
   });
 };
+
+const closeContractModal = () => {};
 </script>
 
 <style></style>

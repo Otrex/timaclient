@@ -7,49 +7,56 @@
       </h1>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-3">
-      <template v-if="isInfluencers">
-        <template v-for="(influencer, idx) in influencers" :key="idx">
-          <NuxtLink
-            :to="{
-              name: 'Campaign >>> Influencers',
-              query: {
-                publicId: influencer.publicId,
-                applicationId: null,
-              },
-            }"
-          >
-            <UiInfluencerInfo v-bind="influencer" />
-          </NuxtLink>
-        </template>
-      </template>
-      <template v-else>
-        <template v-for="(category, idx) in categories" :key="idx">
-          <NuxtLink
-            :to="{
-              query: {
-                title: category,
-                type: 'influencers',
-                category: category,
-                refresh: 1,
-                back: route.fullPath,
-              },
-              replace: true,
-            }"
-          >
-            <div
-              :style="`--color: ${tools.getRandomHexColor([
-                '#ffffff',
-                '#000000',
-              ])}`"
-              class="p-4 font-semibold bg-[--color] border border-solid border-slate-200"
+    <UtLoadPresenter
+      :state="isLoading ? constants.LOADING : 'IDLE'"
+      loading-message="Fetching Influencers"
+      not-found-message="No Influencers found"
+      :data="!!influencers.length"
+    >
+      <div class="grid md:grid-cols-3 gap-3">
+        <template v-if="isInfluencers">
+          <template v-for="(influencer, idx) in influencers" :key="idx">
+            <NuxtLink
+              :to="{
+                name: 'Campaign >>> Influencers',
+                query: {
+                  publicId: influencer.publicId,
+                  applicationId: null,
+                },
+              }"
             >
-              {{ category }}
-            </div>
-          </NuxtLink>
+              <UiInfluencerInfo v-bind="influencer" />
+            </NuxtLink>
+          </template>
         </template>
-      </template>
-    </div>
+        <template v-else>
+          <template v-for="(category, idx) in categories" :key="idx">
+            <NuxtLink
+              :to="{
+                query: {
+                  title: category,
+                  type: 'influencers',
+                  category: category,
+                  refresh: 1,
+                  back: route.fullPath,
+                },
+                replace: true,
+              }"
+            >
+              <div
+                :style="`--color: ${tools.getRandomHexColor([
+                  '#ffffff',
+                  '#000000',
+                ])}`"
+                class="p-4 font-semibold bg-[--color] border border-solid border-slate-200"
+              >
+                {{ category }}
+              </div>
+            </NuxtLink>
+          </template>
+        </template>
+      </div>
+    </UtLoadPresenter>
   </div>
 </template>
 
@@ -67,6 +74,12 @@ const isInfluencers = computed(
 );
 const influencers = ref<Influencer[]>([]);
 const categories = ref<string[]>([]);
+
+const isLoading = computed(() =>
+  [getNewInfluencers, getTopInfluencers, getTopCategories]
+    .map(({ state }) => state.value)
+    .some((e) => e === constants.LOADING)
+);
 
 const getNewInfluencers = useRequestState({
   action: () => api.getLatestInfluencers(),

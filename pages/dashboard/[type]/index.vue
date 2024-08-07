@@ -1,6 +1,11 @@
 <template>
-  <div class="p-[1.75rem]">
-    <h2 class="text-[1.8rem] mt-[1.5rem] mb-[1.375rem]">Your Campaigns</h2>
+  <div class="p-[1.75rem] pt-0 sm:pt-[2rem]">
+    <h2
+      class="text-[1.8rem] mt-[1.5rem] mb-[1.375rem]"
+      v-show="campaigns.length"
+    >
+      Your Campaigns
+    </h2>
     <template v-if="tools.requestState(getCampaigns) === constants.LOADING">
       <UtLoaderIndicator message="Fetching Your Campaigns" />
     </template>
@@ -8,7 +13,10 @@
       <UtNoResource message="No campaigns available" />
     </template>
     <template v-else>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <transition-group
+        tag="div"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"
+      >
         <NuxtLink
           v-for="campaign in campaigns"
           :key="campaign.publicId"
@@ -32,7 +40,7 @@
             :completion="campaign.status || 0"
           />
         </NuxtLink>
-      </div>
+      </transition-group>
     </template>
   </div>
 </template>
@@ -66,15 +74,3 @@ onMounted(() => {
   getCampaigns.execute();
 });
 </script>
-
-<style scoped>
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>

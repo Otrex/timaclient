@@ -12,7 +12,7 @@
           props.errorMessage && '!border-red-600',
           'pr-[6.4375rem]',
           $attrs.class,
-          'px-[1.5rem] w-full py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
+          'px-[1.5rem] bg-[#efefef] w-full py-[0.75rem] dark:text-black rounded-[2.5rem] text-[1.1875rem] placeholder:text-[#999999]',
         ]"
       />
       <div
