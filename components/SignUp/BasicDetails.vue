@@ -9,52 +9,26 @@
     </div>
 
     <div class="flex flex-col gap-[1rem]">
-      <UiInputText
-        type="text"
-        class="w-full"
-        v-model="form.username"
-        :autocomplete="false"
-        placeholder="Username"
-        :error-message="v$.username.$errors[0]?.$message.toString()"
-      />
-      <UiInputText
-        type="email"
-        class="w-full"
-        v-model="form.email"
-        :autocomplete="false"
-        placeholder="Email address"
-        :error-message="v$.email.$errors[0]?.$message.toString()"
-      />
-      <UiInputText
-        type="password"
-        class="w-full"
-        password-toggle
-        v-model="form.password"
-        :autocomplete="false"
-        placeholder="Password"
-        :error-message="v$.password.$errors[0]?.$message.toString()"
-      />
+      <UiInputText type="text" class="w-full" v-model="form.userName" :autocomplete="false" placeholder="Username"
+        :error-message="v$.userName.$errors[0]?.$message.toString()" />
+      <UiInputText type="email" class="w-full" v-model="form.emailAddress" :autocomplete="false"
+        placeholder="Email address" :error-message="v$.emailAddress.$errors[0]?.$message.toString()" />
+      <UiInputText type="password" class="w-full" password-toggle v-model="form.password" :autocomplete="false"
+        placeholder="Password" :error-message="v$.password.$errors[0]?.$message.toString()" />
+      <UiInputPhone class="w-full" v-model="form.phoneNumber"
+        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()" placeholder="234 803 443 3833" />
       <div class="mb-[2.3125rem]">
         <label class="flex items-center gap-[0.625rem]">
-          <input
-            type="checkbox"
-            v-model="agreed"
-            class="rounded-full w-[1.25rem] h-[1.25rem]"
-          />
+          <input type="checkbox" v-model="agreed" class="rounded-full w-[1.25rem] h-[1.25rem]" />
           <span class="text-[0.9375rem]">
             I have read and understood the terms and conditions
           </span>
         </label>
       </div>
 
-      <UiButtonDefault
-        :disabled="!isReady || state == constants.LOADING"
-        class="w-full py-[0.875rem] mb-[1.875rem]"
-        @click="validate().then(() => execute())"
-        :loading="state == constants.LOADING"
-        variant="primary"
-        label="Continue"
-      />
+      <UiButtonDefault :disabled="!isReady || state == constants.LOADING" class="w-full py-[0.875rem] mb-[1.875rem]"
+        @click="validate().then(() => execute())" :loading="state == constants.LOADING" variant="primary"
+        label="Continue" />
     </div>
   </div>
 </template>
@@ -67,9 +41,10 @@ const authStore = useAuthStore();
 const agreed = ref(false);
 
 const form = reactive({
+  emailAddress: "",
   password: "",
-  username: "",
-  email: "",
+  phoneNumber: "",
+  userName: ""
 });
 
 const { execute, validate, state, v$ } = useRequestState({
@@ -90,21 +65,21 @@ const { execute, validate, state, v$ } = useRequestState({
     authStore.$patch({
       registration: {
         ...authStore.$state.registration,
-        username: form.username,
-        email: form.email,
+        username: form.userName,
+        email: form.emailAddress,
       },
     });
     navigateTo({
       query: {
         tab: constants.EMAIL_VERIFY,
-        email: form.email,
+        email: form.emailAddress,
       },
     });
   },
 });
 
 const isReady = computed(() => {
-  return form.password && form.email && agreed.value;
+  return form.password && form.emailAddress && agreed.value;
 });
 </script>
 
