@@ -4,7 +4,7 @@ import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods } from 
 
 interface IState {
   countries: Country[];
-  industries: Industry[];
+  industries: string[];
   campaignOptions?: GetCampaignOptions['data'];
   creativesOptions?: GetCreativesOptions['data'];
   paymentMethods?: GetPaymentMethods['data'];
@@ -33,7 +33,7 @@ export const useOptionsStore = defineStore("options", {
     $creativesOptions: (state) => state.creativesOptions || [],
     $paymentStatus: (state) => tools.generationOptions(state.paymentStatus),
     $paymentMethods: (state) => (state.paymentMethods || []).map(e => e.name),
-    $industries: (state) => state.industries.map(industry => industry.name),
+    $industries: (state) => state.industries,
     $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
     $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
     $countries: (state) => tools.generationOptions(state.countries.map(country => country.name)),
@@ -43,15 +43,12 @@ export const useOptionsStore = defineStore("options", {
 
   actions: {
     async loadDashboardOptions() {
-      const profileStore = useProfileStore();
-      if (!profileStore.profile) {
-        await Promise.all([
-          profileStore.getProfile(),
-          this.getCountries(),
-          this.getIndustries(),
-          this.getPaymentStatus(),
-        ]);
-      }
+      await Promise.all([
+        // profileStore.getProfile(),
+        // this.getCountries(),
+        this.getIndustries(),
+        // this.getPaymentStatus(),
+      ]);
 
       if (!this.campaignOptions) {
         await Promise.all([

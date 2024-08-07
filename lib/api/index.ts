@@ -28,9 +28,16 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async verifyUsername(username: string) {
+    return this.request<{ message: string, statusCode: number }>({
+      url: `/auth/check-username?userName=${username}`,
+      method: "GET",
+    });
+  }
+
   async createUser(data: Payload.CreateUser) {
     return this.request<Response.CreateUser>({
-      url: "https://tima-backend-hi56w.ondigitalocean.app/v1/api/auth/register",
+      url: "/auth/register",
       method: "POST",
       data,
     });
@@ -131,7 +138,8 @@ export default class TimaAPI extends UploadAPI {
 
   async getIndustries() {
     return this.request<Response.GetIndustry>({
-      url: "/agency/v1/industries",
+      url: "/users/industries",
+      requireAuth: true,
       method: "GET",
     });
   }

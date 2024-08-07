@@ -95,8 +95,12 @@ export const useAuthStore = defineStore("auth", {
       this.$patch({
         registration: {
           ...this.registration,
-          publicId: response.data?.publicId,
+          publicId: response.data.user.user_id,
         },
+        authorization: {
+          accessToken: response.data.token,
+          userType: response.data.user.role,
+        }
       });
     },
 
