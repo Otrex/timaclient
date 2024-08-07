@@ -1,4 +1,3 @@
-
 import type { Core, Payload, Response } from "../interfaces";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
@@ -6,8 +5,8 @@ import UploadAPI from "./upload";
 const defaultFilter = {
   page: 0,
   size: 5,
-  sortIn: 'desc',
-  sortBy: 'createdOn'
+  sortIn: "desc",
+  sortBy: "createdOn",
 };
 
 export default class TimaAPI extends UploadAPI {
@@ -16,9 +15,9 @@ export default class TimaAPI extends UploadAPI {
       url: "/user/v1/login/reconnect",
       method: "POST",
       headers: {
-        'REFRESH-TOKEN': btoa(token)
-      }
-    })
+        "REFRESH-TOKEN": btoa(token),
+      },
+    });
   }
 
   async signIn(data: Payload.SignIn) {
@@ -31,25 +30,25 @@ export default class TimaAPI extends UploadAPI {
 
   async createUser(data: Payload.CreateUser) {
     return this.request<Response.CreateUser>({
-      url: "/user/v1/account",
+      url: "https://tima-backend-hi56w.ondigitalocean.app/v1/api/auth/register",
       method: "POST",
       data,
-    })
+    });
   }
 
   async verifyOTP(data: Payload.VerifyOTP) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/verify/${data.otp}`,
       method: "GET",
-    })
+    });
   }
 
   async resendOTP(data: Payload.ResendOTP) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/otp/resend`,
       method: "POST",
-      data
-    })
+      data,
+    });
   }
 
   async passwordReset(data: Payload.PasswordReset) {
@@ -71,23 +70,19 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async brandBasicInformationUpdate(
-    data: Payload.BrandBasicInformation
-  ) {
+  async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
       method: "POST",
-      data
+      data,
     });
   }
 
-  async brandAddressDocumentUpdate(
-    data: Payload.BrandAddressDocumentation
-  ) {
+  async brandAddressDocumentUpdate(data: Payload.BrandAddressDocumentation) {
     return this.request<Response.BrandAddressDocumentation>({
       url: `/user/v1/address`,
       method: "POST",
-      data
+      data,
     });
   }
 
@@ -97,7 +92,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.InfluencerCompleteProfile>({
       url: `/user/v1/profile/influencer`,
       method: "POST",
-      data
+      data,
     });
   }
 
@@ -106,49 +101,44 @@ export default class TimaAPI extends UploadAPI {
       url: "/agency/v1/settings/audience",
       requireAuth: true,
       method: "GET",
-    })
+    });
   }
 
-  async brandIndustryUpdate(
-    publicId: string,
-    industries: string[]
-  ) {
+  async brandIndustryUpdate(publicId: string, industries: string[]) {
     return this.request<Response.GetIndustry>({
       url: `/user/v1/industries/${publicId}`,
       method: "PUT",
       data: {
         industries,
-      }
+      },
     });
   }
 
-  async influencerBankDetailsUpdate(
-    data: Payload.InfluencerBankDetails
-  ) {
+  async influencerBankDetailsUpdate(data: Payload.InfluencerBankDetails) {
     return this.request<Response.CreateUser>({
-      url: '/payment/v1/bank/customers',
+      url: "/payment/v1/bank/customers",
       method: "POST",
-      data
+      data,
     });
   }
 
   async getCountries() {
     return this.request<Response.GetCountries>({
-      url: '/user/v1/countries',
+      url: "/user/v1/countries",
       method: "GET",
     });
   }
 
   async getIndustries() {
     return this.request<Response.GetIndustry>({
-      url: '/agency/v1/industries',
+      url: "/agency/v1/industries",
       method: "GET",
     });
   }
 
   async getBanks() {
     return this.request<Response.GetBankList>({
-      url: '/payment/v1/banks',
+      url: "/payment/v1/banks",
       method: "GET",
     });
   }
@@ -181,23 +171,16 @@ export default class TimaAPI extends UploadAPI {
     const { type, ...data } = payload;
 
     return this.request<Response.GetCampaigns>({
-      url: this.querify(
-        `/agency/v1/campaigns/search/${type}`,
-        data
-      ),
+      url: this.querify(`/agency/v1/campaigns/search/${type}`, data),
       requireAuth: true,
       method: "GET",
     });
   }
 
-
   async getBrandCampaigns(payload: Payload.GetBrandCampaigns) {
     const { name, ...data } = payload;
     return this.request<Response.GetCampaigns>({
-      url: this.querify(
-        `/agency/v1/campaigns/brand/${name}`,
-        data
-      ),
+      url: this.querify(`/agency/v1/campaigns/brand/${name}`, data),
       requireAuth: true,
       method: "GET",
     });
@@ -205,17 +188,17 @@ export default class TimaAPI extends UploadAPI {
 
   async getUserProfile() {
     return this.request<Response.GetUserProfile>({
-      url: '/user/v1/profile',
+      url: "/user/v1/profile",
       requireAuth: true,
-      method: 'GET'
+      method: "GET",
     });
   }
 
   async getAddress() {
     return this.request<Response.GetAddress>({
-      url: '/user/v1/address',
+      url: "/user/v1/address",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -223,14 +206,14 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.BankDetailUpdate>({
       url: "/payment/v1/bank/customers/_self",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
   async getSocials() {
     return this.request<Response.GetSocialTypes>({
       url: "/agency/v1/social-media/_public",
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -238,7 +221,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetCreativesOptions>({
       url: "/agency/v1/settings/creative",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -246,7 +229,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetPaymentMethods>({
       url: "/payment/v1/methods/_public",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -254,7 +237,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.UpdateIndustries>({
       url: "/agency/v1/user/industry",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -262,15 +245,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetPaymentStatus>({
       url: "/payment/v1/statuses",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
   async getCampaignKPI(campaignId: string) {
-    return this.request<IResponse<{ accounts: number, followers: number }>>({
+    return this.request<IResponse<{ accounts: number; followers: number }>>({
       url: `/agency/v1/campaigns/dashboard/kpi/${campaignId}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -278,7 +261,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<IResponse<Core.InteractionSummary>>({
       url: `/agency/v1/campaigns/dashboard/interaction/${campaignId}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -286,49 +269,34 @@ export default class TimaAPI extends UploadAPI {
     return this.request<IResponse<Core.CampaignDistribution>>({
       url: `/agency/v1/campaigns/dashboard/distribution/${campaignId}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
-  async getApplicantsByCampaign(
-    campaignId: string,
-    data: Payload.Filter
-  ) {
+  async getApplicantsByCampaign(campaignId: string, data: Payload.Filter) {
     return this.request<Response.GetApplications>({
-      url: this.querify(
-        `/agency/v1/applications/campaign/${campaignId}`,
-        data
-      ),
+      url: this.querify(`/agency/v1/applications/campaign/${campaignId}`, data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
-  async getCampaignApplicants(
-    campaignId: string,
-    data: Payload.Filter
-  ) {
+  async getCampaignApplicants(campaignId: string, data: Payload.Filter) {
     return this.request<Response.GetApplications>({
       url: this.querify(
         `/agency/v1/applications/applicant/${campaignId}`,
         data
       ),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
-  async getCampaignPendingApplications(
-    status: string,
-    data: Payload.Filter
-  ) {
+  async getCampaignPendingApplications(status: string, data: Payload.Filter) {
     return this.request<Response.GetApplications>({
-      url: this.querify(
-        `/agency/v1/applications/status/${status}`,
-        data
-      ),
+      url: this.querify(`/agency/v1/applications/status/${status}`, data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -336,7 +304,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetNotifications>({
       url: this.querify("/alert/v1/notifications", data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -351,7 +319,7 @@ export default class TimaAPI extends UploadAPI {
         data
       ),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -359,33 +327,32 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetSocialMediaInsight>({
       url: `/agency/v1/social-media/${socialMedia}/insight?userPublicId=${publicId}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
   async getCampaignsByName(name: string, filter: Partial<Core.SearchFilter>) {
     return this.request<IResponse<Core.CampaignByName[]>>({
-      url: this.querify(
-        `/agency/v1/influencer/search/campaign/${name}`,
-        { ...defaultFilter, ...filter }
-      ),
+      url: this.querify(`/agency/v1/influencer/search/campaign/${name}`, {
+        ...defaultFilter,
+        ...filter,
+      }),
       requireAuth: true,
-      method: 'GET',
-    })
+      method: "GET",
+    });
   }
   async getCampaignApplicationsByStatus(
     data: Payload.Filter & {
       status: "PENDING" | "APPROVED";
-      campaignId: string
+      campaignId: string;
     }
   ) {
-    return this.request<Response.GetApplications | Response.GetApprovedInfluencers>({
-      url: this.querify(
-        `/agency/v1/applications/search/filter`,
-        data
-      ),
+    return this.request<
+      Response.GetApplications | Response.GetApprovedInfluencers
+    >({
+      url: this.querify(`/agency/v1/applications/search/filter`, data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -393,15 +360,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetInfluencerPaymentStats>({
       url: "/payment/v1/histories/influencer/dashboard",
       requireAuth: true,
-      method: 'GET',
-    })
+      method: "GET",
+    });
   }
 
   async getApplicationById(publicId: string) {
     return this.request<Response.GetApplication>({
       url: `/agency/v1/applications/${publicId}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -409,15 +376,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetSearchInfluencer>({
       url: `/agency/v1/influencer/search/id/${publicId}`,
       requireAuth: true,
-      method: 'GET',
-    })
+      method: "GET",
+    });
   }
 
   async getBookmarks() {
     return this.request<IResponse<Core.InfluencerBookmark[]>>({
       url: `/agency/v1/bookmarks`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -425,16 +392,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetApprovedInfluencers>({
       url: this.querify(`/agency/v1/influencer/search/campaign`, filter),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
-
   }
 
   async getDemographyInsights(data: Payload.DemographyInsight) {
     return this.request<Response.GetDemographyInsights>({
       url: `/agency/v1/social-media/${data.influencerId}/demographic/${data.socialMedia}?type=${data.type}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -442,7 +408,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetBookmarks>({
       url: `/agency/v1/bookmarks`,
       requireAuth: true,
-      method: 'POST',
+      method: "POST",
       data,
     });
   }
@@ -451,7 +417,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetBookmarks>({
       url: `/agency/v1/bookmarks/influencer`,
       requireAuth: true,
-      method: 'POST',
+      method: "POST",
       data,
     });
   }
@@ -460,15 +426,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request({
       url: `/agency/v1/bookmarks/influencer/title/${title}`,
       requireAuth: true,
-      method: 'DELETE'
-    })
+      method: "DELETE",
+    });
   }
 
   async getBookmarkedInfluencers() {
     return this.request<Response.GetApprovedInfluencers>({
       url: "/agency/v1/bookmarks/influencer",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -476,15 +442,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request({
       url: `/agency/v1/bookmarks/title/${name}`,
       requireAuth: true,
-      method: 'DELETE',
-    })
+      method: "DELETE",
+    });
   }
 
   async getPaymentStats() {
     return this.request<Response.GetPaymentStats>({
       url: "/payment/v1/histories/campaign/dashboard",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -492,7 +458,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetCampaignPayments>({
       url: "/payment/v1/histories",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -500,7 +466,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetInfluencerTransactions>({
       url: "/payment/v1/transactions",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -508,17 +474,17 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetInfluencerTransactions>({
       url: `/payment/v1/transactions/status/${status}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
   async getPaymentStatistics(year?: string) {
     return this.request<Response.GetPaymentStatistics>({
-      url: "/payment/v1/histories/influencer/graph?year=" + (
-        year || (new Date()).getFullYear()
-      ),
+      url:
+        "/payment/v1/histories/influencer/graph?year=" +
+        (year || new Date().getFullYear()),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -528,7 +494,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetCampaignPayments>({
       url: this.querify(`/agency/v1/influencer/search/${intent}`, data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -536,7 +502,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetInfluencers>({
       url: "/agency/v1/influencer/search/latest",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -544,7 +510,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetInfluencers>({
       url: this.querify(`/agency/v1/influencer/search/top`, data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -552,43 +518,42 @@ export default class TimaAPI extends UploadAPI {
     return this.request<IResponse<string[]>>({
       url: "/agency/v1/influencer/search/categories",
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
-
 
   async getInfluencersByCategory(category: string) {
     return this.request<Response.GetInfluencers>({
       url: `/agency/v1/influencer/search/categories/${category}`,
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
-  async getInfluencerCampaignExperience(data: Partial<Payload.Filter> & { influencerPublicId: string }) {
+  async getInfluencerCampaignExperience(
+    data: Partial<Payload.Filter> & { influencerPublicId: string }
+  ) {
     return this.request<IResponse<Core.InfluencerCampaignExperience[]>>({
       url: this.querify(`/agency/v1/influencer/search/experiences`, data),
       requireAuth: true,
-      method: 'GET',
+      method: "GET",
     });
   }
 
-  async updatePersonalProfile(
-    data: Payload.InfluencerPersonalProfile
-  ) {
+  async updatePersonalProfile(data: Payload.InfluencerPersonalProfile) {
     return this.request<Response.InfluencerCompleteProfile>({
       url: "/user/v1/profile/influencer",
       requireAuth: true,
       method: "PUT",
-      data
-    })
+      data,
+    });
   }
 
   async updateProfilePictures(fileName: string) {
     return this.request<Response.GetUserProfile>({
       url: `/user/v1/profile/picture/${fileName}`,
       requireAuth: true,
-      method: 'PUT',
+      method: "PUT",
     });
   }
 
@@ -596,18 +561,15 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.GetUserProfile>({
       url: `/user/v1/profile/setting/${fileName}`,
       requireAuth: true,
-      method: 'PUT',
+      method: "PUT",
     });
   }
 
-  async updateSocialPlatforms(
-    publicId: string,
-    data: Payload.AddSocials
-  ) {
+  async updateSocialPlatforms(publicId: string, data: Payload.AddSocials) {
     return this.request<Response.UpdateSocials>({
       url: `/agency/v1/social-media/linked/user/${publicId}`,
-      method: 'PUT',
-      data
+      method: "PUT",
+      data,
     });
   }
 
@@ -616,8 +578,8 @@ export default class TimaAPI extends UploadAPI {
       url: "/user/v1/account/password",
       requireAuth: true,
       method: "PUT",
-      data
-    })
+      data,
+    });
   }
 
   async updateBankDetails(data: Payload.UpdateBankInformation) {
@@ -626,7 +588,7 @@ export default class TimaAPI extends UploadAPI {
       method: "PUT",
       requireAuth: true,
       data,
-    })
+    });
   }
 
   async updateAddress(data: Payload.UpdateAddress) {
@@ -634,7 +596,7 @@ export default class TimaAPI extends UploadAPI {
       url: "/user/v1/address",
       method: "PUT",
       requireAuth: true,
-      data
+      data,
     });
   }
 
@@ -642,7 +604,7 @@ export default class TimaAPI extends UploadAPI {
     return this.request({
       url: "/user/v1/account/deactivate",
       requireAuth: true,
-      method: "PUT"
+      method: "PUT",
     });
   }
 
@@ -652,9 +614,9 @@ export default class TimaAPI extends UploadAPI {
       method: "PUT",
       requireAuth: true,
       data: {
-        selectedIndustries: data
-      }
-    })
+        selectedIndustries: data,
+      },
+    });
   }
 
   async updateInfluencerNotificationSetting(
@@ -665,18 +627,16 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: "PATCH",
       data,
-    })
+    });
   }
 
-  async updateBrandInformation(
-    data: Payload.UpdateBrandInformation
-  ) {
+  async updateBrandInformation(data: Payload.UpdateBrandInformation) {
     return this.request<Response.UpdateBrandInformation>({
       url: "/user/v1/profile/brand",
       requireAuth: true,
       method: "PUT",
-      data
-    })
+      data,
+    });
   }
 
   async createCampaign(data: Payload.CreateCampaign) {
@@ -684,8 +644,8 @@ export default class TimaAPI extends UploadAPI {
       url: "/agency/v1/campaigns",
       requireAuth: true,
       method: "POST",
-      data
-    })
+      data,
+    });
   }
 
   async createApplication(data: Payload.CreateApplication) {
@@ -693,20 +653,19 @@ export default class TimaAPI extends UploadAPI {
       url: "/agency/v1/applications",
       requireAuth: true,
       method: "POST",
-      data
-    })
+      data,
+    });
   }
 
   async reviewApplication(data: Payload.ReviewApplication) {
     const { status, applicationId } = data;
     return this.request<Response.GetApplication>({
-      url: this.querify(
-        `/agency/v1/applications/review/${status}`,
-        { applicationId }
-      ),
+      url: this.querify(`/agency/v1/applications/review/${status}`, {
+        applicationId,
+      }),
       requireAuth: true,
       method: "PUT",
-    })
+    });
   }
 
   async createContract(data: Payload.CreateContract) {
@@ -714,7 +673,7 @@ export default class TimaAPI extends UploadAPI {
       url: "/payment/v1/contracts",
       requireAuth: true,
       method: "POST",
-      data
-    })
+      data,
+    });
   }
 }

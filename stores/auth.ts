@@ -1,34 +1,30 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
-import { UserType } from '~/lib/enums';
-import type { Payload } from '~/lib/interfaces';
-import type { AccountWallet, User, UserProfile } from '~/lib/interfaces/core';
+import { defineStore, acceptHMRUpdate } from "pinia";
+import { UserType } from "~/lib/enums";
+import type { Payload } from "~/lib/interfaces";
 
 type IState = {
   registration: {
-    email?: string,
+    email?: string;
     type?: UserType;
     publicId?: string;
-    username?: string,
-    country?: string
-  },
-  user: User,
-  profile: UserProfile,
-  wallet: AccountWallet,
+    username?: string;
+    country?: string;
+  };
   authorization: {
     accessToken?: string;
     userType?: UserType;
-  },
+  };
   connectedSocials: string[];
-}
+};
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore("auth", {
   state: (): IState => ({
     registration: {
       type: undefined,
       email: undefined,
       publicId: undefined,
       username: undefined,
-      country: undefined
+      country: undefined,
     },
     user: {} as unknown as User,
     profile: {} as unknown as UserProfile,
@@ -37,15 +33,15 @@ export const useAuthStore = defineStore('auth', {
       accessToken: undefined,
       userType: undefined,
     },
-    connectedSocials: []
+    connectedSocials: [],
   }),
   getters: {
     isAuthenticated(state) {
-      return !!state.authorization.accessToken
+      return !!state.authorization.accessToken;
     },
     userType(state) {
       return state.authorization.userType;
-    }
+    },
   },
 
   actions: {
@@ -53,9 +49,9 @@ export const useAuthStore = defineStore('auth', {
       this.$patch({
         authorization: {
           ...this.authorization,
-          userType: data
-        }
-      })
+          userType: data,
+        },
+      });
     },
 
     async signIn(payload: Payload.SignIn) {
@@ -65,13 +61,11 @@ export const useAuthStore = defineStore('auth', {
 
       this.$patch({
         authorization: {
-          accessToken: response.data.token,
-          userType: response.data.user.role,
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+          expiresIn: response.data.expires_in,
         },
-        user: response.data.user,
-        profile: response.data.profile,
-        wallet: response.data.accountWallet,
-      })
+      });
     },
 
     async refreshAuth() {
@@ -82,26 +76,28 @@ export const useAuthStore = defineStore('auth', {
       this.$patch({
         authorization: {
           accessToken: response.data.access_token,
-        }
-      })
+          refreshToken: response.data.refresh_token,
+          expiresIn: response.data.expires_in,
+        },
+      });
     },
 
-    async createUser(payload: Omit<Payload.CreateUser, 'userType'>) {
-      // const response = await this.$api.createUser({
-      //   userType: this.authorization.userType!,
-      //   ...payload,
-      // });
+    async createUser(payload: Omit<Payload.CreateUser, "role">) {
+      const response = await this.$api.createUser({
+        role: this.registration.type!,
+        ...payload,
+      });
 
-      // this.$patch({
-      //   registration: {
-      //     ...this.registration,
-      //     publicId: response.data?.publicId
-      //   }
-      // });
+      this.$patch({
+        registration: {
+          ...this.registration,
+          publicId: response.data?.publicId,
+        },
+      });
     },
 
     async updateBrandInformation(
-      payload: Omit<Payload.BrandBasicInformation, 'publicId' | 'email'>
+      payload: Omit<Payload.BrandBasicInformation, "publicId" | "email">
     ) {
       await this.$api.brandBasicInformationUpdate({
         publicId: this.registration.publicId!,
@@ -111,7 +107,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async updateInfluencerProfile(
-      payload: Omit<Payload.InfluencerCompleteProfile, 'publicId' | 'email'>
+      payload: Omit<Payload.InfluencerCompleteProfile, "publicId" | "email">
     ) {
       await this.$api.influencerCompleteProfileUpdate({
         publicId: this.registration.publicId!,
@@ -121,53 +117,47 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async updateBrandAddressDoc(
-      payload: Omit<Payload.BrandAddressDocumentation, 'publicId'>
+      payload: Omit<Payload.BrandAddressDocumentation, "publicId">
     ) {
       await this.$api.brandAddressDocumentUpdate({
         publicId: this.registration.publicId!,
         ...payload,
-      })
+      });
     },
 
     async updateInfluencerBankDetails(
-      payload: Omit<Payload.InfluencerBankDetails, 'publicId'>
+      payload: Omit<Payload.InfluencerBankDetails, "publicId">
     ) {
       await this.$api.influencerBankDetailsUpdate({
         publicId: this.registration.publicId!,
         ...payload,
-      })
+      });
     },
 
     async updateBrandIndustries(industries: string[]) {
       await this.$api.brandIndustryUpdate(
         this.registration.publicId!,
         industries
-      )
+      );
     },
 
     async updateSocials(data: Payload.AddSocials) {
-      await this.$api.updateSocialPlatforms(
-        this.registration.publicId!,
-        data
-      );
+      await this.$api.updateSocialPlatforms(this.registration.publicId!, data);
 
       this.$patch({
-        connectedSocials: [
-          ...this.connectedSocials,
-          data.name
-        ]
-      })
+        connectedSocials: [...this.connectedSocials, data.name],
+      });
 
       return {
-        title: data.name
-      }
+        title: data.name,
+      };
     },
 
     async resendOTP() {
       await this.$api.resendOTP({
         email: this.registration.email!,
         username: this.registration.username!,
-      })
+      });
     },
 
     async logout() {
@@ -181,22 +171,22 @@ export const useAuthStore = defineStore('auth', {
           },
           authorization: {
             accessToken: undefined,
-            userType: undefined,
-          }
+            refreshToken: undefined,
+            expiresIn: undefined,
+          },
         });
-
 
         setTimeout(() => {
           this.$clearPersist();
-          resolve(true)
+          resolve(true);
         }, 3000);
-      })
-    }
+      });
+    },
   },
-  persist: ['registration', 'authorization', 'user', 'profile', 'connectedSocials'],
+  persist: ["registration", "authorization", "connectedSocials"],
   persistWith: tools.cookieStore(),
-})
+});
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot));
 }

@@ -1,4 +1,3 @@
-
 import type { UserType } from "../enums";
 import type * as Core from "./core";
 
@@ -30,7 +29,6 @@ export interface CreateContract {
   contractAmount: number;
 }
 
-
 export interface AddInfluencerBookmark {
   title: string;
   bookmarkPublicId: string;
@@ -45,7 +43,6 @@ export interface AddSocials {
   handle: string;
   accessToken: string;
 }
-
 
 export interface PasswordReset {
   email: string;
@@ -77,7 +74,7 @@ export interface Filter {
 
 export interface UploadRequest {
   type: "docs" | "pics" | "thumb" | "settings";
-  file: File,
+  file: File;
 }
 
 export interface SignIn {
@@ -166,7 +163,7 @@ export interface NotificationSettings {
 
 export interface UpdatePassword {
   currentPassword: string;
-  newPassword: string
+  newPassword: string;
 }
 
 export interface UpdateBrandInformation {
@@ -176,23 +173,28 @@ export interface UpdateBrandInformation {
   email: string;
 }
 
+export type CreateCampaign = Omit<
+  Core.Campaign,
+  "publicId" | "status" | "createdOn"
+>;
 
-export type CreateCampaign = Omit<Core.Campaign, 'publicId' | 'status' | 'createdOn'>;
-
-export type GetCampaigns = {
-  type: 'filter',
-  category: string;
-  size: string;
-  age: string;
-  location: string;
-} | {
-  type: 'recommendation'
-} | {
-  type: 'top'
-}
+export type GetCampaigns =
+  | {
+      type: "filter";
+      category: string;
+      size: string;
+      age: string;
+      location: string;
+    }
+  | {
+      type: "recommendation";
+    }
+  | {
+      type: "top";
+    };
 
 export type GetBrandCampaigns = {
   name: string;
   page?: number;
   size?: number;
-}
+};
