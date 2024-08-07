@@ -12,8 +12,6 @@ type IState = {
   };
   authorization: {
     accessToken?: string;
-    refreshToken?: string;
-    expiresIn?: number;
     userType?: UserType;
   };
   connectedSocials: string[];
@@ -26,11 +24,13 @@ export const useAuthStore = defineStore("auth", {
       email: undefined,
       publicId: undefined,
       username: undefined,
+      country: undefined,
     },
+    user: {} as unknown as User,
+    profile: {} as unknown as UserProfile,
+    wallet: {} as unknown as AccountWallet,
     authorization: {
       accessToken: undefined,
-      refreshToken: undefined,
-      expiresIn: undefined,
       userType: undefined,
     },
     connectedSocials: [],
@@ -70,7 +70,7 @@ export const useAuthStore = defineStore("auth", {
 
     async refreshAuth() {
       const response = await this.$api.refreshAuth(
-        this.authorization.refreshToken!
+        this.authorization.accessToken!
       );
 
       this.$patch({
