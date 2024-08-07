@@ -24,8 +24,8 @@ export default class TimaAPI extends UploadAPI {
     return this.request<Response.Login>({
       url: `/auth/login`,
       method: "POST",
-      auth: data,
-    });
+      data,
+    })
   }
 
   async createUser(data: Payload.CreateUser) {
