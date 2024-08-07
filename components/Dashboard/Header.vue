@@ -82,9 +82,9 @@
         <div class="flex items-center"><DashboardNotification /></div>
         <div class="flex items-center">
           <DashboardUserMenu
-            :name="profile?.fullName || ''"
-            :image="profile?.profilePicture || '#'"
-            :type="profile?.userType || ''"
+            :name="userIdentifier"
+            :image="profile?.profileImage || '#'"
+            :type="user?.role || ''"
           />
         </div>
       </div>
@@ -95,6 +95,8 @@
 <script setup lang="ts">
 import { useDebounceFn } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
+import { useAuthStore } from "~/stores/auth";
+import { UserType } from "~/lib/enums";
 
 const route = useRoute();
 
@@ -112,8 +114,11 @@ const routeName = computed(
     routeNameMap[route.name as string] || tools.capitalize(route.name as string)
 );
 
-const profileStore = useProfileStore();
-const profile = computed(() => profileStore.$profile);
+const authStore = useAuthStore();
+const profile = computed(() => authStore.profile);
+const user = computed(() => authStore.user);
+
+const userIdentifier = computed(() => authStore.user?.userName || "");
 
 const api = useAPI();
 const { notify } = useNotification();

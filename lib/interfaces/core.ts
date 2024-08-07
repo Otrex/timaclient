@@ -21,7 +21,7 @@ export interface User {
   createdAt: string
   emailAddress: string
   phoneNumber: string
-  role: string
+  role: UserType
   user_id: string
   hasVerifiedPhone: boolean
   invited: boolean
@@ -38,12 +38,7 @@ export interface AccountWallet {
   updatedAt: string
 }
 
-export interface UserData {
-  profile: UserProfile
-  user: User
-  accountWallet: AccountWallet
-  token: string
-}
+
 
 
 // OLD

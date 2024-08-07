@@ -22,10 +22,10 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async signIn(data: Payload.SignIn) {
-    return this.request<Response.SignIn>({
-      url: `/user/v1/login`,
+    return this.request<Response.Login>({
+      url: `/auth/login`,
       method: "POST",
-      auth: data,
+      data,
     })
   }
 

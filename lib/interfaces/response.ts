@@ -6,6 +6,13 @@ export interface CreateUser extends IResponse<{
   publicId: string;
 }> { }
 
+export interface Login extends IResponse<{
+  accountWallet: Core.AccountWallet
+  profile: Core.UserProfile
+  user: Core.User
+  token: string
+}> { }
+
 export interface GetCreativesOptions extends IResponse<{
   contentType: string[];
   contentPlacement: string[];
@@ -26,6 +33,8 @@ export interface GetPaymentStats extends IResponse<{
   totalAmountPaid: number;
   totalBalance: number;
 }> { }
+
+
 
 
 export interface GetInfluencersBookmark extends IResponse<Core.InfluencerBookmark[]> { }

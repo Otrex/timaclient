@@ -69,10 +69,9 @@ const {
 } = useRequestState({
   action: async () => {
     await authStore.signIn({
-      username: form.identifier,
+      emailAddress: form.identifier,
       password: form.password,
     });
-    await profileStore.getProfile();
   },
   validation: {
     config: { $autoDirty: true },

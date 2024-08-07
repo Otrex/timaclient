@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { UserType } from '~/lib/enums';
 import type { Payload } from '~/lib/interfaces';
+import type { AccountWallet, User, UserProfile } from '~/lib/interfaces/core';
 
 type IState = {
   registration: {
@@ -10,10 +11,11 @@ type IState = {
     username?: string,
     country?: string
   },
+  user: User,
+  profile: UserProfile,
+  wallet: AccountWallet,
   authorization: {
     accessToken?: string;
-    refreshToken?: string;
-    expiresIn?: number;
     userType?: UserType;
   },
   connectedSocials: string[];
@@ -26,11 +28,13 @@ export const useAuthStore = defineStore('auth', {
       email: undefined,
       publicId: undefined,
       username: undefined,
+      country: undefined
     },
+    user: {} as unknown as User,
+    profile: {} as unknown as UserProfile,
+    wallet: {} as unknown as AccountWallet,
     authorization: {
       accessToken: undefined,
-      refreshToken: undefined,
-      expiresIn: undefined,
       userType: undefined,
     },
     connectedSocials: []
@@ -61,39 +65,39 @@ export const useAuthStore = defineStore('auth', {
 
       this.$patch({
         authorization: {
-          accessToken: response.data.access_token,
-          refreshToken: response.data.refresh_token,
-          expiresIn: response.data.expires_in,
-        }
+          accessToken: response.data.token,
+          userType: response.data.user.role,
+        },
+        user: response.data.user,
+        profile: response.data.profile,
+        wallet: response.data.accountWallet,
       })
     },
 
     async refreshAuth() {
       const response = await this.$api.refreshAuth(
-        this.authorization.refreshToken!
+        this.authorization.accessToken!
       );
 
       this.$patch({
         authorization: {
           accessToken: response.data.access_token,
-          refreshToken: response.data.refresh_token,
-          expiresIn: response.data.expires_in,
         }
       })
     },
 
     async createUser(payload: Omit<Payload.CreateUser, 'userType'>) {
-      const response = await this.$api.createUser({
-        userType: this.registration.type!,
-        ...payload,
-      });
+      // const response = await this.$api.createUser({
+      //   userType: this.authorization.userType!,
+      //   ...payload,
+      // });
 
-      this.$patch({
-        registration: {
-          ...this.registration,
-          publicId: response.data?.publicId
-        }
-      });
+      // this.$patch({
+      //   registration: {
+      //     ...this.registration,
+      //     publicId: response.data?.publicId
+      //   }
+      // });
     },
 
     async updateBrandInformation(
@@ -177,8 +181,7 @@ export const useAuthStore = defineStore('auth', {
           },
           authorization: {
             accessToken: undefined,
-            refreshToken: undefined,
-            expiresIn: undefined,
+            userType: undefined,
           }
         });
 
@@ -190,7 +193,7 @@ export const useAuthStore = defineStore('auth', {
       })
     }
   },
-  persist: ['registration', 'authorization', 'connectedSocials'],
+  persist: ['registration', 'authorization', 'user', 'profile', 'connectedSocials'],
   persistWith: tools.cookieStore(),
 })
 
