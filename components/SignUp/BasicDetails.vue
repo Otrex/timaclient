@@ -11,81 +11,38 @@
     <div class="flex flex-col gap-[1rem]">
       <div class="text-left">
         <div class="flex flex-row items-center transition-all">
-          <UiInputText
-            type="text"
-            class="w-full"
-            :class="
-              isValidUserName ? '!border-green-500 !border !border-solid' : ''
-            "
-            v-model="form.userName"
-            @keyup.prevent="() => verify()"
-            :autocomplete="false"
-            placeholder="Username"
-            :error-message="
-              v$.userName.$errors[0]?.$message.toString() ||
+          <UiInputText type="text" class="w-full" :class="isValidUserName ? '!border-green-500 !border !border-solid' : ''
+              " v-model="form.userName" @keyup.prevent="() => verify()" :autocomplete="false" placeholder="Username"
+            :error-message="v$.userName.$errors[0]?.$message.toString() ||
               (isValidUserName === false && 'Username already in use')
-            "
-          />
+              " />
           <div>
-            <UtSvg
-              name="sunshine"
-              class="spinner ml-4 w-[1.5rem] h-[1.5rem]"
-              v-show="verifying == constants.LOADING"
-            />
+            <UtSvg name="sunshine" class="spinner ml-4 w-[1.5rem] h-[1.5rem]" v-show="verifying == constants.LOADING" />
           </div>
         </div>
-        <span
-          class="text-green-500 !text-left text-sm"
-          v-if="isValidUserName && !v$.userName.$errors[0]?.$message.toString()"
-        >
-          Your username is good to go!</span
-        >
+        <span class="text-green-500 !text-left text-sm"
+          v-if="isValidUserName && !v$.userName.$errors[0]?.$message.toString()">
+          Your username is good to go!</span>
       </div>
-      <UiInputText
-        type="email"
-        class="w-full"
-        v-model="form.emailAddress"
-        :autocomplete="false"
-        placeholder="Email address"
-        :error-message="v$.emailAddress.$errors[0]?.$message.toString()"
-      />
-      <UiInputText
-        type="password"
-        class="w-full"
-        password-toggle
-        v-model="form.password"
-        :autocomplete="false"
-        placeholder="Password"
-        :error-message="v$.password.$errors[0]?.$message.toString()"
-      />
-      <UiInputPhone
-        class="w-full"
-        :model-value="form.phoneNumber"
+      <UiInputText type="email" class="w-full" v-model="form.emailAddress" :autocomplete="false"
+        placeholder="Email address" :error-message="v$.emailAddress.$errors[0]?.$message.toString()" />
+      <UiInputText type="password" class="w-full" password-toggle v-model="form.password" :autocomplete="false"
+        placeholder="Password" :error-message="v$.password.$errors[0]?.$message.toString()" />
+      <UiInputPhone class="w-full" :model-value="form.phoneNumber"
         @update:model-value="(data) => (form.phoneNumber = data.number)"
-        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
-        placeholder="234 803 443 3833"
-      />
+        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()" placeholder="234 803 443 3833" />
       <div class="mb-[2.3125rem]">
         <label class="flex items-center gap-[0.625rem]">
-          <input
-            type="checkbox"
-            v-model="agreed"
-            class="rounded-full w-[1.25rem] h-[1.25rem]"
-          />
+          <input type="checkbox" v-model="agreed" class="rounded-full w-[1.25rem] h-[1.25rem]" />
           <span class="text-[0.9375rem]">
             I have read and understood the terms and conditions
           </span>
         </label>
       </div>
 
-      <UiButtonDefault
-        :disabled="!isReady || state == constants.LOADING"
-        class="w-full py-[0.875rem] mb-[1.875rem]"
-        @click="validate().then(() => execute())"
-        :loading="state == constants.LOADING"
-        variant="primary"
-        label="Continue"
-      />
+      <UiButtonDefault :disabled="!isReady || state == constants.LOADING" class="w-full py-[0.875rem] mb-[1.875rem]"
+        @click="validate().then(() => execute())" :loading="state == constants.LOADING" variant="primary"
+        label="Continue" />
     </div>
   </div>
 </template>
@@ -147,6 +104,9 @@ const { execute, validate, state, v$ } = useRequestState({
         email: form.emailAddress,
       },
     });
+
+    authStore.getProfile();
+
     navigateTo({
       query: {
         tab: constants.EMAIL_VERIFY,
