@@ -100,7 +100,7 @@ export const useAuthStore = defineStore("auth", {
         authorization: {
           accessToken: response.data.token,
           userType: response.data.user.role,
-        },
+        }
       });
     },
 
@@ -200,13 +200,7 @@ export const useAuthStore = defineStore("auth", {
       });
     },
   },
-  persist: [
-    "registration",
-    "authorization",
-    "user",
-    "profile",
-    "connectedSocials",
-  ],
+  persist: ["registration", "authorization", "user", "profile", "connectedSocials"],
   persistWith: tools.cookieStore(),
 });
 

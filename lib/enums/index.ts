@@ -16,3 +16,8 @@ export enum DemographyType {
   COUNTRY = "COUNTRY",
   CITY = "CITY",
 }
+
+export enum ProfileState {
+  REGISTERED = 'REGISTERED',
+  PROFILE_SETUP_COMPLETED = "PROFILE_SETUP_COMPLETED"
+}
