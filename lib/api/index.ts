@@ -25,7 +25,14 @@ export default class TimaAPI extends UploadAPI {
       url: `/auth/login`,
       method: "POST",
       data,
-    })
+    });
+  }
+
+  async verifyUsername(username: string) {
+    return this.request<{ message: string; statusCode: number }>({
+      url: `/auth/check-username?userName=${username}`,
+      method: "GET",
+    });
   }
 
   async verifyUsername(username: string) {
@@ -45,8 +52,9 @@ export default class TimaAPI extends UploadAPI {
 
   async verifyOTP(data: Payload.VerifyOTP) {
     return this.request<Response.CreateUser>({
-      url: `/user/v1/account/verify/${data.otp}`,
-      method: "GET",
+      url: `/users/email-verify`,
+      method: "POST",
+      data,
     });
   }
 
@@ -196,7 +204,7 @@ export default class TimaAPI extends UploadAPI {
 
   async getUserProfile() {
     return this.request<Response.GetUserProfile>({
-      url: "/user/v1/profile",
+      url: "/users/profile",
       requireAuth: true,
       method: "GET",
     });

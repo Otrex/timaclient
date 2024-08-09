@@ -41,7 +41,7 @@ export const useAuthStore = defineStore("auth", {
   }),
   getters: {
     isAuthenticated(state) {
-      return !!state.authorization.accessToken;
+      return !!state.authorization.accessToken && state.user?.hasVerifiedEmail;
     },
     userType(state) {
       return state.authorization.userType;
@@ -101,6 +101,14 @@ export const useAuthStore = defineStore("auth", {
           accessToken: response.data.token,
           userType: response.data.user.role,
         }
+      });
+    },
+
+    async getProfile() {
+      const response = await this.$api.getUserProfile();
+
+      this.$patch({
+        profile: response.data,
       });
     },
 

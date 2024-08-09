@@ -147,6 +147,9 @@ const { execute, validate, state, v$ } = useRequestState({
         email: form.emailAddress,
       },
     });
+
+    authStore.getProfile();
+
     navigateTo({
       query: {
         tab: constants.EMAIL_VERIFY,
