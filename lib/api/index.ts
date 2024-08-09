@@ -45,8 +45,9 @@ export default class TimaAPI extends UploadAPI {
 
   async verifyOTP(data: Payload.VerifyOTP) {
     return this.request<Response.CreateUser>({
-      url: `/user/v1/account/verify/${data.otp}`,
-      method: "GET",
+      url: `/users/email-verify`,
+      method: "POST",
+      data,
     });
   }
 
