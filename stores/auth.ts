@@ -41,7 +41,7 @@ export const useAuthStore = defineStore("auth", {
   }),
   getters: {
     isAuthenticated(state) {
-      return !!state.authorization.accessToken && state.user?.hasVerifiedEmail;
+      return !!state.authorization.accessToken // && state.user?.hasVerifiedEmail;
     },
     userType(state) {
       return state.authorization.userType;
@@ -62,6 +62,9 @@ export const useAuthStore = defineStore("auth", {
       const response = await this.$api.signIn({
         ...payload,
       });
+
+      console.log(response.data);
+
 
       this.$patch({
         authorization: {

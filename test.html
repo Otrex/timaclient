@@ -1,30 +1,85 @@
-<style>
-  .fade-in {
-    opacity: 0; /* Start with opacity 0 */
-    animation: fadeInAnimation 0.5s ease-in forwards; /* Apply the animation */
-  }
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fabric.js Canvas Recording</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  </head>
+  <body>
+    <canvas
+      id="myCanvas"
+      width="640"
+      height="480"
+      style="border: 1px solid #000000"
+    ></canvas>
+    <button id="startRecording">Start Recording</button>
+    <button id="stopRecording">Stop Recording</button>
+    <div id="downloadLinkContainer"></div>
 
-  .box {
-    width: 200px;
-    height: 200px;
-    background-color: green;
-  }
+    <script>
+      // Initialize Fabric.js Canvas
+      const canvas = new fabric.Canvas("myCanvas");
 
-  @keyframes fadeInAnimation {
-    from {
-      opacity: 0; /* Start with opacity 0 */
-    }
-    to {
-      opacity: 1; /* End with opacity 1 */
-    }
-  }
-</style>
+      // Function to add text to canvas
+      function addTextToCanvas(text) {
+        const textObject = new fabric.Text(text, {
+          left: 100,
+          top: 100,
+          fontSize: 30,
+          fill: "black",
+        });
+        canvas.add(textObject);
+      }
 
-<div class="fade-in box">Content to fade in</div>
+      // Add text to canvas and set background color
+      addTextToCanvas("Hello, Fabric.js!");
+      canvas.setBackgroundColor("lightblue", canvas.renderAll.bind(canvas));
 
-<script
-  id="soteria-widget"
-  data-type="inline"
-  data-key="443b4752-13b5-4c10-a389-4de516cfaff9"
-  src="https://widget.usesoteria.com/widget.js"
-></script>
+      let mediaRecorder;
+      let chunks = [];
+
+      // Handle Start Recording
+      document
+        .getElementById("startRecording")
+        .addEventListener("click", () => {
+          const canvasElt = document.querySelector("canvas");
+          const stream = canvasElt.captureStream(25); // 25 FPS
+
+          mediaRecorder = new MediaRecorder(stream, {
+            mimeType: "video/webm; codecs=vp9",
+          });
+
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              chunks.push(event.data);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(chunks, { type: "video/webm" });
+            chunks = []; // Clear the chunks array for next recording
+            const url = URL.createObjectURL(blob);
+
+            // Create and display download link
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "recording.webm";
+            a.textContent = "Download WebM video";
+            const container = document.getElementById("downloadLinkContainer");
+            container.innerHTML = ""; // Clear any previous links
+            container.appendChild(a);
+          };
+
+          mediaRecorder.start();
+        });
+
+      // Handle Stop Recording
+      document.getElementById("stopRecording").addEventListener("click", () => {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+        }
+      });
+    </script>
+  </body>
+</html>

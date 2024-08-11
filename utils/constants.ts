@@ -35,5 +35,6 @@ export default Object.freeze({
   CAMPAIGN_INFLUENCER_CAMPAIGN_INFO: 'campaign-info',
 
   INFLUENCER: UserType.INFLUENCER,
+  ADMIN: UserType.ADMIN,
   AGENCY: UserType.BRAND,
 });

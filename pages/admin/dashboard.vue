@@ -1,11 +1,13 @@
 <template>
   <div>
-    <NuxtLayout name="admin-dashboard">
+    <NuxtLayout name="admin">
       <template #main>
-        <NuxtPage :transition="{
-          name: 'page',
-          mode: 'out-in',
-        }" />
+        <NuxtPage
+          :transition="{
+            name: 'page',
+            mode: 'out-in',
+          }"
+        />
       </template>
     </NuxtLayout>
   </div>
@@ -13,7 +15,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: "AdminLayout"
+  name: "AdminLayout",
 });
 </script>
 

@@ -13,7 +13,7 @@
         </div>
         <div class="mt-[4.625rem]">
           <DashboardNavigatorInfluencer
-            v-if="$route.params.type === constants.INFLUENCER"
+            v-if="$route.params?.type === constants.INFLUENCER"
           />
           <DashboardNavigatorAgency v-else />
           <div class="mt-[1rem] flex flex-col gap-[1rem]">
