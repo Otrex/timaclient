@@ -14,8 +14,7 @@
       <template v-else>
         <div class="grid sm:grid-cols-3 gap-[1.25rem] mb-[1.25rem]">
           <div
-            class="bg-[rgba(228,_243,_255,_0.5)] py-[40px] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
-          >
+            class="bg-[rgba(228,_243,_255,_0.5)] py-[40px] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center">
             <div class="text-center">
               <h3 class="text-[2.1875rem]">
                 {{ paymentStats.totalTransactions }}
@@ -25,8 +24,7 @@
           </div>
 
           <div
-            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
-          >
+            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center">
             <div class="text-center">
               <h3 class="text-[2.1875rem]">
                 {{ paymentStats.completedTransactions }}
@@ -36,8 +34,7 @@
           </div>
 
           <div
-            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
-          >
+            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center">
             <div class="text-center">
               <h3 class="text-[2.1875rem]">
                 {{ paymentStats.pendingTransactions }}
@@ -48,22 +45,14 @@
         </div>
       </template>
     </transition>
-    <div
-      class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
-    >
+    <div class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]">
       <div class="flex flex-row justify-between mb-[0.75rem] items-center">
         <div>
           <h1>Payment graph</h1>
         </div>
         <div>
-          <select
-            v-model="paymentYear"
-            class="border-none dark:bg-[rgba(228,_243,_255,_0.5)] rounded-md"
-          >
-            <template
-              v-for="(year, idx) in tools.range(2010, new Date().getFullYear())"
-              :key="idx"
-            >
+          <select v-model="paymentYear" class="border-none dark:bg-[rgba(228,_243,_255,_0.5)] rounded-md">
+            <template v-for="(year, idx) in tools.range(2010, new Date().getFullYear())" :key="idx">
               <option :value="year">{{ year }}</option>
             </template>
           </select>
@@ -80,21 +69,13 @@
         <div class="text-[1.25rem]">Transactions</div>
         <div class="max-w-[40rem] w-full">
           <div class="whitespace-nowrap inline-flex justify-end w-full">
-            <UiInputText
-              search
-              placeholder="Search Transactions"
-              class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
-            />
-            <UiInputSelect
-              class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
-              :options="[
-                { label: 'All', value: 'ALL' },
-                { label: 'Partial', value: 'PARTIAL' },
-                { label: 'Completed', value: 'COMPLETED' },
-              ]"
-              @change="search"
-              v-model="searchStatus"
-            />
+            <UiInputText search placeholder="Search Transactions"
+              class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]" />
+            <UiInputSelect class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]" :options="[
+        { label: 'All', value: 'ALL' },
+        { label: 'Partial', value: 'PARTIAL' },
+        { label: 'Completed', value: 'COMPLETED' },
+      ]" @change="search" v-model="searchStatus" />
           </div>
         </div>
       </div>
@@ -111,12 +92,9 @@
             <th></th>
           </thead>
           <tbody>
-            <template
-              v-if="
-                tools.requestState(getTransactions) === constants.LOADING ||
-                tools.requestState(searchTransactions) === constants.LOADING
-              "
-            >
+            <template v-if="tools.requestState(getTransactions) === constants.LOADING ||
+        tools.requestState(searchTransactions) === constants.LOADING
+        ">
               <tr>
                 <td colspan="7">
                   <UtLoaderIndicator message="Fetching transactions" />
@@ -130,24 +108,14 @@
                 </td>
               </tr>
             </template>
-            <template
-              v-else
-              v-for="(transaction, idx) in searchFilter(transactions)"
-              :key="idx"
-            >
+            <template v-else v-for="(transaction, idx) in searchFilter(transactions)" :key="idx">
               <tr>
                 <td>
                   <div class="flex gap-[1rem] items-center flex-row">
                     <div>
-                      <div
-                        class="bg-[#D9D9D9] rounded-md overflow-hidden aspect-square w-[1.875rem]"
-                      >
-                        <UiImg
-                          class="w-full h-full object-cover"
-                          :src="transaction.campaignImage"
-                          v-if="transaction.campaignImage"
-                          :alt="transaction.campaignName"
-                        />
+                      <div class="bg-[#D9D9D9] rounded-md overflow-hidden aspect-square w-[1.875rem]">
+                        <UiImg class="w-full h-full object-cover" :src="transaction.campaignImage"
+                          v-if="transaction.campaignImage" :alt="transaction.campaignName" />
                       </div>
                     </div>
                     <div>{{ transaction.campaignName }}</div>
@@ -164,8 +132,8 @@
                 </td>
                 <td class="align-middle text-center">
                   {{
-                    tools.formatDate(transaction.transactionDate || new Date())
-                  }}
+        tools.formatDate(transaction.transactionDate || new Date())
+      }}
                 </td>
                 <td class="align-middle text-center">
                   <template v-if="transaction.status === 'COMPLETED'">
