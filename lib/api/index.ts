@@ -35,13 +35,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async verifyUsername(username: string) {
-    return this.request<{ message: string, statusCode: number }>({
-      url: `/auth/check-username?userName=${username}`,
-      method: "GET",
-    });
-  }
-
   async createUser(data: Payload.CreateUser) {
     return this.request<Response.CreateUser>({
       url: "/auth/register",
