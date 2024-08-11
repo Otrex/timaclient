@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-    name: "AdminHome",
-    middleware: [async () => { }],
+  name: "AdminHome",
+  middleware: [async () => {}],
 });
 </script>
 

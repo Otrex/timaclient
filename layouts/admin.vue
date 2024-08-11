@@ -34,8 +34,6 @@
       </main>
     </div>
   </div>
-
-  <!-- <slot name="main"></slot> -->
 </template>
 
 <script setup lang="ts">
@@ -107,14 +105,16 @@ header {
   grid-area: header;
 }
 
-.tooltip~.tip {
+
+.tooltip ~ .tip {
   display: none;
   top: calc(100% + 10px);
   left: 5px;
   min-width: 60px;
 }
 
-.tooltip:hover~.tip {
+
+.tooltip:hover ~ .tip {
   display: inline-flex;
 }
 </style>
