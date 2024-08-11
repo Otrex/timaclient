@@ -13,8 +13,6 @@ definePageMeta({
       const authStore = useAuthStore();
       const userType = authStore.authorization.userType;
 
-      console.log("Enter");
-
       if (!Object.keys(to.params).includes("type") && userType) {
         const paths: Record<UserType, string> = {
           [UserType.BRAND]: "BrandCampaign",
@@ -22,8 +20,6 @@ definePageMeta({
           [UserType.INFLUENCER]: "Explore",
           [UserType.ADMIN]: "AdminHome",
         };
-
-        console.log(paths, userType);
 
         return navigateTo({
           name: paths[userType],
