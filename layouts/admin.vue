@@ -1,6 +1,38 @@
 <template>
   <div class="h-screen w-full overflow-hidden">
-    <slot name="main"></slot>
+    <div class="box">
+      <aside :class="[
+        'bg-white block sm:hidden transition-all h-full dark:bg-slate-800',
+        !sidebar && 'transform translate-x-[-100%]',
+      ]">
+        <AdminDashboardSidebar @close-sidebar="sidebar = false" />
+      </aside>
+
+      <aside
+        class="bg-white border-r border-solid border-[#dcf0ff] dark:border-slate-600 hidden sm:flex h-full dark:bg-slate-800">
+        <AdminDashboardSidebar />
+      </aside>
+
+      <header class="dark:bg-slate-700 dark:text-white">
+        <div class="flex flex-row items-center border-[#D6D6D6]">
+          <div class="pl-[1.2rem] hidden sm:block relative">
+            <button @click="goBack"
+              class="w-[2.5rem] tooltip active:bg-[#d6d6d6a3] hover:ring-2 hover:ring-[#D6D6D6] aspect-square rounded-full flex items-center justify-center">
+              <UtSvg name="down-caret" class="rotate-90" dim w="1rem" h="1rem" />
+            </button>
+            <span
+              class="tip bg-slate-700 z-40 dark:bg-slate-500 text-white px-2 text-sm inline-flex absolute rounded-xl">
+              Go Back
+            </span>
+          </div>
+          <AdminDashboardHeader @open-sidebar="sidebar = true" />
+        </div>
+      </header>
+
+      <main class="overflow-y-auto dark:bg-slate-700 dark:text-white">
+        <slot name="main"></slot>
+      </main>
+    </div>
   </div>
 </template>
 
@@ -73,12 +105,14 @@ header {
   grid-area: header;
 }
 
+
 .tooltip ~ .tip {
   display: none;
   top: calc(100% + 10px);
   left: 5px;
   min-width: 60px;
 }
+
 
 .tooltip:hover ~ .tip {
   display: inline-flex;
