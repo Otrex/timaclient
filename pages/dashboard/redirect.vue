@@ -14,7 +14,7 @@ definePageMeta({
       const userType = authStore.authorization.userType;
 
       if (!Object.keys(to.params).includes("type") && userType) {
-        const paths: Record<UserType, string> = {
+        const redirect: Record<UserType, string> = {
           [UserType.BRAND]: "BrandCampaign",
           [UserType.SUPERADMIN]: "AdminHome",
           [UserType.INFLUENCER]: "Explore",
@@ -22,7 +22,7 @@ definePageMeta({
         };
 
         return navigateTo({
-          name: paths[userType],
+          name: redirect[userType],
           params: {
             type: userType,
           },
