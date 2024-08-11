@@ -17,7 +17,7 @@
         <div role="divider" class="mt-10"></div>
 
 
-        <div class="flex justify-between items-end">
+        <div class="flex justify-between items-end py-8">
             <h1 class="w-6/12 text-center font-medium text-[48px] text-[#434343]">
                 120
             </h1>
