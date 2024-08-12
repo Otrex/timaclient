@@ -45,7 +45,8 @@ export default class TimaAPI extends UploadAPI {
 
   async verifyOTP(data: Payload.VerifyOTP) {
     return this.request<Response.CreateUser>({
-      url: `/users/email-verify`,
+      url: `/users/verify-email`,
+      requireAuth: true,
       method: "POST",
       data,
     });
@@ -56,6 +57,14 @@ export default class TimaAPI extends UploadAPI {
       url: `/user/v1/account/otp/resend`,
       method: "POST",
       data,
+    });
+  }
+
+  async resendEmailOTP() {
+    return this.request({
+      url: `/users/resend-email-verification`,
+      requireAuth: true,
+      method: "POST"
     });
   }
 
@@ -75,6 +84,33 @@ export default class TimaAPI extends UploadAPI {
       method: "PUT",
       headers,
       data,
+    });
+  }
+
+  async profileSetup(data: any) {
+    return this.request<IResponse<Core.UserProfile>>({
+      url: "/users/profile-setup",
+      requireAuth: true,
+      method: "POST",
+      data,
+    });
+  }
+
+
+
+  async accountSetup(data: FormData) {
+    return this.request<Response.GetUserProfile>({
+      url: "/users/setup-account",
+      requireAuth: true,
+      method: "POST",
+      data,
+    });
+  }
+
+  async getCountries() {
+    return this.request<Core.Country[]>({
+      url: "https://restcountries.com/v3.1/all?fields=name,flags,currencies",
+      method: "GET",
     });
   }
 
@@ -130,12 +166,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getCountries() {
-    return this.request<Response.GetCountries>({
-      url: "/user/v1/countries",
-      method: "GET",
-    });
-  }
 
   async getIndustries() {
     return this.request<Response.GetIndustry>({
@@ -196,7 +226,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getUserProfile() {
-    return this.request<Response.GetUserProfile>({
+    return this.request<IResponse<Core.User>>({
       url: "/users/profile",
       requireAuth: true,
       method: "GET",

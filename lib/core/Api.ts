@@ -9,14 +9,10 @@ export class ApiError extends Error {
 
   constructor(error: any) {
     super(error);
-    const title = error.response?.data?.status || error.response?.statusText || error.message || "Server error";
-    const description = error.response?.data?.userMessage || error.message || "Something went wrong";
 
-    this.title = title === description ? "App Error" : title;
-    this.description = description;
+    this.title = error.name === "AxiosError" ? "Request Failed!" : "App Error!";
+    this.description = error.response?.data?.message || error.message || "Something went wrong";
     this.__error = error;
-
-    console.error(error);
 
   }
 }
@@ -59,26 +55,26 @@ export default class Api {
         return Promise.reject(error)
       }
 
-      const hasCompletedRetries = retries >= this.MAX_RETRY;
+      // const hasCompletedRetries = retries >= this.MAX_RETRY;
 
-      if (hasCompletedRetries && this.store) {
-        const storeGetters = Object.values((this.getters || {}));
-        storeGetters.forEach(({ key }) => this.store!.clear && this.store!.clear(key))
-        location.href = this.BASE_ROUTE;
-      }
+      // if (hasCompletedRetries && this.store) {
+      //   const storeGetters = Object.values((this.getters || {}));
+      //   storeGetters.forEach(({ key }) => this.store!.clear && this.store!.clear(key))
+      //   location.href = this.BASE_ROUTE;
+      // }
 
-      if (!hasCompletedRetries) {
-        return new Promise((resolve, reject) => {
-          retries += 1;
-          this.handle401!(error.config).then(() => {
-            resolve(axios(error.config))
-            retries = 0;
-          }).catch(() => {
-            retries = 0;
-            reject(error)
-          });
-        })
-      }
+      // if (!hasCompletedRetries) {
+      //   return new Promise((resolve, reject) => {
+      //     retries += 1;
+      //     this.handle401!(error.config).then(() => {
+      //       resolve(axios(error.config))
+      //       retries = 0;
+      //     }).catch(() => {
+      //       retries = 0;
+      //       reject(error)
+      //     });
+      //   })
+      // }
 
       return Promise.reject(error)
     })

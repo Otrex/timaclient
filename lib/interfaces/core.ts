@@ -1,10 +1,11 @@
-import type { UserType } from "../enums";
+import type { ProfileSetupState, UserType } from "../enums";
 
 export interface UserProfile {
   country: string
+  emailAddress: string
   website: string
   address: string
-  profileSetupProgress: string
+  profileSetupProgress: ProfileSetupState
   city: string
   companyName: string
   profileImage: string
@@ -131,9 +132,30 @@ export interface Industry {
 // }
 
 export interface Country {
-  name: string;
-  language: string[];
-  currency: string;
+  flags: {
+    png: string;
+    svg: string;
+    alt: string;
+  };
+  name: {
+    common: string;
+    official: string;
+    nativeName: {
+      [key: string]: {
+        official: string;
+        common: string;
+      };
+    };
+  };
+  currencies: {
+    [key: string]: {
+      name: string;
+      symbol: string;
+    };
+  };
+  languages: {
+    [key: string]: string;
+  };
 }
 export interface Authentication {
   scope: null;

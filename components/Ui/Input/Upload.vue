@@ -258,10 +258,11 @@ function open() {
 }
 
 async function save() {
-  if (file.value) {
-    await upload(file.value);
-    // modalState.value = false;
-  }
+  modalState.value = false;
+  // if (file.value) {
+  //   await upload(file.value);
+  //   // modalState.value = false;
+  // }
 }
 </script>
 

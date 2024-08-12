@@ -63,9 +63,6 @@ export const useAuthStore = defineStore("auth", {
         ...payload,
       });
 
-      console.log(response.data);
-
-
       this.$patch({
         authorization: {
           accessToken: response.data.token,
@@ -96,10 +93,12 @@ export const useAuthStore = defineStore("auth", {
       });
 
       this.$patch({
+        user: response.data.user,
         registration: {
           ...this.registration,
           publicId: response.data.user.user_id,
         },
+
         authorization: {
           accessToken: response.data.token,
           userType: response.data.user.role,
@@ -109,10 +108,22 @@ export const useAuthStore = defineStore("auth", {
 
     async getProfile() {
       const response = await this.$api.getUserProfile();
+      this.$patch({ user: response.data, profile: response.data });
+    },
 
-      this.$patch({
-        profile: response.data,
+    async updateProfileSetup(data: { companyName: string, website: string }) {
+      const response = await this.$api.profileSetup(data);
+      this.$patch({ profile: response.data });
+    },
+
+    async updateAccountSetup(data: Payload.UpdateAccountSetup) {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
       });
+
+      const response = await this.$api.accountSetup(formData);
+      this.$patch({ profile: response.data });
     },
 
     async updateBrandInformation(

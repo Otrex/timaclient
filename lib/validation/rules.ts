@@ -175,13 +175,13 @@ export const CREATE_BRAND_ADDRESS_VALIDATOR = {
       minLength(3)
     ),
   },
-  postCode: {
-    required: helpers.withMessage("Please enter a valid postalCode", required),
-    minLength: helpers.withMessage(
-      "postalCode should be at least 3 characters",
-      minLength(3)
-    ),
-  },
+  // postCode: {
+  //   required: helpers.withMessage("Please enter a valid postalCode", required),
+  //   minLength: helpers.withMessage(
+  //     "postalCode should be at least 3 characters",
+  //     minLength(3)
+  //   ),
+  // },
 
   profilePicture: {
     required: helpers.withMessage("Please select a valid picture", required),
@@ -255,12 +255,6 @@ export const UPDATE_BRAND_INFO_RULE = {
   companyName: {
     required: helpers.withMessage(
       "Please enter a valid company name",
-      required
-    ),
-  },
-  phoneNumber: {
-    required: helpers.withMessage(
-      "Please enter a valid phone number",
       required
     ),
   },

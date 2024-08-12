@@ -9,6 +9,15 @@ export interface CreateUser {
   role: UserType;
 }
 
+export interface UpdateAccountSetup {
+  profile_image: File,
+  document_upload: File[] | File,
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+}
+
 export interface DemographyInsight {
   socialMedia: string;
   influencerId: string;
@@ -180,18 +189,18 @@ export type CreateCampaign = Omit<
 
 export type GetCampaigns =
   | {
-      type: "filter";
-      category: string;
-      size: string;
-      age: string;
-      location: string;
-    }
+    type: "filter";
+    category: string;
+    size: string;
+    age: string;
+    location: string;
+  }
   | {
-      type: "recommendation";
-    }
+    type: "recommendation";
+  }
   | {
-      type: "top";
-    };
+    type: "top";
+  };
 
 export type GetBrandCampaigns = {
   name: string;

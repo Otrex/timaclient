@@ -3,8 +3,8 @@
     <div class="mb-[1.875rem]">
       <h1 class="text-[2.4375rem] mb-[1.5rem]">Check your email for a code</h1>
       <p>
-        Check your email at <b>{{ $route.query.email }}</b> for the confirmation
-        code. Enter it soon, before it expires. Welcome aboard!
+        Check your email at <b>{{ authStore.profile?.emailAddress }}</b> for the
+        confirmation code. Enter it soon, before it expires. Welcome aboard!
       </p>
     </div>
 
@@ -24,7 +24,7 @@
       <div class="mt-[1.5rem]">
         <a
           class="underline text-red-600"
-          v-show="route.query.email && route.query.username"
+          v-show="showResend"
           @click="() => resend()"
           :disabled="resendState == constants.LOADING"
         >
@@ -46,6 +46,37 @@ const authStore = useAuthStore();
 const route = useRoute();
 const api = useAPI();
 
+const showResend = ref(false);
+
+onMounted(() => {
+  console.log(authStore.user, authStore.profile);
+
+  if (authStore.user?.hasVerifiedEmail) {
+    return goToProfileUpdate();
+  }
+
+  setTimeout(() => {
+    showResend.value = true;
+  }, 5000);
+});
+
+function goToProfileUpdate() {
+  if (route.params.type === constants.INFLUENCER) {
+    navigateTo({
+      query: {
+        tab: constants.COMPLETE_PROFILE,
+      },
+    });
+  } else {
+    navigateTo({
+      query: {
+        tab: constants.BASIC_INFORMATION,
+        email: route.query.email as string,
+      },
+    });
+  }
+}
+
 const { execute, state } = useRequestState({
   action: (otp: string) => api.verifyOTP({ otp }),
   onError(e) {
@@ -55,26 +86,14 @@ const { execute, state } = useRequestState({
       text: e.description,
     });
   },
-  onSuccess() {
-    if (route.params.type === constants.INFLUENCER) {
-      navigateTo({
-        query: {
-          tab: constants.COMPLETE_PROFILE,
-        },
-      });
-    } else {
-      navigateTo({
-        query: {
-          tab: constants.BASIC_INFORMATION,
-          email: route.query.email as string,
-        },
-      });
-    }
+  async onSuccess() {
+    await authStore.getProfile();
+    goToProfileUpdate();
   },
 });
 
 const { execute: resend, state: resendState } = useRequestState({
-  action: () => authStore.resendOTP(),
+  action: async () => api.resendEmailOTP(),
   onError(e) {
     notify({
       type: "error",
