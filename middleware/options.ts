@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   try {
     if (authStore.isAuthenticated) {
-      await optionsStore.getIndustries();
+      await optionsStore.loadOptions();
     }
   } catch (error) {
     notify({

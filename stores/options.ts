@@ -36,27 +36,33 @@ export const useOptionsStore = defineStore("options", {
     $industries: (state) => state.industries,
     $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
     $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
-    $countries: (state) => tools.generationOptions(state.countries.map(country => country.name)),
-    $getCurrency: (state) => (countryName: string) => state.countries.find(country => country.name === countryName)?.currency,
-    $countryLanguages: (state) => (countryName: string) => tools.generationOptions(state.countries.find(country => country.name === countryName)?.language || [])
+    $countries: (state) => tools.generationOptions(state.countries.map(country => country.name.common)).sort(),
+    $getCurrency: (state) => (countryName: string) => {
+      const country = state.countries.find(country => country.name.common === countryName)
+      return country ? Object.values(country.currencies).map(c => c.name) : []
+    },
+    $countryLanguages: (state) => (countryName: string) => {
+      const country = state.countries.find(country => country.name.common === countryName)
+      return country ? Object.values(country.languages) : []
+    }
   },
 
   actions: {
-    async loadDashboardOptions() {
+    async loadOptions() {
       await Promise.all([
         // profileStore.getProfile(),
-        // this.getCountries(),
+        this.getCountries(),
         this.getIndustries(),
         // this.getPaymentStatus(),
       ]);
 
-      if (!this.campaignOptions) {
-        await Promise.all([
-          this.getCampaignOptions(),
-          this.getCreativesOptions(),
-          this.getPaymentMethods(),
-        ]);
-      }
+      // if (!this.campaignOptions) {
+      //   await Promise.all([
+      //     this.getCampaignOptions(),
+      //     this.getCreativesOptions(),
+      //     this.getPaymentMethods(),
+      //   ]);
+      // }
     },
 
     async loadRegisterOptions() {
@@ -69,9 +75,8 @@ export const useOptionsStore = defineStore("options", {
     },
 
     async getCountries() {
-      const response = await this.$api.getCountries();
       this.$patch({
-        countries: response.data
+        countries: await this.$api.getCountries()
       })
     },
 

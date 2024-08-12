@@ -6,13 +6,13 @@
     </div>
 
     <div class="flex flex-col gap-[1rem]">
-      <UiInputText
+      <!-- <UiInputText
         type="text"
         class="w-full"
         v-model="form.postCode"
         :error-message="v$.postCode?.$errors[0]?.$message.toString()"
         placeholder="Postal Code"
-      />
+      /> -->
       <UiInputText
         type="text"
         class="w-full"
@@ -45,14 +45,14 @@
       <UiInputUpload
         class="w-full"
         type="docs"
-        v-model:url="form.companyRegDocs"
+        v-model:file="form.companyRegDocs"
         :error-message="v$.companyRegDocs?.$errors[0]?.$message.toString()"
         placeholder="Upload company registration documents"
       />
       <UiInputUpload
         class="w-full mb-[3.125rem]"
         type="pics"
-        v-model:url="form.profilePicture"
+        v-model:file="form.profilePicture"
         :error-message="v$.profilePicture?.$errors[0]?.$message.toString()"
         placeholder="Profile picture"
       />
@@ -76,8 +76,8 @@ const { notify } = useNotification();
 const optionsStore = useOptionsStore();
 const authStore = useAuthStore();
 const form = reactive({
-  profilePicture: "",
-  companyRegDocs: [] as string[],
+  profilePicture: {} as File,
+  companyRegDocs: [] as File[],
   country: "",
   postCode: "",
   state: "",
@@ -87,17 +87,13 @@ const form = reactive({
 
 const { execute, validate, state, v$ } = useRequestState({
   action: () =>
-    authStore.updateBrandAddressDoc({
-      pictureName: form.profilePicture,
-      documentName: form.companyRegDocs as any,
-      addressRecord: {
-        country: form.country,
-        postCode: form.postCode,
-        state: form.state,
-        language: "English",
-        street: form.street,
-        city: form.city,
-      },
+    authStore.updateAccountSetup({
+      country: form.country,
+      state: form.state,
+      street: form.street,
+      city: form.city,
+      profile_image: form.profilePicture,
+      document_upload: form.companyRegDocs,
     }),
   validation: {
     config: { $autoDirty: true },

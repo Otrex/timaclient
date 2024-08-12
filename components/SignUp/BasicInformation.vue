@@ -13,12 +13,12 @@
           placeholder="Company name"
           :error-message="v$.companyName.$errors[0]?.$message.toString()"
         />
-        <UiInputPhone
+        <!-- <UiInputPhone
           class="w-full"
           v-model="form.phoneNumber"
           placeholder="234 803 443 3833"
           :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
-        />
+        /> -->
         <UiInputText
           type="text"
           class="w-full"
@@ -48,17 +48,12 @@ const authStore = useAuthStore();
 const form = reactive({
   companyName: "",
   website: "",
-  phoneNumber: undefined as Record<string, any> | undefined | string,
 });
 
 const { execute, validate, state, v$ } = useRequestState({
-  action: () =>
-    authStore.updateBrandInformation({
+  action: async () =>
+    authStore.updateProfileSetup({
       ...form,
-      phoneNumber:
-        typeof form.phoneNumber === "string"
-          ? form.phoneNumber
-          : form.phoneNumber?.number,
     }),
   validation: {
     config: { $autoDirty: true },

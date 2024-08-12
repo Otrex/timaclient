@@ -11,13 +11,15 @@ export enum RequestState {
   ERROR = "ERROR",
   COMPLETED = "COMPLETED",
 }
+
 export enum DemographyType {
   AGE_GENDER = "AGE_GENDER",
   COUNTRY = "COUNTRY",
   CITY = "CITY",
 }
 
-export enum ProfileState {
+export enum ProfileSetupState {
   REGISTERED = 'REGISTERED',
+  PROFILE_SETUP = 'PROFILE_SETUP',
   PROFILE_SETUP_COMPLETED = "PROFILE_SETUP_COMPLETED"
 }

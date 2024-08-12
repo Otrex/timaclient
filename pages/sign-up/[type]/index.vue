@@ -16,13 +16,14 @@
           v-if="show(constants.BASIC_DETAILS)"
           class="items-center flex justify-end"
         >
-          <span
-            >Already have an account?
+          <span>
+            Already have an account?
             <NuxtLink
               to="/auth/login"
               class="text-red-600 text-[1.1875rem] underline underline-offset-2"
-              >Log In</NuxtLink
             >
+              Log In
+            </NuxtLink>
           </span>
         </div>
       </template>
@@ -30,8 +31,17 @@
         <div class="text-center overflow-auto">
           <UtSvg
             name="logo/tima"
-            class="max-w-[6.125rem] h-[2.4375rem] mb-[3.5625rem] mt-[0.625rem]"
+            class="max-w-[6.125rem] h-[2.4375rem] mb-3 mt-[0.625rem]"
           />
+          <div
+            v-if="
+              $route.query.tab && $route.query.tab !== constants.BASIC_DETAILS
+            "
+            class="flex flex-row justify-end pr-4"
+          >
+            <UiProfileProgress :percent="percent" />
+          </div>
+          <div class="mb-[3.5625rem]"></div>
           <component :is="currentView.component" />
         </div>
       </div>
@@ -40,12 +50,29 @@
 </template>
 
 <script setup lang="ts">
+import { ProfileSetupState } from "~/lib/enums";
+
 definePageMeta({
   name: "SignUp",
   middleware: ["register", "options"],
 });
 
 const authStore = useAuthStore();
+const percent = computed(() => {
+  const user = authStore.user;
+  const progress = authStore.profile?.profileSetupProgress;
+  if (!user) return 0;
+
+  if (progress === ProfileSetupState.REGISTERED) {
+    return 20;
+  }
+
+  if (progress === ProfileSetupState.PROFILE_SETUP) {
+    return 80;
+  }
+
+  if (authStore.user!.hasVerifiedEmail) return 50;
+});
 
 const tabMap = {
   [constants.BASIC_DETAILS]: {
