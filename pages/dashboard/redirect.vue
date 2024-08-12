@@ -12,6 +12,7 @@ definePageMeta({
     (to, from) => {
       const authStore = useAuthStore();
       const userType = authStore.authorization.userType;
+      console.log(userType);
 
       if (!Object.keys(to.params).includes("type") && userType) {
         const redirect: Record<UserType, string> = {
