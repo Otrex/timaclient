@@ -19,7 +19,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const authenticated = authStore.isAuthenticated;
   const profile = authStore.profile;
 
-  if (authenticated && profile?.profileSetupProgress) {
+  if (authenticated && profile?.profileSetupProgress && ![UserType.ADMIN, UserType.SUPERADMIN].includes(authStore.authorization.userType!)) {
     await authStore.getProfile();
     const progress = profile.profileSetupProgress || ProfileSetupState.REGISTERED;
     const stateMap: Partial<Record<ProfileSetupState, string>> = {
