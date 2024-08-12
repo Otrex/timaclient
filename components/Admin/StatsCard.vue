@@ -1,6 +1,6 @@
 <template>
     <div class="bg-[#F7F7F7] drop-shadow-[0px_0px_4px_0px_#000000] rounded-2xl w-full p-4">
-        <div class="flex justify-between">
+        <div class="flex items-center justify-between">
             <h1 class="text-[#898989] font-bold text-[20px]">
                 Influencers
             </h1>
