@@ -1,6 +1,10 @@
 <template>
     <section class="rounded-md">
-        <h4 class="text-[20px] font-bold text-[#898989]">Campaigns</h4>
+        <div class="flex justify-between">
+            <h4 class="text-[20px] font-bold text-[#898989]">INC</h4>
+            <UiImg src="/assets/svg/like.svg" alt="logo" class="" />
+        </div>
+
         <!-- <UtLoadPresenter loading-message="Fetching age audience statistics"
             not-found-message="No audience statistics found" :data="props?.data?.length === 0"
             :state="props.loading ? constants.LOADING : 'IDLE'">
