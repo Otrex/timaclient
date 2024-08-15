@@ -41,7 +41,7 @@
 
             <div class="w-full md:w-4/12">
                 <div class="bg-[#F7F7F7] rounded-xl p-6">
-                    <AdminChartsPie :data="DoughnutChartData" />
+                    <AdminChartsDoughnut :data="DoughnutChartData" />
                 </div>
             </div>
         </section>
