@@ -41,7 +41,7 @@
 
             <div class="w-full md:w-4/12">
                 <div class="bg-[#F7F7F7] rounded-xl p-6">
-
+                    <AdminChartsPie :data="DoughnutChartData" />
                 </div>
             </div>
         </section>
@@ -62,6 +62,10 @@ const chartData = ref<{
     female: number;
     percentage: number;
 }[]>();
+
+const DoughnutChartData = ref<number[]>([
+    40, 20, 80, 10
+]);
 
 const topCampaign = ref(
     [
