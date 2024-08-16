@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-import { UserType } from "~/lib/enums";
+import { ProfileSetupState, UserType } from "~/lib/enums";
 import type { Payload } from "~/lib/interfaces";
 import type { AccountWallet, User, UserProfile } from "~/lib/interfaces/core";
 
@@ -12,7 +12,7 @@ type IState = {
     country?: string;
   };
   user?: User;
-  profile?: UserProfile;
+  profile: Partial<User> & Partial<UserProfile> | null
   wallet?: AccountWallet;
   authorization: {
     accessToken?: string;
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore("auth", {
       country: undefined,
     },
     user: undefined,
-    profile: undefined,
+    profile: null,
     wallet: undefined,
     authorization: {
       accessToken: undefined,
@@ -46,6 +46,26 @@ export const useAuthStore = defineStore("auth", {
     userType(state) {
       return state.authorization.userType;
     },
+    progress(state) {
+      const profile = state.profile;
+      if (!profile) return 0;
+
+      const progress = profile.profileSetupProgress;
+      if (progress === ProfileSetupState.REGISTERED) {
+        if (profile.hasVerifiedEmail) return 40;
+        else return 20
+      }
+
+      if (progress === ProfileSetupState.PROFILE_SETUP) {
+        return 80;
+      }
+
+      if (progress === ProfileSetupState.PROFILE_SETUP_COMPLETED) {
+        return 100;
+      }
+
+      return 0;
+    }
   },
 
   actions: {
@@ -69,7 +89,10 @@ export const useAuthStore = defineStore("auth", {
           userType: response.data.user.role,
         },
         user: response.data.user,
-        profile: response.data.profile,
+        profile: {
+          ...response.data.user,
+          ...response.data.profile
+        },
         wallet: response.data.accountWallet,
       });
     },
@@ -94,6 +117,9 @@ export const useAuthStore = defineStore("auth", {
 
       this.$patch({
         user: response.data.user,
+        profile: {
+          ...response.data.user,
+        },
         registration: {
           ...this.registration,
           publicId: response.data.user.user_id,
@@ -108,10 +134,10 @@ export const useAuthStore = defineStore("auth", {
 
     async getProfile() {
       const response = await this.$api.getUserProfile();
-      this.$patch({ user: response.data, profile: response.data });
+      this.$patch({ profile: response.data });
     },
 
-    async updateProfileSetup(data: { companyName: string, website: string }) {
+    async updateProfileSetup(data: Payload.BrandProfileSetup | Payload.InfluencerProfileSetup) {
       const response = await this.$api.profileSetup(data);
       this.$patch({ profile: response.data });
     },

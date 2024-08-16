@@ -1,6 +1,16 @@
 import type { UserType } from "../enums";
 import type * as Core from "./core";
 
+export interface BrandProfileSetup {
+  companyName: string, website: string
+}
+
+export interface InfluencerProfileSetup {
+  firstName: string
+  lastName: string
+  otherName: string
+}
+
 export interface CreateUser {
   userName: string;
   password: string;
@@ -8,6 +18,9 @@ export interface CreateUser {
   emailAddress: string;
   role: UserType;
 }
+
+
+/// OLD
 
 export interface UpdateAccountSetup {
   profile_image: File,

@@ -1,4 +1,5 @@
 import type { Core, Payload, Response } from "../interfaces";
+import type { InfluencerProfileSetup } from "../interfaces/payload";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
@@ -98,7 +99,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async profileSetup(data: any) {
+  async profileSetup(data: Payload.BrandProfileSetup | InfluencerProfileSetup) {
     return this.request<IResponse<Core.UserProfile>>({
       url: "/users/profile-setup",
       requireAuth: true,
