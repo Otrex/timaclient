@@ -36,11 +36,11 @@
 
 <script setup lang="ts">
 const optionsStore = useOptionsStore();
-const authStore = useAuthStore();
 const { notify } = useNotification();
+const authStore = useAuthStore();
 
 const { execute: proceed, state } = useRequestState({
-  action: () => authStore.updateBrandIndustries(form.selection),
+  action: () => authStore.updateIndustries(form.selection),
   onError(e) {
     notify({
       type: "error",

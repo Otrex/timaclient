@@ -4,18 +4,26 @@ export interface UserProfile {
   country: string
   emailAddress: string
   website: string
-  address: string
+  role: UserType
   profileSetupProgress: ProfileSetupState
   city: string
+  documents: {
+    documentType: string
+    documentUrl: string
+  }[]
+  hasVerifiedPhone: boolean
   companyName: string
   profileImage: string
-  userId: string
-  createdAt: string
+  hasVerifiedEmail: boolean
+  address: string;
+  userName: string
+  phoneNumber: string
+  street: string
+  industries: string[]
   referralCode: string
-  hasSetTransactionPin: boolean
+  hasSetTransactionPIN: boolean
   id: string
   state: string
-  updatedAt: string
 }
 
 export interface User {

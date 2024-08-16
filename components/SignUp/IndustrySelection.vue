@@ -49,7 +49,7 @@ const disable = (value: string) => {
 const isReady = computed(() => form.selection.length);
 
 const { execute: proceed, state } = useRequestState({
-  action: () => authStore.updateBrandIndustries(form.selection),
+  action: () => authStore.updateIndustries(form.selection),
   onError(e) {
     notify({
       type: "error",
@@ -58,7 +58,11 @@ const { execute: proceed, state } = useRequestState({
     });
   },
   onSuccess() {
-    navigateTo(`/sign-up/${route.params.type}/review`);
+    navigateTo({
+      query: {
+        tab: constants.REVIEW_PROFILE,
+      },
+    });
   },
 });
 </script>

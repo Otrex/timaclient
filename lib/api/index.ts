@@ -68,6 +68,17 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async industryUpdate(industries: string[]) {
+    return this.request<Response.GetIndustry>({
+      url: `/users/update-industries`,
+      method: "POST",
+      requireAuth: true,
+      data: {
+        industries,
+      },
+    });
+  }
+
   async passwordReset(data: Payload.PasswordReset) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/password/reset/${data.email}`,
@@ -147,6 +158,8 @@ export default class TimaAPI extends UploadAPI {
       method: "GET",
     });
   }
+
+
 
   async brandIndustryUpdate(publicId: string, industries: string[]) {
     return this.request<Response.GetIndustry>({

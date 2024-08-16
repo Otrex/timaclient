@@ -27,7 +27,7 @@
             v-model="joinAs"
             :value="constants.INFLUENCER"
             class="w-full"
-            label="An Influencer/ Affiliate"
+            label="An Influencer / Affiliate"
           />
         </div>
         <div>
@@ -37,7 +37,7 @@
             v-model="joinAs"
             :value="constants.AGENCY"
             class="w-full"
-            label="A Brand/ Agency"
+            label="A Brand / Agency"
           />
         </div>
       </div>
@@ -70,6 +70,7 @@ function proceed() {
       type: joinAs.value,
     },
   });
+  authStore.logout();
   navigateTo({
     name: "SignUp",
     params: {

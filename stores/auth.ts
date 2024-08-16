@@ -164,11 +164,8 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    async updateBrandIndustries(industries: string[]) {
-      await this.$api.brandIndustryUpdate(
-        this.registration.publicId!,
-        industries
-      );
+    async updateIndustries(industries: string[]) {
+      await this.$api.industryUpdate(industries);
     },
 
     async updateSocials(data: Payload.AddSocials) {
@@ -210,7 +207,7 @@ export const useAuthStore = defineStore("auth", {
         setTimeout(() => {
           this.$clearPersist();
           resolve(true);
-        }, 3000);
+        }, 1000);
       });
     },
   },
