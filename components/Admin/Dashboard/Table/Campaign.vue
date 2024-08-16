@@ -27,7 +27,7 @@
                             </tr>
                         </template>
                         <template v-for="transaction in transactions" :key="transaction.publicId">
-                            <tr class="border-b border-black last:border-none p-6">
+                            <tr class="border-b border-[#D6D5D5] last:border-none p-6">
                                 <td class="text-left">
                                     {{ transaction.name }}
                                 </td>
@@ -40,7 +40,7 @@
                                 <td class="align-middle text-center">
                                     {{ tools.formatDate(transaction.transactionDate) }}
                                 </td>
-                                <td class="align-middle text-center">
+                                <td class="align-middle text-center uppercase">
                                     <template v-if="transaction.status === 'SUCCESS'">
                                         <span class="text-[#2DBA62]">Successful</span>
                                     </template>
@@ -131,4 +131,9 @@ onMounted(() => {
 });
 </script>
 
-<style></style>
+<style>
+.x-table tbody tr td {
+    /* padding: 0.8rem 0.3rem; */
+    @apply py-6 px-4;
+}
+</style>
