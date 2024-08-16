@@ -17,23 +17,25 @@
 </template>
 
 <script setup lang="ts">
-interface IProps {
+const props = defineProps<{
   variant:
     | "primary"
     | "secondary"
     | "inverse-primary"
     | "info-outline"
+    | "outline-primary"
     | "info";
   leftIcon?: string;
+  loading?: boolean;
   rightIcon?: string;
   slotted?: boolean;
   label?: string;
   p?: string;
-  loading?: boolean;
-}
-const props = defineProps<IProps>();
+}>();
 
 const variants = {
+  "outline-primary":
+    "text-red-500 whitespace-nowrap border-[#D8D8D8] hover:text-red-600 hover:bg-gray-100 border rounded-[40px]",
   primary: `bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white rounded-[40px] disabled:bg-red-400`,
   secondary: `bg-transparent hover:bg-[#D9D9D9] outline outline-solid outline-[#D9D9D9] rounded-[40px] focus:ring-4 focus:ring-[#D9D9D9] text-black`,
   "info-outline": `inf leading-0 border border-solid border-[--clr-blue-500] rounded-[0.625rem] text-[--clr-blue-500]`,

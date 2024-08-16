@@ -22,6 +22,8 @@ export default Object.freeze({
   BRAND_INFLUENCERS: "brand-influencers",
   BRAND_PREVIEW: 'brand-preview',
 
+  REVIEW_PROFILE: "review-profile",
+
   BASIC_DETAILS: "basic-details",
   EMAIL_VERIFY: "email-verify",
   BANK_DETAILS: "bank-details",

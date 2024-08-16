@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { useDropZone } from "@vueuse/core";
 interface IProps {
-  file?: File | File[];
+  file?: File | File[] | null;
   name?: string;
   url?: string | string[];
   type: "pics" | "docs" | "settings";

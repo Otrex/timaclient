@@ -19,7 +19,9 @@
             <slot name="topnav"></slot>
           </div>
         </div>
-        <div class="px-[2.5rem]">
+        <div
+          :class="$route.query.tab != constants.REVIEW_PROFILE && 'px-[2.5rem]'"
+        >
           <slot></slot>
         </div>
       </div>

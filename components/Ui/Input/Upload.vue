@@ -65,7 +65,7 @@
                 'rounded-[0.5rem] mb-[1.5rem] outline-dashed outline-[#999999] pt-[1.25rem] pb-[1.8125rem]': true,
                 '!outline-red-600': error,
               }"
-              @click.capture="openUploadFile"
+              @click.capture.stop="openUploadFile"
             >
               <UtSvg name="upload" class="inline-block w-[4.5rem] h-[4.5rem]" />
 
@@ -80,7 +80,7 @@
                   :accept="`${acceptsMime}*`"
                   class="hidden"
                   ref="input"
-                  @change="clickHandler"
+                  @change.stop="clickHandler"
                 />
               </label>
               <div
@@ -93,11 +93,12 @@
               <label
                 v-show="error"
                 class="text-[#d30007] block whitespace-nowrap text-[1.1875rem]"
-                >{{ error }}</label
               >
+                {{ error }}
+              </label>
             </div>
 
-            <ui-button-default
+            <UiButtonDefault
               variant="primary"
               :loading="requestState === constants.LOADING"
               :disabled="requestState === constants.LOADING"
@@ -105,7 +106,7 @@
               class="py-[0.875rem] max-w-[12.5rem] text-[1.8125rem] rounded-[1.8125rem] w-full"
             >
               {{ !file ? "Select File" : progress ? `${progress}%` : "Save" }}
-            </ui-button-default>
+            </UiButtonDefault>
           </div>
         </div>
       </UtModal>
@@ -117,20 +118,20 @@
 // TODO: Fix drag and drop issues
 import { useDropZone } from "@vueuse/core";
 import { Payload } from "~/lib/interfaces";
-interface IProps {
-  file?: File | File[];
+
+type ClickEvent = Event & (MouseEvent & { target: HTMLInputElement }) & any;
+type DropEvent = DragEvent & ({ dataTransfer: DataTransfer } | any);
+
+const props = defineProps<{
+  file?: File | File[] | null;
   name?: string;
+  doc?: string | string[] | undefined;
   url?: string | string[];
   type: Payload.UploadRequest["type"];
   multi?: boolean;
   placeholder?: string;
   errorMessage?: string;
-}
-
-type ClickEvent = Event & (MouseEvent & { target: HTMLInputElement }) & any;
-type DropEvent = DragEvent & ({ dataTransfer: DataTransfer } | any);
-
-const props = defineProps<IProps>();
+}>();
 const progress = ref(0);
 const file = ref();
 const input = ref();
@@ -170,6 +171,16 @@ const reset = ref(0);
 const acceptsMime = computed(() => (props.type ? accepts[props.type] : "*/"));
 
 const fileName = ref<string>();
+
+onMounted(() => {
+  if (props.doc) {
+    if (Array.isArray(props.doc)) {
+      fileName.value = props.doc.map((m) => m.split("/").pop()).join(", ");
+    } else {
+      fileName.value = props.doc;
+    }
+  }
+});
 
 const dropZoneRef = ref<HTMLDivElement>();
 

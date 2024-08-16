@@ -25,30 +25,28 @@
       <div
         class="flex flex-col gap-[1rem] max-w-[37.375rem] mx-auto mt-[3.4375rem]"
       >
-        <NuxtLink to="/auth/login">
-          <UiButtonDefault
-            label="Log In"
-            variant="primary"
-            class="w-full py-[0.875rem]"
-          />
-        </NuxtLink>
+        <UiButtonDefault
+          @click="toLogin"
+          label="Log In"
+          variant="primary"
+          class="w-full py-[0.875rem]"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const form = reactive({
-  profilePicture: undefined as string | File | undefined,
-  companyRegDocs: [] as File[],
-  country: "",
-  state: "",
-  street: "",
-  city: "",
+definePageMeta({
+  name: "SignUpReview",
 });
 
-function proceed() {
-  navigateTo("/auth/login");
+function toLogin() {
+  useAuthStore()
+    .logout()
+    .then(() => {
+      window.location.href = "/auth/login";
+    });
 }
 </script>
 

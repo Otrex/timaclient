@@ -35,7 +35,10 @@
           />
           <div
             v-if="
-              $route.query.tab && $route.query.tab !== constants.BASIC_DETAILS
+              $route.query.tab &&
+              ![constants.BASIC_DETAILS, constants.REVIEW_PROFILE].includes(
+                $route.query.tab as any
+              )
             "
             class="flex flex-row justify-end pr-4"
           >
@@ -69,6 +72,10 @@ const percent = computed(() => {
 
   if (progress === ProfileSetupState.PROFILE_SETUP) {
     return 80;
+  }
+
+  if (progress === ProfileSetupState.PROFILE_SETUP_COMPLETED) {
+    return 100;
   }
 
   if (authStore.user!.hasVerifiedEmail) return 50;
@@ -131,6 +138,21 @@ const tabMap = {
       },
     },
     activeOthers: [constants.BASIC_DETAILS],
+    hideFrom: [constants.AGENCY],
+  },
+  [constants.REVIEW_PROFILE]: {
+    component: resolveComponent("SignUpReviewProfile"),
+    prev: {
+      query: {
+        tab: constants.INDUSTRY_SELECTION,
+      },
+    },
+    activeOthers: [
+      constants.BASIC_DETAILS,
+      constants.COMPLETE_PROFILE,
+      constants.INDUSTRY_SELECTION,
+      ...Object.values(constants),
+    ],
     hideFrom: [constants.AGENCY],
   },
   [constants.BANK_DETAILS]: {

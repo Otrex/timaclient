@@ -13,27 +13,24 @@ const allowedPaths = [
 export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore();
 
-  console.log(to);
-
-
   const authenticated = authStore.isAuthenticated;
   const profile = authStore.profile;
 
-  if (authenticated && profile?.profileSetupProgress && ![UserType.ADMIN, UserType.SUPERADMIN].includes(authStore.authorization.userType!)) {
-    await authStore.getProfile();
-    const progress = profile.profileSetupProgress || ProfileSetupState.REGISTERED;
-    const stateMap: Partial<Record<ProfileSetupState, string>> = {
-      [ProfileSetupState.REGISTERED]: constants.EMAIL_VERIFY
-    }
+  // if (authenticated && profile?.profileSetupProgress && ![ProfileSetupState.INDUSTRY_SELECTED].includes(profile.profileSetupProgress) && ![UserType.ADMIN, UserType.SUPERADMIN].includes(authStore.authorization.userType!)) {
+  //   await authStore.getProfile();
+  //   const progress = profile.profileSetupProgress || ProfileSetupState.REGISTERED;
+  //   const stateMap: Partial<Record<ProfileSetupState, string>> = {
+  //     [ProfileSetupState.REGISTERED]: constants.EMAIL_VERIFY
+  //   }
 
-    if (to.name === "SignUp") return
+  //   if (to.name === "SignUp") return
 
-    return navigateTo({
-      name: "SignUp",
-      params: { type: authStore.registration.type },
-      query: { tab: to.query.tab || stateMap[progress] }
-    })
-  }
+  //   return navigateTo({
+  //     name: "SignUp",
+  //     params: { type: authStore.registration.type },
+  //     query: { tab: to.query.tab || stateMap[progress] }
+  //   })
+  // }
 
   if (astk(allowedPaths, to.path)) return;
   if (!authenticated) return navigateTo("/");
@@ -45,13 +42,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
 
 
-  if (authenticated && !profile?.profileSetupProgress) {
-    return navigateTo({
-      name: "SignUp",
-      params: { type: authStore.registration.type },
-      query: { tab: constants.EMAIL_VERIFY }
-    })
-  }
+  // if (authenticated && !profile?.profileSetupProgress) {
+  //   return navigateTo({
+  //     name: "SignUp",
+  //     params: { type: authStore.registration.type },
+  //     query: { tab: constants.EMAIL_VERIFY }
+  //   })
+  // }
 
   // console.log(
   //   authStore.isAuthenticated,

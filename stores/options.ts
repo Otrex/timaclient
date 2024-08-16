@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import type { Bank, Country, Industry, SocialType } from "~/lib/interfaces/core";
+import countries from "~/assets/data/countries.json"
+import type { Bank, Country, SocialType } from "~/lib/interfaces/core";
 import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods } from "~/lib/interfaces/response";
 
 interface IState {
@@ -43,26 +44,16 @@ export const useOptionsStore = defineStore("options", {
     },
     $countryLanguages: (state) => (countryName: string) => {
       const country = state.countries.find(country => country.name.common === countryName)
-      return country ? Object.values(country.languages) : []
+      return (country ? Object.values(country.languages || {}) : []).map(l => ({ label: l, value: l }))
     }
   },
 
   actions: {
     async loadOptions() {
       await Promise.all([
-        // profileStore.getProfile(),
         this.getCountries(),
         this.getIndustries(),
-        // this.getPaymentStatus(),
       ]);
-
-      // if (!this.campaignOptions) {
-      //   await Promise.all([
-      //     this.getCampaignOptions(),
-      //     this.getCreativesOptions(),
-      //     this.getPaymentMethods(),
-      //   ]);
-      // }
     },
 
     async loadRegisterOptions() {
@@ -75,9 +66,7 @@ export const useOptionsStore = defineStore("options", {
     },
 
     async getCountries() {
-      this.$patch({
-        countries: await this.$api.getCountries()
-      })
+      this.$patch({ countries })
     },
 
     async getPaymentStatus() {
