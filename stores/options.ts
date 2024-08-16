@@ -37,8 +37,7 @@ export const useOptionsStore = defineStore("options", {
     $industries: (state) => state.industries,
     $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
     $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
-    $countries: (state) => tools.generationOptions(state.countries.map(country => country.name.common)).sort(),
-    $getCurrency: (state) => (countryName: string) => {
+    $countries: (state) => tools.generationOptions(state.countries.map(country => country.name.common)).sort((a, b) => a.label.localeCompare(b.label)), $getCurrency: (state) => (countryName: string) => {
       const country = state.countries.find(country => country.name.common === countryName)
       return country ? Object.values(country.currencies).map(c => c.name) : []
     },

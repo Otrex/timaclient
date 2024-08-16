@@ -34,15 +34,10 @@
             class="max-w-[6.125rem] h-[2.4375rem] mb-3 mt-[0.625rem]"
           />
           <div
-            v-if="
-              $route.query.tab &&
-              ![constants.BASIC_DETAILS, constants.REVIEW_PROFILE].includes(
-                $route.query.tab as any
-              )
-            "
+            v-if="$route.query.tab && !hideProgress.includes(currentTab)"
             class="flex flex-row justify-end pr-4"
           >
-            <UiProfileProgress :percent="percent" />
+            <UiProfileProgress :percent="authStore.progress" />
           </div>
           <div class="mb-[3.5625rem]"></div>
           <component :is="currentView.component" />
@@ -53,33 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import { ProfileSetupState } from "~/lib/enums";
-
 definePageMeta({
   name: "SignUp",
   middleware: ["register", "options"],
 });
 
 const authStore = useAuthStore();
-const percent = computed(() => {
-  const user = authStore.user;
-  const progress = authStore.profile?.profileSetupProgress;
-  if (!user) return 0;
-
-  if (progress === ProfileSetupState.REGISTERED) {
-    return 20;
-  }
-
-  if (progress === ProfileSetupState.PROFILE_SETUP) {
-    return 80;
-  }
-
-  if (progress === ProfileSetupState.PROFILE_SETUP_COMPLETED) {
-    return 100;
-  }
-
-  if (authStore.user!.hasVerifiedEmail) return 50;
-});
+const hideProgress = [constants.BASIC_DETAILS, constants.REVIEW_PROFILE];
 
 const tabMap = {
   [constants.BASIC_DETAILS]: {
@@ -196,7 +171,8 @@ const tabMap = {
   },
 };
 
-const { type, show, activeTabs, currentView } = useSignupTabController(tabMap);
+const { type, show, activeTabs, currentView, currentTab } =
+  useSignupTabController(tabMap);
 </script>
 
 <style></style>

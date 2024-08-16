@@ -11,11 +11,11 @@ export interface UserProfile {
     documentType: string
     documentUrl: string
   }[]
+  address: string,
   hasVerifiedPhone: boolean
   companyName: string
   profileImage: string
   hasVerifiedEmail: boolean
-  address: string;
   userName: string
   phoneNumber: string
   street: string
@@ -434,24 +434,6 @@ export interface InfluencerTransaction {
   transactionDate: Date;
   createdOn: string | Date | null;
   campaignImage?: string;
-}
-
-export interface User {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  userType: UserType;
-  companyName: string;
-  website: string;
-  language: null;
-  profilePicture: string;
-  registeredDocument: null;
-  notificationSetting: string;
-  userid: null;
-  createdOn: Date;
-  settingBackground?: string;
 }
 
 export interface ProfileInfo {

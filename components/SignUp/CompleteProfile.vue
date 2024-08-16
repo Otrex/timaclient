@@ -17,22 +17,15 @@
         <UiInputText
           type="text"
           class="w-full"
-          v-model="form.middleName"
-          placeholder="Middle name"
-        />
-        <UiInputText
-          type="text"
-          class="w-full"
           v-model="form.lastName"
           placeholder="Last name"
           :error-message="v$.lastName.$errors[0]?.$message.toString()"
         />
-
-        <UiInputPhone
+        <UiInputText
+          type="text"
           class="w-full"
-          v-model="form.phoneNumber"
-          :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
-          placeholder="234 803 443 3833"
+          v-model="form.otherName"
+          placeholder="Middle name"
         />
       </ClientOnly>
 
@@ -57,19 +50,13 @@ const authStore = useAuthStore();
 const form = reactive({
   firstName: "",
   lastName: "",
-  middleName: "",
-  phoneNumber: "",
+  otherName: "",
 });
 
 const { execute, validate, state, v$ } = useRequestState({
-  action: () =>
-    authStore.updateInfluencerProfile({
-      ...form,
-      phoneNumber:
-        typeof form.phoneNumber === "string"
-          ? form.phoneNumber
-          : (form.phoneNumber as any).number,
-    }),
+  action: () => {
+    return authStore.updateProfileSetup(form);
+  },
   validation: {
     config: { $autoDirty: true },
     rule: COMPLETE_PROFILE_VALIDATOR,

@@ -138,12 +138,6 @@ export const COMPLETE_PROFILE_VALIDATOR = {
   lastName: {
     required: helpers.withMessage("Please enter a valid last name", required),
   },
-  phoneNumber: {
-    required: helpers.withMessage(
-      "Please enter a valid phone number",
-      required
-    ),
-  },
 };
 
 export const CREATE_BRAND_ADDRESS_VALIDATOR = {
