@@ -29,6 +29,8 @@ export interface UpdateAccountSetup {
   city: string;
   state: string;
   country: string;
+  postCode?: string;
+  language?: string
 }
 
 export interface DemographyInsight {

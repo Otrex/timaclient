@@ -52,13 +52,13 @@
       <UiInputUpload
         class="w-full"
         type="docs"
-        v-model:name="form.companyRegDocs"
+        v-model:file="form.companyRegDocs"
         placeholder="Upload government issued identification"
       />
       <UiInputUpload
         class="w-full mb-[3.125rem]"
         type="pics"
-        v-model:name="form.profilePicture"
+        v-model:file="form.profilePicture"
         placeholder="Upload Profile picture"
       />
 
@@ -82,8 +82,8 @@ const optionsStore = useOptionsStore();
 const authStore = useAuthStore();
 
 const form = reactive({
-  profilePicture: "",
-  companyRegDocs: "",
+  profilePicture: {} as File,
+  companyRegDocs: [] as File[],
   language: "",
   country: "",
   postCode: "",
@@ -94,17 +94,15 @@ const form = reactive({
 
 const { execute, validate, state, v$ } = useRequestState({
   action: () =>
-    authStore.updateBrandAddressDoc({
-      pictureName: form.profilePicture,
-      documentName: form.companyRegDocs as any,
-      addressRecord: {
-        country: form.country,
-        postCode: form.postCode,
-        state: form.state,
-        language: form.language,
-        street: form.street,
-        city: form.city,
-      },
+    authStore.updateAccountSetup({
+      country: form.country,
+      state: form.state,
+      street: form.street,
+      city: form.city,
+      postCode: form.postCode,
+      profile_image: form.profilePicture,
+      document_upload: form.companyRegDocs,
+      language: form.language,
     }),
   validation: {
     config: { $autoDirty: true },
@@ -119,15 +117,9 @@ const { execute, validate, state, v$ } = useRequestState({
     });
   },
   onSuccess() {
-    authStore.$patch({
-      registration: {
-        ...authStore.$state.registration,
-        country: form.country,
-      },
-    });
     navigateTo({
       query: {
-        tab: constants.BANK_DETAILS,
+        tab: constants.CONTENT_CATEGORY,
       },
     });
   },

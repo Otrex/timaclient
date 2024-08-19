@@ -1,26 +1,20 @@
 <template>
-  <div
-    class="inline-block border border-solid border-[#999] rounded-[2.5rem] pr-[0.375rem] pl-[1.5rem] py-[0.375rem]"
-  >
-    <div class="flex justify-between w-full">
-      <div class="flex items-center text-[#999] gap-[1.0625rem]">
-        <div v-if="props.icon">
-          <UtSvg :name="props.icon" class="w-[1.5625rem] h-[1.5625rem]" />
-        </div>
-        <p v-if="!props.isCompleted">{{ props.label }}</p>
-        <p v-else>Connected!</p>
+  <div class="inline-block rounded-[2.5rem]">
+    <div
+      class="bg-[#2BA2FD] bg-opacity-10 rounded-[2.5rem] border border-solid border-[rgba(43,162,253,.2)] px-[40px] py-[30px]"
+    >
+      <div v-if="props.icon" class="mb-[40px]">
+        <UtSvg :name="props.icon" class="mb-2" dim w="60px" h="60px" />
+        <p>{{ props.label }}</p>
       </div>
-      <div
-        :class="['flex-1 max-w-[9.75rem]', props.isCompleted && 'invisible']"
+      <button
+        @click="open"
+        class="bg-[#F59594] py-[0.375rem] text-white max-w-[9.75rem] w-full rounded-[2.5rem]"
       >
-        <button
-          @click="open"
-          class="bg-[#F59594] py-[0.375rem] text-white max-w-[9.75rem] w-full rounded-[2.5rem]"
-        >
-          Add
-        </button>
-      </div>
+        Connect
+      </button>
     </div>
+
     <Teleport to="body">
       <UtModal
         v-model:state="modalState"

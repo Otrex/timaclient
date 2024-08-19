@@ -109,13 +109,6 @@ export const useOptionsStore = defineStore("options", {
         paymentMethods: response.data
       })
     },
-
-    async getSocialTypes() {
-      const response = await this.$api.getSocials();
-      this.$patch({
-        socialTypes: response.data
-      });
-    }
   },
 });
 

@@ -24,13 +24,13 @@
       />
     </li>
 
-    <li class="mb-[3rem]">
+    <!-- <li class="mb-[3rem]">
       <NavSignUpStep
         title="Bank Details"
         desc="Provide bank details"
         :active="tab(constants.BANK_DETAILS)"
       />
-    </li>
+    </li> -->
     <li class="mb-[3rem]">
       <NavSignUpStep
         title="Content Category"

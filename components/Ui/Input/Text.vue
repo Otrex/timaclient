@@ -51,7 +51,7 @@
 const props = defineProps<{
   modelValue?: any;
   passwordToggle?: boolean;
-  errorMessage?: string;
+  errorMessage?: string | boolean;
   search?: boolean;
   loading?: boolean;
 }>();

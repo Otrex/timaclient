@@ -1,7 +1,10 @@
 <template>
   <div>
     <NuxtLayout name="auth">
-      <div class="pb-[40px]">
+      <div class="text-right">
+        <UiProfileProgress :percent="authStore.progress" />
+      </div>
+      <div class="pb-[30px]">
         <div class="mb-[3.75rem]">
           <h1 class="text-[2.4375rem] mb-[1.5rem]">
             Connect your social media accounts
@@ -12,11 +15,13 @@
           </p>
         </div>
 
-        <div class="tm__box-598px pb-[40px] flex flex-col gap-[1rem]">
-          <template v-for="social in optionsStore.$socials" :key="social.icon">
+        <div
+          class="pb-[40px] max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-[2rem]"
+        >
+          <template v-for="social in socials" :key="social.icon">
             <UiButtonAddSocial
               class="w-full"
-              :label="`Connect ${getSocial(social.icon)?.name}`"
+              :label="social.label"
               @open="onOpen"
               :modal="getModal(social.icon)"
               @closeModal="closeModal(social.icon)"
@@ -46,14 +51,10 @@
               </template>
             </UiButtonAddSocial>
           </template>
-          <UiButtonAddSocial
-            class="w-full mb-[6.0625rem]"
-            @open="onOpen"
-            id="blog"
-            label="Connect your web blog (not compulsory)"
-          />
+        </div>
+        <div class="tm__box-598px">
           <UiButtonDefault
-            @click="toLogin"
+            @click="toProfileReview"
             class="w-full py-[0.875rem] mb-[2rem]"
             label="Continue"
             variant="primary"
@@ -69,14 +70,6 @@ import type { Core } from "~/lib/interfaces";
 
 definePageMeta({
   name: "SignUpSocials",
-  middleware: [
-    async () => {
-      try {
-        const optionsStore = useOptionsStore();
-        await optionsStore.getSocialTypes();
-      } catch (err) {}
-    },
-  ],
 });
 
 useHead({
@@ -102,6 +95,33 @@ const closeModal = (key: string) => {
   openModal.value[key] = false;
 };
 
+const socials = [
+  {
+    label: "Instagram",
+    icon: "so/instagram",
+  },
+  {
+    label: "Facebook",
+    icon: "so/facebook",
+  },
+  {
+    label: "X",
+    icon: "so/twitter",
+  },
+  {
+    label: "LinkedIn",
+    icon: "so/linkedin",
+  },
+  {
+    label: "Tiktok",
+    icon: "so/tiktok",
+  },
+  {
+    label: "Youtube",
+    icon: "so/youtube",
+  },
+];
+
 const getModal = (key: string) => openModal.value[key];
 
 const form = reactive({
@@ -109,8 +129,6 @@ const form = reactive({
   handle: "",
   accessToken: "",
 });
-
-onMounted(() => {});
 
 function onOpen(id: string) {
   openModal.value[id] = true;
@@ -188,6 +206,13 @@ const { state, execute, v$, validate } = useRequestState({
     });
   },
 });
+
+function toProfileReview() {
+  navigateTo({
+    name: "SignUp",
+    query: { tab: constants.REVIEW_PROFILE },
+  });
+}
 
 function toLogin() {
   notify({

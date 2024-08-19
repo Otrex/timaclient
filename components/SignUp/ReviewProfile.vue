@@ -1,11 +1,11 @@
 <template>
   <div class="dark:bg-slate-800 dark:text-white w-full pb-[10rem]">
     <div
-      class="dark:bg-slate-800 dark:text-white text-center max-w-[56.125rem] px-[0.625rem] mx-auto"
+      class="dark:bg-slate-800 dark:text-white max-w-3xl text-center px-[0.625rem] mx-auto"
     >
       <div>
         <h1
-          v-if="$route.query.tab === constants.INFLUENCER"
+          v-if="$route.params.type === constants.INFLUENCER"
           class="text-[2.4375rem] mb-[30px]"
         >
           Profile Review
