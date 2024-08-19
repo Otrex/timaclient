@@ -3,16 +3,26 @@
 </template>
 
 <script setup lang="ts">
-import { UserType } from "~/lib/enums";
+import { ProfileSetupState, UserType } from "~/lib/enums";
 
 definePageMeta({
   name: "Redirect",
   middleware: [
     "options",
-    (to, from) => {
+    async (to, from) => {
       const authStore = useAuthStore();
       const userType = authStore.authorization.userType;
-      console.log(userType);
+      await authStore.getProfile();
+
+      if (
+        [ProfileSetupState.INDUSTRY_SELECTED].includes(
+          authStore.profile?.profileSetupProgress!
+        )
+      ) {
+        return navigateTo({
+          name: "AwaitingApproval",
+        });
+      }
 
       if (!Object.keys(to.params).includes("type") && userType) {
         const redirect: Record<UserType, string> = {

@@ -1,4 +1,5 @@
 
+import { ProfileSetupState } from "~/lib/enums";
 import { forAsterisk as astk } from "~/utils";
 import { useAuthStore } from "~~/stores/auth";
 

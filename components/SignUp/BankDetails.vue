@@ -92,7 +92,7 @@ const { execute, validate, state, v$ } = useRequestState({
     authStore.updateInfluencerBankDetails({
       ...form,
       currency: currency.value!,
-    }),
+    } as any),
   validation: {
     config: { $autoDirty: true },
     rule: CREATE_BANK_DETAILS_RULE,

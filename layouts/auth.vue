@@ -6,7 +6,7 @@
           <NuxtLink v-show="!props.hideBack" :to="props.prev || '/'">
             <UtSvg name="long-back" class="w-[1.5rem] h-[0.75rem]" />
           </NuxtLink>
-          <div class="w-full">
+          <div v-if="$route.name !== 'SignUpSocials'" class="w-full">
             <div class="items-center flex justify-end">
               <span
                 >Don’t have an account?

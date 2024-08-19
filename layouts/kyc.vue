@@ -29,5 +29,5 @@
   </div>
 </template>
 <script lang="ts" setup>
-const props = defineProps<{ prev?: string | object }>();
+const props = defineProps<{ prev?: string | object | any }>();
 </script>
