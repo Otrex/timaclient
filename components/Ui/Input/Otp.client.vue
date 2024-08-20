@@ -6,11 +6,16 @@
     @on-finish="handleFinish"
     @on-change="handleChange"
     wrapperClassName="otp-input"
+    aria-autocomplete="none"
+    autocomplete="off"
     :inputClassName="`i-vars ${props.inputClass} tm-input`"
     :outlined="true"
     ref="otpInput"
     :only-number="true"
-    :allow-paste="true"
+    :allow-paste="allowPaste"
+    inputmode="numeric"
+    autocorrect="off"
+    spellcheck="false"
   />
 </template>
 
@@ -44,7 +49,7 @@ const props = defineProps({
   },
   allowPaste: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 

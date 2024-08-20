@@ -1,17 +1,21 @@
 <template>
-  <transition mode="in-out">
-    <img
-      src="/favicon/favicon-16x16.png"
-      class="bg-img pulse object-cover"
-      v-if="loading"
-    />
-    <img
-      src="/favicon/favicon-16x16.png"
-      class="bg-img error object-cover"
-      v-else-if="error"
-    />
-    <img :src="state?.src" :class="[$attrs.class]" v-else />
-  </transition>
+  <div class="inline-block overflow-hidden">
+    <transition mode="in-out">
+      <img
+        src="/favicon/favicon-16x16.png"
+        class="bg-img pulse absolute object-cover"
+        v-if="loading"
+        :class="[$attrs.class]"
+      />
+      <img
+        src="/favicon/favicon-16x16.png"
+        class="bg-img error absolute object-cover"
+        v-else-if="error"
+        :class="[$attrs.class]"
+      />
+      <img :src="state?.src" :class="[$attrs.class]" v-else />
+    </transition>
+  </div>
 </template>
 
 <script setup lang="ts">

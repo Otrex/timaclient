@@ -137,6 +137,12 @@ export const useAuthStore = defineStore("auth", {
       this.$patch({ profile: response.data });
     },
 
+    async tempStore(data: Record<string, any>) {
+      this.$patch({
+        ...data,
+      });
+    },
+
     async updateProfileSetup(data: Payload.BrandProfileSetup | Payload.InfluencerProfileSetup) {
       const response = await this.$api.profileSetup(data);
       this.$patch({ profile: response.data });

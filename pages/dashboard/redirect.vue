@@ -9,20 +9,10 @@ definePageMeta({
   name: "Redirect",
   middleware: [
     "options",
+    "dashboard",
     async (to, from) => {
       const authStore = useAuthStore();
       const userType = authStore.authorization.userType;
-      await authStore.getProfile();
-
-      if (
-        [ProfileSetupState.INDUSTRY_SELECTED].includes(
-          authStore.profile?.profileSetupProgress!
-        )
-      ) {
-        return navigateTo({
-          name: "AwaitingApproval",
-        });
-      }
 
       if (!Object.keys(to.params).includes("type") && userType) {
         const redirect: Record<UserType, string> = {

@@ -7,10 +7,10 @@
       :name="constants.PERSONAL_INFORMATION"
       default
     />
-    <UtTabMenuItem
+    <!-- <UtTabMenuItem
       label="Address Information"
       :name="constants.ADDRESS_INFORMATION"
-    />
+    /> -->
     <UtTabMenuItem label="Password" :name="constants.PASSWORD" />
     <UtTabMenuItem
       label="Payment Information"

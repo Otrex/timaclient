@@ -61,6 +61,22 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async verifyPasswordReset(data: { emailAddress: string, otp: string }) {
+    return this.request<Response.CreateUser>({
+      url: `/auth/validate-forgot-password`,
+      method: "POST",
+      data
+    });
+  }
+
+  async resetNewPassword(data: { emailAddress: string, newPassword: string, otp: string }) {
+    return this.request<Response.CreateUser>({
+      url: `/auth/reset-password`,
+      method: "POST",
+      data
+    });
+  }
+
   async resendEmailOTP() {
     return this.request({
       url: `/users/resend-email-verification`,
@@ -69,17 +85,39 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async forgotPassword(data: { emailAddress: string }) {
+    return this.request<IResponse>({
+      url: `/auth/forgot-password`,
+      method: "POST",
+      data,
+    });
+  }
+
   async industryUpdate(industries: string[]) {
     return this.request<Response.GetIndustry>({
       url: `/users/update-industries`,
       method: "POST",
       requireAuth: true,
-      data: {
-        industries,
-      },
+      data: { industries },
     });
   }
 
+  async pushProfileForReview() {
+    return this.request<Response.GetIndustry>({
+      url: `/users/push-review`,
+      method: "GET",
+      requireAuth: true,
+    });
+  }
+
+  async createTransactionPin(data: { transactionPIN: string }) {
+    return this.request<IResponse>({
+      url: `/users/create-pin`,
+      method: "POST",
+      requireAuth: true,
+      data,
+    });
+  }
   async passwordReset(data: Payload.PasswordReset) {
     return this.request<Response.CreateUser>({
       url: `/user/v1/account/password/reset/${data.email}`,
@@ -107,8 +145,6 @@ export default class TimaAPI extends UploadAPI {
       data,
     });
   }
-
-
 
   async accountSetup(data: FormData) {
     return this.request<Response.GetUserProfile>({
