@@ -18,6 +18,11 @@ export enum DemographyType {
   CITY = "CITY",
 }
 
+export enum PaymentMethod {
+  PAYSTACK = "PAYSTACK",
+  FLUTTERWAVE = "FLUTTERWAVE",
+}
+
 export enum ProfileSetupState {
   REGISTERED = 'REGISTERED',
   INDUSTRY_SELECTED = 'INDUSTRY_SELECTED',

@@ -32,27 +32,10 @@
                   getSocial(social.icon)?.name
                 )
               "
-            >
-              <template #form>
-                <UtAddSocial
-                  :social="getSocial(social.icon)"
-                  v-model:handle="form.handle"
-                  @add-social="
-                    () =>
-                      getSocial(social.icon)?.name.toLowerCase() === 'instagram'
-                        ? facebookLogin()
-                        : addSocial()
-                  "
-                  :loading="state === constants.LOADING"
-                  :form-error-message="
-                    v$.handle?.$errors[0]?.$message.toString()
-                  "
-                />
-              </template>
-            </UiButtonAddSocial>
+            />
           </template>
         </div>
-        <div class="tm__box-598px">
+        <div class="tm__box-598px pb-[60px]">
           <UiButtonDefault
             @click="toProfileReview"
             class="w-full py-[0.875rem] mb-[2rem]"

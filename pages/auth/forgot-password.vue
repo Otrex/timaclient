@@ -11,7 +11,7 @@
             <UiInputText
               class="w-full"
               placeholder="Email Address"
-              v-model="form.email"
+              v-model="form.emailAddress"
             />
           </div>
 
@@ -41,11 +41,11 @@ const { notify } = useNotification();
 const api = useAPI();
 
 const form = reactive({
-  email: "",
+  emailAddress: "",
 });
 
 const { execute, state } = useRequestState({
-  action: () => api.passwordReset(form),
+  action: () => api.forgotPassword(form),
   onError(e) {
     notify({
       type: "error",
@@ -57,12 +57,12 @@ const { execute, state } = useRequestState({
     notify({
       type: "success",
       title: "Request Successful!",
-      text: response.data.message,
+      text: response.message,
     });
     navigateTo({
-      path: "/auth/verify-password-reset",
+      name: "VerifyPassword",
       query: {
-        email: form.email,
+        email: form.emailAddress,
       },
     });
   },

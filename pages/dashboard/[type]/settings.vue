@@ -1,10 +1,10 @@
 <template>
   <section>
-    <div class="h-[15rem] relative flex items-end px-[2.5rem]">
-      <div class="absolute inset-0 bg-green-500 w-full">
+    <div class="h-[17rem] relative flex items-end px-[2.5rem]">
+      <div class="absolute inset-0 overflow-clip bg-green-500 w-full">
         <UiImg
           :src="
-            tools.removeDuplicateURL(profile?.settingBackground) ||
+            tools.removeDuplicateURL(profile?.address) ||
             '/img/setting-backdrop.jpg'
           "
           class="object-cover w-full h-full"
@@ -36,7 +36,7 @@
         class="w-[11.625rem] bg-white select-none transform translate-y-[41%] h-[11.625rem] relative rounded-full border-[0.3125rem] border-solid border-white"
       >
         <UiImg
-          :src="tools.removeDuplicateURL(profile?.profilePicture)"
+          :src="tools.removeDuplicateURL(profile?.profileImage)"
           class="object-cover w-full h-full rounded-full"
           alt="profile image"
         />
@@ -98,9 +98,9 @@ definePageMeta({
 
 const route = useRoute();
 const isEditable = ref(false);
-const profileStore = useProfileStore();
+const auth = useAuthStore();
 const { notify } = useNotification();
-const profile = computed(() => profileStore.$profile);
+const profile = computed(() => auth.profile);
 
 const form = reactive({
   profilePicture: "",
@@ -108,7 +108,7 @@ const form = reactive({
 });
 
 const { state, execute } = useRequestState({
-  action: () => profileStore.updateProfilePicture(form.profilePicture),
+  action: () => Promise.resolve(),
   onSuccess(_) {
     notify({
       type: "success",
@@ -129,7 +129,7 @@ const { state, execute } = useRequestState({
 
 const { state: coverUpdateState, execute: executeCoverUpdate } =
   useRequestState({
-    action: () => profileStore.updateCoverImage(form.settingBackground),
+    action: () => Promise.resolve(),
     onSuccess(_) {
       notify({
         type: "success",

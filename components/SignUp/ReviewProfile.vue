@@ -24,7 +24,6 @@
             <UiInputOverlayUpload
               type="pics"
               v-model:file="form.profileImage"
-              @update:url="execute"
               v-show="editable.profileImage"
               class="absolute inset-0 rounded-full"
             >
@@ -203,7 +202,9 @@
           />
           <UiButtonDefault
             label="Proceed"
-            @click="proceed"
+            @click="() => proceed()"
+            :loading="state === constants.LOADING"
+            :disabled="state === constants.LOADING"
             variant="primary"
             class="w-full py-[0.875rem] px-[2.8125rem]"
           />
@@ -215,6 +216,7 @@
 
 <script lang="ts" setup>
 const authStore = useAuthStore();
+const api = useAPI();
 const { notify } = useNotification();
 const profile = computed(() => authStore.profile);
 const user = computed(() => authStore.user);
@@ -233,38 +235,34 @@ const editable = reactive({
 });
 
 const form = reactive({
-  profileImage: null as File | null,
-  username: user.value?.userName,
-  emailAddress: user.value?.emailAddress,
-  phone: user.value?.phoneNumber,
   language: undefined,
-  address: `${profile.value?.address}, ${profile.value?.city}, ${profile.value?.state}`,
+  username: user.value?.userName,
+  phone: user.value?.phoneNumber,
+  profileImage: null as File | null,
   industries: profile.value?.industries,
+  emailAddress: user.value?.emailAddress,
+  address: `${profile.value?.address}, ${profile.value?.city}, ${profile.value?.state}`,
   documents: (profile.value?.documents || []).map((e) => e.documentUrl),
 });
 
-function proceed() {
-  navigateTo({
-    name: "SignUpReview",
-  });
-}
-
-const { state, execute } = useRequestState({
-  action: () => Promise.resolve(true),
+const { state, execute: proceed } = useRequestState({
+  action: () => api.pushProfileForReview(),
   onSuccess(_) {
     notify({
       type: "success",
-      title: "Update successful",
-      text: "Profile picture updated",
+      title: "Submission successful",
+      text: "Your profile has been submitted for review",
     });
 
-    window.location.reload();
+    navigateTo({
+      name: "SignUpReview",
+    });
   },
   onError(error) {
     notify({
       type: "error",
-      title: "Upload failed",
-      text: "Profile picture failed",
+      title: error.title,
+      text: error.description,
     });
   },
 });

@@ -28,15 +28,19 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: "Verify Password",
+  name: "VerifyPassword",
 });
 
 const { notify } = useNotification();
 const api = useAPI();
+const route = useRoute();
 
 const { execute, state } = useRequestState({
   action: async (otp: string) => {
-    const response = await api.verifyOTP({ otp });
+    const response = await api.verifyPasswordReset({
+      otp,
+      emailAddress: route.query.email as string,
+    });
     return { otp, response };
   },
   onError(e) {
@@ -55,12 +59,24 @@ const { execute, state } = useRequestState({
     navigateTo({
       path: "/auth/update-password",
       query: {
-        publicId: response.data.publicId,
         otp,
+        ...route.query,
       },
     });
   },
 });
+
+function unscramblePassword(scrambledPassword: string): string {
+  const [scrambledParts, timestamp] = scrambledPassword.split(",").reverse();
+  const scrambledArray = scrambledParts.split(",").filter(Boolean);
+  let unscrambled = "";
+  for (let i = 0; i < scrambledArray.length; i++) {
+    unscrambled += String.fromCharCode(
+      parseInt(scrambledArray[i]) ^ timestamp.charCodeAt(i % timestamp.length)
+    );
+  }
+  return unscrambled;
+}
 </script>
 
 <style></style>

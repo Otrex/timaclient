@@ -1,5 +1,15 @@
 import { email, helpers, minLength, required } from "@vuelidate/validators";
 
+export const SET_TRANSACTION_PIN = {
+  pin: {
+    required: helpers.withMessage("Please enter your transaction pin", required),
+    minLength: helpers.withMessage(
+      "Your transaction pin should not be less than 5 digits",
+      minLength(4)
+    ),
+  }
+}
+
 export const CREATE_USER_RULE = {
   emailAddress: {
     email: helpers.withMessage("Please enter a valid email", email),
