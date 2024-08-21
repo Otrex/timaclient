@@ -46,6 +46,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { UserType } from "~/lib/enums";
 import { SET_TRANSACTION_PIN } from "~/lib/validation/rules";
 
 definePageMeta({
@@ -57,7 +58,9 @@ const api = useAPI();
 const auth = useAuthStore();
 const { notify } = useNotification();
 const pinModals = reactive({
-  set: !auth.profile?.hasSetTransactionPIN,
+  set:
+    !auth.profile?.hasSetTransactionPIN &&
+    auth.authorization.userType === UserType.INFLUENCER,
   confirm: false,
   pin: "",
 });
