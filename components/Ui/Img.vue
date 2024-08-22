@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block overflow-hidden">
+  <div class="inline-block relative overflow-hidden">
     <transition mode="in-out">
       <img
         src="/favicon/favicon-16x16.png"
@@ -9,6 +9,7 @@
       />
       <img
         src="/favicon/favicon-16x16.png"
+        style="width: inherit"
         class="bg-img error absolute object-cover"
         v-else-if="error"
         :class="[$attrs.class]"

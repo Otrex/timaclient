@@ -9,7 +9,7 @@
         >
           <UiImg
             :src="tools.removeDuplicateURL(props.image)"
-            class="object-cover w-full h-full"
+            class="object-cover w-[2.375rem] h-[2.375rem]"
             alt="avatar"
             lazy
           />
