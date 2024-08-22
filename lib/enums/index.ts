@@ -1,7 +1,7 @@
 export enum UserType {
   BRAND = "BRAND",
   INFLUENCER = "INFLUENCER",
-  SUPERADMIN = 'SUPERADMIN',
+  SUPERADMIN = 'SUPER_ADMIN',
   ADMIN = 'ADMIN'
 }
 
