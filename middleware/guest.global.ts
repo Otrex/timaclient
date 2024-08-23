@@ -5,6 +5,7 @@ import { useAuthStore } from "~~/stores/auth";
 
 const allowedPaths = [
   "/",
+  "/terms",
   "/sandbox",
   "/auth/*",
   "/sign-up/*",

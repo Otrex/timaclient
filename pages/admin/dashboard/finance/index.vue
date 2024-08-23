@@ -93,7 +93,7 @@
 import { onMounted, ref } from "vue";
 
 definePageMeta({
-  name: "Admin Campaign",
+  name: "AdminFinance",
   middleware: [async () => {}],
 });
 
