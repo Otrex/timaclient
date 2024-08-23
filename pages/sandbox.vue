@@ -36,19 +36,15 @@
           </tr>
         </tbody>
       </table>
-      {{ t.h }}
+      {{ t }}
 
       <div>
         <h2>Inputs</h2>
         <p>All inputs are inline-flex or block elem$event</p>
 
-        <UiInputOtp v-model="t.h" /><br />
         <UiInputOtp size="20px" gap="10px" />
 
-        <div>
-          <UiInputPhone v-model="t.h" />
-          <UiInputUpload placeholder="Select an Image" />
-        </div>
+        <div></div>
       </div>
     </div>
   </div>

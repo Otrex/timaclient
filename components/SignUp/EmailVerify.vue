@@ -22,8 +22,9 @@
         Checking the code
       </p>
       <div class="mt-[1.5rem]">
+        Didn’t receive code?
         <a
-          class="underline text-red-600"
+          class="underline text-[#0B95FF]"
           v-show="showResend"
           @click="() => resend()"
           :disabled="resendState == constants.LOADING"
@@ -33,7 +34,7 @@
             class="spinner w-[1.5rem] h-[1.5rem]"
             v-show="resendState == constants.LOADING"
           />
-          Resend OTP
+          Request Again
         </a>
       </div>
     </div>
