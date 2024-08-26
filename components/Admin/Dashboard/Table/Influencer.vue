@@ -77,7 +77,7 @@
                 <!-- Modal -->
 
                 <UtModal v-model:state="modalState" m-width="949px" content-class="mx-auto mt-[10%]"
-                    backdrop-color="rgba(0,0,0,.03)">
+                    backdrop-color="rgba(0,0,0,.3)">
                     <div class="bg-white p-6 rounded-2xl">
                         <div class="flex items-center justify-between mb-2">
                             <h1 class="text-[32px] max-w-[200px] leading-10">Inflencer Insight</h1>
