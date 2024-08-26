@@ -34,7 +34,7 @@
 
         <section class="flex flex-col md:flex-row gap-[50px] mt-10">
             <div class="w-full">
-                <div class="bg-[#F7F7F7] rounded-xl p-6">
+                <div class="bg-[#F7F7F7] rounded-xl p-6 border border-[#BBBBBB]">
                     <AdminDashboardTableInfluencer />
                 </div>
             </div>
