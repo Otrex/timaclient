@@ -155,9 +155,7 @@ const tabMap = {
   [constants.BRAND_INFORMATION]: resolveComponent(
     "DashboardSettingBrandInformation"
   ),
-  [constants.ADDRESS_INFORMATION]: resolveComponent(
-    "DashboardSettingAddressInformation"
-  ),
+  [constants.BRAND_BILLING]: resolveComponent("DashboardSettingBrandBilling"),
   [constants.PAYMENT_INFORMATION]: resolveComponent(
     "DashboardSettingPaymentInformation"
   ),

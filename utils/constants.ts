@@ -2,6 +2,11 @@ import { RequestState, UserType } from "~/lib/enums";
 
 export default Object.freeze({
   LOADING: RequestState.LOADING,
+
+  BILLING_SUBSCRIPTION: "billing-subscription",
+  BILLING_PAYMENT_METHOD: "billing-payment-method",
+  BILLING_TRANSACTIONS: "billing-transactions",
+
   NOTIFICATION_SETTINGS_INFLUENCER: "notification-settings-influencer",
   ADDRESS_DOCUMENTATION_INFLUENCER: "address-documentation-v2",
   ADDRESS_DOCUMENTATION: "address-documentation",
@@ -14,6 +19,7 @@ export default Object.freeze({
   BRAND_INFORMATION: "brand-information",
   ADDRESS_INFORMATION: "address-information",
   INDUSTRY_INFORMATION: "industry-information",
+  BRAND_BILLING: "brand-billing",
   CONTENT_CATEGORY: "content-category",
   COMPLETE_PROFILE: "complete-profile",
   CAMPAIGN: "campaign",
