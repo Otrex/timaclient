@@ -33,15 +33,9 @@
 
 
         <section class="flex flex-col md:flex-row gap-[50px] mt-10">
-            <div class="w-full md:w-8/12">
-                <div class="bg-[#F7F7F7] rounded-xl p-6">
-                    <AdminDashboardTableCampaign />
-                </div>
-            </div>
-
-            <div class="w-full md:w-4/12">
-                <div class="bg-[#F7F7F7] rounded-xl p-6">
-                    <AdminChartsDoughnut :data="DoughnutChartData" />
+            <div class="w-full">
+                <div class="bg-[#F7F7F7] rounded-xl p-6 border border-[#BBBBBB]">
+                    <AdminDashboardTableInfluencer />
                 </div>
             </div>
         </section>
