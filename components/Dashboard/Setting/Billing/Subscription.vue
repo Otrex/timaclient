@@ -66,10 +66,10 @@
       </div>
     </div>
     <UtModal
+      m-width="75rem"
       v-model:state="showPayment"
-      m-width="31.25rem"
       content-class="mx-auto mt-[10%]"
-      backdrop-color="rgba(0,0,0,.05)"
+      backdrop-color="rgba(0,0,0,.4)"
     >
       <ModalsPaymentCheckout @close="showPayment = false" />
     </UtModal>

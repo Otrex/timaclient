@@ -18,6 +18,11 @@
         :name="constants.BILLING_PAYMENT_METHOD"
         qpath="subTab"
       />
+      <UtTabMenuItem
+        label="Transactions"
+        :name="constants.BILLING_TRANSACTIONS"
+        qpath="subTab"
+      />
     </div>
 
     <component :is="tabMap[currentTab]" :isEditable="isEditable" />
