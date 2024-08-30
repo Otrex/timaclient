@@ -2,7 +2,7 @@
     <div class="p-10">
         <div class="flex flex-wrap -mx-3 min-h-[179px] max-h-[179px]">
             <div class="md:w-6/12 px-3">
-                <div class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-3 py-6 h-full flex items-center w-full">
+                <div class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-8 py-6 h-full flex items-center w-full">
                     <div class="flex items-center justify-between w-full">
                         <div class="flex gap-2 justify-between">
                             <div class="bg-[#058EF8] px-3 py-2 flex items-center rounded-full">
@@ -33,34 +33,38 @@
             </div>
 
             <div class="w-2/12 px-3">
-                <div
-                    class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-3 py-6 h-full flex items-center justify-center w-full">
+                <button @click="activeTab = 0" :class="['cardTab', activeTab === 0 && 'active']">
                     <div class="text-center">
                         <h1 class="font-semibold text-xl">100</h1>
                         <p class="text-base text-[#545454]">Total transactions</p>
                     </div>
-                </div>
+                </button>
             </div>
 
             <div class="w-2/12 px-3">
-                <div
-                    class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-3 py-6 h-full flex items-center justify-center w-full">
+                <button @click="activeTab = 1" :class="['cardTab', activeTab === 1 && 'active']">
                     <div class="text-center">
                         <h1 class="font-semibold text-xl">100</h1>
                         <p class="text-base text-[#545454]">Completed Payment</p>
                     </div>
-                </div>
+                </button>
             </div>
 
             <div class="w-2/12 px-3">
-                <div
-                    class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-3 py-6 h-full flex items-center justify-center w-full">
+                <button @click="activeTab = 2" :class="['cardTab', activeTab === 2 && 'active']">
                     <div class="text-center">
                         <h1 class="font-semibold text-xl">100</h1>
                         <p class="text-base text-[#545454]">Pending Payment</p>
                     </div>
-                </div>
+                </button>
             </div>
+        </div>
+
+
+        <!-- chart -->
+
+        <div class="mt-10">
+            <Bar :data="data" class="inline-block" :options="options" />
         </div>
 
 
@@ -83,16 +87,16 @@
                     <thead class="">
                         <th class="font-normal text-left">Campaign name</th>
                         <th class="font-normal">Brand name</th>
-                        <th class="font-normal">Earning</th>
-                        <th class="font-normal">Balance</th>
-                        <th class="font-normal">Payment date</th>
+                        <th class="font-normal">Amount</th>
+                        <th class="font-normal">Transaction date</th>
+                        <th class="font-normal">Expected payment date</th>
                         <th class="font-normal">Payment status</th>
                         <th></th>
                     </thead>
                     <tbody>
                         <template v-if="tools.requestState(getTransactions) === constants.LOADING ||
-                            tools.requestState(searchTransactions) === constants.LOADING
-                            ">
+                    tools.requestState(searchTransactions) === constants.LOADING
+                    ">
                             <tr>
                                 <td colspan="7">
                                     <UtLoaderIndicator message="Fetching transactions" />
@@ -128,12 +132,14 @@
                                     {{ tools.formatCurrency(transaction.earning || 0) }}
                                 </td>
                                 <td class="align-middle text-center">
-                                    {{ tools.formatCurrency(transaction.balance) }}
+                                    {{
+                    tools.formatDate(transaction.transactionDate || new Date())
+                }}
                                 </td>
                                 <td class="align-middle text-center">
                                     {{
-                            tools.formatDate(transaction.transactionDate || new Date())
-                        }}
+                        tools.formatDate(transaction.transactionDate || new Date())
+                    }}
                                 </td>
                                 <td class="align-middle text-center">
                                     <template v-if="transaction.status === 'COMPLETED'">
@@ -163,7 +169,10 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { watchThrottled } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
+import { Bar } from "vue-chartjs";
+import defs from "~/utils/defs";
 
 definePageMeta({
     name: "Finance",
@@ -174,6 +183,140 @@ onMounted(() => {
 
 });
 
+/* tab logic */
+const activeTab = ref(0);
+
+
+
+/* charts logic */
+
+const BG_COLORS = ["#AAD9FB", "#2AA2FD", "#FFB009", "#AA7506", "#FFE5AD"];
+const paymentYear = ref("2024");
+
+const data = ref({
+    labels: defs.monthsOfYear.map((e) => e.short),
+    datasets: [] as Core.DataSet[],
+});
+
+const options = ref<any>({
+    scales: {
+        x: {
+            stacked: true,
+        },
+        y: {
+            stacked: true,
+        },
+    },
+    responsive: true,
+    aspectRatio: 1156 / 500,
+    barPercentage: 0.8,
+    categoryPercentage: 0.8,
+    plugins: {
+        legend: {
+            itemSpacing: 10,
+            position: "bottom",
+            padding: {
+                bottom: 30, // Adjust the bottom padding
+            },
+            labels: {
+                boxWidth: 13,
+                fontSize: 8, // Adjust the box width as needed
+            },
+        },
+    },
+});
+
+/* charts grouping logic */
+function groupByMonth(data: Core.MonthData[]) {
+    const grouped: Core.GroupedData = {};
+    data.forEach((month) => {
+        if (!grouped[month.name]) {
+            grouped[month.name] = [];
+        }
+
+        grouped[month.name].push(month);
+    });
+
+    return grouped;
+}
+
+function groupByTitle(data: Core.PaymentStatistics[]) {
+    const grouped: Core.GroupedData = {};
+
+    data.forEach((month) => {
+        month.legends.forEach((legend) => {
+            if (!grouped[legend.title]) {
+                grouped[legend.title] = [];
+            }
+            grouped[legend.title].push({
+                legend: legend,
+                ...month,
+            });
+        });
+    });
+
+    return grouped;
+}
+
+function regroup(data: Core.PaymentStatistics[]) {
+    const $data = groupByTitle(data);
+    const $result: Record<string, Core.GroupedData> = {};
+
+    for (const title in { ...$data }) {
+        const el = $data[title];
+        $result[title] = groupByMonth(el);
+    }
+
+    return $result;
+}
+
+function generateBarColors(data: Core.PaymentStatistics[]) {
+    const legend = tools.findLargestArray(data.map((e) => e.legends)) || [];
+    if (legend && legend.length > BG_COLORS.length) {
+        const newColors = new Array(legend.length - BG_COLORS.length).fill(null);
+        newColors.map((e) => tools.getRandomHexColor(BG_COLORS));
+        BG_COLORS.push(...newColors);
+    }
+
+    return legend;
+}
+
+const getPaymentStatistics = useRequestState({
+    action: () => api.getPaymentStatistics(paymentYear.value),
+    immediately: true,
+    onSuccess: (response) => {
+        const largestLegend = generateBarColors(response.data);
+        const $data = regroup(response.data);
+        const datasets: Core.DataSet[] = [];
+        for (let i = 0; i < largestLegend.length; i++) {
+            const legend = largestLegend[i];
+            datasets.push({
+                borderWidth: 0,
+                label: legend.title,
+                backgroundColor: BG_COLORS[i],
+                data: [...defs.monthsOfYear].map((e) => {
+                    const month = $data[legend.title][e.short];
+                    return month ? month[0].legend.value : 0;
+                }),
+            });
+        }
+        data.value = {
+            labels: defs.monthsOfYear.map((e) => e.short),
+            datasets,
+        };
+    },
+});
+
+watchThrottled(
+    paymentYear,
+    () => {
+        getPaymentStatistics.execute();
+    },
+    { throttle: 1000 }
+);
+
+
+/* transactions list logic */
 const route = useRoute();
 const api = useAPI();
 
@@ -220,6 +363,18 @@ const getStats = useRequestState({
 </script>
 
 <style>
+/* tab styles */
+.cardTab {
+    @apply bg-[#F7FCFF];
+    @apply border border-[#2BA2FD33s];
+    @apply rounded-lg px-3 py-6 h-full flex items-center justify-center w-full;
+}
+
+.cardTab.active {
+    @apply border border-[#2BA2FD99];
+}
+
+/* table Styles */
 table thead {
     @apply bg-transparent;
     @apply rounded-xl;
