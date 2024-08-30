@@ -63,7 +63,7 @@
 
         <!-- chart -->
 
-        <div class="mt-10">
+        <div class="mt-10" v-if="activeTab === 0">
             <Bar :data="data" class="inline-block" :options="options" />
         </div>
 
@@ -164,6 +164,10 @@
                 </table>
             </div>
         </div>
+
+
+
+        <!-- modals -->
     </div>
 </template>
 
