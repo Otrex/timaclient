@@ -1,7 +1,7 @@
 <template>
     <div class="p-10">
-        <div class="flex flex-wrap -mx-3 min-h-[179px] max-h-[179px]">
-            <div class="md:w-6/12 px-3">
+        <div class="flex flex-wrap gap-y-6 md:gap-y-0 -mx-3 min-h-[179px] max-h-[179px]">
+            <div class="w-full md:w-6/12 px-3">
                 <div class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-8 py-6 h-full flex items-center w-full">
                     <div class="flex items-center justify-between w-full">
                         <div class="flex gap-2 justify-between">
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="w-2/12 px-3">
+            <div class="w-4/12 md:w-2/12 px-3">
                 <button @click="activeTab = 0" :class="['cardTab', activeTab === 0 && 'active']">
                     <div class="text-center">
                         <h1 class="font-semibold text-xl">100</h1>
@@ -41,7 +41,7 @@
                 </button>
             </div>
 
-            <div class="w-2/12 px-3">
+            <div class="w-4/12 md:w-2/12 px-3">
                 <button @click="activeTab = 1" :class="['cardTab', activeTab === 1 && 'active']">
                     <div class="text-center">
                         <h1 class="font-semibold text-xl">100</h1>
@@ -50,7 +50,7 @@
                 </button>
             </div>
 
-            <div class="w-2/12 px-3">
+            <div class="w-4/12 md:w-2/12 px-3">
                 <button @click="activeTab = 2" :class="['cardTab', activeTab === 2 && 'active']">
                     <div class="text-center">
                         <h1 class="font-semibold text-xl">100</h1>
@@ -64,7 +64,8 @@
         <!-- chart -->
 
         <div class="mt-10" v-if="activeTab === 0">
-            <Bar :data="data" class="inline-block" :options="options" />
+            <Bar :data="data" class="inline-block w-full min-h-[200px] md:min-h-[561px] md:max-h-[561px]"
+                :options="options" />
         </div>
 
 
@@ -76,7 +77,7 @@
                     <h1 class="text-[1.25rem] text-[#545454] text-xl w-full ">Transactions</h1>
                 </div>
 
-                <div class="max-w-[431px] w-5/12 flex justify-end">
+                <div class="md:max-w-[431px] md:w-5/12 flex justify-end">
                     <UiInputText search placeholder="Search completed payment"
                         class="bg-transparent placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]" />
                 </div>
@@ -170,15 +171,38 @@
         <!-- modals -->
         <UtModal v-model:state="pinModals.set" m-width="31.25rem" content-class="mx-auto md:!mt-auto"
             backdrop-color="rgba(0,0,0,.05)">
-            <ModalsSetPin v-if="!pinModals.confirm" title="Enter Transaction Pin"
-                description="Please create a PIN for secure transactions" @submit="onSubmit" label="Create" />
-            <ModalsSetPin v-else title="Confirm Your Pin" :loading="state === constants.LOADING"
-                description="Please re-enter your PIN to confirm." label="Submit" @submit="onConfirm" />
-            <div v-if="pinModals.confirm && state !== constants.LOADING">
-                <button class="flex items-center gap-1 mt-1" @click="pinModals.confirm = false">
-                    <UtSvg name="arrow-back" class="text-black" dim w="24px" h="24px" />
-                    Go Back
-                </button>
+            <!-- <div class="bg-white p-3 rounded-lg">
+                <div class="flex justify-between">
+                    <div>
+                        <h1 class="font-semibold text-xl text-[#333333]">Withdraw</h1>
+                        <p class="font-semibold text-sm text-[#545454]">Send funds from your wallet</p>
+                    </div>
+
+                    <div>
+                        <UtSvg name="cancel" class="text-black" dim w="24px" h="24px" />
+                    </div>
+                </div>
+
+                <div class="my-4 h-px border border-[#BBBBBB]"></div>
+
+                <div>
+
+                </div>
+
+            </div> -->
+
+            <div class="bg-white">
+                <ModalsSetPin v-if="!pinModals.confirm" title="Enter Transaction Pin"
+                    description="Please create a PIN for secure transactions" @submit="onSubmit" label="Create" />
+                <ModalsSetPin v-else title="Confirm Your Pin" :loading="state === constants.LOADING"
+                    description="Please re-enter your PIN to confirm." label="Submit" @submit="onConfirm" />
+
+                <div v-if="pinModals.confirm && state !== constants.LOADING">
+                    <button class="flex items-center gap-1 mt-1" @click="pinModals.confirm = false">
+                        <UtSvg name="arrow-back" class="text-black" dim w="24px" h="24px" />
+                        Go Back
+                    </button>
+                </div>
             </div>
         </UtModal>
     </div>
