@@ -1,15 +1,11 @@
 <template>
   <div class="flex flex-col gap-[1rem]">
-    <DashboardNavigatorMenuItem
-      label="Explore"
-      icon="nav/search"
-      :to="{
-        name: 'Explore',
-        params: {
-          type: $route.params.type,
-        },
-      }"
-    />
+    <DashboardNavigatorMenuItem label="Explore" icon="nav/search" :to="{
+      name: 'Explore',
+      params: {
+        type: $route.params.type,
+      },
+    }" />
     <!--<DashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"
@@ -25,23 +21,21 @@
       icon="nav/influencers"
       to="/dashboard/influencers"
     /> -->
-    <DashboardNavigatorMenuItem
-      :to="{
-        name: 'Bookmark',
-      }"
-      label="Bookmark"
-      icon="nav/bookmark"
-    />
-    <DashboardNavigatorMenuItem
-      label="Payment"
-      icon="nav/payment"
-      :to="{
-        name: 'Payment',
-        params: {
-          type: $route.params.type,
-        },
-      }"
-    />
+    <DashboardNavigatorMenuItem :to="{
+      name: 'Bookmark',
+    }" label="Bookmark" icon="nav/bookmark" />
+    <!-- <DashboardNavigatorMenuItem label="Finance" icon="nav/payment" :to="{
+      name: 'Payment',
+      params: {
+        type: $route.params.type,
+      },
+    }" /> -->
+    <DashboardNavigatorMenuItem label="Finance" icon="nav/payment" :to="{
+      name: 'Finance',
+      params: {
+        type: $route.params.type,
+      },
+    }" />
     <!-- <DashboardNavigatorMenuItem
       label="Draft"
       icon="nav/draft"
