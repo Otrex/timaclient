@@ -21,7 +21,7 @@
                         </div>
 
                         <div>
-                            <UiButtonDefault class="w-full px-3 py-2" variant="primary">
+                            <UiButtonDefault class="w-full px-3 py-2" variant="primary" @click="pinModals.set = true">
                                 <div class="flex gap-3">
                                     <UtSvg name="send" dim w="21px" h="21px" />
                                     <span>Withdraw</span>
@@ -95,8 +95,8 @@
                     </thead>
                     <tbody>
                         <template v-if="tools.requestState(getTransactions) === constants.LOADING ||
-                    tools.requestState(searchTransactions) === constants.LOADING
-                    ">
+                                tools.requestState(searchTransactions) === constants.LOADING
+                                ">
                             <tr>
                                 <td colspan="7">
                                     <UtLoaderIndicator message="Fetching transactions" />
@@ -133,13 +133,13 @@
                                 </td>
                                 <td class="align-middle text-center">
                                     {{
-                    tools.formatDate(transaction.transactionDate || new Date())
-                }}
+                                tools.formatDate(transaction.transactionDate || new Date())
+                            }}
                                 </td>
                                 <td class="align-middle text-center">
                                     {{
-                        tools.formatDate(transaction.transactionDate || new Date())
-                    }}
+                                    tools.formatDate(transaction.transactionDate || new Date())
+                                }}
                                 </td>
                                 <td class="align-middle text-center">
                                     <template v-if="transaction.status === 'COMPLETED'">
@@ -168,15 +168,30 @@
 
 
         <!-- modals -->
+        <UtModal v-model:state="pinModals.set" m-width="31.25rem" content-class="mx-auto md:!mt-auto"
+            backdrop-color="rgba(0,0,0,.05)">
+            <ModalsSetPin v-if="!pinModals.confirm" title="Enter Transaction Pin"
+                description="Please create a PIN for secure transactions" @submit="onSubmit" label="Create" />
+            <ModalsSetPin v-else title="Confirm Your Pin" :loading="state === constants.LOADING"
+                description="Please re-enter your PIN to confirm." label="Submit" @submit="onConfirm" />
+            <div v-if="pinModals.confirm && state !== constants.LOADING">
+                <button class="flex items-center gap-1 mt-1" @click="pinModals.confirm = false">
+                    <UtSvg name="arrow-back" class="text-black" dim w="24px" h="24px" />
+                    Go Back
+                </button>
+            </div>
+        </UtModal>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import { watchThrottled } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
 import { Bar } from "vue-chartjs";
 import defs from "~/utils/defs";
+import { UserType } from "~/lib/enums";
+import { SET_TRANSACTION_PIN } from "~/lib/validation/rules";
 
 definePageMeta({
     name: "Finance",
@@ -189,6 +204,60 @@ onMounted(() => {
 
 /* tab logic */
 const activeTab = ref(0);
+
+
+/* modal logic */
+const auth = useAuthStore();
+const { notify } = useNotification();
+
+const pinModals = reactive({
+    set: false,
+    confirm: false,
+    pin: "",
+});
+
+function onSubmit(pin: string) {
+    pinModals.pin = pin;
+    pinModals.confirm = true;
+}
+
+async function onConfirm(pin: string) {
+    if (pin !== pinModals.pin) {
+        return notify({
+            type: "error",
+            title: "Invalid Pin",
+            text: "The pin you entered is incorrect",
+        });
+    }
+    execute();
+}
+
+const { execute, state, v$ } = useRequestState({
+    validation: {
+        config: { $autoDirty: true },
+        rule: SET_TRANSACTION_PIN,
+        form: pinModals,
+    },
+    action: () =>
+        api.createTransactionPin({
+            transactionPIN: pinModals.pin,
+        }),
+    onSuccess(response) {
+        notify({
+            type: "success",
+            title: "Request Successful",
+            text: "Transaction Pin created",
+        });
+        pinModals.set = false;
+    },
+    onError(error) {
+        notify({
+            type: "error",
+            title: error.title,
+            text: error.description,
+        });
+    },
+});
 
 
 
