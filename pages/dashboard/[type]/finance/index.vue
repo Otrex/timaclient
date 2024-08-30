@@ -170,15 +170,38 @@
         <!-- modals -->
         <UtModal v-model:state="pinModals.set" m-width="31.25rem" content-class="mx-auto md:!mt-auto"
             backdrop-color="rgba(0,0,0,.05)">
-            <ModalsSetPin v-if="!pinModals.confirm" title="Enter Transaction Pin"
-                description="Please create a PIN for secure transactions" @submit="onSubmit" label="Create" />
-            <ModalsSetPin v-else title="Confirm Your Pin" :loading="state === constants.LOADING"
-                description="Please re-enter your PIN to confirm." label="Submit" @submit="onConfirm" />
-            <div v-if="pinModals.confirm && state !== constants.LOADING">
-                <button class="flex items-center gap-1 mt-1" @click="pinModals.confirm = false">
-                    <UtSvg name="arrow-back" class="text-black" dim w="24px" h="24px" />
-                    Go Back
-                </button>
+            <!-- <div class="bg-white p-3 rounded-lg">
+                <div class="flex justify-between">
+                    <div>
+                        <h1 class="font-semibold text-xl text-[#333333]">Withdraw</h1>
+                        <p class="font-semibold text-sm text-[#545454]">Send funds from your wallet</p>
+                    </div>
+
+                    <div>
+                        <UtSvg name="cancel" class="text-black" dim w="24px" h="24px" />
+                    </div>
+                </div>
+
+                <div class="my-4 h-px border border-[#BBBBBB]"></div>
+
+                <div>
+
+                </div>
+
+            </div> -->
+
+            <div class="bg-white">
+                <ModalsSetPin v-if="!pinModals.confirm" title="Enter Transaction Pin"
+                    description="Please create a PIN for secure transactions" @submit="onSubmit" label="Create" />
+                <ModalsSetPin v-else title="Confirm Your Pin" :loading="state === constants.LOADING"
+                    description="Please re-enter your PIN to confirm." label="Submit" @submit="onConfirm" />
+
+                <div v-if="pinModals.confirm && state !== constants.LOADING">
+                    <button class="flex items-center gap-1 mt-1" @click="pinModals.confirm = false">
+                        <UtSvg name="arrow-back" class="text-black" dim w="24px" h="24px" />
+                        Go Back
+                    </button>
+                </div>
             </div>
         </UtModal>
     </div>
