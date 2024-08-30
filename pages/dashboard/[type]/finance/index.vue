@@ -2,7 +2,8 @@
     <div class="p-10">
         <div class="flex flex-wrap gap-y-6 md:gap-y-0 -mx-3 min-h-[179px] max-h-[179px]">
             <div class="w-full md:w-6/12 px-3">
-                <div class="bg-[#F7FCFF] border border-[#2BA2FD] rounded-lg px-8 py-6 h-full flex items-center w-full">
+                <div
+                    class="bg-[#F7FCFF] border border-[#2BA2FD33] rounded-lg px-8 py-6 h-full flex items-center w-full">
                     <div class="flex items-center justify-between w-full">
                         <div class="flex gap-2 justify-between">
                             <div class="bg-[#058EF8] px-3 py-2 flex items-center rounded-full">
@@ -463,7 +464,7 @@ const getStats = useRequestState({
 /* tab styles */
 .cardTab {
     @apply bg-[#F7FCFF];
-    @apply border border-[#2BA2FD33s];
+    @apply border border-[#2BA2FD33];
     @apply rounded-lg px-3 py-6 h-full flex items-center justify-center w-full;
 }
 
