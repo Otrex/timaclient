@@ -39,7 +39,7 @@
           <div
             class="h-full flex items-center justify-center border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]">
             <div class="flex flex-col items-center">
-              <UtSvg name="bank-transfer" class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]" />
+              <UtSvg name="paystack" class="text-[#05091C] dark:text-white w-[111px] h-[30px]" />
               <p class="text-[#545454] text-xs">(Only available in Nigeria)</p>
             </div>
           </div>
@@ -51,7 +51,7 @@
           <div
             class="h-full flex items-center justify-center border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]">
             <div class="flex flex-col items-center">
-              <UtSvg name="bank-transfer" class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]" />
+              <UtSvg name="stripe" class="text-[#05091C] dark:text-white w-[66px] h-[40px]" />
             </div>
           </div>
         </label>
