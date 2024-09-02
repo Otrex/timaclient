@@ -17,13 +17,15 @@ const props = defineProps<{
   name: string;
   default?: boolean;
   disabled?: boolean;
+  qpath?: string;
 }>();
 
 const tabName = computed(() => props.name as string);
-const currentTab = computed(() => route.query.tab as string);
+const currentTab = computed(() => route.query[props.qpath || "tab"] as string);
 const active = computed(
   () =>
-    currentTab.value === tabName.value || (props.default && !route.query.tab)
+    currentTab.value === tabName.value ||
+    (props.default && !route.query[props.qpath || "tab"])
 );
 
 function clickHandler() {
@@ -31,7 +33,7 @@ function clickHandler() {
   navigateTo({
     query: {
       ...route.query,
-      tab: tabName.value,
+      [props.qpath || "tab"]: tabName.value,
     },
   });
 }

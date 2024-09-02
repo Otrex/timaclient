@@ -6,10 +6,7 @@
       default
     />
     <UtTabMenuItem label="Password" :name="constants.PASSWORD" />
-    <UtTabMenuItem
-      label="Address Information"
-      :name="constants.ADDRESS_INFORMATION"
-    />
+    <UtTabMenuItem label="Billing" :name="constants.BRAND_BILLING" />
     <UtTabMenuItem
       label="Industry Information"
       :name="constants.INDUSTRY_INFORMATION"

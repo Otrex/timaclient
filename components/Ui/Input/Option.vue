@@ -3,9 +3,9 @@
     <label class="block">
       <input
         :type="typeMap[props.type]"
+        :disabled="props.disabled"
         :name="props.name"
         class="hidden"
-        :disabled="props.disabled"
         @change="update"
       />
       <div
