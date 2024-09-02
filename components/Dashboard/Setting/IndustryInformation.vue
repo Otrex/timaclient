@@ -7,12 +7,12 @@
         class="!text-[1rem] min-w-[4.6875rem]"
         v-for="(option, idx) in optionsStore.$industries"
         :disabled="disable(option) || !props.isEditable"
-        :key="idx"
+        v-model="form.selection"
         :value="option"
+        name="industry"
         :label="option"
         type="multi"
-        name="industry"
-        v-model="form.selection"
+        :key="idx"
       />
     </div>
 
@@ -20,12 +20,12 @@
       <transition>
         <UiButtonDefault
           label="Save Update"
-          v-show="props.isEditable"
-          variant="primary"
           :disabled="state === constants.LOADING"
           :loading="state === constants.LOADING"
           class="w-full py-[0.875rem]"
+          v-show="props.isEditable"
           @click="() => proceed()"
+          variant="primary"
         />
       </transition>
     </div>
