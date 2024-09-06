@@ -32,17 +32,12 @@ export default defineNuxtConfig({
     '~/components'
   ],
 
-  modules: [
-    '@nuxt/image',
-    [
-      "@pinia/nuxt",
-      {
-        autoImports: ["defineStore", "acceptHMRUpdate"],
-      },
-    ],
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/color-mode',
-  ],
+  modules: ['@nuxt/image', [
+    "@pinia/nuxt",
+    {
+      autoImports: ["defineStore", "acceptHMRUpdate"],
+    },
+  ], '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', 'shadcn-nuxt'],
 
   image: {},
   build: {

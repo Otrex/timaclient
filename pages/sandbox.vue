@@ -1,6 +1,6 @@
 <template>
   <div class="dark:bg-black dark:text-white">
-    <select
+    <!-- <select
       v-model="colorMode.preference"
       class="border w-24 h-8 dark:bg-gray-900 dark:text-white dark:border-gray-700"
     >
@@ -44,9 +44,11 @@
 
         <UiInputOtp size="20px" gap="10px" />
 
-        <div></div>
-      </div>
-    </div>
+        <div></div> -->
+
+    <UtCalendar />
+    <!-- </div>
+    </div> -->
   </div>
 </template>
 
