@@ -7,7 +7,7 @@
       </p>
     </div>
 
-    <div class="flex flex-wrap justify-center mb-[4.3125rem] gap-[1.25rem]">
+    <div class="flex flex-wrap justify-center mb-[2rem] gap-[1.25rem]">
       <UiInputOption
         class="!text-[1rem] min-w-[4.6875rem]"
         v-for="(option, idx) in optionsStore.$industries"
@@ -19,6 +19,23 @@
         name="industry"
         v-model="form.selection"
       />
+    </div>
+
+    <div class="mb-[69px]">
+      <div class="relative inline-block">
+        <div
+          class="absolute pl-[1.25rem] left-0 h-full inline-flex items-center"
+        >
+          Others:
+        </div>
+        <input
+          type="text"
+          class="pl-[75px] py-2 border !border-[#545454] rounded-[30px]"
+          name="industries"
+          placeholder="type in your industry"
+          :value="form.selection"
+        />
+      </div>
     </div>
 
     <div class="flex flex-col gap-[1rem] tm__box-598px mb-[1.875rem]">

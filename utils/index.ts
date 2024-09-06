@@ -1,5 +1,9 @@
 import { isVNode } from "vue";
 
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+
 export const forAsterisk = (patterns: string[], path: string): boolean => {
   return patterns.some(pattern => {
     if (pattern === path) {
@@ -12,6 +16,11 @@ export const forAsterisk = (patterns: string[], path: string): boolean => {
     return false;
   });
 }
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
 
 
 

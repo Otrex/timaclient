@@ -20,13 +20,13 @@
         placeholder="City"
         :error-message="v$.city?.$errors[0]?.$message.toString()"
       />
-      <UiInputText
+      <!-- <UiInputText
         type="text"
         class="w-full"
         v-model="form.postCode"
         placeholder="Postal Code"
         :error-message="v$.postCode?.$errors[0]?.$message.toString()"
-      />
+      /> -->
       <UiInputText
         type="text"
         class="w-full"
@@ -86,7 +86,7 @@ const form = reactive({
   companyRegDocs: [] as File[],
   language: "",
   country: "",
-  postCode: "",
+  // postCode: "",
   state: "",
   street: "",
   city: "",
@@ -99,7 +99,7 @@ const { execute, validate, state, v$ } = useRequestState({
       state: form.state,
       street: form.street,
       city: form.city,
-      postCode: form.postCode,
+      // postCode: form.postCode,
       profile_image: form.profilePicture,
       document_upload: form.companyRegDocs,
       language: form.language,
