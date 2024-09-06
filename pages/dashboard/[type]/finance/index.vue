@@ -22,7 +22,7 @@
                         </div>
 
                         <div>
-                            <UiButtonDefault class="w-full px-3 py-2" variant="primary" @click="pinModals.set = true">
+                            <UiButtonDefault class="w-full px-3 py-2" variant="primary" @click="pinModal.set = true">
                                 <div class="flex gap-3">
                                     <UtSvg name="send" dim w="21px" h="21px" />
                                     <span>Withdraw</span>
@@ -170,16 +170,17 @@
 
 
         <!-- modals -->
-        <UtModal v-model:state="pinModals.set" m-width="31.25rem" content-class="mx-auto md:!mt-auto"
+        <UtModal v-model:state="pinModal.set" m-width="40.25rem" content-class="rounded-xl mx-auto md:!mt-auto"
             backdrop-color="rgba(0,0,0,.05)">
-            <!-- <div class="bg-white p-3 rounded-lg">
+
+            <div class="bg-white p-6 rounded-lg">
                 <div class="flex justify-between">
                     <div>
                         <h1 class="font-semibold text-xl text-[#333333]">Withdraw</h1>
-                        <p class="font-semibold text-sm text-[#545454]">Send funds from your wallet</p>
+                        <p class=" text-sm text-[#545454]">Send funds from your wallet</p>
                     </div>
 
-                    <div>
+                    <div @click="pinModal.set = false" class="cursor-pointer">
                         <UtSvg name="cancel" class="text-black" dim w="24px" h="24px" />
                     </div>
                 </div>
@@ -187,23 +188,52 @@
                 <div class="my-4 h-px border border-[#BBBBBB]"></div>
 
                 <div>
+                    <div class="flex items-center border border-[#BBBBBB] rounded-xl p-2 gap-2 w-full">
+                        <div>
+                            <UtSvg name="dollar" class="text-black" dim w="24px" h="24px" />
+                        </div>
 
+                        <div class="w-full">
+                            <input
+                                class="block w-full outline-none shadow-none border-none focus:border-none focus:shadow-none focus:outline-none"
+                                placeholder="Enter amount" />
+                        </div>
+                    </div>
+
+                    <div class="py-2 w-full flex items-center justify-end">
+                        <h1 class="text-[#777777] text-base ">Available <span class="text-[#545454] text-2xl">$0</span>
+                        </h1>
+                    </div>
                 </div>
 
-            </div> -->
+                <div>
+                    <div
+                        class="cursor-pointer flex items-center justify-between border border-[#BBBBBB] rounded-xl py-2 px-4 gap-2 w-full">
+                        <div class="w-full">
+                            <h1 class="text-[#545454] text-base ">John David Kano</h1>
+                            <p class="text-sm text-[#545454]">
+                                <span class="">. Guaranty Trust bank</span>
+                                <span class="">. 2000524190</span>
+                                <span class="">. NGN</span>
+                            </p>
+                        </div>
+
+                        <div>
+                            <UtSvg name="chevron-down" class="text-black" dim w="14px" h="14px" />
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="my-6 flex items-center justify-end">
+                        <UiButtonDefault variant="primary" class="py-2 px-8" label="Withdraw" @click="" />
+                    </div>
+                </div>
+            </div>
 
             <div class="bg-white">
-                <ModalsSetPin v-if="!pinModals.confirm" title="Enter Transaction Pin"
-                    description="Please create a PIN for secure transactions" @submit="onSubmit" label="Create" />
-                <ModalsSetPin v-else title="Confirm Your Pin" :loading="state === constants.LOADING"
-                    description="Please re-enter your PIN to confirm." label="Submit" @submit="onConfirm" />
-
-                <div v-if="pinModals.confirm && state !== constants.LOADING">
-                    <button class="flex items-center gap-1 mt-1" @click="pinModals.confirm = false">
-                        <UtSvg name="arrow-back" class="text-black" dim w="24px" h="24px" />
-                        Go Back
-                    </button>
-                </div>
+                <ModalsSetPin title="Enter Transaction Pin" description="Please create a PIN for secure transactions"
+                    @submit="onSubmit" label="Create" />
             </div>
         </UtModal>
     </div>
@@ -235,37 +265,30 @@ const activeTab = ref(0);
 const auth = useAuthStore();
 const { notify } = useNotification();
 
-const pinModals = reactive({
+const pinModal = reactive({
     set: false,
     confirm: false,
     pin: "",
 });
 
 function onSubmit(pin: string) {
-    pinModals.pin = pin;
-    pinModals.confirm = true;
+    pinModal.pin = pin;
+    pinModal.confirm = true;
 }
 
 async function onConfirm(pin: string) {
-    if (pin !== pinModals.pin) {
-        return notify({
-            type: "error",
-            title: "Invalid Pin",
-            text: "The pin you entered is incorrect",
-        });
-    }
-    execute();
+    // execute();
 }
 
 const { execute, state, v$ } = useRequestState({
     validation: {
         config: { $autoDirty: true },
         rule: SET_TRANSACTION_PIN,
-        form: pinModals,
+        form: pinModal,
     },
     action: () =>
         api.createTransactionPin({
-            transactionPIN: pinModals.pin,
+            transactionPIN: pinModal.pin,
         }),
     onSuccess(response) {
         notify({
@@ -273,7 +296,7 @@ const { execute, state, v$ } = useRequestState({
             title: "Request Successful",
             text: "Transaction Pin created",
         });
-        pinModals.set = false;
+        pinModal.set = false;
     },
     onError(error) {
         notify({
