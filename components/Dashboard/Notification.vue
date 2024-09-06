@@ -1,24 +1,19 @@
 <template>
   <div ref="target" class="inline-block">
-    <button
-      @click="open = !open"
-      class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
-    >
-      <UtSvg
-        name="bell"
-        class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
-      />
+    <button @click="goToCalendar"
+      class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md">
+      <UtSvg name="calendar" class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]" />
+    </button>
+
+    <button @click="open = !open"
+      class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md">
+      <UtSvg name="bell" class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]" />
     </button>
 
     <transition>
-      <div
-        v-show="open"
-        class="absolute right-[0.75rem] z-20 max-w-[30rem] w-full mt-[0.9375rem] tima-backdrop-shadow"
-      >
+      <div v-show="open" class="absolute right-[0.75rem] z-20 max-w-[30rem] w-full mt-[0.9375rem] tima-backdrop-shadow">
         <div class="tima-notification-box bg-white dark:bg-slate-700 w-full">
-          <div
-            class="flex flex-row w-full mb-[0.8125rem] justify-between items-center"
-          >
+          <div class="flex flex-row w-full mb-[0.8125rem] justify-between items-center">
             <h3 class="font-bold text-[1.5rem] !mb-0">Notifications</h3>
             <button class="whitespace-nowrap text-[#B4B2B3] !mb-0">
               Mark all as read
@@ -26,40 +21,23 @@
           </div>
 
           <div class="flex flex-row mb-[1.5rem] gap-[0.875rem]">
-            <button
-              @click="activeTab = 0"
-              :class="['tima-tab-btn', activeTab === 0 && 'active']"
-            >
+            <button @click="activeTab = 0" :class="['tima-tab-btn', activeTab === 0 && 'active']">
               All
             </button>
-            <button
-              @click="activeTab = 1"
-              :class="['tima-tab-btn', activeTab === 1 && 'active']"
-            >
+            <button @click="activeTab = 1" :class="['tima-tab-btn', activeTab === 1 && 'active']">
               Paid
             </button>
-            <button
-              @click="activeTab = 2"
-              :class="['tima-tab-btn', activeTab === 2 && 'active']"
-            >
+            <button @click="activeTab = 2" :class="['tima-tab-btn', activeTab === 2 && 'active']">
               Received
             </button>
           </div>
 
-          <UtLoadPresenter
-            not-found-message="No Notifications"
-            loading-message="Fetching Notifications"
-            :state="state"
-            :data="notifications.length === 0"
-          >
+          <UtLoadPresenter not-found-message="No Notifications" loading-message="Fetching Notifications" :state="state"
+            :data="notifications.length === 0">
             <transition>
               <ul v-if="activeTab === 0">
-                <li
-                  v-for="(notification, idx) in notifications"
-                  class="tima-notif hover:bg-slate-50 py-[0.4375rem]"
-                  :key="idx"
-                  @click="() => openNotification(notification)"
-                >
+                <li v-for="(notification, idx) in notifications" class="tima-notif hover:bg-slate-50 py-[0.4375rem]"
+                  :key="idx" @click="() => openNotification(notification)">
                   <div>
                     <div class="flex flex-row items-center justify-between">
                       <p class="nl">{{ notification.title }}</p>
@@ -73,16 +51,8 @@
                         {{ tools.trunc(notification.content, 50) }}
                       </p>
                       <div class="flex">
-                        <div
-                          v-show="!notification.isRead"
-                          class="flex pr-[0.375rem]"
-                        >
-                          <UtSvg
-                            name="indicator"
-                            dim
-                            w="0.625rem"
-                            h="0.625rem"
-                          />
+                        <div v-show="!notification.isRead" class="flex pr-[0.375rem]">
+                          <UtSvg name="indicator" dim w="0.625rem" h="0.625rem" />
                         </div>
                       </div>
                     </div>
@@ -94,12 +64,8 @@
         </div>
       </div>
     </transition>
-    <UtModal
-      v-model:state="modalState"
-      m-width="31.25rem"
-      content-class="mx-auto mt-[10%]"
-      backdrop-color="rgba(0,0,0,.05)"
-    >
+    <UtModal v-model:state="modalState" m-width="31.25rem" content-class="mx-auto mt-[10%]"
+      backdrop-color="rgba(0,0,0,.05)">
       <div class="bg-white rounded-[2.5rem] p-10">
         <h1 class="font-bold mb-3">
           {{ currentNotification?.title }}
@@ -113,6 +79,8 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
+const route = useRoute();
+const $router = useRouter();
 
 type AppNotification = {
   id: number;
@@ -172,6 +140,10 @@ const currentNotification = ref<AppNotification>();
 async function openNotification(notification: AppNotification) {
   modalState.value = true;
   currentNotification.value = notification;
+}
+
+const goToCalendar = () => {
+  $router.push(`/dashboard/${route.params.type}/calendar`);
 }
 </script>
 
