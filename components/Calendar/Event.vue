@@ -16,7 +16,7 @@
         class="absolute max-w-[43.75rem] z-10 w-full"
         :style="{ left: position.x + 'px', top: position.y + 'px' }"
       >
-        <CalendarEditEvent />
+        <CalendarEditEvent @close="open = false" />
       </div>
     </Teleport>
   </div>

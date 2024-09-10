@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5">
+  <div class="p-5 h-[calc(100vh-100px)]">
     <div class="flex justify-between items-center mb-4">
       <div class="font-medium text-lg flex items-center gap-6">
         <h5>{{ currentMonth }} {{ currentDate.getFullYear() }}</h5>
@@ -21,46 +21,37 @@
       </div>
     </div>
     <div>
-      <table class="z-10 relative w-full">
-        <th class="w-[100px] border border-b-0 bg-white">
-          <div class="flex w-[90.6px] items-center justify-center">
-            <button @click="prevWeek" class="px-4 py-3 hover:bg-gray-200">
-              ←
-            </button>
-            <button @click="nextWeek" class="px-4 py-3 hover:bg-gray-200">
-              →
-            </button>
-          </div>
-        </th>
+      <div class="grid-temp">
+        <div class="flex items-center border justify-center">
+          <button @click="prevWeek" class="px-4 py-3 hover:bg-gray-200">
+            ←
+          </button>
+          <button @click="nextWeek" class="px-4 py-3 hover:bg-gray-200">
+            →
+          </button>
+        </div>
         <template v-for="(day, index) in daysOfWeek" :key="index">
-          <th class="w-[calc(100%/7)] border border-b-0">{{ day }}</th>
+          <div class="border flex items-center justify-center">{{ day }}</div>
         </template>
-      </table>
+      </div>
       <div class="max-h-screen overflow-y-auto">
-        <table class="w-full">
-          <tr>
-            <td class="align-top border-l border-t border-r relative">
-              <div class="w-[90px]">
-                <div class="absolute -translate-y-1/2">&nbsp;</div>
+        <div class="grid-temp">
+          <div class="border-x border-t">&nbsp;</div>
+          <template v-for="(day, index) in daysOfWeek" :key="index">
+            <div class="border flex-1">&nbsp;</div>
+          </template>
+        </div>
+        <template v-for="(time, index) in timeSlots" :key="index">
+          <div class="grid-temp">
+            <div class="border-x">
+              <div class="relative">
+                <div class="absolute inset-x-0 text-center -translate-y-1/2">
+                  {{ time }}
+                </div>
               </div>
-            </td>
+            </div>
             <template v-for="(day, index) in daysOfWeek" :key="index">
-              <td class="w-[calc(100%/7)] border">
-                <div class="w-full">&nbsp;</div>
-              </td>
-            </template>
-          </tr>
-          <tr v-for="(time, index) in timeSlots" :key="index">
-            <td
-              class="align-top border-l border-r relative"
-              :class="[index + 1 === timeSlots.length && 'border-b']"
-            >
-              <div class="w-[90px]">
-                <div class="absolute -translate-y-1/2">{{ time }}</div>
-              </div>
-            </td>
-            <template v-for="(day, index) in daysOfWeek" :key="index">
-              <td class="w-[calc(100%/7)] border">
+              <div class="border flex-1 aspect-square">
                 <div class="aspect-square w-full p-1">
                   <CalendarEvent
                     v-if="getEvent(day, time)"
@@ -68,100 +59,11 @@
                   />
                   <div v-else>&nbsp;</div>
                 </div>
-              </td>
+              </div>
             </template>
-          </tr>
-        </table>
+          </div>
+        </template>
       </div>
-
-      <!-- <div class="flex justify-between items-center mb-4">
-        <div class="font-medium text-lg flex items-center gap-6">
-          <h5>{{ currentMonth }} {{ currentDate.getFullYear() }}</h5>
-          <button
-            class="hover:bg-gray-200 active:bg-gray-300 outline py-3 text-base px-4 outline-[#BBBBBB]/60 rounded-[10px]"
-          >
-            Today
-          </button>
-        </div>
-        <div class="flex flex-row gap-5">
-          <div
-            class="bg-gray-100 rounded-md gap-4 py-1 items-center flex flex-row"
-          >
-            <button class="px-3 text-sm">Day</button>
-            <button class="bg-white text-sm rounded-md px-3 py-1">Week</button>
-            <button class="px-3 text-sm">Month</button>
-          </div>
-          <UiInputDate variant="ranged" v-model="dateRange" />
-        </div>
-      </div>
-      <div class="flex">
-        <div
-          class="font-bold flex items-center text-center border border-gray-200"
-        >
-          <div class="flex items-center justify-center">
-            <button @click="prevWeek" class="px-4 py-3 hover:bg-gray-200">
-              ←
-            </button>
-            <button @click="nextWeek" class="px-4 py-3 hover:bg-gray-200">
-              →
-            </button>
-          </div>
-        </div>
-  
-        <div
-          v-for="(day, index) in daysOfWeek"
-          :key="index"
-          class="font-bold border flex items-center justify-center border-gray-200 text-center p-2 flex-1"
-        >
-          {{ day }}
-        </div>
-      </div>
-      <template v-for="(col, key) in cols" :key="key">
-        <div class="flex">
-          <div
-            class="font-bold flex items-center text-center border border-gray-200"
-          >
-            <div class="flex items-center justify-center">
-              <button @click="prevWeek" class="px-4 py-3 hover:bg-gray-200">
-                ←
-              </button>
-              <button @click="nextWeek" class="px-4 py-3 hover:bg-gray-200">
-                →
-              </button>
-            </div>
-          </div>
-  
-          <div
-            v-for="(day, index) in daysOfWeek"
-            :key="index"
-            class="font-bold border flex items-center justify-center border-gray-200 text-center p-2 flex-1"
-          >
-            {{ day }}
-          </div>
-        </div>
-      </template> -->
-
-      <!-- <div class="flex">
-        <div v-for="(slot, index) in timeSlots" :key="index">
-          <div
-            class="border border-gray-200 p-2 w-1/2 flex items-center justify-center"
-          >
-            {{ slot }}
-          </div>
-          <div
-            v-for="(day, dayIndex) in daysOfWeek"
-            :key="dayIndex"
-            class="border border-gray-200 aspect-square w-full flex items-center justify-center relative"
-          >
-            <div
-              v-if="hasEvent(day, slot)"
-              class="absolute inset-0 bg-blue-100 p-2 rounded flex items-center justify-center text-center"
-            >
-              {{ getEvent(day, slot)?.title }}
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -169,7 +71,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 
-const currentDate = ref(new Date());
+const currentDate = ref(new Date(2024, 9, 13));
 const dateRange = ref({
   start: new Date(2020, 0, 6),
   end: new Date(2020, 0, 10),
@@ -200,12 +102,12 @@ const timeSlots = ref(["8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM"]);
 // Events could be loaded via API or passed in as a prop
 const events = ref([
   {
-    day: new Date(2024, 8, 3),
+    day: new Date(2024, 9, 13),
     time: "8 AM",
     title: "Naija Made It Campaign Starts",
   },
   {
-    day: new Date(2023, 5, 20),
+    day: new Date(2024, 9, 12),
     time: "10 AM",
     title: "Naija Made It Campaign Starts",
   },
@@ -243,14 +145,19 @@ const formatEventDate = (date: Date) => {
   return `${dayName} ${dayNumber}`;
 };
 
-onMounted(() => {
-  // Set the initial date to today
-  currentDate.value = new Date();
-});
+// onMounted(() => {
+//   // Set the initial date to today
+//   currentDate.value = new Date();
+// });
 </script>
 <style>
 .bordered,
 .bordered * {
   @apply border border-gray-200;
+}
+
+.grid-temp {
+  display: grid;
+  grid-template-columns: minmax(91px, auto) 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 </style>

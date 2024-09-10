@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white w-full p-6 shadow-md rounded-lg max-w-[43.75rem]">
     <div class="flex justify-end">
-      <button>
+      <button @click="$emit('close')">
         <UtSvg name="close" dim w="1rem" h="1rem" />
       </button>
     </div>
