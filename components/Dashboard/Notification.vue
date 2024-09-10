@@ -1,5 +1,15 @@
 <template>
-  <div ref="target" class="inline-block">
+  <div ref="target" class="inline-flex flex-row">
+    <button
+      @click="goToCalendar"
+      class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
+    >
+      <UtSvg
+        name="calendar"
+        class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
+      />
+    </button>
+
     <button
       @click="open = !open"
       class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
@@ -113,6 +123,8 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
+const route = useRoute();
+const $router = useRouter();
 
 type AppNotification = {
   id: number;
@@ -173,6 +185,10 @@ async function openNotification(notification: AppNotification) {
   modalState.value = true;
   currentNotification.value = notification;
 }
+
+const goToCalendar = () => {
+  $router.push(`/dashboard/${route.params.type}/calendar`);
+};
 </script>
 
 <style scoped>
