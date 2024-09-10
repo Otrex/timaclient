@@ -3,7 +3,7 @@
     <div :class="!editable && 'select-none'" class="w-full">
       <div
         :class="editable && '-z-10'"
-        class="w-full h-full absolute top-0 left-0 bg-pink-500"
+        class="w-full h-full absolute top-0 left-0"
       >
         &nbsp;
       </div>

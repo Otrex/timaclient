@@ -162,6 +162,23 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+
+  async getWalletAddress() {
+    return this.request<IResponse<{ balance: number }>>({
+      url: "/wallet/balance",
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
+  async getWalletTransactions() {
+    return this.request<any>({
+      url: "/wallet/transactions",
+      requireAuth: true,
+      method: "POST",
+    });
+  }
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,

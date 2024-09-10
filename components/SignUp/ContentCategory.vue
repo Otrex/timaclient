@@ -33,7 +33,7 @@
           class="pl-[75px] py-2 border !border-[#545454] rounded-[30px]"
           name="industries"
           placeholder="type in your industry"
-          :value="form.selection"
+          :value="form.others"
         />
       </div>
     </div>
@@ -57,7 +57,10 @@ const { notify } = useNotification();
 const authStore = useAuthStore();
 
 const { execute: proceed, state } = useRequestState({
-  action: () => authStore.updateIndustries(form.selection),
+  action: () =>
+    authStore.updateIndustries(
+      [...form.selection, form.others].filter((e) => e)
+    ),
   onError(e) {
     notify({
       type: "error",
@@ -74,6 +77,7 @@ const { execute: proceed, state } = useRequestState({
 
 const form = reactive({
   selection: [] as string[],
+  others: "",
 });
 
 const disable = (value: string) => {

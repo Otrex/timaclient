@@ -33,7 +33,7 @@
         </button>
       </div>
       <div>
-        <template v-if="activeTab === 0"> </template>
+        <template v-if="activeTab === 0"></template>
         <template v-if="activeTab === 1"></template>
         <template v-if="activeTab === 2"></template>
       </div>
