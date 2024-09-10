@@ -5,9 +5,11 @@
         <UtSvg name="close" dim w="1rem" h="1rem" />
       </button>
     </div>
+
     <div class="mb-3">
       <input class="border-b-2 w-full text-2xl py-2 focus:outline-none focus:border-blue-600" placeholder="Add title" />
     </div>
+
     <div>
       <div class="flex gap-3 text-lg text-[#545454] flex-row">
         <button class="px-6 py-1 rounded-[0.25rem] hover:bg-[#99D3FF]/70"
@@ -133,9 +135,13 @@
               Attach a media file
             </h1>
 
-            <div class="flex gap-3">
-              <div class="border border-[#D9D9D9] p-3 rounded-md">
-                <UtSvg name="media" class="h-[1.3125rem] max-w-[1.9375rem]" />
+            <div>
+              <div class="flex gap-3">
+                <div @click="triggerFileInput" class="border border-[#D9D9D9] p-3 rounded-md">
+                  <UtSvg name="media" class="h-[1.3125rem] max-w-[1.9375rem]" />
+                </div>
+
+                <input ref="fileInput" @change="handleFileChange" type="file" class="hidden" />
               </div>
             </div>
           </div>
@@ -164,6 +170,20 @@
 type ReminderType = "EMAIL" | "SMS" | "PUSH_NOTIFICATION";
 const activeTab = ref(0);
 const reminderTab = ref<ReminderType>("EMAIL");
+
+const fileInput = ref();
+
+const triggerFileInput = () => {
+  fileInput.value.click(); // Trigger the file input click
+};
+
+const handleFileChange = (event: any) => {
+  const file = event.target.files[0];
+  if (file) {
+    console.log("Selected file:", file.name);
+    // Handle the file as needed
+  }
+};
 </script>
 
 <style></style>
