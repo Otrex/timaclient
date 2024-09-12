@@ -20,14 +20,20 @@
       <div class="grid grid-cols-3 gap-4">
         <!-- Card 1 -->
         <label class="cursor-pointer h-full">
-          <input type="radio" name="card" class="sr-only peer">
+          <input type="radio" name="card" class="sr-only peer" />
           <div
-            class="h-full flex items-center justify-left border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]">
+            class="h-full flex items-center justify-left border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]"
+          >
             <div class="flex gap-2 items-center">
-              <UtSvg name="bank-transfer" class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]" />
+              <UtSvg
+                name="bank-transfer"
+                class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
+              />
               <div>
                 <p class="font-semibold text-[#333333]">Bank Transfer</p>
-                <p class="text-[#545454] text-xs">(Only available in Nigeria)</p>
+                <p class="text-[#545454] text-xs">
+                  (Only available in Nigeria)
+                </p>
               </div>
             </div>
           </div>
@@ -35,11 +41,15 @@
 
         <!-- Card 2 -->
         <label class="cursor-pointer h-full">
-          <input type="radio" name="card" class="sr-only peer">
+          <input type="radio" name="card" class="sr-only peer" />
           <div
-            class="h-full flex items-center justify-center border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]">
+            class="h-full flex items-center justify-center border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]"
+          >
             <div class="flex flex-col items-center">
-              <UtSvg name="paystack" class="text-[#05091C] dark:text-white w-[111px] h-[30px]" />
+              <UtSvg
+                name="paystack"
+                class="text-[#05091C] dark:text-white w-[111px] h-[30px]"
+              />
               <p class="text-[#545454] text-xs">(Only available in Nigeria)</p>
             </div>
           </div>
@@ -47,44 +57,69 @@
 
         <!-- Card 3 -->
         <label class="cursor-pointer h-full">
-          <input type="radio" name="card" class="sr-only peer">
+          <input type="radio" name="card" class="sr-only peer" />
           <div
-            class="h-full flex items-center justify-center border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]">
+            class="h-full flex items-center justify-center border rounded-lg p-4 transition-transform transform peer-checked:scale-105 peer-checked:border-[#2BA2FD] peer-checked:bg-[#E4F4FE]"
+          >
             <div class="flex flex-col items-center">
-              <UtSvg name="stripe" class="text-[#05091C] dark:text-white w-[66px] h-[40px]" />
+              <UtSvg
+                name="stripe"
+                class="text-[#05091C] dark:text-white w-[66px] h-[40px]"
+              />
             </div>
           </div>
         </label>
       </div>
     </div>
 
-
     <div>
       <div class="flex md:flex-row flex-col">
         <div class="flex items-center mb-4 w-full">
           <!-- <UiInputText type="text" class="w-full" v-model="bank" :disabled="!props.isEditable"
             :error-message="v$.bank?.$errors[0]?.$message.toString()" placeholder="Select Bank" /> -->
-          <UiInputSelectSecondary placeholder="Select Bank" class="w-full" v-model="bank"
-            :error-message="v$.bank?.$errors[0]?.$message.toString()" :options="banksMethods" />
+          <UiInputSelectSecondary
+            placeholder="Select Bank"
+            class="w-full"
+            v-model="bank"
+            :error-message="v$.bank?.$errors[0]?.$message.toString()"
+            :options="banksMethods"
+          />
         </div>
       </div>
 
       <div class="flex md:flex-row mb-4 flex-col">
         <div class="flex items-center w-full">
-          <UiInputTextSecondary :disabled="!props.isEditable" type="text" class="w-full" v-model="accountName"
-            :error-message="v$.accountName?.$errors[0]?.$message.toString()" placeholder="Account Name" />
+          <UiInputTextSecondary
+            :disabled="!props.isEditable"
+            type="text"
+            class="w-full"
+            v-model="accountName"
+            :error-message="v$.accountName?.$errors[0]?.$message.toString()"
+            placeholder="Account Name"
+          />
         </div>
       </div>
 
       <div class="flex md:flex-row mb-5 flex-col">
         <div class="flex items-center w-full">
-          <UiInputTextSecondary type="text" class="w-full" v-model="accountNumber" :disabled="!props.isEditable"
-            :error-message="v$.accountNumber?.$errors[0]?.$message.toString()" placeholder="Account Number" />
+          <UiInputTextSecondary
+            type="text"
+            class="w-full"
+            v-model="accountNumber"
+            :disabled="!props.isEditable"
+            :error-message="v$.accountNumber?.$errors[0]?.$message.toString()"
+            placeholder="Account Number"
+          />
         </div>
       </div>
 
       <div class="text-right">
-        <UiButtonDefault variant="primary" class="py-2 px-8" label="Add" @click="emit('submit')" />
+        <UiButtonDefault
+          variant="primary"
+          class="py-2 px-8"
+          label="Add"
+          @click="emit('submit')"
+        />
       </div>
     </div>
   </section>
@@ -136,13 +171,11 @@ const bank = computed({
   },
 });
 
-
 /* banks method */
 const banksMethods = Object.values(PaymentMethod).map((m) => ({
   label: tools.capitalize(m),
   value: m,
 }));
-
 </script>
 
 <style scoped>

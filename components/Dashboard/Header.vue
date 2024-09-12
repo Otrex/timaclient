@@ -105,6 +105,8 @@ const searchResults = ref<Core.CampaignByName[]>([]);
 const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",
   "Campaign Application Influencer": "Campaign Application",
+  "Notification/CampaignApplication": "Notification >>> Campaign Applications",
+  "Notification/Invitations": "Notification >>> Invitations",
   BrandCampaign: "Campaign",
 };
 

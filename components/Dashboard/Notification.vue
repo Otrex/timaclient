@@ -10,17 +10,17 @@
       />
     </button>
 
-    <button
-      @click="open = !open"
+    <NuxtLink
+      :to="{ name: 'Notification' }"
       class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
     >
       <UtSvg
         name="bell"
         class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
       />
-    </button>
+    </NuxtLink>
 
-    <transition>
+    <!-- <transition>
       <div
         v-show="open"
         class="absolute right-[0.75rem] z-20 max-w-[30rem] w-full mt-[0.9375rem] tima-backdrop-shadow"
@@ -73,9 +73,6 @@
                   <div>
                     <div class="flex flex-row items-center justify-between">
                       <p class="nl">{{ notification.title }}</p>
-                      <!--  <div>
-                        <UtNotificationAction :data-id="notification.id" />
-                      </div> -->
                     </div>
 
                     <div class="flex flex-row items-center justify-between">
@@ -103,8 +100,8 @@
           </UtLoadPresenter>
         </div>
       </div>
-    </transition>
-    <UtModal
+    </transition> -->
+    <!-- <UtModal
       v-model:state="modalState"
       m-width="31.25rem"
       content-class="mx-auto mt-[10%]"
@@ -116,7 +113,7 @@
         </h1>
         <p>{{ currentNotification?.content }}</p>
       </div>
-    </UtModal>
+    </UtModal> -->
   </div>
 </template>
 
