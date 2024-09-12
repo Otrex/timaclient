@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-white p-8 rounded-2xl">
+  <section class="bg-white p-8 relative rounded-2xl">
     <div class="flex flex-row justify-between items-center">
       <div>
         <h3 class="text-[1.25rem] font-semibold">Add Your Bank Details</h3>
@@ -7,7 +7,7 @@
           You can add information for up to three different bank accounts.
         </p>
       </div>
-      <div>
+      <div class="absolute top-5 right-5">
         <UtSvg name="close" dim w="1.2rem" h="1.2rem" @click="emit('close')" />
       </div>
     </div>
