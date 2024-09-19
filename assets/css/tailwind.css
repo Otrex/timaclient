@@ -85,6 +85,8 @@ select option[disabled] {
   --clr-blue-600: #008ffd;
   --clr-blue-500: #2ba2fd;
   --clr-blue-100: #cce9ff;
+
+  --clr-new-blue: #2ba2fd;
 }
 
 /**

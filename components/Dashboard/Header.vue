@@ -12,7 +12,7 @@
         <slot name="left">
           <div class="flex items-center gap-3">
             <UiButtonDefault
-              v-if="routeName === 'Campaign'"
+              v-if="route.name === 'Campaign'"
               @click="
                 navigateTo({
                   name: 'CreateCampaign',
@@ -26,7 +26,7 @@
                 <span>New Campaign</span>
               </div>
             </UiButtonDefault>
-            <h2 v-if="routeName !== 'Campaign'">{{ routeName }}</h2>
+            <h2 v-if="route.name !== 'Campaign'">{{ routeName }}</h2>
           </div>
         </slot>
       </div>
@@ -35,7 +35,7 @@
       <slot name="middle">
         <div
           class="flex gap-[1.25rem] relative"
-          v-if="['Explore'].includes(routeName)"
+          v-if="['Explore'].includes(route.name as string)"
         >
           <UiInputText
             class="w-full"
@@ -107,6 +107,7 @@ const routeNameMap: Record<string, any> = {
   "Campaign Application Influencer": "Campaign Application",
   "Notification/CampaignApplication": "Notification >>> Campaign Applications",
   "Notification/Invitations": "Notification >>> Invitations",
+  InfluencerCampaigns: "Campaign",
   BrandCampaign: "Campaign",
 };
 
