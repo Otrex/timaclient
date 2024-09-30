@@ -162,17 +162,7 @@ onMounted(() => {
 });
 
 const { state, execute } = useRequestState({
-  action: () => {
-    if (!props.publicId || !props.title) {
-      throw new ApiError({
-        message: "Invalid Campaign",
-      });
-    }
-    return api.addBookmark({
-      title: props.title,
-      bookmarkPublicId: props.publicId,
-    });
-  },
+  action: () => api.bookmarkCampaign(props.publicId),
   onSuccess() {
     notify({
       type: "success",

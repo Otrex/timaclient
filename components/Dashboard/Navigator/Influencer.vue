@@ -10,7 +10,7 @@
         },
       }"
     />
-    <DashboardNavigatorMenuItem
+    <!-- <DashboardNavigatorMenuItem
       label="Explore"
       icon="nav/search"
       :to="{
@@ -19,7 +19,7 @@
           type: $route.params.type,
         },
       }"
-    />
+    /> -->
     <DashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"

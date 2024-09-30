@@ -1,5 +1,5 @@
 <template>
-  <div class="p-[1.625rem] pt-0">
+  <div class="p-[1.625rem] relative pt-0">
     <transition mode="out-in">
       <div class="text-center relative" v-if="state === constants.LOADING">
         <UtLoaderIndicator
@@ -7,8 +7,10 @@
           message="Fetching Campaign"
         />
       </div>
-      <div v-else-if="!campaign">
-        <UtNoResource message="Campaign not found" />
+      <div class="h-[400px]" v-else-if="!campaign">
+        <div>
+          <UtNoResource message="Campaign not found" style="--height: 400px" />
+        </div>
       </div>
       <div v-else>
         <div class="mb-[1.25rem] overflow-hidden h-[29.3125rem] relative">
@@ -161,7 +163,7 @@
     <section>
       <h4 class="my-5">Similar Campaigns</h4>
 
-      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 lg:grid-cols-4">
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 xl:grid-cols-4">
         <template v-for="i in tools.range(1, 3)" :key="i">
           <DashboardCampaignCard
             :publicId="''"

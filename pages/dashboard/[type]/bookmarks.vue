@@ -105,8 +105,10 @@ function trx(data: any) {
 }
 
 const { state, execute } = useRequestState({
-  action: () => api.getBookmarks(),
+  action: () => api.fetchBookmarks({}),
   onSuccess(response) {
+    console.log(response);
+
     bookmarks.value = response.data;
   },
 });
@@ -119,8 +121,6 @@ const { state: bookmarkState, execute: bookmarkExecute } = useRequestState({
 });
 
 const reRun = (reRunType: "influencer" | "agency") => async () => {
-  console.log("Entered");
-
   if (reRunType === "influencer") {
     await execute();
   } else {

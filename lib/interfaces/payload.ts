@@ -215,20 +215,10 @@ export type CreateCampaign = Omit<
   "publicId" | "status" | "createdOn"
 >;
 
-export type GetCampaigns =
-  | {
-    type: "filter";
-    category: string;
-    size: string;
-    age: string;
-    location: string;
-  }
-  | {
-    type: "recommendation";
-  }
-  | {
-    type: "top";
-  };
+export interface GetCampaigns {
+  limit?: number;
+  page?: number;
+}
 
 export type GetBrandCampaigns = {
   name: string;

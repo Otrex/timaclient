@@ -1,7 +1,10 @@
 <template>
   <div class="px-8">
-    <div class="flex flex-row mb-6 items-center gap-5">
+    <div
+      class="flex flex-row mb-6 w-full overflow-x-auto items-center gap-5 scrollbar-hide"
+    >
       <CampaignsTab
+        class="md:w-[1/6]"
         v-for="item in tabs"
         :key="item.icon"
         :icon="item.icon"
@@ -31,7 +34,7 @@
 
     <section
       v-if="campaignsTabs.includes(route.query.ctab as string || 'active')"
-      class="grid md:grid-cols-3 gap-4 gap-y-6 lg:grid-cols-4"
+      class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
     >
       <template v-for="i in tools.range(0, 5)" :key="i">
         <DashboardCampaignCard
@@ -96,4 +99,13 @@ const tabs = [
 ];
 </script>
 
-<style></style>
+<style>
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+</style>

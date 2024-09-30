@@ -195,17 +195,44 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async fetchCampaigns() {
+  async fetchCampaigns({ page = 1, limit = 3 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/campaign',
       requireAuth: true,
-      method: "GET"
+      method: "POST",
+      data: {
+        page,
+        limit
+      }
     })
   }
 
   async viewCampaign(id: string | number) {
     return this.request({
-      url: '/influencer/campaign',
+      url: '/influencer/campaign/info',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id
+      }
+    })
+  }
+
+  async fetchBookmarks({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+    return this.request({
+      url: '/influencer/bookmark/fetch',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit
+      }
+    })
+  }
+
+  async bookmarkCampaign(id: string | number) {
+    return this.request({
+      url: '/influencer/bookmark',
       requireAuth: true,
       method: 'POST',
       data: {
@@ -294,13 +321,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getCampaigns(payload: Payload.GetCampaigns) {
-    const { type, ...data } = payload;
-
-    return this.request<Response.GetCampaigns>({
-      url: this.querify(`/agency/v1/campaigns/search/${type}`, data),
-      requireAuth: true,
-      method: "GET",
-    });
+    new Error("Method not implemented.");
   }
 
   async getBrandCampaigns(payload: Payload.GetBrandCampaigns) {
@@ -521,15 +542,6 @@ export default class TimaAPI extends UploadAPI {
       url: `/agency/v1/social-media/${data.influencerId}/demographic/${data.socialMedia}?type=${data.type}`,
       requireAuth: true,
       method: "GET",
-    });
-  }
-
-  async addBookmark(data: Payload.AddBookmark) {
-    return this.request<Response.GetBookmarks>({
-      url: `/agency/v1/bookmarks`,
-      requireAuth: true,
-      method: "POST",
-      data,
     });
   }
 

@@ -260,7 +260,7 @@ const topCampaigns = ref<GetCampaigns["data"]>([]);
 const filterToRequired = tools.truncateList(MAX_INFLUENCER_DISPLAY);
 
 const getRecommended = useRequestState({
-  action: () => api.fetchCampaigns(),
+  action: () => api.fetchCampaigns({}),
   onSuccess: (response: any) => {
     console.log(response);
 

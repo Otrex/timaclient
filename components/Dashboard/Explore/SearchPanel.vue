@@ -196,15 +196,8 @@ const form = reactive({
 });
 
 const { state, execute } = useRequestState({
-  action: () =>
-    api.getCampaigns({
-      age: form.age,
-      type: "filter",
-      size: form.size,
-      location: form.location,
-      category: form.category,
-    }),
-  onSuccess: (response) => {
+  action: () => api.fetchCampaigns({}),
+  onSuccess: (response: any) => {
     search.value = response.data;
   },
 });
