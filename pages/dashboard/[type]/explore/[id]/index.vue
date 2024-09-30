@@ -140,7 +140,8 @@
           </div>
         </section>
 
-        <section class="text-center">
+        <section class="text-center flex items-center justify-center">
+          <button class="text-red-700">Report this campaign to TIMA</button>
           <UiButtonDefault
             @click="
               navigateTo({
@@ -157,6 +158,25 @@
         </section>
       </div>
     </transition>
+    <section>
+      <h4 class="my-5">Similar Campaigns</h4>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 lg:grid-cols-4">
+        <template v-for="i in tools.range(1, 3)" :key="i">
+          <DashboardCampaignCard
+            :publicId="''"
+            :title="''"
+            :image="''"
+            :category="[]"
+            :brand="''"
+            :description="''"
+            :budget="0"
+            :deadline="''"
+            :completion="0"
+          />
+        </template>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -169,6 +189,7 @@ definePageMeta({
 
 const colorExtract = useImageColorExtract();
 const image = ref<HTMLImageElement>();
+const optionsStore = useOptionsStore();
 const avgColor = ref(0);
 
 const api = useAPI();
@@ -176,8 +197,10 @@ const route = useRoute();
 const campaign = ref<GetCampaign["data"]>();
 
 const { execute: getCampaign, state } = useRequestState({
-  action: () => api.getCampaign(route.params.id as string),
-  onSuccess: (response) => {
+  action: () => api.viewCampaign(route.params.id as string),
+  onSuccess: (response: any) => {
+    console.log(response);
+
     campaign.value = response.data;
   },
 });
@@ -204,6 +227,9 @@ watch(
 );
 
 onMounted(() => {
+  optionsStore.setHeader("HeadersBack");
+  console.log({ Header: "hhhu" });
+
   try {
     extractColor();
     getCampaign();

@@ -75,14 +75,30 @@ export type LocaleData = {
   percentage: number;
 };
 
+
+export interface AccountResolution {
+  account_number: string;
+  bank_id: number;
+  account_name: string;
+};
+
+
 export interface Bank {
   name: string;
   slug: string;
   code: string;
-  longCode: null | string;
+  longcode: string;
   country: string;
   currency: string;
   type: string;
+  pay_with_bank: boolean;
+  active: boolean;
+  supports_transfer: boolean;
+  createdAt: string;
+  is_deleted: boolean;
+  id: number;
+  gateway: string;
+  updatedAt: string;
 }
 
 export interface CampaignMetrics {

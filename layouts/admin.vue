@@ -1,5 +1,13 @@
 <template>
   <div class="h-screen w-full overflow-hidden">
+    <Transition>
+      <div
+        v-if="!focused"
+        class="bg-red-500 text-white font-medium text-center"
+      >
+        TIMA is Waiting for your attention.
+      </div>
+    </Transition>
     <div class="box">
       <aside
         :class="[
@@ -45,6 +53,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+
+import { useWindowFocus } from "@vueuse/core";
+
+const focused = useWindowFocus();
 
 const sidebar = ref(false);
 // const $router = useRouter();

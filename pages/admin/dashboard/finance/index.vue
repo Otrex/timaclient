@@ -35,16 +35,25 @@
     </div>
 
     <div class="flex flex-col gap-11 md:grid md:grid-cols-3">
-      <AdminStatusCard />
-      <AdminStatusCard />
-      <AdminStatusCard />
+      <template v-for="(item, idx) in statusCard" :key="idx">
+        <AdminStatusCard
+          :label="item.label"
+          :value="item.value"
+          :indicator="item.indicator"
+        />
+      </template>
     </div>
 
     <div
       class="flex flex-col items-stretch justify-stretch md:flex-row gap-[50px] mt-10"
     >
       <div class="w-full md:w-8/12 h-full max-h-[320px]">
-        <AdminChartsBar :data="chartData" />
+        <h4 class="text-[20px] font-bold text-[#898989]">Revenue</h4>
+        <Bar
+          :data="dataset"
+          class="inline-block w-full h-full max-h-[300px]"
+          :options="options"
+        />
       </div>
 
       <div class="w-full md:w-4/12 h-full">
@@ -75,14 +84,59 @@
 
     <section class="flex flex-col md:flex-row gap-[50px] mt-10">
       <div class="w-full md:w-8/12">
-        <div class="bg-[#F7F7F7] rounded-xl p-6">
-          <AdminDashboardTableCampaign />
-        </div>
+        <UtDataTable
+          label="Transactions"
+          variant="secondary"
+          :searchField="{}"
+          :thead="thead"
+          v-model:tabFilters="tabFilters"
+          :tbody="tbody"
+          :secondaryTabFilters="[
+            {
+              label: 'All',
+              value: 'all',
+            },
+            {
+              label: 'Complete',
+              value: 'complete',
+            },
+            {
+              label: 'Pending',
+              value: 'pending',
+            },
+          ]"
+          :tclass="{
+            thead: 'font-bold text-left align-middle',
+            tbody: 'text-center py-2',
+          }"
+        >
+          <template #tbody="{ item, row, field }">
+            <div v-if="field === 'transactions'">
+              <UiTransactionView
+                :image="item.image"
+                :title="item.brand"
+                :sub="item.sub"
+              />
+            </div>
+            <div v-if="field === 'status'">
+              <span
+                :class="[
+                  item.toLowerCase() === 'onboarded' && 'text-[#3CC75B]',
+                  item.toLowerCase() === 'pending' && 'text-[#F3DC0F]',
+                ]"
+                >{{ item }}</span
+              >
+            </div>
+            <div v-else-if="field === 'action'">
+              <UiTransactionAction :transaction="row" />
+            </div>
+          </template>
+        </UtDataTable>
       </div>
 
       <div class="w-full md:w-4/12">
         <div class="bg-[#F7F7F7] rounded-xl p-6">
-          <AdminChartsDoughnut :data="DoughnutChartData" />
+          <AdminChartsDoughnut :data="DoughnutChartData" label="Platforms" />
         </div>
       </div>
     </section>
@@ -91,6 +145,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { Bar } from "vue-chartjs";
 
 definePageMeta({
   name: "AdminFinance",
@@ -98,6 +153,114 @@ definePageMeta({
 });
 
 const filter = ref("Last 7 days");
+const tabFilters = ref("all");
+
+const data = ref<any[]>([]);
+
+const statusCard = ref([
+  {
+    label: "Ad Spend",
+    value: "26",
+    indicator: "#8D0DF2",
+  },
+  {
+    label: "Paid Out",
+    value: "26",
+    indicator: "#F26D0D",
+  },
+  {
+    label: "Revenue",
+    value: "26",
+    indicator: "#13EBD1",
+  },
+]);
+
+const dataset = computed(() => ({
+  labels: data.value?.map((e) => e.ageRange),
+  datasets: [
+    {
+      label: "Male",
+      data: data.value?.map((e) => e.male),
+      backgroundColor: "#AAD9FB",
+      borderWidth: 0,
+    },
+    {
+      label: "Female",
+      data: data.value?.map((e) => e.female),
+      backgroundColor: "#2AA2FD",
+      borderWidth: 0,
+    },
+  ],
+}));
+
+const options = ref<any>({
+  scales: {
+    x: {
+      stacked: true,
+      gridLines: {
+        display: false,
+        drawOnChartArea: false,
+        color: "black",
+        zeroLineColor: "#fff",
+        zeroLineWidth: 0,
+      },
+    },
+    y: {
+      stacked: true,
+      gridLines: {
+        display: false,
+        drawOnChartArea: false,
+        color: "black",
+        zeroLineColor: "#fff",
+        zeroLineWidth: 0,
+      },
+    },
+  },
+  responsive: true,
+  aspectRatio: 1.5,
+  plugins: {
+    legend: {
+      itemSpacing: 10,
+      position: "top",
+      align: "start",
+      padding: {
+        bottom: 30, // Adjust the bottom padding
+      },
+      labels: {
+        boxWidth: 13,
+        font: {
+          size: 13,
+        },
+      },
+    },
+  },
+});
+
+const thead = ["Name", "Brand", "Start Date", "End Date", "Status"].map(
+  (e) => ({
+    label: e,
+    key: e.toLowerCase().replace(" ", "_"),
+  })
+);
+
+const tbody = [
+  {
+    name: "John Doe",
+    brand: "Coca Cola",
+    start_date: "Oct 24, 2024",
+    end_date: "Oct 24, 2024",
+    status: "Onboarded",
+    id: 1,
+  },
+  {
+    name: "Jane Smith",
+    brand: "Pepsi",
+    start_date: "Nov 15, 2023",
+    end_date: "Dec 31, 2023",
+    status: "Pending",
+    id: 2,
+  },
+];
 
 const chartData = ref<
   {

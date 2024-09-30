@@ -82,7 +82,17 @@
             class="w-full"
             v-model="bank"
             :error-message="v$.bank?.$errors[0]?.$message.toString()"
-            :options="banksMethods"
+            :options="
+              banks.map((e) => ({
+                value: e,
+                label: e.name,
+              }))
+            "
+          />
+          <UtSvg
+            name="sunshine"
+            v-if="state === constants.LOADING"
+            class="spinner w-[1.5rem] h-[1.5rem]"
           />
         </div>
       </div>
@@ -90,12 +100,12 @@
       <div class="flex md:flex-row mb-4 flex-col">
         <div class="flex items-center w-full">
           <UiInputTextSecondary
-            :disabled="!props.isEditable"
             type="text"
             class="w-full"
-            v-model="accountName"
-            :error-message="v$.accountName?.$errors[0]?.$message.toString()"
-            placeholder="Account Name"
+            v-model="accountNumber"
+            :loading="resolving === constants.LOADING"
+            :error-message="v$.accountNumber?.$errors[0]?.$message.toString()"
+            placeholder="Account Number"
           />
         </div>
       </div>
@@ -105,10 +115,9 @@
           <UiInputTextSecondary
             type="text"
             class="w-full"
-            v-model="accountNumber"
-            :disabled="!props.isEditable"
-            :error-message="v$.accountNumber?.$errors[0]?.$message.toString()"
-            placeholder="Account Number"
+            v-model="accountName"
+            :error-message="v$.accountName?.$errors[0]?.$message.toString()"
+            placeholder="Account Name"
           />
         </div>
       </div>
@@ -118,7 +127,8 @@
           variant="primary"
           class="py-2 px-8"
           label="Add"
-          @click="emit('submit')"
+          :loading="addingBank === constants.LOADING"
+          @click="proceedToAddBank"
         />
       </div>
     </div>
@@ -126,10 +136,11 @@
 </template>
 
 <script lang="ts" setup>
-import { PaymentMethod } from "~/lib/enums";
+import type { Bank } from "~/lib/interfaces/core";
 
+const api = useAPI();
+const { notify } = useNotification();
 const props = defineProps<{
-  isEditable?: boolean;
   accountName?: string;
   accountNumber?: string;
   bank?: string;
@@ -140,9 +151,12 @@ const emit = defineEmits([
   "update:accountName",
   "update:accountNumber",
   "update:bank",
+  "refresh",
   "close",
   "submit",
 ]);
+
+const banks = ref<Bank[]>([]);
 
 const accountName = computed({
   set(value: string) {
@@ -163,7 +177,7 @@ const accountNumber = computed({
 });
 
 const bank = computed({
-  set(value: string) {
+  set(value: any) {
     emit("update:bank", value);
   },
   get() {
@@ -171,11 +185,72 @@ const bank = computed({
   },
 });
 
-/* banks method */
-const banksMethods = Object.values(PaymentMethod).map((m) => ({
-  label: tools.capitalize(m),
-  value: m,
-}));
+const { state } = useRequestState({
+  immediately: true,
+  action: async () => api.getBanks(),
+  onSuccess(data) {
+    banks.value = data.data;
+  },
+});
+
+const { execute: resolveBank, state: resolving } = useRequestState({
+  action: async () => {
+    return api.resolveBankAccount({
+      accountNumber: accountNumber.value,
+      bankCode: bank.value.code,
+    });
+  },
+  onSuccess({ data }) {
+    emit("update:accountName", data.account_name);
+  },
+  onError(error) {
+    notify({
+      type: "error",
+      title: "Resolution Failed",
+      text: error.description,
+    });
+  },
+});
+
+const { state: addingBank, execute: addBank } = useRequestState({
+  action: async () =>
+    api.addWithdrawalBank({
+      accountName: accountName.value,
+      accountNumber: accountNumber.value,
+      bankName: bank.value.name,
+      bankCode: bank.value.code,
+    }),
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "Success",
+      text: "Bank has been added successfully",
+    });
+    emit("refresh");
+    emit("close");
+  },
+});
+
+function proceedToAddBank() {
+  if (!accountName.value || !accountNumber.value || !bank) {
+    notify({
+      type: "error",
+      title: "Validation",
+      text: "Please enter your details",
+    });
+    return;
+  }
+
+  addBank();
+}
+watch(accountNumber, () => {
+  if (accountNumber.value.length === 10) {
+    if (!bank.value || !accountNumber.value) {
+      return;
+    }
+    resolveBank();
+  }
+});
 </script>
 
 <style scoped>

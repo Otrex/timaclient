@@ -1,6 +1,16 @@
 <template>
   <div class="flex flex-col gap-[1rem]">
     <DashboardNavigatorMenuItem
+      label="Dashboard"
+      icon="nav/dash"
+      :to="{
+        name: 'Dashboard',
+        params: {
+          type: $route.params.type,
+        },
+      }"
+    />
+    <DashboardNavigatorMenuItem
       label="Explore"
       icon="nav/search"
       :to="{

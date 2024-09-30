@@ -12,11 +12,13 @@ interface IState {
   socialTypes: SocialType[];
   paymentStatus: string[];
   banks: Bank[];
+  __header: null | string;
 }
 
 export const useOptionsStore = defineStore("options", {
   state: (): IState => {
     return {
+      __header: null,
       countries: [],
       industries: [],
       campaignOptions: undefined,
@@ -48,6 +50,11 @@ export const useOptionsStore = defineStore("options", {
   },
 
   actions: {
+    setHeader(header: string | null) {
+      this.$patch({
+        __header: header
+      })
+    },
     async loadOptions() {
       await Promise.all([
         this.getCountries(),

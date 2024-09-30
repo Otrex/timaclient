@@ -1,7 +1,7 @@
 <template>
   <section class="rounded-md">
     <div class="flex justify-between">
-      <h4 class="text-[20px] font-bold text-[#898989]">INC</h4>
+      <h4 class="text-[20px] font-bold text-[#898989]">{{ label || "INC" }}</h4>
       <div><UtSvg name="love" dim w="21px" h="21px" /></div>
     </div>
 
@@ -18,6 +18,7 @@
 import { Doughnut } from "vue-chartjs";
 
 const props = defineProps<{
+  label?: string;
   bg?: string;
   loading?: boolean;
   data: number[];

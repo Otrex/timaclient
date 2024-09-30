@@ -6,7 +6,10 @@
         @click="emits('update:state', false)"
         class="flex items-center active:bg-slate-100"
       >
-        <UtSvg name="close" class="w-[0.8125rem] h-[0.8125rem] text-black" />
+        <UtSvg
+          name="close"
+          class="w-[0.8125rem] h-[0.8125rem] dark:text-white text-black"
+        />
         &nbsp; Clear filter
       </button>
     </div>
@@ -77,7 +80,7 @@
         />
       </div>
       <div>
-        <label class="block mb-[0.875rem]">Campaign size</label>
+        <label class="block mb-[0.875rem]">Campaign type</label>
         <UiInputSelect
           :options="tools.generationOptions(size)"
           class="w-full"
@@ -104,7 +107,7 @@
         />
       </div>
       <div>
-        <label class="block mb-[0.875rem]">Campaign location</label>
+        <label class="block mb-[0.875rem]">Campaign status</label>
         <UiInputSelect
           :options="locations"
           class="w-full"

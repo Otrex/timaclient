@@ -14,13 +14,11 @@ definePageMeta({
       const authStore = useAuthStore();
       const userType = authStore.authorization.userType;
 
-      console.log(userType);
-
       if (!Object.keys(to.params).includes("type") && userType) {
         const redirect: Record<UserType, string> = {
           [UserType.BRAND]: "BrandCampaign",
           [UserType.SUPERADMIN]: "AdminRedirect",
-          [UserType.INFLUENCER]: "Explore",
+          [UserType.INFLUENCER]: "Dashboard",
           [UserType.ADMIN]: "AdminRedirect",
         };
 

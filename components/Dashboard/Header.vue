@@ -10,7 +10,8 @@
       </div>
       <div class="whitespace-nowrap">
         <slot name="left">
-          <div class="flex items-center gap-3">
+          <HeadersBack v-if="Header === 'HeadersBack'" />
+          <div v-else class="flex items-center gap-3">
             <UiButtonDefault
               v-if="route.name === 'Campaign'"
               @click="
@@ -79,12 +80,14 @@
     </div>
     <div class="flex justify-end">
       <div class="flex flex-row gap-[0.625rem] items-center">
-        <div class="flex items-center"><DashboardNotification /></div>
+        <div class="flex items-center">
+          <DashboardNotification />
+        </div>
         <div class="flex items-center">
           <DashboardUserMenu
-            :name="userIdentifier"
             :image="profile?.profileImage || '#'"
             :type="user?.role || ''"
+            :name="userIdentifier"
           />
         </div>
       </div>
@@ -96,11 +99,19 @@
 import { useDebounceFn } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
 import { useAuthStore } from "~/stores/auth";
+import { useOptionsStore } from "~/stores/options";
+
+import HeadersBack from "~/components/Headers/Back.vue";
 
 const route = useRoute();
 
 const searchQuery = ref("");
 const searchResults = ref<Core.CampaignByName[]>([]);
+
+const { __header } = useOptionsStore();
+const Header = computed(() => {
+  return __header ? resolveComponent(__header) : null;
+});
 
 const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",

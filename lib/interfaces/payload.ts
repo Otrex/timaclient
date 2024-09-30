@@ -19,6 +19,19 @@ export interface CreateUser {
   role: UserType;
 }
 
+export interface ResolveBankPayload {
+  accountNumber: string;
+  bankCode: string;
+}
+
+export interface AddBankAccountDetails {
+  accountName: string;
+  accountNumber: string;
+  bankName: string;
+  bankCode: string;
+}
+
+
 
 /// OLD
 

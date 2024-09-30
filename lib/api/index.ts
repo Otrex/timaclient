@@ -53,14 +53,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async resendOTP(data: Payload.ResendOTP) {
-    return this.request<Response.CreateUser>({
-      url: `/user/v1/account/otp/resend`,
-      method: "POST",
-      data,
-    });
-  }
-
   async verifyPasswordReset(data: { emailAddress: string, otp: string }) {
     return this.request<Response.CreateUser>({
       url: `/auth/validate-forgot-password`,
@@ -118,24 +110,6 @@ export default class TimaAPI extends UploadAPI {
       data,
     });
   }
-  async passwordReset(data: Payload.PasswordReset) {
-    return this.request<Response.CreateUser>({
-      url: `/user/v1/account/password/reset/${data.email}`,
-      method: "PUT",
-    });
-  }
-
-  async completePasswordReset(
-    data: Payload.CompletePasswordReset,
-    headers: Payload.CompletePasswordResetHeaders
-  ) {
-    return this.request<Response.CreateUser>({
-      url: "/user/v1/account/password/update",
-      method: "PUT",
-      headers,
-      data,
-    });
-  }
 
   async profileSetup(data: Payload.BrandProfileSetup | InfluencerProfileSetup) {
     return this.request<IResponse<Core.UserProfile>>({
@@ -163,6 +137,32 @@ export default class TimaAPI extends UploadAPI {
   }
 
 
+  async getBanks() {
+    return this.request<Response.GetBankList>({
+      url: "/wallet/bank-list",
+      method: "GET",
+      requireAuth: true,
+    })
+  }
+
+  async resolveBankAccount(data: Payload.ResolveBankPayload) {
+    return this.request<IResponse<Core.AccountResolution>>({
+      url: "/wallet/resolve-account",
+      requireAuth: true,
+      method: "POST",
+      data,
+    })
+  }
+
+  async addWithdrawalBank(data: Payload.AddBankAccountDetails) {
+    return this.request({
+      url: "/wallet/withdrawal_bank",
+      requireAuth: true,
+      method: "POST",
+      data,
+    })
+  }
+
   async getWalletAddress() {
     return this.request<IResponse<{ balance: number }>>({
       url: "/wallet/balance",
@@ -177,6 +177,41 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: "POST",
     });
+  }
+
+  async getUserProfile() {
+    return this.request<IResponse<Core.User>>({
+      url: "/users/profile",
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
+  async getIndustries() {
+    return this.request<Response.GetIndustry>({
+      url: "/users/industries",
+      requireAuth: true,
+      method: "GET",
+    });
+  }
+
+  async fetchCampaigns() {
+    return this.request({
+      url: '/influencer/campaign',
+      requireAuth: true,
+      method: "GET"
+    })
+  }
+
+  async viewCampaign(id: string | number) {
+    return this.request({
+      url: '/influencer/campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id
+      }
+    })
   }
 
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
@@ -234,21 +269,6 @@ export default class TimaAPI extends UploadAPI {
   }
 
 
-  async getIndustries() {
-    return this.request<Response.GetIndustry>({
-      url: "/users/industries",
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
-  async getBanks() {
-    return this.request<Response.GetBankList>({
-      url: "/payment/v1/banks",
-      method: "GET",
-    });
-  }
-
   async getCampaign(publicId: string) {
     return this.request<Response.GetCampaign>({
       url: `/agency/v1/campaigns/${publicId}`,
@@ -292,13 +312,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getUserProfile() {
-    return this.request<IResponse<Core.User>>({
-      url: "/users/profile",
-      requireAuth: true,
-      method: "GET",
-    });
-  }
+
 
   async getAddress() {
     return this.request<Response.GetAddress>({

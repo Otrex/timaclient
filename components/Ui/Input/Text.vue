@@ -58,7 +58,7 @@ const props = defineProps<{
 
 const input = ref<HTMLInputElement>();
 const typeState = ref("password");
-const emits = defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue", "input"]);
 
 defineOptions({
   inheritAttrs: false,
@@ -66,6 +66,7 @@ defineOptions({
 
 function update(e: any) {
   emits("update:modelValue", e.target.value);
+  emits("input", e.target.value);
 }
 
 function togglePasswordVisibility() {

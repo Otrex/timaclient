@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  options: { label: string; value: string }[];
+  options: { label: string; value: string | number | object }[];
   placeholder?: string;
   modelValue?: string;
   errorMessage?: string;
