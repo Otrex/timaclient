@@ -16,18 +16,17 @@ definePageMeta({
 
       if (!Object.keys(to.params).includes("type") && userType) {
         const redirect: Record<UserType, string> = {
-          [UserType.BRAND]: "BrandCampaign",
+          [UserType.BRAND]: "Influencers",
           [UserType.SUPERADMIN]: "AdminRedirect",
           [UserType.INFLUENCER]: "Dashboard",
           [UserType.ADMIN]: "AdminRedirect",
         };
 
-        console.log(redirect[userType]);
-
         return navigateTo({
           name: redirect[userType],
           params: {
             type: userType,
+            id: 2,
           },
         });
       }

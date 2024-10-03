@@ -14,7 +14,7 @@
       label="Campaigns"
       icon="nav/campaign"
       :to="{
-        name: 'BrandCampaign',
+        name: 'Campaign',
         params: {
           type: $route.params.type,
         },

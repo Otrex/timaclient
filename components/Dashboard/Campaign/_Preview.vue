@@ -133,7 +133,7 @@ const { state, execute } = useRequestState({
     setTimeout(() => {
       successModal.value.close();
       navigateTo({
-        name: "BrandCampaign",
+        name: "Campaign",
       });
     }, 5000);
   },

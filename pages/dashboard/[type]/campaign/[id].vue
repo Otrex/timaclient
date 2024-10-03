@@ -130,7 +130,7 @@ const { state: deletingState, execute: deleteCampaign } = useRequestState({
       type: "success",
     });
     navigateTo({
-      name: "BrandCampaign",
+      name: "Campaign",
     });
   },
   onError(error) {
