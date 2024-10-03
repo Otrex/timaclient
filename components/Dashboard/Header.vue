@@ -120,6 +120,7 @@ const routeNameMap: Record<string, any> = {
   "Notification/Invitations": "Notification >>> Invitations",
   InfluencerCampaigns: "Campaign",
   BrandCampaign: "Campaign",
+  AttachContent: "Attach Files",
 };
 
 const routeName = computed(

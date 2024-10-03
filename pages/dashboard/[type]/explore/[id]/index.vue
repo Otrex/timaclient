@@ -145,14 +145,9 @@
         <section class="text-center flex items-center justify-center">
           <button class="text-red-700">Report this campaign to TIMA</button>
           <UiButtonDefault
-            @click="
-              navigateTo({
-                name: 'Explore - Application',
-                params: {
-                  id: $route.params.id,
-                },
-              })
-            "
+            @click="() => apply"
+            :loading="application === constants.LOADING"
+            :disabled="application === constants.LOADING"
             variant="primary"
             class="py-[0.75rem] px-[3.75rem]"
             label="Apply to this campaign"
@@ -160,6 +155,19 @@
         </section>
       </div>
     </transition>
+    <AlertItem
+      :isAlerting="alert.on"
+      :alertType="alert.type"
+      :alertMessage="alert.message"
+      :alertTitle="alert.title"
+    >
+      <template #more="{ type }">
+        <div v-if="type !== 'success'">
+          <UiButtonDefault variant="primary" label="Link Account" />
+        </div>
+      </template>
+    </AlertItem>
+
     <section>
       <h4 class="my-5">Similar Campaigns</h4>
 
@@ -192,11 +200,19 @@ definePageMeta({
 const colorExtract = useImageColorExtract();
 const image = ref<HTMLImageElement>();
 const optionsStore = useOptionsStore();
+const { notify } = useNotification();
 const avgColor = ref(0);
 
 const api = useAPI();
 const route = useRoute();
 const campaign = ref<GetCampaign["data"]>();
+
+const alert = reactive({
+  on: true,
+  type: "success",
+  title: "Application submitted successfully",
+  message: "",
+});
 
 const { execute: getCampaign, state } = useRequestState({
   action: () => api.viewCampaign(route.params.id as string),
@@ -227,6 +243,25 @@ watch(
     }
   }
 );
+
+const { state: application, execute: apply } = useRequestState({
+  action: () => api.applyToCampaign(route.params.id as string),
+  onSuccess: () => {
+    alert.on = true;
+    alert.type = "success";
+    alert.message = "Application submitted successfully";
+
+    navigateTo({
+      name: "Explore",
+    });
+  },
+  onError: (response) => {
+    alert.on = true;
+    alert.type = "error";
+    alert.title = response.title;
+    alert.message = response.description;
+  },
+});
 
 onMounted(() => {
   optionsStore.setHeader("HeadersBack");

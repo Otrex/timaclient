@@ -122,8 +122,6 @@
 </template>
 
 <script setup lang="ts">
-import { ApiError } from "~/lib/core/Api";
-
 const props = defineProps<{
   image: string;
   category: string[];

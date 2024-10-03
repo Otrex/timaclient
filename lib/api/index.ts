@@ -241,6 +241,17 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async applyToCampaign(id: string | number) {
+    return this.request({
+      url: '/influencer/campaign/join',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id
+      }
+    })
+  }
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
@@ -781,12 +792,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async createApplication(data: Payload.CreateApplication) {
-    return this.request<Response.CreateApplication>({
-      url: "/agency/v1/applications",
-      requireAuth: true,
-      method: "POST",
-      data,
-    });
+    throw new Error("Not implemented");
   }
 
   async reviewApplication(data: Payload.ReviewApplication) {

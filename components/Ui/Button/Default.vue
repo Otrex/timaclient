@@ -1,7 +1,9 @@
 <template>
   <button
     v-bind="$attrs"
-    :class="[variants[props.variant], props.loading && 'relative', 'pad']"
+    :class="
+      twMerge([variants[props.variant], props.loading && 'relative', 'pad'])
+    "
   >
     <div
       v-if="props.loading"
@@ -17,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import { twMerge } from "tailwind-merge";
+
 const props = defineProps<{
   variant:
     | "primary"
@@ -36,11 +40,15 @@ const props = defineProps<{
 const variants = {
   "outline-primary":
     "text-red-500 whitespace-nowrap border-[#D8D8D8] hover:text-red-600 hover:bg-gray-100 border rounded-[40px]",
-  primary: `bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white rounded-[40px] disabled:bg-red-400`,
-  secondary: `bg-transparent hover:bg-[#D9D9D9] outline outline-solid outline-[#D9D9D9] rounded-[40px] focus:ring-4 focus:ring-[#D9D9D9] text-black`,
-  "info-outline": `inf leading-0 border border-solid border-[--clr-blue-500] rounded-[0.625rem] text-[--clr-blue-500]`,
-  info: `bg-[--clr-blue-100] inf rounded-[0.625rem] text-[--clr-blue-700]`,
-  "inverse-primary": `hover:bg-slate-50 focus:ring-4 !text-[#EC2B29] focus:ring-red-100 text-white rounded-[40px] disabled:opacity-[.5]`,
+  primary:
+    "bg-red-600 px-4 hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-white rounded-[40px] disabled:bg-red-400",
+  secondary:
+    "bg-transparent hover:bg-[#D9D9D9] outline outline-solid outline-[#D9D9D9] rounded-[40px] focus:ring-4 focus:ring-[#D9D9D9] text-black",
+  "info-outline":
+    "inf leading-0 border border-solid border-[--clr-blue-500] rounded-[0.625rem] text-[--clr-blue-500]",
+  info: "bg-[--clr-blue-100] inf rounded-[0.625rem] text-[--clr-blue-700]",
+  "inverse-primary":
+    "hover:bg-slate-50 focus:ring-4 !text-[#EC2B29] focus:ring-red-100 text-white rounded-[40px] disabled:opacity-[.5]",
 };
 </script>
 

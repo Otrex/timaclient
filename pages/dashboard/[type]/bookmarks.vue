@@ -106,7 +106,7 @@ function trx(data: any) {
 
 const { state, execute } = useRequestState({
   action: () => api.fetchBookmarks({}),
-  onSuccess(response) {
+  onSuccess(response: any) {
     console.log(response);
 
     bookmarks.value = response.data;
