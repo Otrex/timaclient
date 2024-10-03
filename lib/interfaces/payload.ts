@@ -225,3 +225,11 @@ export type GetBrandCampaigns = {
   page?: number;
   size?: number;
 };
+
+
+export interface ReviewUser {
+  user_id: string;
+  review: 'APPROVE' | 'DECLINE';
+  reason?: string;
+}
+

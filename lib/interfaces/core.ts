@@ -47,6 +47,42 @@ export interface AccountWallet {
   updatedAt: string
 }
 
+export interface UserReviewResponse {
+  data: {
+    emailAddress: string;
+    phoneNumber: string;
+    role: UserType;
+    profile: {
+      country: string;
+      lastName?: string;
+      address: string;
+      profileSetupProgress: ProfileSetupState;
+      city: string;
+      profileImage: string;
+      transactionPIN?: string;
+      userId: string;
+      createdAt: string;
+      firstName?: string;
+      industries: string[];
+      referralCode: string;
+      hasSetTransactionPin: boolean;
+      otherName?: string;
+      id: string;
+      state: string;
+      updatedAt: string;
+      website?: string;
+      companyName?: string;
+    };
+    id: string;
+    userName: string;
+  }[];
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}
+
+
 
 
 

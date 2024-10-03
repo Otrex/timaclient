@@ -252,6 +252,27 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async fetchUserReviews({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+    return this.request<Core.UserReviewResponse>({
+      url: '/admin/users-review',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit
+      }
+    });
+  }
+
+  async reviewUser(data: Payload.ReviewUser) {
+    return this.request({
+      url: '/admin/review-user',
+      requireAuth: true,
+      method: 'POST',
+      data,
+    });
+  }
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
