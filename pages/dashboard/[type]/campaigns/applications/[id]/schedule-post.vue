@@ -1,5 +1,5 @@
 <template>
-    <div class="px-4">
+    <div class="px-10">
         <UiImg src="/assets/svg/content-revision-thumbnail.jpeg" alt="content-revision" class="w-full h-[200px]" />
 
         <div class="mt-8">
@@ -11,24 +11,24 @@
         </div>
 
 
-        <div class="flex mt-12">
-            <div class="md:w-5/12">
+        <div class="flex flex-col md:flex-row gap-y-6 md:gap-y-0 md:gap-x-6 mt-12">
+            <div class="md:w-6/12">
                 <Calendar />
             </div>
 
-            <div class="md:w-7/12">
+            <div class="md:w-6/12">
                 <div class="mb-6">
                     <h1 class="text-2xl font-semibold leading-[28.13px] text-[#333333] mb-2">Time</h1>
                     <DatePicker mode="time" />
                 </div>
 
                 <textarea
-                    class="text-lg leading-[21.09px] outline-none shadow-none w-5/12 h-auto rounded-lg border-[2px] border-[#2DA2FD] text-[#B0B0B0] placeholder:text-[#B0B0B0]"
-                    resize="none" placeholder="Time zone: (GMT +1:00) Lagos/Nigeria"></textarea>
+                    class="text-lg leading-[21.09px] outline-none shadow-none w-5/12 h-auto rounded-lg border-[2px] border-[#2DA2FD] text-[#B0B0B0] placeholder:text-[#B0B0B0] resize-none p-2"
+                    rows="3" placeholder="Time zone: (GMT +1:00) Lagos/Nigeria"></textarea>
             </div>
         </div>
 
-        <div class="mt-12 flex items-center justify-center">
+        <div class="mt-14 flex items-center justify-center">
             <UiButtonDefault @click="() => submitContentRevision()" variant="primary" label="Apply"
                 class="min-w-[21.875rem] p-2" />
         </div>
@@ -71,4 +71,8 @@ const range = computed({
 });
 </script>
 
-<style></style>
+<style>
+div[data-helptext] {
+    @apply w-full md:w-[80%];
+}
+</style>
