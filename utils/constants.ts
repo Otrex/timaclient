@@ -26,8 +26,9 @@ export default Object.freeze({
   BRAND_OVERVIEW: "brand-overview",
   BRAND_CREATIVE: "brand-creative",
   BRAND_INFLUENCERS: "brand-influencers",
-  BRAND_PREVIEW: 'brand-preview',
+  BRAND_PREVIEW: "brand-preview",
 
+  DEMOGRAPHIC_INFO: "demographic-BasicInformation",
   REVIEW_PROFILE: "review-profile",
 
   BASIC_DETAILS: "basic-details",
@@ -36,11 +37,11 @@ export default Object.freeze({
   PASSWORD: "password",
   REVIEW: "review",
 
-  CAMPAIGN_PAYMENT: 'payment',
-  CAMPAIGN_INFLUENCERS: 'influencers',
-  CAMPAIGN_ANALYTICS: 'analytics',
-  CAMPAIGN_PERSONAL_INFO: 'personal-info',
-  CAMPAIGN_INFLUENCER_CAMPAIGN_INFO: 'campaign-info',
+  CAMPAIGN_PAYMENT: "payment",
+  CAMPAIGN_INFLUENCERS: "influencers",
+  CAMPAIGN_ANALYTICS: "analytics",
+  CAMPAIGN_PERSONAL_INFO: "personal-info",
+  CAMPAIGN_INFLUENCER_CAMPAIGN_INFO: "campaign-info",
 
   INFLUENCER: UserType.INFLUENCER,
   ADMIN: UserType.ADMIN,
