@@ -23,8 +23,8 @@
                 </div>
 
                 <textarea
-                    class="text-lg leading-[21.09px] outline-none shadow-none w-5/12 h-auto rounded-lg border-[2px] border-[#2DA2FD] placeholder:text-[##B0B0B0]"
-                    resize="none" value="Time zone: (GMT +1:00) Lagos/Nigeria"></textarea>
+                    class="text-lg leading-[21.09px] outline-none shadow-none w-5/12 h-auto rounded-lg border-[2px] border-[#2DA2FD] text-[#B0B0B0] placeholder:text-[#B0B0B0]"
+                    resize="none" placeholder="Time zone: (GMT +1:00) Lagos/Nigeria"></textarea>
             </div>
         </div>
 
