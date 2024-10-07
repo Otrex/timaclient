@@ -176,10 +176,6 @@ const { state, execute, v$, validate } = useRequestState({
 });
 
 function toProfileReview() {
-  // navigateTo({
-  //   name: "SignUp",
-  //   query: { tab: constants.REVIEW_PROFILE },
-  // });
   navigateTo({
     name: "SignUpDemographicInfo",
   });
