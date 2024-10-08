@@ -8,7 +8,7 @@
           v-if="$route.params.type === constants.INFLUENCER"
           class="text-[2.4375rem] mb-[30px]"
         >
-          Profile Review
+          Confirm Details
         </h1>
         <h1 v-else class="text-[2.4375rem] mb-[30px]">Confirm Details</h1>
         <div class="relative inline-block">

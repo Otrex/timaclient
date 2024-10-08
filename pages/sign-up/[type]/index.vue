@@ -2,26 +2,14 @@
   <div>
     <NuxtLayout :prev="currentView.prev" name="kyc">
       <template #sidebar>
-        <SignUpNavigatorAgency
-          v-if="type(constants.AGENCY)"
-          :activeTabs="activeTabs"
-        />
-        <SignUpNavigatorInfluencer
-          v-if="type(constants.INFLUENCER)"
-          :activeTabs="activeTabs"
-        />
+        <SignUpNavigatorAgency v-if="type(constants.AGENCY)" :activeTabs="activeTabs" />
+        <SignUpNavigatorInfluencer v-if="type(constants.INFLUENCER)" :activeTabs="activeTabs" />
       </template>
       <template #topnav>
-        <div
-          v-if="show(constants.BASIC_DETAILS)"
-          class="items-center flex justify-end"
-        >
+        <div v-if="show(constants.BASIC_DETAILS)" class="items-center flex justify-end">
           <span>
             Already have an account?
-            <NuxtLink
-              to="/auth/login"
-              class="text-red-600 text-[1.1875rem] underline underline-offset-2"
-            >
+            <NuxtLink to="/auth/login" class="text-red-600 text-[1.1875rem] underline underline-offset-2">
               Log In
             </NuxtLink>
           </span>
@@ -29,14 +17,8 @@
       </template>
       <div>
         <div class="text-center overflow-auto">
-          <UtSvg
-            name="logo/tima"
-            class="max-w-[6.125rem] h-[2.4375rem] mb-3 mt-[0.625rem]"
-          />
-          <div
-            v-if="$route.query.tab && !hideProgress.includes(currentTab)"
-            class="flex flex-row justify-end pr-4"
-          >
+          <UtSvg name="logo/tima" class="max-w-[6.125rem] h-[2.4375rem] mb-3 mt-[0.625rem]" />
+          <div v-if="$route.query.tab && !hideProgress.includes(currentTab)" class="flex flex-row justify-end pr-4">
             <UiProfileProgress :percent="authStore.progress" />
           </div>
           <div class="mb-[3.5625rem]"></div>
@@ -115,6 +97,18 @@ const tabMap = {
     activeOthers: [constants.BASIC_DETAILS],
     hideFrom: [constants.AGENCY],
   },
+
+  // [constants.DEMOGRAPHIC_INFO]: {
+  //   component: resolveComponent("SignUpCompleteProfile"),
+  //   prev: {
+  //     query: {
+  //       tab: constants.BASIC_DETAILS,
+  //     },
+  //   },
+  //   activeOthers: [constants.BASIC_DETAILS],
+  //   hideFrom: [constants.AGENCY],
+  // },
+
   [constants.REVIEW_PROFILE]: {
     component: resolveComponent("SignUpReviewProfile"),
     prev: {

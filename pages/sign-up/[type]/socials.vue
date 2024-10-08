@@ -15,33 +15,18 @@
           </p>
         </div>
 
-        <div
-          class="pb-[40px] max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-[2rem]"
-        >
+        <div class="pb-[40px] max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-[2rem]">
           <template v-for="social in socials" :key="social.icon">
-            <UiButtonAddSocial
-              class="w-full"
-              :label="social.label"
-              @open="onOpen"
-              :modal="getModal(social.icon)"
-              @closeModal="closeModal(social.icon)"
-              :icon="social.icon"
-              :id="social.icon"
-              :isCompleted="
-                authStore.connectedSocials.includes(
-                  getSocial(social.icon)?.name
-                )
-              "
-            />
+            <UiButtonAddSocial class="w-full" :label="social.label" @open="onOpen" :modal="getModal(social.icon)"
+              @closeModal="closeModal(social.icon)" :icon="social.icon" :id="social.icon" :isCompleted="authStore.connectedSocials.includes(
+                getSocial(social.icon)?.name
+              )
+                " />
           </template>
         </div>
         <div class="tm__box-598px pb-[60px]">
-          <UiButtonDefault
-            @click="toProfileReview"
-            class="w-full py-[0.875rem] mb-[2rem]"
-            label="Continue"
-            variant="primary"
-          />
+          <UiButtonDefault @click="toProfileReview" class="w-full py-[0.875rem] mb-[2rem]" label="Continue"
+            variant="primary" />
         </div>
       </div>
     </NuxtLayout>
@@ -192,8 +177,7 @@ const { state, execute, v$, validate } = useRequestState({
 
 function toProfileReview() {
   navigateTo({
-    name: "SignUp",
-    query: { tab: constants.REVIEW_PROFILE },
+    name: "SignUpDemographicInfo",
   });
 }
 
