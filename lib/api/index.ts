@@ -120,6 +120,15 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async updateProfile(data: any) {
+    return this.request<Response.GetUserProfile>({
+      url: "/users/update-profile",
+      requireAuth: true,
+      method: "POST",
+      data: this.toFormData(data),
+    });
+  }
+
   async accountSetup(data: FormData) {
     return this.request<Response.GetUserProfile>({
       url: "/users/setup-account",

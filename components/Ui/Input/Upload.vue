@@ -11,7 +11,7 @@
         <transition>
           <span
             v-show="fileName"
-            class="text-[1.1875rem] !text-left pl-[0.75rem] w-full"
+            class="text-[1.1875rem] dark:text-gray-600 !text-left pl-[0.75rem] w-full"
             >{{ fileName }}</span
           >
         </transition>

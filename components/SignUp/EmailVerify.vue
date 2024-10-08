@@ -49,6 +49,13 @@ const api = useAPI();
 
 const showResend = ref(false);
 
+const props = defineProps({
+  onSuccess: {
+    type: Object,
+    default: null,
+  },
+});
+
 onMounted(() => {
   console.log(authStore.user, authStore.profile);
 
@@ -89,7 +96,11 @@ const { execute, state } = useRequestState({
   },
   async onSuccess() {
     await authStore.getProfile();
-    goToProfileUpdate();
+    if (props.onSuccess) {
+      navigateTo(props.onSuccess);
+    } else {
+      goToProfileUpdate();
+    }
   },
 });
 

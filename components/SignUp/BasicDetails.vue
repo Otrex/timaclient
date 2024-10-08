@@ -49,6 +49,13 @@
         placeholder="Email address"
         :error-message="v$.emailAddress.$errors[0]?.$message.toString()"
       />
+      <UiInputPhone
+        class="w-full"
+        :model-value="form.phoneNumber"
+        @update:model-value="(data) => (form.phoneNumber = data.number)"
+        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
+        placeholder="234 803 443 3833"
+      />
       <UiInputText
         type="password"
         class="w-full"
@@ -58,13 +65,7 @@
         placeholder="Password"
         :error-message="v$.password.$errors[0]?.$message.toString()"
       />
-      <UiInputPhone
-        class="w-full"
-        :model-value="form.phoneNumber"
-        @update:model-value="(data) => (form.phoneNumber = data.number)"
-        :error-message="v$.phoneNumber.$errors[0]?.$message.toString()"
-        placeholder="234 803 443 3833"
-      />
+
       <div class="mb-[2.3125rem]">
         <label class="flex items-center gap-[0.625rem]">
           <input
