@@ -15,6 +15,12 @@ const allowedPaths = [
 export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore();
   const authenticated = authStore.isAuthenticated;
+  const profile = authStore.profile;
   if (astk(allowedPaths, to.path)) return;
+  if (profile?.profileSetupProgress === ProfileSetupState.PROFILE_IN_REVIEW) {
+    return navigateTo({ name: "Reviewing" });
+  }
+
+
   if (!authenticated) return navigateTo("/");
 });

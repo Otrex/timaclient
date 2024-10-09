@@ -74,7 +74,10 @@
             class="rounded-full w-[1.25rem] h-[1.25rem]"
           />
           <span class="text-[0.9375rem]">
-            I have read and understood the terms and conditions
+            I have read and understood the
+            <NuxtLink to="/terms" class="text-[#2BA2FD]"
+              >terms and conditions</NuxtLink
+            >
           </span>
         </label>
       </div>

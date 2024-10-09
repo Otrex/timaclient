@@ -10,6 +10,7 @@
       <slot :disabled="!editable"></slot>
     </div>
     <button
+      v-if="!editable"
       class="z-50 flex items-center justify-center bottom-1 p-2 w-[40px] h-[40px] rounded-full cursor-pointer"
       @click="$emit('update:editable', !editable)"
       :class="editable && '!bg-grey-200'"

@@ -39,16 +39,16 @@
         <UiButtonDefault
           class="w-full py-[0.875rem]"
           label="Accept"
-          @click="() => review('APPROVE')"
-          :loading="state === constants.LOADING"
-          :disabled="state === constants.LOADING"
+          @click="() => review('APPROVE').then(() => $emit('close'))"
+          :loading="state === constants.LOADING && reviewType === 'APPROVE'"
+          :disabled="state === constants.LOADING && reviewType === 'APPROVE'"
           variant="primary"
         />
         <UiButtonDefault
           class="w-full py-[0.875rem]"
-          @click="() => review('DECLINE')"
-          :loading="state === constants.LOADING"
-          :disabled="state === constants.LOADING"
+          @click="() => review('DECLINE').then(() => $emit('close'))"
+          :loading="state === constants.LOADING && reviewType === 'DECLINE'"
+          :disabled="state === constants.LOADING && reviewType === 'DECLINE'"
           label="Decline"
           variant="secondary"
         />
@@ -87,10 +87,12 @@ const props = defineProps({
   },
 });
 
+const reviewType = ref<string | null>();
 const api = useAPI();
 const { notify } = useNotification();
 const { execute: review, state } = useRequestState({
   action: (status: Payload.ReviewUser["review"]) => {
+    reviewType.value = status;
     return api.reviewUser({
       review: status,
       user_id: props.id,

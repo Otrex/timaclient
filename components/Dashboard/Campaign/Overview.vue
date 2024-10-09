@@ -6,8 +6,8 @@
       </div>
       <div class="md:w-3/4">
         <UiInputText
-          v-model="campaignStore.overview.name"
-          :error-message="v$.name?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.newCampaign.campaignName"
+          :error-message="v$.campaignName?.$errors[0]?.$message.toString()"
           placeholder="Write campaign name here"
           class="w-full"
         />
@@ -20,8 +20,8 @@
       </div>
       <div class="md:w-3/4">
         <UiInputTextArea
-          v-model="campaignStore.overview.briefDescription"
-          :error-message="v$.briefDescription?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.newCampaign.campaignAbout"
+          :error-message="v$.campaignAbout?.$errors[0]?.$message.toString()"
           class="w-full h-[9.125rem]"
           placeholder="Brief"
         />
@@ -36,8 +36,8 @@
       </div>
       <div class="md:w-3/4">
         <UiInputText
-          v-model="campaignStore.overview.website"
-          :error-message="v$.website?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.newCampaign.campaignWebsite"
+          :error-message="v$.campaignWebsite?.$errors[0]?.$message.toString()"
           placeholder="Add campaign website"
           class="w-full"
         />
@@ -50,9 +50,9 @@
       </div>
       <div class="md:w-3/4">
         <UiInputTextSelect
-          :options="tools.generationOptions(['NGN', 'USD'])"
-          :error-message="v$.plannedBudget?.$errors[0]?.$message.toString()"
-          v-model="campaignStore.overview.plannedBudget"
+          :options="currency"
+          :error-message="v$.planningBudget?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.newCampaign.planningBudget"
           placeholder="Add Your Budget"
           type="number"
         />
@@ -61,34 +61,19 @@
 
     <div class="tima__form">
       <div class="md:w-1/4 pt-2">
-        <label class="w-full block whitespace-nowrap"> Cost per post </label>
-      </div>
-      <div class="md:w-3/4">
-        <UiInputTextSelect
-          :options="tools.generationOptions(['NGN', 'USD'])"
-          :error-message="v$.costPerPost?.$errors[0]?.$message.toString()"
-          v-model="campaignStore.overview.costPerPost"
-          placeholder="Add Cost/Post"
-          type="number"
-        />
-      </div>
-    </div>
-
-    <div class="tima__form">
-      <div class="md:w-1/4 pt-2">
-        <label class="w-full block"> Social media platforms</label>
+        <label class="w-full block"> Social media platforms </label>
       </div>
       <div class="md:w-3/4">
         <div
           :class="[
             'grid grid-cols-2 md:grid-cols-3 gap-[1.875rem]',
-            v$.socialMediaPlatforms?.$errors[0]?.$message.toString() &&
+            v$.socialMediaPlatform?.$errors[0]?.$message.toString() &&
               'border border-red-500 border-solid rounded-[20px] p-3',
           ]"
         >
           <UiInputOption
             type="multi"
-            v-model="campaignStore.overview.socialMediaPlatforms"
+            v-model="campaignStore.newCampaign.socialMediaPlatform"
             name="social-option"
             value="instagram"
             main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
@@ -99,7 +84,7 @@
           <UiInputOption
             type="multi"
             name="social-option"
-            v-model="campaignStore.overview.socialMediaPlatforms"
+            v-model="campaignStore.newCampaign.socialMediaPlatform"
             value="tiktok"
             main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
@@ -109,7 +94,7 @@
           <UiInputOption
             type="multi"
             name="social-option"
-            v-model="campaignStore.overview.socialMediaPlatforms"
+            v-model="campaignStore.newCampaign.socialMediaPlatform"
             value="twitter"
             main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
@@ -119,7 +104,7 @@
           <UiInputOption
             type="multi"
             name="social-option"
-            v-model="campaignStore.overview.socialMediaPlatforms"
+            v-model="campaignStore.newCampaign.socialMediaPlatform"
             value="youtube"
             main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
@@ -129,7 +114,7 @@
           <UiInputOption
             type="multi"
             name="social-option"
-            v-model="campaignStore.overview.socialMediaPlatforms"
+            v-model="campaignStore.newCampaign.socialMediaPlatform"
             value="facebook"
             main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
@@ -139,7 +124,7 @@
           <UiInputOption
             type="multi"
             name="social-option"
-            v-model="campaignStore.overview.socialMediaPlatforms"
+            v-model="campaignStore.newCampaign.socialMediaPlatform"
             value="linkedin"
             main-class="!rounded-[1.25rem] text-center py-[1.4375rem]"
           >
@@ -160,8 +145,6 @@
 
 <script setup lang="ts">
 import type { UseEventBusReturn } from "@vueuse/core";
-import type { Core } from "~/lib/interfaces";
-import type { UnPartial } from "~/lib/interfaces/utils";
 
 const props = defineProps<{
   bus?: UseEventBusReturn<string, any>;
@@ -169,17 +152,18 @@ const props = defineProps<{
 
 const rules = useValidationRules();
 const campaignStore = useCampaignStore();
-const overview = computed(() => campaignStore.overview);
-
+const currency = tools.generationOptions(["NGN", "USD"]).map((e) => ({
+  ...e,
+  label: e.label.toUpperCase(),
+}));
 const v$ = useValidator(
   rules.CREATE_CAMPAIGN_OVERVIEW,
-  campaignStore.overview as UnPartial<Core.Campaign["overview"]>,
+  campaignStore.newCampaign,
   { $autoDirty: true }
 );
 
 async function proceed() {
-  const v = await v$.value.$validate();
-  if (!v) return;
+  if (!(await v$.value.$validate())) return;
   navigateTo({
     query: {
       tab: constants.BRAND_INFLUENCERS,
@@ -187,13 +171,9 @@ async function proceed() {
   });
 }
 
-props.bus?.on(() => {
-  proceed();
+props.bus?.on((message) => {
+  if (message === "OVERVIEW") {
+    proceed();
+  }
 });
 </script>
-
-<style scoped>
-.tima__form {
-  @apply flex md:flex-row flex-col w-full mb-[1.75rem];
-}
-</style>

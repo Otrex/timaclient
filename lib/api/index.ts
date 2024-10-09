@@ -1,5 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
+import type { GetCampaignsResponse } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
@@ -282,6 +283,34 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getBrandCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+    return this.request<GetCampaignsResponse['data']>({
+      url: '/brand/campaign/fetch',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...(statusProgress && { statusProgress })
+      }
+    })
+  }
+
+  async createCampaign(data: Payload.CreateCampaign) {
+    const body = new FormData();
+    const { banner, ...rest } = data;
+
+    body.append('banner', banner);
+    body.append('requestBody', JSON.stringify(rest));
+
+    return this.request({
+      url: '/brand/campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: body,
+    })
+  }
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
@@ -360,20 +389,6 @@ export default class TimaAPI extends UploadAPI {
       method: "DELETE",
     });
   }
-
-  async getCampaigns(payload: Payload.GetCampaigns) {
-    new Error("Method not implemented.");
-  }
-
-  async getBrandCampaigns(payload: Payload.GetBrandCampaigns) {
-    const { name, ...data } = payload;
-    return this.request<Response.GetCampaigns>({
-      url: this.querify(`/agency/v1/campaigns/brand/${name}`, data),
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
 
 
   async getAddress() {
@@ -808,15 +823,6 @@ export default class TimaAPI extends UploadAPI {
       url: "/user/v1/profile/brand",
       requireAuth: true,
       method: "PUT",
-      data,
-    });
-  }
-
-  async createCampaign(data: Payload.CreateCampaign) {
-    return this.request<Response.GetCampaign>({
-      url: "/agency/v1/campaigns",
-      requireAuth: true,
-      method: "POST",
       data,
     });
   }

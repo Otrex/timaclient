@@ -1,15 +1,21 @@
 <template>
-  <UiLayoutPreview title="SUMMARY" :hide-back="true" @next="props.bus?.emit()">
+  <UiLayoutPreview
+    title="SUMMARY"
+    :hide-back="true"
+    @next="props.bus?.emit('OVERVIEW')"
+  >
     <div class="flex flex-col gap-3">
-      <p><b>Campaign name:</b> {{ campaignStore.overview.name }}</p>
+      <p><b>Campaign name:</b> {{ campaignStore.newCampaign.campaignName }}</p>
       <p>
-        <b>About campaign:</b> {{ campaignStore.overview.briefDescription }}
+        <b>About campaign:</b> {{ campaignStore.newCampaign.campaignAbout }}
       </p>
-      <p><b>Planned budget:</b> {{ campaignStore.overview.plannedBudget }}</p>
-      <p><b>Cost per post:</b> {{ campaignStore.overview.costPerPost }}</p>
+      <p>
+        <b>Planned budget:</b> {{ campaignStore.newCampaign.planningBudget }}
+      </p>
+      <!-- <p><b>Cost per post:</b> {{ campaignStore.overview.costPerPost }}</p> -->
       <p>
         <b>Social media platforms:</b>
-        {{ campaignStore.overview.socialMediaPlatforms?.join(", ") }}
+        {{ campaignStore.newCampaign.socialMediaPlatform?.join(", ") }}
       </p>
     </div>
   </UiLayoutPreview>

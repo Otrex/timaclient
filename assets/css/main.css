@@ -9,6 +9,10 @@
   @apply mx-auto max-w-[calc(37.375rem_+_2.5rem)] px-[calc(2.5rem_/_2)];
 }
 
+.tima__form {
+  @apply flex md:flex-row flex-col w-full mb-[1.75rem];
+}
+
 /* TRANSITIONS & ANIMATIONS */
 @keyframes spin {
   from {

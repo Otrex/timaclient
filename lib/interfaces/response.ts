@@ -25,6 +25,46 @@ export interface GetCreativesOptions
     }[]
   > { }
 
+
+export interface GetCampaignsResponse extends IResponse<{
+  total: number;
+  data: Array<{
+    audienceLocation: string[];
+    campaignAbout: string;
+    campaignWebsite: string;
+    endDate: string;
+    contentPlacement: string[];
+    campaignObjectiveAwareness: string;
+    creativeBrief: string;
+    campaignObjectiveAcquisition: string;
+    referenceLink: string;
+    audienceAgeGroup: string[];
+    createdAt: string;
+    contentType: string[];
+    campaign_id: string;
+    updatedAt: string;
+    campaignObjective: string;
+    influencerID: string[];
+    planningBudget: string;
+    audienceSize: string[];
+    campaignRule: string;
+    banner: string;
+    socialMediaPlatform: string[];
+    user_id: string;
+    audienceGender: string[];
+    viewType: boolean;
+    creativeTone: string;
+    category: string[];
+    campaignName: string;
+    startDate: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}> { }
+
+
 export interface UpdateIndustries extends IResponse<{
   userPublicId: string;
   selectedIndustries: string[];

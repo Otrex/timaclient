@@ -1,7 +1,10 @@
 <template>
-  <NuxtLayout :prev="{ name: 'index' }" name="kyc">
+  <NuxtLayout :prev="steps[currentStepIndex - 1] || 'index'" name="kyc">
     <template #topnav>
-      <div v-if="isActive(1)" class="items-center flex justify-end">
+      <div
+        v-if="route.path.includes('/brand/basic-info')"
+        class="items-center flex justify-end"
+      >
         <span>
           Already have an account?
           <NuxtLink
@@ -40,7 +43,7 @@
 <script setup lang="ts">
 const steps = [
   {
-    name: "SignUpBasicDetails",
+    name: "RegisterBasicDetails",
     path: "/brand/basic-info",
     title: "Basic details",
     desc: "Please provide your name and details",
@@ -67,7 +70,7 @@ const steps = [
 
 const route = useRoute();
 const currentStepIndex = computed(() => {
-  if (route.path.includes("/brand/comfirm-details")) return 4;
+  if (route.path.includes("/brand/comfirm-details")) return 5;
   return steps.findIndex((step) => route.path.includes(step.path));
 });
 function isActive(num: number) {

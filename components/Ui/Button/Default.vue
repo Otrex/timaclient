@@ -2,7 +2,12 @@
   <button
     v-bind="$attrs"
     :class="
-      twMerge([variants[props.variant], props.loading && 'relative', 'pad'])
+      twMerge([
+        variants[props.variant],
+        props.loading && 'relative',
+        'pad',
+        $attrs.class as any,
+      ])
     "
   >
     <div

@@ -48,17 +48,9 @@ const route = useRoute();
 const api = useAPI();
 
 const showResend = ref(false);
-
-const props = defineProps({
-  onSuccess: {
-    type: Object,
-    default: null,
-  },
-});
+const emit = defineEmits(["success"]);
 
 onMounted(() => {
-  console.log(authStore.user, authStore.profile);
-
   if (authStore.user?.hasVerifiedEmail) {
     return goToProfileUpdate();
   }
@@ -76,12 +68,7 @@ function goToProfileUpdate() {
       },
     });
   } else {
-    navigateTo({
-      query: {
-        tab: constants.BASIC_INFORMATION,
-        email: route.query.email as string,
-      },
-    });
+    emit("success");
   }
 }
 
@@ -94,13 +81,10 @@ const { execute, state } = useRequestState({
       text: e.description,
     });
   },
-  async onSuccess() {
-    await authStore.getProfile();
-    if (props.onSuccess) {
-      navigateTo(props.onSuccess);
-    } else {
+  onSuccess() {
+    authStore.getProfile().then(() => {
       goToProfileUpdate();
-    }
+    });
   },
 });
 

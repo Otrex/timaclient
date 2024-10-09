@@ -94,7 +94,9 @@
       </div>
     </div>
     <div v-else>
-      <SignUpEmailVerify :onSuccess="{ name: 'SignUpBrandCompanyInfo' }" />
+      <SignUpEmailVerify
+        @success="() => navigateTo('/sign-up/brand/company-info')"
+      />
     </div>
   </div>
 </template>
@@ -103,7 +105,7 @@
 import { useDebounceFn } from "@vueuse/core";
 import { CREATE_USER_RULE } from "~/lib/validation/rules";
 definePageMeta({
-  name: "SignUpBasicDetails",
+  name: "RegisterBasicDetails",
 });
 
 onMounted(() => {

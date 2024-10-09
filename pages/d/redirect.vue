@@ -6,7 +6,7 @@
 import { ProfileSetupState, UserType } from "~/lib/enums";
 
 definePageMeta({
-  name: "Redirect",
+  name: "Redirect-D",
   middleware: [
     "options",
     "dashboard",

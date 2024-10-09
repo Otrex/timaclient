@@ -274,7 +274,7 @@ export const UPDATE_BRAND_INFO_RULE = {
 };
 
 export const CREATE_CAMPAIGN_INFLUENCERS = {
-  influencerCategory: {
+  category: {
     required: helpers.withMessage(
       "Please select your influencer category",
       (data: string[]) => data.length > 0
@@ -307,12 +307,12 @@ export const CREATE_CAMPAIGN_INFLUENCERS = {
 };
 
 export const CREATE_CAMPAIGN_CREATIVE = (form: Record<string, any>) => ({
-  paymentType: {
-    required: helpers.withMessage(
-      "Please select a valid payment type",
-      required
-    ),
-  },
+  // paymentType: {
+  //   required: helpers.withMessage(
+  //     "Please select a valid payment type",
+  //     required
+  //   ),
+  // },
   contentType: {
     required: helpers.withMessage(
       "Please select a valid content type",
@@ -354,7 +354,7 @@ export const CREATE_CAMPAIGN_CREATIVE = (form: Record<string, any>) => ({
   creativeTone: {
     required: helpers.withMessage("Please select a creative tone", required),
   },
-  rules: {
+  campaignRule: {
     required: helpers.withMessage(
       "Please enter your rules for this campaign",
       required
@@ -364,48 +364,48 @@ export const CREATE_CAMPAIGN_CREATIVE = (form: Record<string, any>) => ({
     required: helpers.withMessage("Please enter your reference link", required),
   },
 
-  awarenessObjective: {
+  campaignObjectiveAwareness: {
     required: helpers.withMessage(
       "Please select your awareness objectives",
       (data: string[]) => data.length > 0
     ),
   },
 
-  acquisitionObjective: {
+  campaignObjectiveAcquisition: {
     required: helpers.withMessage(
       "Please select your acquisition objectives",
       (data: string[]) => data.length > 0
     ),
   },
 
-  thumbnail: {
+  banner: {
     required: helpers.withMessage("Please upload a thumbnail", required),
   },
 });
 
 export const CREATE_CAMPAIGN_OVERVIEW = {
-  name: {
+  campaignName: {
     required: helpers.withMessage(
       "Please enter a valid campaign name",
       required
     ),
   },
 
-  socialMediaPlatforms: {
+  socialMediaPlatform: {
     required: helpers.withMessage(
       "Please select your social media platforms",
       (data: string[]) => data.length > 0
     ),
   },
 
-  briefDescription: {
+  campaignAbout: {
     required: helpers.withMessage(
       "Please enter a valid campaign description",
       required
     ),
   },
 
-  plannedBudget: {
+  planningBudget: {
     required: helpers.withMessage(
       "Please enter a valid campaign budget",
       required
@@ -416,18 +416,18 @@ export const CREATE_CAMPAIGN_OVERVIEW = {
     ),
   },
 
-  costPerPost: {
-    required: helpers.withMessage(
-      "Please enter a valid campaign budget",
-      required
-    ),
-    max: helpers.withMessage(
-      "Please enter a valid amount of budget",
-      (data: number) => +data > 0
-    ),
-  },
+  // costPerPost: {
+  //   required: helpers.withMessage(
+  //     "Please enter a valid campaign budget",
+  //     required
+  //   ),
+  //   max: helpers.withMessage(
+  //     "Please enter a valid amount of budget",
+  //     (data: number) => +data > 0
+  //   ),
+  // },
 
-  website: {
+  campaignWebsite: {
     url: helpers.withMessage(
       "Please enter a valid url",
       helpers.regex(

@@ -74,7 +74,7 @@ function proceed() {
 
   if (joinAs.value === constants.BRAND) {
     return navigateTo({
-      name: "SignUpBasicDetails",
+      name: "RegisterBasicDetails",
     });
   }
 

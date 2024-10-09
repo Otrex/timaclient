@@ -1,12 +1,7 @@
 <template>
   <div class="dark:bg-slate-800 pt-[6.25rem] dark:text-white w-full h-screen">
-    <div
-      class="dark:bg-slate-800 dark:text-white text-center max-w-[56.125rem] px-[0.625rem] mx-auto"
-    >
-      <UtSvg
-        name="logo/tima"
-        class="max-w-[6.125rem] h-[2.4375rem] mb-[57px]"
-      />
+    <div class="dark:bg-slate-800 dark:text-white text-center max-w-[56.125rem] px-[0.625rem] mx-auto">
+      <UtSvg name="logo/tima" class="max-w-[6.125rem] h-[2.4375rem] mb-[57px]" />
       <div class="text-left">
         <h1 class="text-[2.4375rem] text-center mb-[54px]">
           Terms & Conditions
@@ -46,15 +41,8 @@
         </p>
       </div>
 
-      <div
-        class="flex flex-col gap-[1rem] max-w-[37.375rem] mx-auto mt-[3.4375rem]"
-      >
-        <UiButtonDefault
-          @click="toLogin"
-          label="Go Back"
-          variant="primary"
-          class="w-full py-[0.875rem]"
-        />
+      <div class="flex flex-col gap-[1rem] max-w-[37.375rem] mx-auto mt-[3.4375rem]">
+        <UiButtonDefault @click="toLogin" label="Go Back" variant="primary" class="w-full py-[0.875rem]" />
       </div>
     </div>
   </div>
@@ -65,8 +53,12 @@ definePageMeta({
   name: "TermsAndCondition",
 });
 
+const route = useRoute();
+const router = useRouter();
+
 function toLogin() {
-  window.location.href = "/auth/login";
+  // window.location.href = "/auth/login";
+  navigateTo(`/signup/${route.params.type}?tab=basic-details`);
 }
 </script>
 
