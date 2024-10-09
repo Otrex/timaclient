@@ -68,21 +68,18 @@
         class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
       >
         <template v-for="(cam, i) in campaigns" :key="i">
-          <NuxtLink
-            :to="{ name: 'ViewBrandCampaign', params: { id: cam.campaign_id } }"
-          >
-            <DashboardCampaignCard
-              :publicId="cam.campaign_id"
-              :title="cam.campaignName"
-              :image="cam.banner"
-              :category="cam.category"
-              :brand="authStore.profile?.companyName!"
-              :description="cam.campaignAbout"
-              :budget="+cam.planningBudget"
-              :deadline="cam.endDate"
-              :completion="0"
-            />
-          </NuxtLink>
+          <DashboardCampaignCard
+            @click="viewCampaign(cam as any)"
+            :publicId="cam.campaign_id"
+            :title="cam.campaignName"
+            :image="cam.banner"
+            :category="cam.category"
+            :brand="authStore.profile?.companyName!"
+            :description="cam.campaignAbout"
+            :budget="+cam.planningBudget"
+            :deadline="cam.endDate"
+            :completion="0"
+          />
         </template>
       </section>
     </div>
@@ -90,6 +87,7 @@
 </template>
 
 <script setup lang="ts">
+import type { Core } from "~/lib/interfaces";
 import type { GetCampaignsResponse } from "~/lib/interfaces/response";
 
 definePageMeta({
@@ -133,6 +131,17 @@ const addedFilter = computed(() => {
 watch(addedFilter, () => {
   execute();
 });
+
+function viewCampaign(campaign: Core.Campaign) {
+  useCampaignStore().$patch({
+    currentCampaign: campaign,
+  });
+
+  navigateTo({
+    name: "ViewBrandCampaign",
+    params: { id: campaign.campaign_id },
+  });
+}
 
 const { state, execute } = useRequestState({
   action: () =>

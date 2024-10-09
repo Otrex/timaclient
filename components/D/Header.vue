@@ -11,26 +11,8 @@
       <div class="whitespace-nowrap">
         <slot name="left">
           <div class="flex items-center gap-3">
-            <UiButtonDefault
-              v-if="route.name === 'Campaign'"
-              @click="
-                navigateTo({
-                  name: 'CreateCampaign',
-                })
-              "
-              class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
-              variant="primary"
-            >
-              <div class="flex items-center gap-3">
-                <UtSvg name="plus-circle" dim w="1.5rem" h="1.5rem" />
-                <span>New Campaign</span>
-              </div>
-            </UiButtonDefault>
-            <h2
-              class="font-bold"
-              v-if="route.name !== 'Campaign' && typeof routeName === 'string'"
-            >
-              {{ routeName }}
+            <h2 class="font-bold" v-if="typeof routeName === 'string'">
+              {{ routeName === "ViewBrandCampaign" ? "Campaign" : routeName }}
             </h2>
             <component :is="routeName" />
           </div>
@@ -41,7 +23,7 @@
       <slot name="middle">
         <div
           class="flex gap-[1.25rem] relative"
-          v-if="['Explore'].includes(route.name as string)"
+          v-if="routeName === 'ViewBrandCampaign'"
         >
           <UiInputText
             class="w-full"
@@ -51,6 +33,22 @@
             placeholder="Search campaigns"
             search
           />
+
+          <UiButtonDefault
+            v-if="route.name === 'ViewBrandCampaign'"
+            @click="
+              navigateTo({
+                name: 'CreateCampaign',
+              })
+            "
+            class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
+            variant="primary"
+          >
+            <div class="flex items-center gap-3">
+              <UtSvg name="plus-circle" dim w="1.5rem" h="1.5rem" />
+              <span>New Campaign</span>
+            </div>
+          </UiButtonDefault>
 
           <div
             v-if="searchResults.length"
@@ -132,8 +130,7 @@ const routeNameMap: Record<string, any> = {
 };
 
 const routeName = computed(
-  () =>
-    routeNameMap[route.name as string] || tools.capitalize(route.name as string)
+  () => routeNameMap[route.name as string] || route.name
 );
 
 const authStore = useAuthStore();

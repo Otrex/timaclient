@@ -66,12 +66,9 @@
         </p>
 
         <div class="mt-[1.625rem]">
-          <UiTab
-            class="w-full"
-            :menu-items="tabs"
-            @change="tabChange"
-            :default-tab="constants.CAMPAIGN_INFLUENCERS"
-          />
+          <Transition>
+            <NuxtPage />
+          </Transition>
         </div>
       </section>
       <UtModal
@@ -101,21 +98,20 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  name: "ViewBrandCampaign",
-});
+import { Core } from "~/lib/interfaces";
 
 const api = useAPI();
 const route = useRoute();
 const confirmAccept = ref();
-const campaign = ref();
+const campaign = computed(() => useCampaignStore().currentCampaign);
+const openShare = ref(false);
 const { notify } = useNotification();
 
 const { state } = useRequestState({
   action: () => api.getCampaign(route.params.id as string),
   immediately: true,
   onSuccess: (response) => {
-    campaign.value = response.data;
+    campaign.value = response.data as any;
   },
 });
 

@@ -3,11 +3,13 @@ import type { Core } from "~/lib/interfaces";
 
 type IStore = {
   newCampaign: Core.Campaign;
+  currentCampaign: Core.Campaign | null;
 };
 
 export const useCampaignStore = defineStore("campaign", {
   state: (): IStore => {
     return {
+      currentCampaign: null,
       newCampaign: {
         campaignName: "",
         campaignObjective: "",
@@ -39,7 +41,7 @@ export const useCampaignStore = defineStore("campaign", {
   },
 
   getters: {
-
+    currentCampaign: (state) => state.currentCampaign,
   },
 
   actions: {

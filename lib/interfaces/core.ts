@@ -84,6 +84,7 @@ export interface UserReviewResponse {
 }
 
 export interface Campaign {
+  campaign_id?: string;
   campaignName: string;
   campaignObjective: string;
   campaignAbout: string;
