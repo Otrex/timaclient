@@ -15,18 +15,38 @@
           </p>
         </div>
 
-        <div class="pb-[40px] max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-[2rem]">
+        <div
+          class="pb-[40px] max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-[2rem]"
+        >
           <template v-for="social in socials" :key="social.icon">
-            <UiButtonAddSocial class="w-full" :label="social.label" @open="onOpen" :modal="getModal(social.icon)"
-              @closeModal="closeModal(social.icon)" :icon="social.icon" :id="social.icon" :isCompleted="authStore.connectedSocials.includes(
-                getSocial(social.icon)?.name
-              )
-                " />
+            <UiButtonAddSocial
+              class="w-[15rem]"
+              :label="social.label"
+              @open="onOpen"
+              :modal="getModal(social.icon)"
+              @closeModal="closeModal(social.icon)"
+              :icon="social.icon"
+              :id="social.icon"
+              :isCompleted="
+                authStore.connectedSocials.includes(
+                  getSocial(social.icon)?.name
+                )
+              "
+            />
           </template>
         </div>
-        <div class="tm__box-598px pb-[60px]">
-          <UiButtonDefault @click="toProfileReview" class="w-full py-[0.875rem] mb-[2rem]" label="Continue"
-            variant="primary" />
+        <div class="tm__box-598px flex flex-row items-center justify-center">
+          <button
+            class="px-[5rem] py-[0.875rem] rounded-3xl text-red-600 hover:bg-gray-100"
+          >
+            Skip
+          </button>
+          <UiButtonDefault
+            @click="toProfileReview"
+            class="w-full py-[0.875rem] !px-[2rem]"
+            label="Continue"
+            variant="primary"
+          />
         </div>
       </div>
     </NuxtLayout>

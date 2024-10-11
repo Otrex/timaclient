@@ -23,7 +23,7 @@
 
             <UiInputOverlayUpload
               type="pics"
-              v-model:file="form.profileImage"
+              v-model:file="form.profileImage as any"
               v-show="editable.profileImage"
               class="absolute inset-0 rounded-full"
             >
@@ -63,22 +63,6 @@
             <UiInputText
               v-model="form.username"
               placeholder="Username"
-              :disabled="disabled"
-              class="w-full"
-            />
-          </UiEditOverlay>
-        </div>
-        <div>
-          <label class="!text-left block mb-[10px] text-lg text-[#777777]">
-            Email
-          </label>
-          <UiEditOverlay
-            v-model:editable="editable.email"
-            v-slot="{ disabled }"
-          >
-            <UiInputText
-              v-model="form.emailAddress"
-              placeholder="Email"
               :disabled="disabled"
               class="w-full"
             />
@@ -196,6 +180,9 @@
         <div class="inline-flex flex-row gap-[1rem] mt-[3.4375rem]">
           <UiButtonDefault
             v-if="Object.values(editable).some((e) => e)"
+            @click="() => update()"
+            :loading="updating === constants.LOADING"
+            :disabled="updating === constants.LOADING"
             label="Save Changes"
             variant="outline-primary"
             class="w-full py-[0.875rem] px-[2.8125rem]"
@@ -228,7 +215,6 @@ const editable = reactive({
   username: false,
   phone: false,
   language: false,
-  email: false,
   documents: false,
   address: false,
   industries: false,
@@ -238,9 +224,8 @@ const form = reactive({
   language: undefined,
   username: user.value?.userName,
   phone: user.value?.phoneNumber,
-  profileImage: null as File | null,
+  profileImage: profile.value?.profileImage as File | string,
   industries: profile.value?.industries,
-  emailAddress: user.value?.emailAddress,
   address: `${profile.value?.address}, ${profile.value?.city}, ${profile.value?.state}`,
   documents: (profile.value?.documents || []).map((e) => e.documentUrl),
 });
@@ -263,6 +248,41 @@ const { state, execute: proceed } = useRequestState({
       type: "error",
       title: error.title,
       text: error.description,
+    });
+  },
+});
+
+const { state: updating, execute: update } = useRequestState({
+  action: () => {
+    const payload: Record<string, any> = {
+      userName: form.username,
+      phoneNumber: form.phone,
+      industries: form.industries,
+      address: form.address,
+    };
+
+    if (form.profileImage && form.profileImage instanceof File) {
+      payload.profileImage = form.profileImage;
+    }
+
+    if (!form.documents.every((e: any) => typeof e === "string")) {
+      payload.documents = form.documents;
+    }
+
+    return api.updateProfile(payload);
+  },
+  onError(error) {
+    notify({
+      type: "error",
+      title: error.title,
+      text: error.__error?.response?.data?.error,
+    });
+  },
+  onSuccess() {
+    notify({
+      type: "success",
+      title: "Profile updated",
+      text: "Your profile has been updated",
     });
   },
 });

@@ -9,10 +9,8 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          :error-message="
-            v$.influencerCategory?.$errors[0]?.$message.toString()
-          "
-          v-model="campaignStore.influencer.influencerCategory"
+          :error-message="v$.category?.$errors[0]?.$message.toString()"
+          v-model="campaignStore.newCampaign.category"
           :options="tools.generationOptions(industries)"
         />
       </div>
@@ -29,7 +27,7 @@
           class="w-full"
           :error-message="v$.audienceSize?.$errors[0]?.$message.toString()"
           :options="tools.generationOptions(options?.size || [])"
-          v-model="campaignStore.influencer.audienceSize"
+          v-model="campaignStore.newCampaign.audienceSize"
         />
       </div>
     </div>
@@ -44,7 +42,7 @@
         <UiInputSelectMulti
           class="w-full"
           :error-message="v$.audienceGender?.$errors[0]?.$message.toString()"
-          v-model="campaignStore.influencer.audienceGender"
+          v-model="campaignStore.newCampaign.audienceGender"
           :options="tools.generationOptions(options?.gender || [])"
         />
       </div>
@@ -59,7 +57,7 @@
       <div class="md:w-3/4">
         <UiInputSelectMulti
           class="w-full"
-          v-model="campaignStore.influencer.audienceAgeGroup"
+          v-model="campaignStore.newCampaign.audienceAgeGroup"
           :error-message="v$.audienceAgeGroup?.$errors[0]?.$message.toString()"
           :options="tools.generationOptions(options?.ageGroup || [])"
         />
@@ -74,10 +72,27 @@
       </div>
       <div class="md:w-3/4">
         <UiInputSelectMulti
-          v-model="campaignStore.influencer.audienceLocation"
+          v-model="campaignStore.newCampaign.audienceLocation"
           :error-message="v$.audienceLocation?.$errors[0]?.$message.toString()"
           class="w-full"
           :options="locations"
+        />
+      </div>
+    </div>
+
+    <div class="tima__form">
+      <div class="md:w-1/4 pt-2">
+        <label class="w-full block whitespace-nowrap">
+          Invite <sub class="md:block">(select influencer to invite)</sub>
+        </label>
+      </div>
+      <div class="md:w-3/4">
+        <UiInputMultiSelectLte
+          v-model="campaignStore.newCampaign.audienceLocation"
+          :error-message="v$.audienceLocation?.$errors[0]?.$message.toString()"
+          v-model:entries="campaignStore.newCampaign.audienceLocation"
+          :options="locations"
+          class="w-full"
         />
       </div>
     </div>
@@ -86,8 +101,6 @@
 
 <script setup lang="ts">
 import type { UseEventBusReturn } from "@vueuse/core";
-import type { Core } from "~/lib/interfaces";
-import type { UnPartial } from "~/lib/interfaces/utils";
 
 const props = defineProps<{
   bus?: UseEventBusReturn<string, any>;
@@ -97,13 +110,13 @@ const rules = useValidationRules();
 const optionsStore = useOptionsStore();
 const campaignStore = useCampaignStore();
 
-const options = computed(() => optionsStore.$campaignOptions[0]);
+const options = computed(() => optionsStore.$campaignOptions);
 const industries = computed(() => optionsStore.$industries);
 const locations = computed(() => optionsStore.$countries);
 
 const v$ = useValidator(
   rules.CREATE_CAMPAIGN_INFLUENCERS,
-  campaignStore.influencer as UnPartial<Core.Campaign["influencer"]>,
+  campaignStore.newCampaign,
   { $autoDirty: true }
 );
 
@@ -117,8 +130,10 @@ async function proceed() {
   });
 }
 
-props.bus?.on(() => {
-  proceed();
+props.bus?.on((message) => {
+  if (message === "INFLUENCER_SUMMARY") {
+    proceed();
+  }
 });
 </script>
 

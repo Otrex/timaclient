@@ -19,7 +19,7 @@
         class="absolute top-[2px] max-w-[6.4375rem] bottom-[2px] right-[2px] flex items-center bg-inherit justify-center rounded-r-[2.5rem]"
       >
         <select
-          class="w-full h-full bg-[#CCE9FF] dark:text-[#000] border-0 rounded-[2.5rem]"
+          class="w-full h-full bg-[#CCE9FF] px-3 dark:text-[#000] border-0 rounded-[2.5rem]"
         >
           <option
             v-for="(opt, idx) in props.options"

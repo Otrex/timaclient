@@ -1,11 +1,11 @@
 <template>
   <transition mode="out-in">
     <div
+      v-show="key"
       :class="[
         !noMaxWidth || ' max-w-[23.5rem]',
-        '  h-full dark:border-slate-500 rounded dark:bg-slate-800 outline-solid outline-slate-300 hover:outline-4 outline',
+        'h-full dark:border-slate-500 rounded dark:bg-slate-800 outline-solid outline-slate-200 hover:outline-4 hover:outline-red-600 outline',
       ]"
-      v-show="key"
     >
       <div
         class="mb-[1.25rem] rounded rounded-b-none overflow-hidden h-[12.9375rem] relative"
@@ -81,9 +81,11 @@
       >
         <div>
           <h3 class="!text-[1.3493rem] leading-3">{{ props.brand }}</h3>
-          <span class="text-[--clr-grey-300] text-[0.8125rem]">{{
-            props.category
-          }}</span>
+          <span
+            v-if="props.category && props.category.length"
+            class="text-[--clr-grey-300] text-[0.8125rem]"
+            >{{ props.category }}</span
+          >
           <p
             class="text-[--clr-grey-400] dark:text-slate-50 mt-[0.5625rem] nl mb-[1rem]"
           >
@@ -97,7 +99,10 @@
               tools.formatCurrency(props.budget, "&#8358;")
             }}</span>
           </p>
-          <p class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]">
+          <p
+            v-if="props.deadline"
+            class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]"
+          >
             Deadline:
             <span class="text-black dark:text-slate-50">{{
               tools.formatDate(props.deadline)

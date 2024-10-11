@@ -2,14 +2,14 @@
   <div class="mt-[1.4375rem]">
     <div class="h-[10.625rem] mb-[1.4375rem] w-full overflow-hidden">
       <div
-        v-if="!campaignStore.creative.thumbnail"
+        v-if="!campaignStore.newCampaign.banner"
         class="w-full h-full flex items-center font-extrabold bg-slate-300 justify-center"
       >
         Thumbnail
       </div>
       <UiImg
         v-else
-        :src="thumb(campaignStore.creative.thumbnail)"
+        :src="tools.toObjectURL(campaignStore.newCampaign.banner)"
         alt="logo"
         class="w-full h-full object-cover"
       />
@@ -17,25 +17,32 @@
 
     <section>
       <h2 class="mb-[1rem] font-bold">Campaign Information</h2>
-      <h3 class="mb-[1rem]">{{ campaignStore.overview.name }} Campaign</h3>
+      <h3 class="mb-[1rem]">
+        {{ campaignStore.newCampaign.campaignName }} Campaign
+      </h3>
       <p class="mb-[1.4375rem]">
-        {{ campaignStore.overview.briefDescription }}
+        {{ campaignStore.newCampaign.campaignAbout }}
       </p>
 
       <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
-        <p class="nl">Campaign website: {{ campaignStore.overview.website }}</p>
+        <p class="nl">
+          Campaign website: {{ campaignStore.newCampaign.campaignWebsite }}
+        </p>
         <p class="nl">
           Planned Budget:
-          {{ tools.formatCurrency(campaignStore.overview.plannedBudget || 0) }}
+          {{
+            tools.formatCurrency(+campaignStore.newCampaign.planningBudget || 0)
+          }}
         </p>
-        <p class="nl">
+        <!-- <p class="nl">
           Cost per post:
           {{ tools.formatCurrency(campaignStore.overview.costPerPost || 0) }}
-        </p>
+        </p> -->
         <div>
           <p class="nl">Social media platform:</p>
           <div
-            v-for="(media, idx) in campaignStore.overview.socialMediaPlatforms"
+            v-for="(media, idx) in campaignStore.newCampaign
+              .socialMediaPlatform"
             :key="idx"
             class="border inline-flex rounded-md mr-2 items-center justify-center max-w-[3.125rem] p-[0.625rem] border-[--input-border-color]"
           >
@@ -53,18 +60,19 @@
       <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
         <p class="nl">
           Category:
-          {{ campaignStore.influencer.influencerCategory?.join(", ") }}
+          {{ campaignStore.newCampaign.category?.join(", ") }}
         </p>
         <p class="nl">
-          Audience size: {{ campaignStore.influencer.audienceSize?.join(", ") }}
+          Audience size:
+          {{ campaignStore.newCampaign.audienceSize?.join(", ") }}
         </p>
         <p class="nl">
           Audience gender:
-          {{ campaignStore.influencer.audienceGender?.join(", ") }}
+          {{ campaignStore.newCampaign.audienceGender?.join(", ") }}
         </p>
         <p class="nl">
           Audience location:
-          {{ campaignStore.influencer.audienceLocation?.join(", ") }}
+          {{ campaignStore.newCampaign.audienceLocation?.join(", ") }}
         </p>
       </div>
     </section>
@@ -72,40 +80,51 @@
     <section>
       <h2 class="mb-[0.75rem] font-bold">Creatives</h2>
       <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
-        <p class="nl">Payment type: {{ campaignStore.creative.paymentType }}</p>
+        <!-- <p class="nl">Payment type: {{ campaignStore.creative.paymentType }}</p> -->
         <p class="nl">
           Campaign start date:
-          {{ tools.formatDate(campaignStore.creative.startDate || "") }}
+          {{ tools.formatDate(campaignStore.newCampaign.startDate || "") }}
         </p>
         <p class="nl">
           Campaign end date:
-          {{ tools.formatDate(campaignStore.creative.endDate || "") }}
-        </p>
-        <p class="nl">Content type: {{ campaignStore.creative.contentType }}</p>
-        <p class="nl">
-          Content placement: {{ campaignStore.creative.contentPlacement }}
+          {{ tools.formatDate(campaignStore.newCampaign.endDate || "") }}
         </p>
         <p class="nl">
-          Creative brief: {{ campaignStore.creative.creativeBrief }}
+          Content type: {{ campaignStore.newCampaign.contentType }}
         </p>
         <p class="nl">
-          Creative tone: {{ campaignStore.creative.creativeTone }}
+          Content placement: {{ campaignStore.newCampaign.contentPlacement }}
         </p>
-        <p class="nl">Campaign rules: {{ campaignStore.creative.rules }}</p>
+        <p class="nl">
+          Creative brief: {{ campaignStore.newCampaign.creativeBrief }}
+        </p>
+        <p class="nl">
+          Creative tone: {{ campaignStore.newCampaign.creativeTone }}
+        </p>
+        <p class="nl">
+          Campaign rules: {{ campaignStore.newCampaign.campaignRule }}
+        </p>
         <p class="nl">
           Sample content reference link:
-          {{ campaignStore.creative.referenceLink }}
+          {{ campaignStore.newCampaign.referenceLink }}
         </p>
         <p class="nl">
           Campaign objective awareness:
-          {{ campaignStore.creative.awarenessObjective?.join(", ") }}
+          {{
+            typeof campaignStore.newCampaign.campaignObjectiveAwareness ==
+            "string"
+              ? campaignStore.newCampaign.campaignObjectiveAwareness
+              : campaignStore.newCampaign.campaignObjectiveAwareness?.join(", ")
+          }}
         </p>
         <p class="nl">
           Campaign objective acquisition:
-          {{ campaignStore.creative.acquisitionObjective?.join(", ") }}
+          {{ campaignStore.newCampaign.campaignObjectiveAcquisition }}
         </p>
       </div>
     </section>
+
+    <UiModalLoading ref="loadingModal" message="Submitting campaign..." />
 
     <UiModalSuccessModal
       ref="successModal"
@@ -124,20 +143,28 @@ const props = defineProps<{
 const campaignStore = useCampaignStore();
 const { notify } = useNotification();
 const successModal = ref();
+const loadingModal = ref();
 
 const { state, execute } = useRequestState({
-  action: () => campaignStore.createCampaign(),
+  action: async () => {
+    loadingModal.value.open();
+    campaignStore.createCampaign();
+  },
   onSuccess: () => {
+    loadingModal.value.close();
     successModal.value.open();
 
     setTimeout(() => {
       successModal.value.close();
       navigateTo({
-        name: "Campaign",
+        name: "DashboardBrandCampaigns",
       });
     }, 5000);
   },
   onError: (error) => {
+    console.log(error);
+    loadingModal.value.close();
+
     notify({
       type: "error",
       text: error.description,
@@ -152,13 +179,11 @@ const { state, execute } = useRequestState({
   },
 });
 
-props.bus?.on(() => {
-  execute();
+props.bus?.on((message) => {
+  if (message === "SUBMIT" && state.value !== constants.LOADING) {
+    execute();
+  }
 });
-
-const appCfg = useAppConfig();
-
-const thumb = (img: string) => `${appCfg.thumbnailBaseUrl}/${img}`;
 </script>
 
 <style></style>

@@ -1,6 +1,8 @@
 <template>
   <UiLayoutPreview
     title="PREVIEW THE CAMPAIGN"
+    class="mt-20 sm:mt-auto"
+    label="Create"
     @back="
       navigateTo({
         query: {
@@ -8,7 +10,7 @@
         },
       })
     "
-    @next="props.bus?.emit()"
+    @next="props.bus?.emit('SUBMIT')"
   >
     <div>
       <p class="mb-[2.5rem]">

@@ -31,6 +31,10 @@ export interface AddBankAccountDetails {
   bankCode: string;
 }
 
+export interface CreateCampaign {
+  banner: File;
+  requestBody: Core.Campaign;
+}
 
 
 /// OLD
@@ -210,14 +214,11 @@ export interface UpdateBrandInformation {
   email: string;
 }
 
-export type CreateCampaign = Omit<
-  Core.Campaign,
-  "publicId" | "status" | "createdOn"
->;
 
 export interface GetCampaigns {
   limit?: number;
   page?: number;
+  statusProgress?: "APPROVED" | "DECLINED" | "PENDING"
 }
 
 export type GetBrandCampaigns = {

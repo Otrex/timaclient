@@ -59,4 +59,30 @@ export default class UploadAPI extends Api {
     });
     return new URL(url);
   }
+
+
+  toFormData(obj: Record<string, any>): FormData {
+    const formData = new FormData();
+
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+
+        if (value instanceof File) {
+          formData.append(key, value, value.name);
+        } else if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            formData.append(`${key}[${index}]`, item);
+          });
+        } else if (typeof value === 'object' && value !== null) {
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value);
+        }
+      }
+    }
+
+    return formData;
+  }
+
 }

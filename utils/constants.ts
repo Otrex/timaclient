@@ -46,4 +46,5 @@ export default Object.freeze({
   INFLUENCER: UserType.INFLUENCER,
   ADMIN: UserType.ADMIN,
   AGENCY: UserType.BRAND,
+  BRAND: UserType.BRAND,
 });

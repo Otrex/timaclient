@@ -20,7 +20,7 @@
         class="bg-red-600 rounded-[1.25rem] text-white active:ring-4 min-w-[9.375rem] py-[0.625rem] active:ring-red-400"
         @click="emits('next')"
       >
-        Next
+        {{ label || "Next" }}
       </button>
     </div>
   </div>
@@ -31,6 +31,7 @@ const emits = defineEmits(["cancel", "next", "back"]);
 const props = defineProps<{
   title: string;
   hideBack?: boolean;
+  label?: string;
 }>();
 </script>
 

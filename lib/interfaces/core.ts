@@ -80,9 +80,37 @@ export interface UserReviewResponse {
   page: number;
   message: string;
   statusCode: number;
+  totalUsers: number
 }
 
-
+export interface Campaign {
+  campaign_id?: string;
+  campaignName: string;
+  campaignObjective: string;
+  campaignAbout: string;
+  campaignWebsite: string;
+  planningBudget: string;
+  socialMediaPlatform: string[];
+  category: string[];
+  audienceSize: string[];
+  audienceGender: string[];
+  audienceAgeGroup: string[];
+  audienceLocation: string[];
+  influencerID: string[];
+  startDate: string;
+  endDate: string;
+  contentType: string[];
+  contentPlacement: string[];
+  creativeBrief: string;
+  campaignRule: string;
+  creativeTone: string[] | string;
+  referenceLink: string;
+  campaignObjectiveAwareness: string[] | string;
+  campaignObjectiveAcquisition: string[] | string;
+  banner: string | File;
+  viewType: boolean;
+  statusProgress: string;
+}
 
 
 
@@ -148,16 +176,6 @@ export interface CampaignMetrics {
   description: string;
 }
 
-
-export interface Campaign {
-  publicId: string;
-  brandName: string,
-  overview: Overview;
-  influencer: Influencer;
-  creative: Creative;
-  status: number | null;
-  createdOn: null;
-}
 
 
 export interface PaymentMethod {

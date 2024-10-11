@@ -50,6 +50,9 @@
           variant="secondary"
           :searchField="{}"
           :thead="thead"
+          :page="pageData"
+          :loading="state === constants.LOADING"
+          @update:page="onPageChange"
           v-model:tabFilters="tabFilters"
           :tbody="tbody"
           :secondaryTabFilters="[
@@ -72,20 +75,19 @@
           }"
         >
           <template #tbody="{ item, row, field }">
-            <div v-if="field === 'transactions'">
-              <UiTransactionView
-                :image="item.image"
-                :title="item.brand"
-                :sub="item.sub"
-              />
+            <div v-if="field === 'created_at'">
+              {{ new Date(item).toLocaleDateString() }}
+            </div>
+            <div v-if="field === 'name'">
+              {{ item || "---" }}
             </div>
             <div v-if="field === 'status'">
               <span
                 :class="[
-                  item.toLowerCase() === 'onboarded' && 'text-[#3CC75B]',
-                  item.toLowerCase() === 'pending' && 'text-[#F3DC0F]',
+                  item === 'PROFILE_APPROVED' && 'text-[#3CC75B]',
+                  item === 'REGISTERED' && 'text-[#F3DC0F]',
                 ]"
-                >{{ item }}</span
+                >{{ statusMap[item] || item }}</span
               >
             </div>
             <div v-else-if="field === 'action'">
@@ -108,10 +110,20 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Bar } from "vue-chartjs";
+import type { GetAdminUsersResponse } from "~/lib/interfaces/response";
 
 definePageMeta({
   name: "Admin Brands",
 });
+
+const statusMap: Record<string, string> = {
+  PROFILE_APPROVED: "Onboarded",
+  REGISTERED: "Pending",
+  PROFILE_REJECTED: "Rejected",
+  INDUSTRY_SELECTED: "Pending",
+  PROFILE_SETUP: "Pending",
+  PROFILE_IN_REVIEW: "Pending (In Review)",
+};
 
 const statusCard = ref([
   {
@@ -133,12 +145,10 @@ const statusCard = ref([
 
 const filter = ref("all");
 const tabFilters = ref("all");
-const thead = ["Name", "Brand", "Start Date", "End Date", "Status"].map(
-  (e) => ({
-    label: e,
-    key: e.toLowerCase().replace(" ", "_"),
-  })
-);
+const thead = ["Name", "Phone", "Email", "Created At", "Status"].map((e) => ({
+  label: e,
+  key: e.toLowerCase().replace(" ", "_"),
+}));
 
 const data = ref<any[]>([]);
 
@@ -203,25 +213,30 @@ const options = ref<any>({
   },
 });
 
-const tbody = [
+const tbody = ref<
   {
-    name: "John Doe",
-    brand: "Coca Cola",
-    start_date: "Oct 24, 2024",
-    end_date: "Oct 24, 2024",
-    status: "Onboarded",
-    id: 1,
-  },
-  {
-    name: "Jane Smith",
-    brand: "Pepsi",
-    start_date: "Nov 15, 2023",
-    end_date: "Dec 31, 2023",
-    status: "Pending",
-    id: 2,
-  },
-];
+    name: string;
+    phone: string;
+    created_at: string | Date;
+    email: string;
+    id: string;
+    status: string;
+  }[]
+>([]);
 
+const pageData = ref({
+  page: 1,
+  limit: 10,
+  total: 10,
+});
+
+function onPageChange(e: number) {
+  let prev = pageData.value.page;
+  pageData.value.page = e;
+  execute().catch(() => {
+    pageData.value.page = prev;
+  });
+}
 const chartData = ref<
   {
     ageRange: string;
@@ -316,6 +331,57 @@ onMounted(() => {
       percentage: 50,
     },
   ];
+});
+
+const api = useAPI();
+
+const {} = useRequestState({
+  action: () => api.getAdminOverview(),
+  immediately: true,
+  onSuccess: (response) => {
+    statusCard.value.forEach((e) => {
+      if (e.label === "Onboarded") {
+        e.value = "" + response.brandStats.verified;
+      }
+
+      if (e.label === "Pending") {
+        e.value =
+          "" + (response.brandStats.inReview + response.brandStats.registered);
+      }
+
+      if (e.label === "Total") {
+        e.value = "" + response.brandStats.total;
+      }
+
+      pageData.value.total = response.brandStats.total;
+    });
+  },
+});
+
+const { state, execute } = useRequestState({
+  action: () =>
+    api.fetchAdminUsers({
+      limit: pageData.value.limit,
+      page: pageData.value.page,
+      role: "BRAND",
+    }),
+  immediately: true,
+  onSuccess: (response) => {
+    // pageData.value.total = response.totalUsers;
+    pageData.value.page = response.page;
+    pageData.value.limit = response.limit;
+
+    tbody.value = response.data.map((e: any) => {
+      return {
+        name: e.profile.companyName,
+        phone: e.phoneNumber,
+        email: e.emailAddress,
+        created_at: new Date(e.profile.createdAt),
+        status: e.profile.profileSetupProgress,
+        id: e.id,
+      };
+    });
+  },
 });
 </script>
 

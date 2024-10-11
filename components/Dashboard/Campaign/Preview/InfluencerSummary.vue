@@ -8,27 +8,28 @@
         },
       })
     "
-    @next="props.bus?.emit()"
+    @next="props.bus?.emit('INFLUENCER_SUMMARY')"
   >
     <div class="flex flex-col gap-3">
       <p>
         Influencer category:
-        {{ campaignStore.influencer.influencerCategory?.join(", ") }}
+        {{ campaignStore.newCampaign.category?.join(", ") }}
       </p>
       <p>
-        Influencer size: {{ campaignStore.influencer.audienceSize?.join(", ") }}
+        Influencer size:
+        {{ campaignStore.newCampaign.audienceSize?.join(", ") }}
       </p>
       <p>
         Influencer Audience gender:
-        {{ campaignStore.influencer.audienceGender?.join(", ") }}
+        {{ campaignStore.newCampaign.audienceGender?.join(", ") }}
       </p>
       <p>
         Audience age group:
-        {{ campaignStore.influencer.audienceAgeGroup?.join(", ") }}
+        {{ campaignStore.newCampaign.audienceAgeGroup?.join(", ") }}
       </p>
       <p>
         Audience location:
-        {{ campaignStore.influencer.audienceLocation?.join(", ") }}
+        {{ campaignStore.newCampaign.audienceLocation?.join(", ") }}
       </p>
     </div>
   </UiLayoutPreview>

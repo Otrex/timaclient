@@ -1,5 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
@@ -11,6 +12,7 @@ const defaultFilter = {
 };
 
 export default class TimaAPI extends UploadAPI {
+
   async refreshAuth(token: string) {
     return this.request<Response.SignIn>({
       url: "/user/v1/login/reconnect",
@@ -117,6 +119,15 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: "POST",
       data,
+    });
+  }
+
+  async updateProfile(data: any) {
+    return this.request<Response.GetUserProfile>({
+      url: "/users/update-profile",
+      requireAuth: true,
+      method: "POST",
+      data: this.toFormData(data),
     });
   }
 
@@ -273,6 +284,60 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getBrandCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+    return this.request<GetCampaignsResponse['data']>({
+      url: '/brand/campaign/fetch',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...(statusProgress && { statusProgress })
+      }
+    })
+  }
+
+  async createCampaign(data: Payload.CreateCampaign) {
+    const body = new FormData();
+    const { banner, ...rest } = data;
+
+    body.append('banner', banner);
+    body.append('requestBody', JSON.stringify(rest));
+
+    return this.request({
+      url: '/brand/campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: body,
+    })
+  }
+
+  async getAdminOverview() {
+    return this.request<GetOverviewStats>({
+      url: '/admin/overview-stats',
+      requireAuth: true,
+      method: 'POST',
+    })
+  }
+
+  async fetchAdminUsers({ page = 1, limit = 10, role = 'INFLUENCER' }: { page: number, limit: number, role: 'INFLUENCER' | 'BRAND' }) {
+    return this.request<GetAdminUsersResponse<typeof role>>({
+      url: '/admin/users',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        role
+      }
+    })
+  }
+
+
+
+
+
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
@@ -351,20 +416,6 @@ export default class TimaAPI extends UploadAPI {
       method: "DELETE",
     });
   }
-
-  async getCampaigns(payload: Payload.GetCampaigns) {
-    new Error("Method not implemented.");
-  }
-
-  async getBrandCampaigns(payload: Payload.GetBrandCampaigns) {
-    const { name, ...data } = payload;
-    return this.request<Response.GetCampaigns>({
-      url: this.querify(`/agency/v1/campaigns/brand/${name}`, data),
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
 
 
   async getAddress() {
@@ -799,15 +850,6 @@ export default class TimaAPI extends UploadAPI {
       url: "/user/v1/profile/brand",
       requireAuth: true,
       method: "PUT",
-      data,
-    });
-  }
-
-  async createCampaign(data: Payload.CreateCampaign) {
-    return this.request<Response.GetCampaign>({
-      url: "/agency/v1/campaigns",
-      requireAuth: true,
-      method: "POST",
       data,
     });
   }

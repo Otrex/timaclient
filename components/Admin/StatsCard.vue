@@ -14,7 +14,9 @@
         {{ value }}
       </h1>
 
-      <p class="w-6/12 text-center font-medium text-base text-[#818181]">120</p>
+      <p class="w-6/12 text-center font-medium text-base text-[#818181]">
+        {{ value }}
+      </p>
     </div>
 
     <div role="divider" class="mt-10"></div>
@@ -42,16 +44,10 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  social: string;
-  followers: number;
-  engagementRate: number;
-  likes: number;
+defineProps<{
   title: string;
   value: string;
 }>();
-
-const socials = computed(() => `socials/${props.social}-lg`);
 </script>
 
 <style></style>

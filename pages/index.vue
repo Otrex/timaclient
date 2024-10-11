@@ -1,5 +1,5 @@
 <template>
-  <div class="px-[6.25rem] h-screen dark:bg-slate-800 dark:text-white">
+  <div class="sm:px-[6.25rem] px-3 h-screen dark:bg-slate-800 dark:text-white">
     <div class="text-right pt-10">
       <div class="items-center flex justify-end">
         <span
@@ -71,6 +71,13 @@ function proceed() {
     },
   });
   authStore.logout();
+
+  if (joinAs.value === constants.BRAND) {
+    return navigateTo({
+      name: "RegisterBasicDetails",
+    });
+  }
+
   navigateTo({
     name: "SignUp",
     params: {

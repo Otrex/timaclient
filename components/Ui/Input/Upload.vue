@@ -11,7 +11,7 @@
         <transition>
           <span
             v-show="fileName"
-            class="text-[1.1875rem] !text-left pl-[0.75rem] w-full"
+            class="text-[1.1875rem] dark:text-gray-600 !text-left pl-[0.75rem] w-full"
             >{{ fileName }}</span
           >
         </transition>
@@ -74,7 +74,11 @@
               <label
                 class="text-[#0077D3] w-full block px-4 overflow-clip text-[1.1875rem]"
               >
-                {{ "Only jpeg & png files with max size of 15mb" }}
+                {{
+                  "Only " + type === "pics"
+                    ? "jpeg & png"
+                    : "" + " files with max size of "
+                }}{{ maxSize || "5mb" }}
                 <input
                   type="file"
                   :accept="`${acceptsMime}*`"
@@ -127,10 +131,11 @@ const props = defineProps<{
   name?: string;
   doc?: string | string[] | undefined;
   url?: string | string[];
-  type: Payload.UploadRequest["type"];
+  type?: Payload.UploadRequest["type"];
   multi?: boolean;
   placeholder?: string;
   errorMessage?: string;
+  maxSize?: string;
 }>();
 const progress = ref(0);
 const file = ref();
@@ -231,10 +236,33 @@ const getFileName = (file: File) => {
   return `${namePart}.${realExtension}`;
 };
 
+const checkFileSize = (file: File, maxSize: string) => {
+  const units = {
+    kb: 1024,
+    mb: 1024 * 1024,
+    gb: 1024 * 1024 * 1024,
+  };
+
+  const [size, unit] =
+    maxSize.match(/^(\d+(?:\.\d+)?)\s*([kmg]b)$/i)?.slice(1) || [];
+
+  if (!size || !unit) {
+    throw new Error("Invalid size format. Use format like '3kb', '4mb', '2gb'");
+  }
+
+  const maxBytes =
+    parseFloat(size) * units[unit.toLowerCase() as keyof typeof units];
+
+  if (file.size > maxBytes) {
+    throw new Error(`File size exceeds the maximum allowed size of ${maxSize}`);
+  }
+};
+
 const processFiles = (fileList: FileList | File[]) => {
   try {
     const files = Array.from(fileList);
     files.map((file) => checkFileType(file));
+    files.map((file) => checkFileSize(file, props.maxSize || "5mb"));
     fileName.value = files.map((f) => getFileName(f)).join(", ");
 
     updateFile(files);

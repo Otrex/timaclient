@@ -6,8 +6,8 @@ import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods } from 
 interface IState {
   countries: Country[];
   industries: string[];
-  campaignOptions?: GetCampaignOptions['data'];
-  creativesOptions?: GetCreativesOptions['data'];
+  campaignOptions?: GetCampaignOptions['data'][0];
+  creativesOptions?: GetCreativesOptions['data'][0];
   paymentMethods?: GetPaymentMethods['data'];
   socialTypes: SocialType[];
   paymentStatus: string[];
@@ -21,9 +21,96 @@ export const useOptionsStore = defineStore("options", {
       __header: null,
       countries: [],
       industries: [],
-      campaignOptions: undefined,
+      campaignOptions: {
+        size: [
+          "1 - 2000",
+          "2000 - 5000",
+          "5000 - 10000",
+        ],
+        gender: [
+          "Male",
+          "Female",
+          "Others",
+        ],
+        ageGroup: [
+          "15 - 18",
+          "18 - 25",
+          "25 - 30",
+          "30 - 40",
+          "40 - 50",
+          "50 - 60",
+          "60 - 70",
+          "70 - 80",
+          "80 - 90",
+          "90 - 100",
+        ],
+        location: [],
+        monthlyIncome: [],
+      },
+
       paymentMethods: undefined,
-      creativesOptions: undefined,
+      creativesOptions: {
+        contentType: [
+          "Image",
+          "Video",
+          "Story",
+          "Carousel",
+          "Reel",
+          "Post",
+          "Feed",
+          "Live"
+        ],
+        contentPlacement: [
+          "Feed",
+          "Story",
+          "Reel",
+          "Carousel",
+          "Post",
+          "Feed",
+          "Live"
+        ],
+        creativeTone: [
+          "Serious",
+          "Funny",
+          "Informative",
+          "Emotional",
+          "Inspirational",
+          "Provocative",
+          "Nostalgic",
+          "Dramatic",
+          "Minimalist",
+          "Energetic",
+          "Relaxing",
+          "Professional",
+          "Casual",
+          "Sarcastic",
+          "Mysterious",
+          "Playful",
+          "Authoritative",
+          "Empathetic",
+        ],
+        objectiveAwareness: [
+          "Brand Awareness",
+          "Reach",
+          "Traffic",
+          "Engagement",
+          "App Installs",
+          "Video Views",
+          "Lead Generation",
+          "Messages",
+          "Conversions",
+          "Catalog Sales",
+          "Store Traffic"
+        ],
+        objectiveAcquisition: [
+          "Lead Generation",
+          "Conversions",
+          "Catalog Sales",
+          "Store Traffic",
+          "App Installs",
+          "Messages"
+        ],
+      },
       paymentStatus: [],
       banks: [],
       socialTypes: [],
@@ -32,8 +119,8 @@ export const useOptionsStore = defineStore("options", {
 
   getters: {
     $banks: (state) => state.banks,
-    $campaignOptions: (state) => state.campaignOptions || [],
-    $creativesOptions: (state) => state.creativesOptions || [],
+    $campaignOptions: (state) => state.campaignOptions,
+    $creativesOptions: (state) => state.creativesOptions,
     $paymentStatus: (state) => tools.generationOptions(state.paymentStatus),
     $paymentMethods: (state) => (state.paymentMethods || []).map(e => e.name),
     $industries: (state) => state.industries,
@@ -82,13 +169,6 @@ export const useOptionsStore = defineStore("options", {
       })
     },
 
-    async getCampaignOptions() {
-      const response = await this.$api.getCampaignsOptions();
-      this.$patch({
-        campaignOptions: response.data
-      })
-    },
-
     async getIndustries() {
       const response = await this.$api.getIndustries();
       this.$patch({
@@ -100,13 +180,6 @@ export const useOptionsStore = defineStore("options", {
       const response = await this.$api.getBanks();
       this.$patch({
         banks: response.data
-      })
-    },
-
-    async getCreativesOptions() {
-      const response = await this.$api.getCreativesOptions();
-      this.$patch({
-        creativesOptions: response.data
       })
     },
 

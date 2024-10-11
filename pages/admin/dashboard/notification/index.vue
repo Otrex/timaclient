@@ -39,57 +39,59 @@
     </div>
 
     <div class="rounded-xl p-8 border border-[#D8D8D8] flex flex-col mb-6">
-      <div
-        class="flex justify-between items-center py-8 border-b border-[#BBBBBB] last:border-none"
-        v-for="(item, idx) of reviews"
-        :key="idx"
-        :class="[
-          idx === 0 && 'pt-0',
-          idx === notificationData.length - 1 && 'pb-0',
-        ]"
-      >
-        <div>
-          <div
-            :class="{
-              'bg-[#30DE80]': item.type === 'registration',
-              'bg-[#FFBB00]': item.type === 'withdrawal',
-            }"
-            class="text-white py-2 px-6 inline-block capitalize rounded-lg"
-          >
-            {{ item.type }}
-          </div>
+      <template v-if="state === constants.LOADING">
+        <UtSpinner />
+      </template>
+      <template v-else>
+        <div
+          class="flex justify-between items-center py-8 border-b border-[#BBBBBB] last:border-none"
+          v-for="(item, idx) of reviews"
+          :key="idx"
+          :class="[idx === 0 && 'pt-0', idx === reviews.length - 1 && 'pb-0']"
+        >
+          <div>
+            <div
+              :class="{
+                'bg-[#30DE80]': item.type === 'registration',
+                'bg-[#FFBB00]': item.type === 'withdrawal',
+              }"
+              class="text-white py-2 px-6 inline-block capitalize rounded-lg"
+            >
+              {{ item.type }}
+            </div>
 
-          <div role="separator" class="my-2"></div>
+            <div role="separator" class="my-2"></div>
 
-          <h1 class="text-[#545454] text-lg font-semibold mb-2">
-            {{ item.title }}
-          </h1>
+            <h1 class="text-[#545454] text-lg font-semibold mb-2">
+              {{ item.title }}
+            </h1>
 
-          <div role="separator" class="my-2"></div>
+            <div role="separator" class="my-2"></div>
 
-          <p class="text-[#777777] text-base font-normal">
-            {{ item.content }}
-          </p>
-
-          <div role="separator" class="my-2"></div>
-
-          <div class="flex gap-2">
-            <UtSvg name="clock" dim w="24px" h="24px" />
-            <p class="text-[#777777]">
-              {{ tools.formatDate(item.createdAt) }}
+            <p class="text-[#777777] text-base font-normal">
+              {{ item.content }}
             </p>
+
+            <div role="separator" class="my-2"></div>
+
+            <div class="flex gap-2">
+              <UtSvg name="clock" dim w="24px" h="24px" />
+              <p class="text-[#777777]">
+                {{ tools.formatDate(item.createdAt) }}
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <button
+              class="border border-[#BBBBBB] text-[#BBBBBB] py-3 px-10 rounded-xl"
+              @click="() => openUser(item)"
+            >
+              Review
+            </button>
           </div>
         </div>
-
-        <div>
-          <button
-            class="border border-[#BBBBBB] text-[#BBBBBB] py-3 px-10 rounded-xl"
-            @click="() => openUser(item)"
-          >
-            Review
-          </button>
-        </div>
-      </div>
+      </template>
     </div>
 
     <!-- modal -->
@@ -100,6 +102,7 @@
       backdrop-color="rgba(0,0,0,.3)"
     >
       <ModalsNewUser
+        @close="modalState = false"
         :id="currentReview?.id!"
         :phone="currentReview?.users.phoneNumber!"
         :username="
@@ -113,6 +116,12 @@
         :role="currentReview?.users.role!"
       />
     </UtModal>
+
+    <UtPaginate
+      v-model:current-page="pageData.page"
+      :limit="pageData.limit"
+      :total="pageData.total"
+    />
   </div>
 </template>
 
@@ -122,26 +131,6 @@ import type { UserType } from "~/lib/enums";
 import type { Core } from "~/lib/interfaces";
 
 const api = useAPI();
-const notificationData = ref([
-  {
-    type: "registration",
-    title: "New Registration: Somadina Onyeka",
-    content: `Hello Admin, We are excited to inform you that a new user has just joined our platform.`,
-    createdAt: "24 Oct 2024 at 9:29 AM",
-  },
-  {
-    type: "withdrawal",
-    title: "Withdrawal Request: Khaby Lame",
-    content: `Hello Admin, A withdrawal request has been submitted on the platform.`,
-    createdAt: "24 Oct 2024 at 9:29 AM",
-  },
-  {
-    type: "withdrawal",
-    title: "Withdrawal Request: Khaby Lame",
-    content: `Hello Admin, A withdrawal request has been submitted on the platform.`,
-    createdAt: "24 Oct 2024 at 9:29 AM",
-  },
-]);
 
 type IReviews = {
   type: string;
@@ -160,6 +149,11 @@ type IReviews = {
 const reviews = ref<IReviews[]>([]);
 
 const currentReview = ref<IReviews>();
+const pageData = reactive({
+  page: 1,
+  limit: 20,
+  total: 0,
+});
 
 const filter = ref("Last 28 days");
 const modalState = ref(false);
@@ -176,9 +170,12 @@ function openUser(user: IReviews) {
 
 const { state, execute } = useRequestState({
   immediately: true,
-  action: () => api.fetchUserReviews({}),
+  action: () =>
+    api.fetchUserReviews({ limit: pageData.limit, page: pageData.page }),
   onSuccess: (response) => {
-    console.log(response);
+    pageData.total = response.totalUsers;
+    pageData.page = response.page;
+    pageData.limit = response.limit;
 
     reviews.value = response.data.map((e) => ({
       id: e?.id,
@@ -201,7 +198,13 @@ const { state, execute } = useRequestState({
   },
 });
 
-onMounted(() => {});
+watch(
+  () => pageData.page,
+  () => {
+    execute();
+  },
+  { immediate: true }
+);
 </script>
 
 <style></style>

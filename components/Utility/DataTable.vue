@@ -55,7 +55,8 @@
       </div>
     </div>
 
-    <section>
+    <UtSpinner v-if="loading" />
+    <section v-else class="mb-5">
       <table class="w-full">
         <thead>
           <th
@@ -103,16 +104,27 @@
         </tbody>
       </table>
     </section>
+
+    <UtPaginate
+      :disabled="loading"
+      v-if="page"
+      :current-page="page.page"
+      :total="page.total"
+      :limit="page.limit"
+      @update:currentPage="(e) => emits('update:page', e)"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { isVueComponent } from "@/utils";
+
 const props = withDefaults(
   defineProps<{
     searchField?: {
       placeholder?: string;
     };
+    loading?: boolean;
     theadClass?: string;
     label?: string;
     filters?: {
@@ -141,6 +153,11 @@ const props = withDefaults(
         | any;
     }[];
     variant?: "primary" | "secondary";
+    page?: {
+      page: number;
+      limit: number;
+      total: number;
+    };
   }>(),
   {
     thead: () => [],
@@ -155,6 +172,7 @@ const emits = defineEmits([
   "update:filters",
   "update:tabFilters",
   "update:search",
+  "update:page",
 ]);
 const colWidth = computed(() => {
   const width = props.thead.length;

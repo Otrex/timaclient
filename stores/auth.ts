@@ -212,13 +212,6 @@ export const useAuthStore = defineStore("auth", {
       };
     },
 
-    async resendOTP() {
-      await this.$api.resendOTP({
-        email: this.registration.email!,
-        username: this.registration.username!,
-      });
-    },
-
     async logout() {
       return new Promise((resolve) => {
         this.$patch({

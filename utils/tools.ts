@@ -143,6 +143,12 @@ export default {
     window.location.href = link;
   },
 
+  toObjectURL: (file: File | string): string => {
+    if (typeof file === 'string') return file;
+    return URL.createObjectURL(file);
+  },
+
+
   isEmpty<T = any>(value: T, elementIsEmpty?: (element: T) => boolean): boolean {
     if (value === null || value === undefined) {
       return true;

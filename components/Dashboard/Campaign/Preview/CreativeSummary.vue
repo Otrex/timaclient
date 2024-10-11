@@ -8,10 +8,10 @@
         },
       })
     "
-    @next="props.bus?.emit()"
+    @next="props.bus?.emit('CREATIVE_SUMMARY')"
   >
     <div class="flex flex-col gap-3">
-      <p>Payment type: {{ creative.paymentType }}</p>
+      <!-- <p>Payment type: {{ creative.paymentType }}</p> -->
       <p>
         Campaign duration:
         {{ calculateDuration(creative.startDate, creative.endDate) }}
@@ -28,11 +28,11 @@
       <p>Content placement: {{ creative.contentPlacement }}</p>
       <p>Creative brief: {{ creative.creativeBrief }}</p>
       <p>Creative tone: {{ creative.creativeTone }}</p>
-      <p>Campaign rules: {{ creative.rules }}</p>
+      <!-- <p>Campaign rules: {{ creative.rules }}</p> -->
       <p>Sample content link: {{ creative.referenceLink }}</p>
-      <p>Awareness: {{ creative.awarenessObjective?.join(", ") }}</p>
+      <!-- <p>Awareness: {{ creative.awarenessObjective?.join(", ") }}</p>
       <p>Acquisition: {{ creative.acquisitionObjective?.join(", ") }}</p>
-      <p>Thumbnail: {{ creative.thumbnail }}</p>
+      <p>Thumbnail: {{ creative.thumbnail }}</p> -->
     </div>
   </UiLayoutPreview>
 </template>
@@ -45,6 +45,7 @@ const props = defineProps<{
 }>();
 
 const campaignStore = useCampaignStore();
+const creative = computed(() => campaignStore.newCampaign);
 
 function calculateDuration(start?: string | Date, end?: string | Date) {
   if (!start) return "";
@@ -76,8 +77,6 @@ function calculateDuration(start?: string | Date, end?: string | Date) {
     return `In ${seconds} second${seconds !== 1 ? "s" : ""} time`;
   }
 }
-
-const creative = computed(() => campaignStore.campaign.creative);
 </script>
 
 <style></style>
