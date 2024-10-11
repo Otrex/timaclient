@@ -26,6 +26,95 @@ export interface GetCreativesOptions
   > { }
 
 
+export interface GetOverviewStats {
+  influencerStats: {
+    inReview: number;
+    total: number;
+    verified: number;
+    registered: number;
+  };
+  brandStats: {
+    inReview: number;
+    total: number;
+    verified: number;
+    registered: number;
+  };
+  message: string;
+  statusCode: number;
+}
+
+export type GetAdminUsersResponse<T = 'INFLUENCER' | 'BRAND'> = T extends 'INFLUENCER' ? GetInfluencerUsersResponse : GetBrandUsersResponse
+
+export interface GetInfluencerUsersResponse {
+  totalUsers: number;
+  data: Array<{
+    emailAddress: string;
+    phoneNumber: string;
+    role: string;
+    profile: {
+      createdAt: string;
+      profileSetupProgress: string;
+      referralCode: string;
+      hasSetTransactionPin: boolean;
+      id: string;
+      userId: string;
+      updatedAt: string;
+      country?: string;
+      address?: string;
+      city?: string;
+      profileImage?: string;
+      transactionPIN?: string;
+      industries?: string[];
+      firstName?: string;
+      lastName?: string;
+      otherName?: string;
+      state?: string;
+    };
+    id: string;
+    userName: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}
+
+export interface GetBrandUsersResponse {
+  totalUsers: number;
+  data: Array<{
+    emailAddress: string;
+    phoneNumber: string;
+    role: string;
+    profile: {
+      country?: string;
+      website?: string;
+      address?: string;
+      city?: string;
+      profileSetupProgress: string;
+      companyName?: string;
+      profileImage?: string;
+      userId: string;
+      createdAt: string;
+      industries?: string[];
+      referralCode: string;
+      hasSetTransactionPin: boolean;
+      id: string;
+      state?: string;
+      updatedAt: string;
+    };
+    id: string;
+    userName: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}
+
+
+
+
+
 export interface GetCampaignsResponse extends IResponse<{
   total: number;
   data: Array<{

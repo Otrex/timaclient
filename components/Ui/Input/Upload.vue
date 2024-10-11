@@ -74,7 +74,10 @@
               <label
                 class="text-[#0077D3] w-full block px-4 overflow-clip text-[1.1875rem]"
               >
-                {{ "Only jpeg & png files with max size of "
+                {{
+                  "Only " + type === "pics"
+                    ? "jpeg & png"
+                    : "" + " files with max size of "
                 }}{{ maxSize || "5mb" }}
                 <input
                   type="file"
@@ -128,7 +131,7 @@ const props = defineProps<{
   name?: string;
   doc?: string | string[] | undefined;
   url?: string | string[];
-  type: Payload.UploadRequest["type"];
+  type?: Payload.UploadRequest["type"];
   multi?: boolean;
   placeholder?: string;
   errorMessage?: string;

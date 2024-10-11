@@ -49,7 +49,6 @@
         />
         <UiInputUpload
           class="w-full"
-          type="docs"
           v-model:file="form.companyRegDocs"
           :error-message="v$.companyRegDocs?.$errors[0]?.$message.toString()"
           placeholder="Upload company registration documents"

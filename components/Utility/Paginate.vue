@@ -2,7 +2,7 @@
   <div class="flex items-center justify-center space-x-2">
     <button
       @click="prevPage"
-      :disabled="currentPage === 1"
+      :disabled="currentPage === 1 || disabled"
       class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       <svg
@@ -23,6 +23,7 @@
     <template v-for="page in visiblePages" :key="page">
       <button
         @click="goToPage(page)"
+        :disabled="disabled"
         :class="[
           'px-3 py-2 text-sm font-medium border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
           currentPage === page
@@ -36,7 +37,7 @@
 
     <button
       @click="nextPage"
-      :disabled="currentPage === totalPages"
+      :disabled="currentPage === totalPages || disabled"
       class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       Next
@@ -60,6 +61,9 @@
 import { computed } from "vue";
 
 const props = defineProps({
+  disabled: {
+    type: Boolean,
+  },
   total: {
     type: Number,
     required: true,

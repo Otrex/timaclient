@@ -89,7 +89,7 @@
           @click="validate().then(() => execute())"
           :loading="state == constants.LOADING"
           variant="primary"
-          label="Continue"
+          label="Register"
         />
       </div>
     </div>

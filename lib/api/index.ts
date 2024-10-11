@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetCampaignsResponse } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import UploadAPI from "./upload";
 
@@ -12,6 +12,7 @@ const defaultFilter = {
 };
 
 export default class TimaAPI extends UploadAPI {
+
   async refreshAuth(token: string) {
     return this.request<Response.SignIn>({
       url: "/user/v1/login/reconnect",
@@ -310,6 +311,32 @@ export default class TimaAPI extends UploadAPI {
       data: body,
     })
   }
+
+  async getAdminOverview() {
+    return this.request<GetOverviewStats>({
+      url: '/admin/overview-stats',
+      requireAuth: true,
+      method: 'POST',
+    })
+  }
+
+  async fetchAdminUsers({ page = 1, limit = 10, role = 'INFLUENCER' }: { page: number, limit: number, role: 'INFLUENCER' | 'BRAND' }) {
+    return this.request<GetAdminUsersResponse<typeof role>>({
+      url: '/admin/users',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        role
+      }
+    })
+  }
+
+
+
+
+
 
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({

@@ -33,11 +33,16 @@
         </template>
       </UiInputDropdown>
     </div>
+    <UiSpinner v-if="state === constants.LOADING" />
     <div
+      v-else
       class="grid gap-5 md:gap-[3.0625rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
     >
-      <AdminStatsCard title="Influencers" value="120" />
-      <AdminStatsCard title="Brands" value="18" />
+      <AdminStatsCard
+        title="Influencers"
+        :value="'' + overview?.influencerStats.total"
+      />
+      <AdminStatsCard title="Brands" :value="'' + overview?.brandStats.total" />
       <AdminStatsCard title="Campaigns" value="34" />
       <AdminStatsCard title="Ad Spend" value="$142K" />
       <AdminStatsCard title="Paid Out" value="$106K" />
@@ -47,12 +52,24 @@
 </template>
 
 <script setup lang="ts">
+import type { GetOverviewStats } from "~/lib/interfaces/response";
+
 definePageMeta({
   name: "AdminHome",
   middleware: [async () => {}],
 });
 
+const overview = ref<GetOverviewStats>();
+
 const filter = ref("Last 7 days");
+const api = useAPI();
+const { state } = useRequestState({
+  action: () => api.getAdminOverview(),
+  immediately: true,
+  onSuccess: (response) => {
+    overview.value = response;
+  },
+});
 </script>
 
 <style></style>
