@@ -208,6 +208,11 @@ const optionsStore = useOptionsStore();
 
 definePageMeta({
   name: "SignUpBrandReviewProfile",
+  middleware: [
+    async function () {
+      await useAuthStore().getProfile();
+    },
+  ],
 });
 
 const editable = reactive({

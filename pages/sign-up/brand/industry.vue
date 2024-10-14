@@ -59,6 +59,11 @@ const isLoading = ref(true);
 
 definePageMeta({
   name: "SignUpBrandIndustry",
+  middleware: [
+    async function () {
+      await useAuthStore().getProfile();
+    },
+  ],
 });
 
 const form = reactive({

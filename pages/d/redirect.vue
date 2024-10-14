@@ -10,6 +10,7 @@ definePageMeta({
   middleware: [
     "options",
     "dashboard",
+    "permission",
     async (to, from) => {
       const authStore = useAuthStore();
       const userType = authStore.authorization.userType;

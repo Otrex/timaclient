@@ -79,6 +79,11 @@ import { CREATE_BRAND_ADDRESS_VALIDATOR } from "~/lib/validation/rules";
 
 definePageMeta({
   name: "SignUpBrandAddress",
+  middleware: [
+    async function () {
+      await useAuthStore().getProfile();
+    },
+  ],
 });
 
 const optionsStore = useOptionsStore();

@@ -3,6 +3,10 @@ import { isVNode } from "vue";
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+export function log(...inputs: any[]) {
+  return console.log(...inputs)
+}
+
 
 export const forAsterisk = (patterns: string[], path: string): boolean => {
   return patterns.some(pattern => {

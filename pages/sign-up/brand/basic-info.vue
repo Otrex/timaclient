@@ -1,6 +1,9 @@
 <template>
   <div class="text-center">
-    <div class="tm__box-598px" v-if="!showOTPForm">
+    <div
+      class="tm__box-598px"
+      v-if="!showOTPForm && route.query.verify !== '1'"
+    >
       <div class="mb-[1.875rem]">
         <h1 class="text-[2.4375rem] mb-[1.5rem]">Sign Up</h1>
         <p>
@@ -106,6 +109,11 @@ import { useDebounceFn } from "@vueuse/core";
 import { CREATE_USER_RULE } from "~/lib/validation/rules";
 definePageMeta({
   name: "RegisterBasicDetails",
+  middleware: [
+    async function () {
+      await useAuthStore().getProfile();
+    },
+  ],
 });
 
 onMounted(() => {
@@ -116,6 +124,7 @@ onMounted(() => {
     },
   });
 });
+const route = useRoute();
 
 const isValidUserName = ref<boolean | null>(null);
 const showOTPForm = ref(false);

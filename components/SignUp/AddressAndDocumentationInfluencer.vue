@@ -51,7 +51,6 @@
       />
       <UiInputUpload
         class="w-full"
-        type="docs"
         v-model:file="form.companyRegDocs"
         placeholder="Upload government issued identification"
       />
