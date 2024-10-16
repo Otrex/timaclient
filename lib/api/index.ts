@@ -312,6 +312,17 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getBrandCampaign(id: string | number) {
+    return this.request<Response.GetCampaign>({
+      url: `/brand/campaign/fetch-single`,
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id
+      }
+    })
+  }
+
   async getAdminOverview() {
     return this.request<GetOverviewStats>({
       url: '/admin/overview-stats',

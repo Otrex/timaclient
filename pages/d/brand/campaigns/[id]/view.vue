@@ -26,7 +26,7 @@
       <section class="">
         <div class="h-[24.1875rem] rounded w-full overflow-hidden">
           <UiImg
-            :src="campaign?.creative.thumbnail"
+            :src="campaign.banner as string"
             alt="campaign banner"
             class="w-full h-full object-cover object-center"
           />
@@ -34,7 +34,7 @@
 
         <div class="flex flex-row justify-between mt-[1.125rem]">
           <div>
-            <h3>{{ campaign?.overview.name }} Campaign</h3>
+            <h3>{{ campaign.campaignName }} Campaign</h3>
             <div class="flex gap-[2rem]">
               <!--
               <p class="sm">34 publications</p>
@@ -42,7 +42,7 @@
               -->
               <p class="sm">
                 Date posted:
-                {{ tools.timeAgo(new Date(campaign.createdOn || "")) }}
+                {{ tools.timeAgo(new Date(campaign.createdAt || "")) }}
               </p>
             </div>
           </div>
@@ -62,10 +62,23 @@
           </div>
         </div>
         <p class="nl mt-[0.75rem] text-[#696969] dark:text-slate-100">
-          {{ campaign.overview.briefDescription }}
+          {{ campaign.campaignAbout }}
         </p>
 
         <div class="mt-[1.625rem]">
+          <div
+            class="inline-flex px-2 flex-row md:gap-10 items-start mb-2 justify-between"
+          >
+            <UtTabNuxtLink name="ViewBrandCampaignAnalytics">
+              Analytics
+            </UtTabNuxtLink>
+            <UtTabNuxtLink name="ViewbrandCampaignInfluencers">
+              Influencers
+            </UtTabNuxtLink>
+            <UtTabNuxtLink name="ViewbrandCampaignPayments">
+              Payments
+            </UtTabNuxtLink>
+          </div>
           <Transition>
             <NuxtPage />
           </Transition>
@@ -77,8 +90,8 @@
         v-model:state="openShare"
       >
         <UiModalShare
+          :publicId="campaign.campaign_id!"
           :type="constants.CAMPAIGN"
-          :publicId="campaign.publicId"
         />
       </UtModal>
       <UiModalConfirmAction
@@ -103,12 +116,12 @@ import { Core } from "~/lib/interfaces";
 const api = useAPI();
 const route = useRoute();
 const confirmAccept = ref();
-const campaign = computed(() => useCampaignStore().currentCampaign);
+const campaign = ref<Core.Campaign | null>(null);
 const openShare = ref(false);
 const { notify } = useNotification();
 
 const { state } = useRequestState({
-  action: () => api.getCampaign(route.params.id as string),
+  action: () => api.getBrandCampaign(route.params.id as string),
   immediately: true,
   onSuccess: (response) => {
     campaign.value = response.data as any;

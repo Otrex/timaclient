@@ -65,6 +65,8 @@ const mode = ref(true);
 const loading = ref(false);
 
 watch(mode, () => {
+  console.log(mode.value, colorMode.preference);
+
   if (mode.value) {
     colorMode.preference = "light";
   } else {

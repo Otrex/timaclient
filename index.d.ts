@@ -2,6 +2,7 @@ import type { Pinia } from "pinia"
 import type { IStore } from "./lib/interfaces/utils";
 import type TimaAPI from "./lib/api";
 import type { ToastOptions } from "vue3-toastify";
+import type ApexCharts from "apexcharts";
 
 declare global {
   interface Window {
@@ -34,12 +35,19 @@ declare module "pinia" {
 declare module 'vue' {
   interface ComponentCustomProperties {
     $pinia: Pinia;
+    $apexcharts: typeof ApexCharts;
   }
 }
 
 declare module '#app' {
   interface NuxtApp {
     $pinia: Pinia;
+  }
+}
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $apexcharts: typeof ApexCharts;
   }
 }
 

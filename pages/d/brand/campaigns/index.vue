@@ -59,30 +59,42 @@
       </div>
     </div>
 
-    <div v-if="state === constants.LOADING">
-      <UiLoading />
-    </div>
+    <UtLoadPresenter
+      :empty="!!!campaigns.length"
+      notFoundMessage="No Campaigns have been created"
+      :state="state"
+    >
+      <template #loading>
+        <UiLoading />
+      </template>
+      <div class="mt-10">
+        <section
+          class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
+        >
+          <template v-for="(cam, i) in campaigns" :key="i">
+            <DashboardCampaignCard
+              @click="viewCampaign(cam as any)"
+              :publicId="cam.campaign_id"
+              :title="cam.campaignName"
+              :image="cam.banner"
+              :category="cam.category"
+              :brand="authStore.profile?.companyName!"
+              :description="cam.campaignAbout"
+              :budget="+cam.planningBudget"
+              :deadline="cam.endDate"
+              :completion="0"
+            />
+          </template>
+        </section>
 
-    <div v-else class="mt-10">
-      <section
-        class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
-      >
-        <template v-for="(cam, i) in campaigns" :key="i">
-          <DashboardCampaignCard
-            @click="viewCampaign(cam as any)"
-            :publicId="cam.campaign_id"
-            :title="cam.campaignName"
-            :image="cam.banner"
-            :category="cam.category"
-            :brand="authStore.profile?.companyName!"
-            :description="cam.campaignAbout"
-            :budget="+cam.planningBudget"
-            :deadline="cam.endDate"
-            :completion="0"
-          />
-        </template>
-      </section>
-    </div>
+        <UtPaginate
+          :disabled="state === constants.LOADING"
+          v-model:currentPage="pageData.page"
+          :total="pageData.total"
+          :limit="pageData.limit"
+        />
+      </div>
+    </UtLoadPresenter>
   </div>
 </template>
 
@@ -94,12 +106,21 @@ definePageMeta({
   name: "DashboardBrandCampaigns",
 });
 
+type Pagination = Omit<
+  GetCampaignsResponse["data"],
+  "data" | "message" | "statusCode"
+>;
+
 const api = useAPI();
 const route = useRoute();
 const authStore = useAuthStore();
 const currenttab = computed(() => (route.query.status as string) || "all");
 const campaigns = ref<GetCampaignsResponse["data"]["data"]>([]);
-const pageData = ref<Omit<GetCampaignsResponse["data"], "data">>();
+const pageData = reactive<Pagination>({
+  total: 0,
+  limit: 10,
+  page: 1,
+});
 const filter = ref<string>("all");
 const tags = [
   { status: "all", count: 60, active: true },
@@ -133,12 +154,8 @@ watch(addedFilter, () => {
 });
 
 function viewCampaign(campaign: Core.Campaign) {
-  useCampaignStore().$patch({
-    currentCampaign: campaign,
-  });
-
   navigateTo({
-    name: "ViewBrandCampaign",
+    name: "ViewBrandCampaignAnalytics",
     params: { id: campaign.campaign_id },
   });
 }
@@ -146,15 +163,15 @@ function viewCampaign(campaign: Core.Campaign) {
 const { state, execute } = useRequestState({
   action: () =>
     api.getBrandCampaigns({
-      page: 1,
-      limit: 10,
+      page: pageData.page,
+      limit: pageData.limit,
       statusProgress: addedFilter.value,
     }),
   immediately: true,
   onSuccess: (response) => {
     const { data, ...others } = response;
     campaigns.value = response.data;
-    pageData.value = others;
+    Object.assign(pageData, others);
   },
   onError: (error) => {
     console.log(error);

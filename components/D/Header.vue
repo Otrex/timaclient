@@ -35,10 +35,10 @@
           />
 
           <UiButtonDefault
-            v-if="route.name === 'ViewBrandCampaign'"
+            v-if="routeName === 'ViewBrandCampaign'"
             @click="
               navigateTo({
-                name: 'CreateCampaign',
+                name: 'DashboardCampaignsCreate',
               })
             "
             class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
@@ -119,6 +119,9 @@ const routeNameMap: Record<string, any> = {
   BrandCampaign: "Campaign",
   AttachContent: "Attach Files",
   DashboardBrandCampaigns: "Campaigns",
+  ViewBrandCampaignAnalytics: "ViewBrandCampaign",
+  ViewbrandCampaignInfluencers: "ViewBrandCampaign",
+  ViewbrandCampaignPayments: "ViewBrandCampaign",
   DashboardCampaignsCreate: defineComponent({
     components: { UtSvg },
     methods: { navigateTo },
