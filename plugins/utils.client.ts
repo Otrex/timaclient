@@ -5,6 +5,8 @@ import {
   LinearScale, ArcElement
 } from 'chart.js'
 
+import ApexCharts from "apexcharts";
+import VueApexCharts from "vue3-apexcharts";
 import {
   ChoroplethController,
   GeoFeature, ColorScale,
@@ -25,6 +27,9 @@ export default defineNuxtPlugin(({ vueApp: app }) => {
   );
   // Inject Toastify
   app.use(Vue3Toastify, { autoClose: 1000 });
+
+  app.config.globalProperties.$apexcharts = ApexCharts;
+  app.use(VueApexCharts);
 
   return {
     provide: {

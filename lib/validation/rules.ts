@@ -233,7 +233,7 @@ export const CREATE_BRAND_ADDRESS_VALIDATOR_V2 = {
   //     "postalCode should be at least 3 characters",
   //     minLength(3)
   //   ),
-  // },
+  // }, REGISTERED
 
   profilePicture: {
     required: helpers.withMessage("Please select a valid picture", required),
@@ -269,7 +269,7 @@ export const UPDATE_BRAND_INFO_RULE = {
         /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$/
       )
     ),
-    required: helpers.withMessage("Please enter a website url", required),
+    // required: helpers.withMessage("Please enter a website url", required),
   },
 };
 

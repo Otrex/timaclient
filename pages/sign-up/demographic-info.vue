@@ -21,7 +21,9 @@
         >
           <div>
             <div class="">
-              <p class="text-[#333333] text-xl text-[23.44px] text-left">
+              <p
+                class="text-[#333333] dark:text-white text-xl text-[23.44px] text-left"
+              >
                 1. What is the gender distribution of your audience?
               </p>
 
@@ -29,7 +31,9 @@
             </div>
 
             <div class="mt-8">
-              <p class="text-[#333333] text-xl text-[23.44px] text-left">
+              <p
+                class="text-[#333333] dark:text-white text-xl text-[23.44px] text-left"
+              >
                 2. What is the age distribution of your audience?
               </p>
 
@@ -61,7 +65,9 @@
             </div>
 
             <div class="mt-8">
-              <p class="text-[#333333] text-xl text-[23.44px] text-left">
+              <p
+                class="text-[#333333] dark:text-white text-xl text-[23.44px] text-left"
+              >
                 3. Where is your audience located?
               </p>
 
@@ -94,8 +100,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Core } from "~/lib/interfaces";
-
 definePageMeta({
   name: "SignUpDemographicInfo",
 });
@@ -148,8 +152,7 @@ const { state, execute, v$, validate } = useRequestState({
 
 function toProfileReview() {
   navigateTo({
-    name: "SignUp",
-    query: { tab: constants.REVIEW_PROFILE },
+    name: "SignUpInfluencerReviewProfile",
   });
 }
 </script>

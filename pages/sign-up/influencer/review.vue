@@ -1,12 +1,16 @@
 <template>
   <div class="dark:bg-slate-800 dark:text-white w-full pb-[10rem]">
-    <UtSpinner v-if="isLoading" />
     <div
-      v-else
       class="dark:bg-slate-800 dark:text-white max-w-3xl text-center px-[0.625rem] mx-auto"
     >
       <div>
-        <h1 class="text-[2.4375rem] mb-[30px]">Confirm Details</h1>
+        <h1
+          v-if="$route.params.type === constants.INFLUENCER"
+          class="text-[2.4375rem] mb-[30px]"
+        >
+          Confirm Details
+        </h1>
+        <h1 v-else class="text-[2.4375rem] mb-[30px]">Confirm Details</h1>
         <div class="relative inline-block">
           <div
             class="w-[11.625rem] overflow-hidden bg-white inline-block select-none h-[11.625rem] relative rounded-full border-[0.3125rem] border-solid border-white"
@@ -19,7 +23,7 @@
 
             <UiInputOverlayUpload
               type="pics"
-              v-model:file="form.profileImage"
+              v-model:file="form.profileImage as any"
               v-show="editable.profileImage"
               class="absolute inset-0 rounded-full"
             >
@@ -66,21 +70,21 @@
         </div>
         <div>
           <label class="!text-left block mb-[10px] text-lg text-[#777777]">
-            Email
+            Language
           </label>
           <UiEditOverlay
-            v-model:editable="editable.email"
+            v-model:editable="editable.language"
             v-slot="{ disabled }"
           >
-            <UiInputText
-              v-model="form.emailAddress"
-              placeholder="Email"
+            <UiInputSelect
+              :options="optionsStore.$countryLanguages(profile?.country!)"
+              v-model="form.language"
+              placeholder="Language"
               :disabled="disabled"
               class="w-full"
             />
           </UiEditOverlay>
         </div>
-
         <div>
           <label class="!text-left block mb-[10px] text-lg text-[#777777]">
             Phone Number
@@ -197,17 +201,15 @@
   </div>
 </template>
 
-<script setup lang="ts">
-const api = useAPI();
+<script lang="ts" setup>
 const authStore = useAuthStore();
+const api = useAPI();
 const { notify } = useNotification();
 const profile = computed(() => authStore.profile);
 const user = computed(() => authStore.user);
 
-const optionsStore = useOptionsStore();
-
 definePageMeta({
-  name: "SignUpBrandReviewProfile",
+  name: "SignUpInfluencerReviewProfile",
   middleware: [
     async function () {
       await useAuthStore().getProfile();
@@ -215,25 +217,26 @@ definePageMeta({
   ],
 });
 
+const optionsStore = useOptionsStore();
+
 const editable = reactive({
   profileImage: false,
   username: false,
   phone: false,
   language: false,
-  email: false,
   documents: false,
   address: false,
   industries: false,
 });
 
 const form = reactive({
+  language: undefined,
   username: user.value?.userName,
   phone: user.value?.phoneNumber,
-  profileImage: null as File | null,
+  profileImage: profile.value?.profileImage as File | string,
   industries: profile.value?.industries,
-  emailAddress: user.value?.emailAddress,
   address: `${profile.value?.address}, ${profile.value?.city}, ${profile.value?.state}`,
-  documents: (profile.value?.documents || []).map((e) => e.documentUrl) as any,
+  documents: (profile.value?.documents || []).map((e) => e.documentUrl),
 });
 
 const { state, execute: proceed } = useRequestState({
@@ -264,7 +267,6 @@ const { state: updating, execute: update } = useRequestState({
       userName: form.username,
       phoneNumber: form.phone,
       industries: form.industries,
-      emailAddress: form.emailAddress,
       address: form.address,
     };
 
@@ -292,31 +294,6 @@ const { state: updating, execute: update } = useRequestState({
       text: "Your profile has been updated",
     });
   },
-});
-
-const isLoading = ref(true);
-async function getOptions() {
-  try {
-    isLoading.value = true;
-    await optionsStore.getIndustries();
-  } finally {
-    isLoading.value = false;
-  }
-}
-
-async function setForm() {
-  form.username = profile.value?.userName;
-  form.phone = profile.value?.phoneNumber;
-  form.emailAddress = profile.value?.emailAddress;
-  form.industries = profile.value?.industries;
-  form.address = `${profile.value?.address}, ${profile.value?.city}, ${profile.value?.state}`;
-  form.documents = profile.value?.documents?.map((e) => e.documentUrl) as any;
-}
-onMounted(async () => {
-  await authStore.getProfile().then(async () => {
-    await setForm();
-    getOptions();
-  });
 });
 </script>
 

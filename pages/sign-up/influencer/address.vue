@@ -80,6 +80,11 @@ const { notify } = useNotification();
 const optionsStore = useOptionsStore();
 const authStore = useAuthStore();
 
+definePageMeta({
+  name: "SignUpAddressInfluencer",
+  middleware: ["options"],
+});
+
 const form = reactive({
   profilePicture: {} as File,
   companyRegDocs: [] as File[],
@@ -117,9 +122,7 @@ const { execute, validate, state, v$ } = useRequestState({
   },
   onSuccess() {
     navigateTo({
-      query: {
-        tab: constants.CONTENT_CATEGORY,
-      },
+      name: "SignUpIndustryInfluencer",
     });
   },
 });

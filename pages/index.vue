@@ -78,15 +78,13 @@ function proceed() {
     });
   }
 
-  navigateTo({
-    name: "SignUp",
-    params: {
-      type: joinAs.value,
-    },
-    query: {
-      tab: constants.BASIC_DETAILS,
-    },
-  });
+  if (joinAs.value === constants.INFLUENCER) {
+    return navigateTo({
+      name: "RegisterInfluencer",
+    });
+  }
+
+  alert("Not implemented");
 }
 </script>
 

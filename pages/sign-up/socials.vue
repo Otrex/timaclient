@@ -37,6 +37,7 @@
         </div>
         <div class="tm__box-598px flex flex-row items-center justify-center">
           <button
+            @click="toProfileReview"
             class="px-[5rem] py-[0.875rem] rounded-3xl text-red-600 hover:bg-gray-100"
           >
             Skip

@@ -10,9 +10,9 @@
         class="slider"
         @input="updateGender"
       />
-      <div class="labels">
-        <span>Male</span>
-        <span>Female</span>
+      <div class="labels dark:text-white">
+        <span class="dark:text-white">Male</span>
+        <span class="dark:text-white">Female</span>
       </div>
     </div>
     100%

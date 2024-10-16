@@ -98,7 +98,13 @@
     </div>
     <div v-else>
       <SignUpEmailVerify
-        @success="() => navigateTo('/sign-up/brand/company-info')"
+        @success="
+          () => {
+            navigateTo({
+              name: 'CompleteProfileInfluencer',
+            });
+          }
+        "
       />
     </div>
   </div>
@@ -108,13 +114,13 @@
 import { useDebounceFn } from "@vueuse/core";
 import { CREATE_USER_RULE } from "~/lib/validation/rules";
 definePageMeta({
-  name: "RegisterBasicDetails",
+  name: "RegisterInfluencer",
   middleware: [
     async function () {
       try {
         await useAuthStore().getProfile();
       } catch (error) {
-        navigateTo("/sign-up/brand/basic-info");
+        navigateTo("/sign-up/influencer/register");
       }
     },
   ],
@@ -124,7 +130,7 @@ onMounted(() => {
   authStore.$patch({
     registration: {
       ...authStore.$state.registration,
-      type: constants.BRAND,
+      type: constants.INFLUENCER,
     },
   });
 });

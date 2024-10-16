@@ -1,20 +1,23 @@
 export default function () {
   function getImageObjectUrl(imageUrl: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      fetch(imageUrl)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Failed to fetch image. Status: ${response.status}`);
-          }
-          return response.blob();
-        })
-        .then(blob => {
-          const objectUrl = URL.createObjectURL(blob);
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx!.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          const objectUrl = URL.createObjectURL(blob!);
           resolve(objectUrl);
-        })
-        .catch(error => {
-          reject(error);
         });
+      };
+      img.onerror = (error) => {
+        reject(error);
+      };
+      img.src = imageUrl;
     });
   }
 

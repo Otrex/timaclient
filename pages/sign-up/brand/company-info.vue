@@ -43,6 +43,11 @@
 import { UPDATE_BRAND_INFO_RULE } from "~/lib/validation/rules";
 definePageMeta({
   name: "SignUpBrandCompanyInfo",
+  middleware: [
+    async function () {
+      await useAuthStore().getProfile();
+    },
+  ],
 });
 
 const { notify } = useNotification();

@@ -16,6 +16,13 @@
           policies. Access to certain features is temporarily limited. Thank you
           for your patience. We will notify you once the review is complete.
         </p>
+
+        <NuxtLink
+          to="/"
+          class="text-red-500 hover:text-blue-600 mt-4 inline-block"
+        >
+          Return to Home
+        </NuxtLink>
       </div>
     </div>
   </div>
