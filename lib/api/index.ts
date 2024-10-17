@@ -331,6 +331,34 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getAdminCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+    return this.request<Response.GetAdminCampaignDetails>({
+      url: '/admin/campaigns',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...(statusProgress && { statusProgress })
+      }
+    })
+  }
+
+  async reviewCampaign(id: string | number, data: {
+    review: string,
+    reason?: string
+  }) {
+    return this.request({
+      url: '/admin/review-campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id,
+        ...data
+      }
+    })
+  }
+
   async fetchAdminUsers({ page = 1, limit = 10, role = 'INFLUENCER' }: { page: number, limit: number, role: 'INFLUENCER' | 'BRAND' }) {
     return this.request<GetAdminUsersResponse<typeof role>>({
       url: '/admin/users',

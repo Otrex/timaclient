@@ -212,6 +212,8 @@ export interface GetPaymentStats
     totalBalance: number;
   }> { }
 
+
+
 export interface GetInfluencersBookmark
   extends IResponse<Core.InfluencerBookmark[]> { }
 export interface GetSocialMediaInsight
@@ -258,3 +260,38 @@ export interface GetPaymentStatistics
   extends IResponse<Core.PaymentStatistics[]> { }
 export interface GetInfluencerTransactions
   extends IResponse<Core.InfluencerTransaction[]> { }
+
+
+export interface GetAdminCampaignDetails {
+  data: Array<{
+    campaignObjective: string;
+    audienceLocation: string[];
+    campaignAbout: string;
+    audienceSize: string[];
+    endDate: string;
+    contentPlacement: string[];
+    campaignRule: string;
+    campaignObjectiveAwareness: string[];
+    creativeBrief: string;
+    campaignObjectiveAcquisition: string[];
+    banner: string;
+    referenceLink: string;
+    audienceAgeGroup: string[];
+    socialMediaPlatform: string[];
+    statusProgress: string;
+    user_id: string;
+    audienceGender: string[];
+    creativeTone: string;
+    category: string[];
+    campaignName: string;
+    contentType: string[];
+    campaign_id: string;
+    startDate: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  totalCount: number;
+  statusCode: number;
+}
+

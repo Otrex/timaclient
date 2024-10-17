@@ -91,7 +91,19 @@
               >
             </div>
             <div v-else-if="field === 'action'">
-              <UiTransactionAction :transaction="row" />
+              <template v-if="item.profileSetupProgress === 'PROFILE_APPROVED'">
+                ---
+              </template>
+              <template v-else>
+                <select
+                  v-if="!item.loading"
+                  @change="(e) => updateStatus(e, item)"
+                >
+                  <option value="APPROVE">Approve</option>
+                  <option value="DECLINE">Disaprove</option>
+                </select>
+                <UtSpinner v-else />
+              </template>
             </div>
           </template>
         </UtDataTable>
@@ -110,10 +122,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Bar } from "vue-chartjs";
-import type { GetAdminUsersResponse } from "~/lib/interfaces/response";
 
 definePageMeta({
-  name: "Admin Brands",
+  name: "AdminBrands",
 });
 
 const statusMap: Record<string, string> = {
@@ -145,12 +156,26 @@ const statusCard = ref([
 
 const filter = ref("all");
 const tabFilters = ref("all");
-const thead = ["Name", "Phone", "Email", "Created At", "Status"].map((e) => ({
-  label: e,
-  key: e.toLowerCase().replace(" ", "_"),
-}));
+const thead = ["Name", "Phone", "Email", "Created At", "Status", "Action"].map(
+  (e) => ({
+    label: e,
+    key: e.toLowerCase().replace(" ", "_"),
+  })
+);
 
 const data = ref<any[]>([]);
+
+async function updateStatus(e: any, item: any) {
+  item.loading = true;
+  await api
+    .reviewUser({
+      user_id: item.id,
+      review: e.target.value,
+    })
+    .finally(() => {
+      item.loading = false;
+    });
+}
 
 const dataset = computed(() => ({
   labels: data.value?.map((e) => e.ageRange),
@@ -221,6 +246,7 @@ const tbody = ref<
     email: string;
     id: string;
     status: string;
+    action: any;
   }[]
 >([]);
 
@@ -378,6 +404,7 @@ const { state, execute } = useRequestState({
         email: e.emailAddress,
         created_at: new Date(e.profile.createdAt),
         status: e.profile.profileSetupProgress,
+        action: e.profile,
         id: e.id,
       };
     });

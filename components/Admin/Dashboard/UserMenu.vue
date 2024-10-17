@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="select-none whitespace-nowrap">
-        <div>{{ props.name.trim() || "New Account" }}</div>
+        <div>{{ props.name.trim() || "Admin" }}</div>
         <!--<div class="text-xs">{{ props.type }}</div>-->
       </div>
     </div>
