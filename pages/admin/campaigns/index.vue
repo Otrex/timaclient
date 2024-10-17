@@ -155,10 +155,11 @@
                     :class="[
                       'capitalize rounded-xl px-2 py-1 text-xs',
                       item === 'APPROVED' && 'text-white bg-[#3CC75B]',
-                      item === 'PENDING' && 'text-black bg-[#F3DC0F]',
+                      (item === 'PENDING' || !item) &&
+                        'text-black bg-[#F3DC0F]',
                       item === 'DECLINED' && 'text-white bg-red-500',
                     ]"
-                    >{{ item }}</span
+                    >{{ item || "PENDING" }}</span
                   >
                 </div>
                 <div v-else-if="field === 'action'">
@@ -167,13 +168,15 @@
                   </template>
                   <template v-else>
                     <select
+                      class="bg-transparent text-base py-1 px-2 rounded-xl text-gray-500 outline outline-gray-400"
                       v-if="!item.loading"
                       @change="(e) => updateStatus(e, item)"
                     >
-                      <option value="APPROVE">Approve</option>
-                      <option value="DECLINE">Disaprove</option>
+                      <option default>- Actions -</option>
+                      <option value="APPROVED">Approve</option>
+                      <option value="DECLINED">Disaprove</option>
                     </select>
-                    <UtSpinner v-else />
+                    <UtSpinner size="18px" :noText="true" v-else />
                   </template>
                 </div>
               </template>
@@ -337,6 +340,7 @@ async function updateStatus(e: any, item: any) {
     })
     .finally(() => {
       item.loading = false;
+      execute();
     });
 }
 

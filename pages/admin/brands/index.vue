@@ -102,7 +102,7 @@
                   <option value="APPROVE">Approve</option>
                   <option value="DECLINE">Disaprove</option>
                 </select>
-                <UtSpinner v-else />
+                <UtSpinner size="18px" :noText="true" v-else />
               </template>
             </div>
           </template>
@@ -174,6 +174,7 @@ async function updateStatus(e: any, item: any) {
     })
     .finally(() => {
       item.loading = false;
+      execute();
     });
 }
 
