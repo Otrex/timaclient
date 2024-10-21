@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <section class="mt-10 flex flex-row gap-[50px]">
+    <section class="mt-10 flex md:flex-row flex-col gap-[50px]">
       <div class="sm:w-2/3">
         <UtDataTable
           label="Brands"
@@ -84,8 +84,10 @@
             <div v-if="field === 'status'">
               <span
                 :class="[
-                  item === 'PROFILE_APPROVED' && 'text-[#3CC75B]',
-                  item === 'REGISTERED' && 'text-[#F3DC0F]',
+                  'px-3 py-1 rounded-lg whitespace-nowrap',
+                  item === 'PROFILE_APPROVED' && 'bg-[#3CC75B]/70 text-white',
+                  item === 'REGISTERED' && 'bg-[#F3DC0F] text-black',
+                  item === 'PROFILE_IN_REVIEW' && 'bg-[#F3DC0F] text-black',
                 ]"
                 >{{ statusMap[item] || item }}</span
               >
@@ -96,11 +98,13 @@
               </template>
               <template v-else>
                 <select
+                  class="bg-transparent text-sm py-1 px-2 rounded-xl text-gray-500 outline outline-gray-400"
                   v-if="!item.loading"
                   @change="(e) => updateStatus(e, item)"
                 >
-                  <option value="APPROVE">Approve</option>
-                  <option value="DECLINE">Disaprove</option>
+                  <option value="">-- Action --</option>
+                  <option value="APPROVED">Approve</option>
+                  <option value="DECLINED">Disaprove</option>
                 </select>
                 <UtSpinner size="18px" :noText="true" v-else />
               </template>
@@ -131,9 +135,9 @@ const statusMap: Record<string, string> = {
   PROFILE_APPROVED: "Onboarded",
   REGISTERED: "Pending",
   PROFILE_REJECTED: "Rejected",
-  INDUSTRY_SELECTED: "Pending",
-  PROFILE_SETUP: "Pending",
-  PROFILE_IN_REVIEW: "Pending (In Review)",
+  INDUSTRY_SELECTED: "Incomplete",
+  PROFILE_SETUP: "Incomplete",
+  PROFILE_IN_REVIEW: "Pending",
 };
 
 const statusCard = ref([
@@ -169,7 +173,7 @@ async function updateStatus(e: any, item: any) {
   item.loading = true;
   await api
     .reviewUser({
-      user_id: item.id,
+      user_id: item.userId,
       review: e.target.value,
     })
     .finally(() => {
@@ -405,7 +409,7 @@ const { state, execute } = useRequestState({
         email: e.emailAddress,
         created_at: new Date(e.profile.createdAt),
         status: e.profile.profileSetupProgress,
-        action: e.profile,
+        action: { ...e.profile, userId: e.id },
         id: e.id,
       };
     });

@@ -13,7 +13,7 @@
           <UiInputText
             class="w-full"
             v-model="form.identifier"
-            placeholder="Username"
+            placeholder="Username or Email Address"
           />
           <UiInputText
             class="w-full"
@@ -47,7 +47,6 @@
 <script setup lang="ts">
 import { SIGN_IN_RULE } from "~/lib/validation/rules";
 const authStore = useAuthStore();
-const profileStore = useProfileStore();
 const { notify } = useNotification();
 
 definePageMeta({

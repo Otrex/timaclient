@@ -39,16 +39,16 @@
         <UiButtonDefault
           class="w-full py-[0.875rem]"
           label="Accept"
-          @click="() => review('APPROVE').then(() => $emit('close'))"
-          :loading="state === constants.LOADING && reviewType === 'APPROVE'"
-          :disabled="state === constants.LOADING && reviewType === 'APPROVE'"
+          @click="() => review('APPROVED').then(() => $emit('close'))"
+          :loading="state === constants.LOADING && reviewType === 'APPROVED'"
+          :disabled="state === constants.LOADING && reviewType === 'APPROVED'"
           variant="primary"
         />
         <UiButtonDefault
           class="w-full py-[0.875rem]"
-          @click="() => review('DECLINE').then(() => $emit('close'))"
-          :loading="state === constants.LOADING && reviewType === 'DECLINE'"
-          :disabled="state === constants.LOADING && reviewType === 'DECLINE'"
+          @click="() => review('DECLINED').then(() => $emit('close'))"
+          :loading="state === constants.LOADING && reviewType === 'DECLINED'"
+          :disabled="state === constants.LOADING && reviewType === 'DECLINED'"
           label="Decline"
           variant="secondary"
         />
@@ -87,6 +87,8 @@ const props = defineProps({
   },
 });
 
+const emits = defineEmits(["refresh", "close"]);
+
 const reviewType = ref<string | null>();
 const api = useAPI();
 const { notify } = useNotification();
@@ -113,6 +115,7 @@ const { execute: review, state } = useRequestState({
       title: "User Reviewed",
       text: "User has been reviewed",
     });
+    emits("refresh");
   },
 });
 </script>

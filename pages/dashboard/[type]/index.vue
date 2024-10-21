@@ -13,7 +13,7 @@
               type="text"
               class="rounded-l-3xl w-full search pl-14 py-2 border"
               name="type"
-              :value="search"
+              :value="q"
               placeholder="Search for campaigns"
             />
             <button
@@ -220,6 +220,8 @@ const search = ref({
   audienceDemography: "",
   campaignStatus: "",
 });
+
+const q = ref("");
 
 const MAX_INFLUENCER_DISPLAY = 5;
 const allCampaigns = ref<GetCampaigns["data"]>([]);

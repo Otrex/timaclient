@@ -302,7 +302,7 @@ export default class TimaAPI extends UploadAPI {
     const { banner, ...rest } = data;
 
     body.append('banner', banner);
-    body.append('requestBody', JSON.stringify(rest));
+    body.append('requestBody', JSON.stringify(rest.requestBody));
 
     return this.request({
       url: '/brand/campaign',

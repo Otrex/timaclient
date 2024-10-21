@@ -230,7 +230,7 @@ export type GetBrandCampaigns = {
 
 export interface ReviewUser {
   user_id: string;
-  review: 'APPROVE' | 'DECLINE';
+  review: 'APPROVED' | 'DECLINED';
   reason?: string;
 }
 
