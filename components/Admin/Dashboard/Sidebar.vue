@@ -31,11 +31,11 @@
     <div>
       <div class="px-[1.125rem] dark:border-slate-900">
         <div class="mt-[1rem] mb-[3.75rem] flex flex-col gap-[1rem]">
-          <AdminDashboardNavigatorMenuItem
+          <!-- <AdminDashboardNavigatorMenuItem
             label="Settings"
             icon="nav/setting"
             to="Settings"
-          />
+          /> -->
           <AdminDashboardNavigatorMenuItem
             @click="logout"
             class="text-red-600"

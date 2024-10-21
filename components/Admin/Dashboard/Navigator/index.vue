@@ -8,7 +8,7 @@
     <AdminDashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"
-      to="/admin/dashboard/campaign"
+      to="/admin/campaigns"
     />
     <AdminDashboardNavigatorMenuItem
       label="Influencers"
@@ -18,7 +18,7 @@
     <AdminDashboardNavigatorMenuItem
       label="Brands"
       icon="nav/brands"
-      to="/admin/dashboard/brands"
+      to="/admin/brands"
     />
     <AdminDashboardNavigatorMenuItem
       label="Finance"

@@ -3,9 +3,9 @@
     <div class="flex items-center justify-between">
       <h1 class="text-[22px] font-semibold text-[#333333]">Notification</h1>
 
-      <div class="text-right mt-6 mb-[3.75rem]">
+      <div class="text-right max-w-[17.5rem] w-full mt-6 mb-[3.75rem]">
         <UiInputDropdown
-          class="max-w-[17.5rem] flex w-full"
+          class="flex w-full"
           v-model="filter"
           :options="[
             'Last 7 days',
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="rounded-xl p-8 border border-[#D8D8D8] flex flex-col mb-6">
+    <div class="rounded-xl flex flex-col mb-6">
       <template v-if="state === constants.LOADING">
         <UtSpinner />
       </template>
@@ -102,6 +102,7 @@
       backdrop-color="rgba(0,0,0,.3)"
     >
       <ModalsNewUser
+        @refresh="execute"
         @close="modalState = false"
         :id="currentReview?.id!"
         :phone="currentReview?.users.phoneNumber!"

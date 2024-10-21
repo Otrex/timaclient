@@ -119,7 +119,7 @@ export interface UploadRequest {
 }
 
 export interface SignIn {
-  emailAddress: string;
+  user: string;
   password: string;
 }
 
@@ -230,7 +230,7 @@ export type GetBrandCampaigns = {
 
 export interface ReviewUser {
   user_id: string;
-  review: 'APPROVE' | 'DECLINE';
+  review: 'APPROVED' | 'DECLINED';
   reason?: string;
 }
 

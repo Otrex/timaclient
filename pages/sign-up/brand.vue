@@ -70,7 +70,7 @@ const steps = [
 
 const route = useRoute();
 const currentStepIndex = computed(() => {
-  if (route.path.includes("/brand/comfirm-details")) return 5;
+  if (route.path.includes("/brand/comfirm-details")) return 4;
   return steps.findIndex((step) => route.path.includes(step.path));
 });
 function isActive(num: number) {

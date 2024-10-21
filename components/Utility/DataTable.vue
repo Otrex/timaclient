@@ -1,5 +1,9 @@
 <template>
-  <div :class="variant === 'secondary' && 'bg-[#F7F7F7] px-5 py-3 rounded-2xl'">
+  <div
+    :class="
+      variant === 'secondary' && 'bg-[#F7F7F7] px-5 w-full py-3 rounded-2xl'
+    "
+  >
     <div
       class="flex items-center"
       :class="variant !== 'secondary' && 'justify-between'"
@@ -56,7 +60,7 @@
     </div>
 
     <UtSpinner v-if="loading" />
-    <section v-else class="mb-5">
+    <section v-else class="mb-5 w-full overflow-x-auto">
       <table class="w-full">
         <thead>
           <th
@@ -83,7 +87,10 @@
             }"
           >
             <td
-              :class="[tclass?.tbody, variant === 'secondary' && 'align-top']"
+              :class="[
+                tclass?.tbody,
+                variant === 'secondary' && 'align-top text-sm text-gray-700',
+              ]"
               v-for="(item, index) in thead"
               :key="index"
             >

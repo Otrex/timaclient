@@ -302,7 +302,7 @@ export default class TimaAPI extends UploadAPI {
     const { banner, ...rest } = data;
 
     body.append('banner', banner);
-    body.append('requestBody', JSON.stringify(rest));
+    body.append('requestBody', JSON.stringify(rest.requestBody));
 
     return this.request({
       url: '/brand/campaign',
@@ -328,6 +328,34 @@ export default class TimaAPI extends UploadAPI {
       url: '/admin/overview-stats',
       requireAuth: true,
       method: 'POST',
+    })
+  }
+
+  async getAdminCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+    return this.request<Response.GetAdminCampaignDetails>({
+      url: '/admin/campaigns',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...(statusProgress && { statusProgress })
+      }
+    })
+  }
+
+  async reviewCampaign(id: string | number, data: {
+    review: string,
+    reason?: string
+  }) {
+    return this.request({
+      url: '/admin/review-campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id,
+        ...data
+      }
     })
   }
 

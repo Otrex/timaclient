@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <section class="mt-10 flex flex-row gap-[50px]">
+    <section class="mt-10 flex md:flex-row flex-col gap-[50px]">
       <div class="sm:w-2/3">
         <UtDataTable
           label="Brands"
@@ -84,14 +84,30 @@
             <div v-if="field === 'status'">
               <span
                 :class="[
-                  item === 'PROFILE_APPROVED' && 'text-[#3CC75B]',
-                  item === 'REGISTERED' && 'text-[#F3DC0F]',
+                  'px-3 py-1 rounded-lg whitespace-nowrap',
+                  item === 'PROFILE_APPROVED' && 'bg-[#3CC75B]/70 text-white',
+                  item === 'REGISTERED' && 'bg-[#F3DC0F] text-black',
+                  item === 'PROFILE_IN_REVIEW' && 'bg-[#F3DC0F] text-black',
                 ]"
                 >{{ statusMap[item] || item }}</span
               >
             </div>
             <div v-else-if="field === 'action'">
-              <UiTransactionAction :transaction="row" />
+              <template v-if="item.profileSetupProgress === 'PROFILE_APPROVED'">
+                ---
+              </template>
+              <template v-else>
+                <select
+                  class="bg-transparent text-sm py-1 px-2 rounded-xl text-gray-500 outline outline-gray-400"
+                  v-if="!item.loading"
+                  @change="(e) => updateStatus(e, item)"
+                >
+                  <option value="">-- Action --</option>
+                  <option value="APPROVED">Approve</option>
+                  <option value="DECLINED">Disaprove</option>
+                </select>
+                <UtSpinner size="18px" :noText="true" v-else />
+              </template>
             </div>
           </template>
         </UtDataTable>
@@ -110,19 +126,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Bar } from "vue-chartjs";
-import type { GetAdminUsersResponse } from "~/lib/interfaces/response";
 
 definePageMeta({
-  name: "Admin Brands",
+  name: "AdminBrands",
 });
 
 const statusMap: Record<string, string> = {
   PROFILE_APPROVED: "Onboarded",
   REGISTERED: "Pending",
   PROFILE_REJECTED: "Rejected",
-  INDUSTRY_SELECTED: "Pending",
-  PROFILE_SETUP: "Pending",
-  PROFILE_IN_REVIEW: "Pending (In Review)",
+  INDUSTRY_SELECTED: "Incomplete",
+  PROFILE_SETUP: "Incomplete",
+  PROFILE_IN_REVIEW: "Pending",
 };
 
 const statusCard = ref([
@@ -145,12 +160,27 @@ const statusCard = ref([
 
 const filter = ref("all");
 const tabFilters = ref("all");
-const thead = ["Name", "Phone", "Email", "Created At", "Status"].map((e) => ({
-  label: e,
-  key: e.toLowerCase().replace(" ", "_"),
-}));
+const thead = ["Name", "Phone", "Email", "Created At", "Status", "Action"].map(
+  (e) => ({
+    label: e,
+    key: e.toLowerCase().replace(" ", "_"),
+  })
+);
 
 const data = ref<any[]>([]);
+
+async function updateStatus(e: any, item: any) {
+  item.loading = true;
+  await api
+    .reviewUser({
+      user_id: item.userId,
+      review: e.target.value,
+    })
+    .finally(() => {
+      item.loading = false;
+      execute();
+    });
+}
 
 const dataset = computed(() => ({
   labels: data.value?.map((e) => e.ageRange),
@@ -221,6 +251,7 @@ const tbody = ref<
     email: string;
     id: string;
     status: string;
+    action: any;
   }[]
 >([]);
 
@@ -378,6 +409,7 @@ const { state, execute } = useRequestState({
         email: e.emailAddress,
         created_at: new Date(e.profile.createdAt),
         status: e.profile.profileSetupProgress,
+        action: { ...e.profile, userId: e.id },
         id: e.id,
       };
     });
