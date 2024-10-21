@@ -68,10 +68,7 @@
           <label class="!text-left block mb-[10px] text-lg text-[#777777]">
             Email
           </label>
-          <UiEditOverlay
-            v-model:editable="editable.email"
-            v-slot="{ disabled }"
-          >
+          <UiEditOverlay :editable="editable.email" v-slot="{ disabled }">
             <UiInputText
               v-model="form.emailAddress"
               placeholder="Email"

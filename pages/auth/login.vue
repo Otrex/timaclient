@@ -68,7 +68,7 @@ const {
 } = useRequestState({
   action: async () => {
     await authStore.signIn({
-      emailAddress: form.identifier,
+      user: form.identifier,
       password: form.password,
     });
   },

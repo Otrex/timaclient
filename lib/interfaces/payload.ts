@@ -119,7 +119,7 @@ export interface UploadRequest {
 }
 
 export interface SignIn {
-  emailAddress: string;
+  user: string;
   password: string;
 }
 
