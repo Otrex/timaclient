@@ -360,9 +360,6 @@ export const CREATE_CAMPAIGN_CREATIVE = (form: Record<string, any>) => ({
       required
     ),
   },
-  referenceLink: {
-    required: helpers.withMessage("Please enter your reference link", required),
-  },
 
   campaignObjectiveAwareness: {
     required: helpers.withMessage(
@@ -434,6 +431,5 @@ export const CREATE_CAMPAIGN_OVERVIEW = {
         /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?$/
       )
     ),
-    required: helpers.withMessage("Please enter a website url", required),
   },
 };

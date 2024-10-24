@@ -49,7 +49,10 @@ export const useCampaignStore = defineStore("campaign", {
     async createCampaign() {
       await this.$api.createCampaign({
         banner: this.newCampaign.banner as File,
-        requestBody: this.newCampaign
+        requestBody: {
+          ...this.newCampaign,
+          influencerID: this.newCampaign.invitees.map(invitee => invitee.id)
+        }
       })
     }
   },

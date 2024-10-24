@@ -126,10 +126,16 @@ export interface SignIn {
 
 export interface Demographics {
   genderDistribution: {
-    male: string;
-    female: string;
+    male: string | number;
+    female: string | number;
   };
-  website: string;
+  ageDistribution: {
+    "13-25": string | number;
+    "26-40": string | number;
+    "41-60": string | number;
+    "60+": string | number;
+  };
+  audienceLocation: string[];
 }
 
 

@@ -384,8 +384,8 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getBrandInfluencers({ page = 1, limit = 10 }: Payload.GetCampaigns) {
-    return this.request<any>({
-      url: '/brand/influencers/fetch',
+    return this.request<Response.GetBrandInfluencer>({
+      url: '/brand/influencer/fetch',
       requireAuth: true,
       method: 'POST',
       data: {

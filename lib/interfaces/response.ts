@@ -295,3 +295,37 @@ export interface GetAdminCampaignDetails {
   statusCode: number;
 }
 
+export interface GetBrandInfluencer {
+  totalUsers: number;
+  data: Array<{
+    emailAddress: string;
+    phoneNumber: string;
+    role: string;
+    profile: {
+      country: string;
+      lastName: string;
+      address: string;
+      city: string;
+      profileSetupProgress: string;
+      profileImage: string;
+      transactionPIN?: string;
+      userId: string;
+      firstName: string;
+      createdAt: string;
+      referralCode: string;
+      industries: string[];
+      hasSetTransactionPin: boolean;
+      otherName: string;
+      id: string;
+      state: string;
+      updatedAt: string;
+    };
+    id: string;
+    userName: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}
+

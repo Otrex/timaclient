@@ -27,7 +27,7 @@
                 1. What is the gender distribution of your audience?
               </p>
 
-              <UiInputGenderSlider />
+              <UiInputGenderSlider v-model="form.genderDistribution" />
             </div>
 
             <div class="mt-8">
@@ -40,26 +40,50 @@
               <div class="mt-4 flex flex-col gap-y-4">
                 <div class="flex gap-x-4 items-center w-full">
                   <p>13-25 years:</p>
-                  <input type="range" class="w-full" />
-                  <p>40%</p>
+                  <input
+                    type="range"
+                    class="w-full"
+                    v-model="form.ageDistribution['13-25']"
+                    min="0"
+                    max="100"
+                  />
+                  <p>{{ form.ageDistribution["13-25"] }}%</p>
                 </div>
 
                 <div class="flex gap-x-4 items-center">
                   <p>26-40 years:</p>
-                  <input type="range" class="w-full" />
-                  <p>40%</p>
+                  <input
+                    type="range"
+                    class="w-full"
+                    v-model="form.ageDistribution['26-40']"
+                    min="0"
+                    max="100"
+                  />
+                  <p>{{ form.ageDistribution["26-40"] }}%</p>
                 </div>
 
                 <div class="flex gap-x-4 items-center">
                   <p>41-60 years:</p>
-                  <input type="range" class="w-full" />
-                  <p>40%</p>
+                  <input
+                    type="range"
+                    class="w-full"
+                    v-model="form.ageDistribution['41-60']"
+                    min="0"
+                    max="100"
+                  />
+                  <p>{{ form.ageDistribution["41-60"] }}%</p>
                 </div>
 
                 <div class="flex gap-x-4 items-center">
                   <p>60+ years:</p>
-                  <input type="range" class="w-full" />
-                  <p>40%</p>
+                  <input
+                    type="range"
+                    class="w-full"
+                    v-model="form.ageDistribution['60+']"
+                    min="0"
+                    max="100"
+                  />
+                  <p>{{ form.ageDistribution["60+"] }}%</p>
                 </div>
               </div>
             </div>
@@ -73,12 +97,20 @@
 
               <div class="mt-4 flex flex-col gap-y-4">
                 <div class="flex gap-x-4">
-                  <input type="radio" />
+                  <input
+                    type="radio"
+                    v-model="form.audienceLocation"
+                    value="global"
+                  />
                   <p>Global</p>
                 </div>
 
                 <div class="flex gap-x-4">
-                  <input type="radio" />
+                  <input
+                    type="radio"
+                    v-model="form.audienceLocation"
+                    value="specific"
+                  />
                   <p>Select country/region</p>
                 </div>
               </div>
@@ -88,10 +120,11 @@
 
         <div class="tm__box-598px pb-[60px]">
           <UiButtonDefault
-            @click="toProfileReview"
+            @click="() => execute()"
             class="w-full py-[0.875rem] mb-[2rem]"
             label="Continue"
             variant="primary"
+            :loading="state === constants.LOADING"
           />
         </div>
       </div>
@@ -111,35 +144,31 @@ const rules = useValidationRules();
 const authStore = useAuthStore();
 
 const form = reactive({
-  name: "",
-  handle: "",
-  accessToken: "",
+  genderDistribution: {
+    male: 50,
+    female: 50,
+  },
+  ageDistribution: {
+    "13-25": 25,
+    "26-40": 25,
+    "41-60": 25,
+    "60+": 25,
+  },
+  audienceLocation: "global",
 });
 
-async function addSocial() {
-  await validate();
-  await execute();
-}
+const api = useAPI();
 
-const { state, execute, v$, validate } = useRequestState({
-  validation: {
-    rule: rules.ADD_SOCIAL_VALIDATION,
-    form,
-  },
-  action: () =>
-    authStore.updateSocials({
-      ...form,
-    }),
+const { state, execute } = useRequestState({
+  action: () => api.updateAudienceDemographics(form),
   onSuccess(response) {
     notify({
       type: "success",
       title: response.title,
-      text: "Social Account updated",
+      text: "Demographics updated",
     });
 
-    Object.keys(openModal.value).forEach((key) => {
-      openModal.value[key] = false;
-    });
+    toProfileReview();
   },
   onError(error) {
     notify({
