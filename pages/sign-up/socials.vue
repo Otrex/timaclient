@@ -4,7 +4,7 @@
       <div class="text-right">
         <UiProfileProgress :percent="authStore.progress" />
       </div>
-      <div class="pb-[30px]">
+      <div class="pb-[3.125rem] mb-10 min-h-screen">
         <div class="mb-[3.75rem]">
           <h1 class="text-[2.4375rem] mb-[1.5rem]">
             Connect your social media accounts
