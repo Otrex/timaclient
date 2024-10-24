@@ -11,6 +11,7 @@ export const useCampaignStore = defineStore("campaign", {
     return {
       currentCampaign: null,
       newCampaign: {
+        invitees: [], // Delete later
         campaignName: "",
         campaignObjective: "",
         campaignAbout: "",

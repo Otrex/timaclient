@@ -88,12 +88,14 @@
       </div>
       <div class="md:w-3/4">
         <UiInputMultiSelectLte
-          v-model="campaignStore.newCampaign.audienceLocation"
+          v-model="campaignStore.newCampaign.invitees"
           :error-message="v$.audienceLocation?.$errors[0]?.$message.toString()"
-          v-model:entries="campaignStore.newCampaign.audienceLocation"
           :options="locations"
           class="w-full"
         />
+      </div>
+      <div class="self-center" v-show="state === constants.LOADING">
+        <UtSvg name="sunshine" class="spinner w-[1.2rem] h-[1.2rem]" />
       </div>
     </div>
   </div>
@@ -134,6 +136,15 @@ props.bus?.on((message) => {
   if (message === "INFLUENCER_SUMMARY") {
     proceed();
   }
+});
+
+const api = useAPI();
+
+const { state } = useRequestState({
+  immediately: true,
+  action: async () => {
+    await api.getBrandInfluencers({});
+  },
 });
 </script>
 

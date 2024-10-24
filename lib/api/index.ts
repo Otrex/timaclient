@@ -374,6 +374,27 @@ export default class TimaAPI extends UploadAPI {
 
 
 
+  async updateAudienceDemographics(data: Payload.Demographics) {
+    return this.request<any>({
+      url: `/users/audience-demographic`,
+      requireAuth: true,
+      method: "POST",
+      data,
+    });
+  }
+
+  async getBrandInfluencers({ page = 1, limit = 10 }: Payload.GetCampaigns) {
+    return this.request<any>({
+      url: '/brand/influencers/fetch',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit
+      }
+    })
+  }
+
 
 
 

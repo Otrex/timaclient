@@ -123,6 +123,22 @@ export interface SignIn {
   password: string;
 }
 
+
+export interface Demographics {
+  genderDistribution: {
+    male: string;
+    female: string;
+  };
+  website: string;
+}
+
+
+
+
+
+
+
+
 export interface ResendOTP {
   email: string;
   username: string;

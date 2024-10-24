@@ -32,7 +32,7 @@
             :key="index"
             class="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
           >
-            <slot name="option" :option="option"></slot>
+            <slot name="option" :option="option">{{ option }}</slot>
           </li>
         </ul>
       </template>

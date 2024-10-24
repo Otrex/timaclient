@@ -84,6 +84,7 @@ export interface UserReviewResponse {
 }
 
 export interface Campaign {
+  invitees: any[] /// Delete later
   createdAt?: string;
   campaign_id?: string;
   campaignName: string;
