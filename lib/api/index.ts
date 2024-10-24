@@ -2,6 +2,7 @@ import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
 import type { GetAdminUsersResponse, GetCampaignsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
+import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
 
 const defaultFilter = {
@@ -12,6 +13,13 @@ const defaultFilter = {
 };
 
 export default class TimaAPI extends UploadAPI {
+  socials: SocialsAPI;
+
+  constructor() {
+    super();
+
+    this.socials = new SocialsAPI(this)
+  }
 
   async refreshAuth(token: string) {
     return this.request<Response.SignIn>({
@@ -379,7 +387,9 @@ export default class TimaAPI extends UploadAPI {
       url: `/users/audience-demographic`,
       requireAuth: true,
       method: "POST",
-      data,
+      data: {
+        audienceDemographics: data
+      },
     });
   }
 

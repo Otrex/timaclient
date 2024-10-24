@@ -28,12 +28,12 @@
     <!-- Dropdown Menu -->
     <div
       v-show="open"
-      class="absolute w-full mt-2 px-4 py-4 bg-gray-50 rounded-md shadow-lg"
+      class="absolute w-full mt-2 px-4 py-4 max-h-[25rem] overflow-y-auto bg-gray-50 rounded border"
     >
       <template v-if="options.length">
         <ul>
           <li
-            v-for="(option, index) in options"
+            v-for="(option, index) in $options"
             :key="index"
             @click="() => makeSelection(option)"
             class="flex items-center px-4 py-2 cursor-pointer rounded-md hover:border hover:bg-gray-100"
@@ -62,16 +62,19 @@ const props = withDefaults(
 );
 
 const entries = ref<any[]>([]);
+const $options = ref(props.options);
 
 const emit = defineEmits(["update:modelValue"]);
 
 function makeSelection(option: any) {
   open.value = false;
   entries.value.push(option);
+  $options.value = $options.value.filter((o) => o !== option);
   emit("update:modelValue", entries.value);
 }
 
 function removeEntry(entry: any) {
+  $options.value.push(entry);
   entries.value = entries.value.filter((e) => e !== entry);
   emit("update:modelValue", entries.value);
 }
@@ -80,6 +83,8 @@ onMounted(() => {
   entries.value =
     typeof props.modelValue === "string"
       ? [props.modelValue]
+      : !props.modelValue
+      ? []
       : props.modelValue;
 });
 </script>

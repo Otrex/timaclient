@@ -8,6 +8,7 @@ export default function () {
 
   api.setStore(tools.cookieStore());
   api.setBaseUrl(config.public.baseUrl);
+  api.socials.setBaseUrl(config.public.socialsBaseUrl);
   api.set401handler(() => useAuthStore().refreshAuth());
   api.setStoreGetter({
     accessToken: {

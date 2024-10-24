@@ -5,7 +5,7 @@
         <UiProfileProgress :percent="authStore.progress" />
       </div>
 
-      <div class="pb-[30px]">
+      <div class="pb-32 min-h-screen mb-32">
         <div class="mb-[3.75rem]">
           <h1 class="text-[2.4375rem] mb-[1.5rem]">
             Audience Demographic Information
@@ -95,11 +95,12 @@
                 3. Where is your audience located?
               </p>
 
-              <div class="mt-4 flex flex-col gap-y-4">
+              <div class="mt-4 flex flex-col gap-y-2">
                 <div class="flex gap-x-4">
                   <input
                     type="radio"
-                    v-model="form.audienceLocation"
+                    class="w-6 h-6"
+                    v-model="form.locationVariant"
                     value="global"
                   />
                   <p>Global</p>
@@ -108,10 +109,28 @@
                 <div class="flex gap-x-4">
                   <input
                     type="radio"
-                    v-model="form.audienceLocation"
+                    class="w-6 h-6"
+                    v-model="form.locationVariant"
                     value="specific"
                   />
                   <p>Select country/region</p>
+                </div>
+                <div>
+                  <div v-if="form.locationVariant === 'specific'">
+                    <UiInputMultiSelectLte
+                      v-model="form.audienceLocation"
+                      :options="optionsStore.$countries"
+                    >
+                      <template #entry="{ entry }">
+                        <div>{{ entry.label }}</div>
+                      </template>
+                      <template #option="{ option }">
+                        <div>
+                          {{ option.label }}
+                        </div>
+                      </template>
+                    </UiInputMultiSelectLte>
+                  </div>
                 </div>
               </div>
             </div>
@@ -135,6 +154,19 @@
 <script setup lang="ts">
 definePageMeta({
   name: "SignUpDemographicInfo",
+  middleware: [
+    async function () {
+      try {
+        await useOptionsStore().loadOptions();
+      } catch (error) {
+        useNotification().notify({
+          type: "error",
+          title: "Error",
+          text: "Failed to load options",
+        });
+      }
+    },
+  ],
 });
 
 const { notify } = useNotification();
@@ -154,17 +186,43 @@ const form = reactive({
     "41-60": 25,
     "60+": 25,
   },
-  audienceLocation: "global",
+  locationVariant: "global",
+  audienceLocation: [],
 });
 
 const api = useAPI();
 
+watch(
+  () => form.locationVariant,
+  () => {
+    if (form.locationVariant === "global") {
+      form.audienceLocation = [];
+    }
+  }
+);
+
 const { state, execute } = useRequestState({
-  action: () => api.updateAudienceDemographics(form),
+  action: () =>
+    api.updateAudienceDemographics({
+      genderDistribution: {
+        male: form.genderDistribution.male + "%",
+        female: form.genderDistribution.female + "%",
+      },
+      ageDistribution: {
+        "13-25": form.ageDistribution["13-25"] + "%",
+        "26-40": form.ageDistribution["26-40"] + "%",
+        "41-60": form.ageDistribution["41-60"] + "%",
+        "60+": form.ageDistribution["60+"] + "%",
+      },
+      audienceLocation:
+        form.locationVariant === "global"
+          ? ["global"]
+          : form.audienceLocation.map((e: any) => e.label),
+    }),
   onSuccess(response) {
     notify({
       type: "success",
-      title: response.title,
+      title: "Successful!",
       text: "Demographics updated",
     });
 

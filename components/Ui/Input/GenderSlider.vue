@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row gap-4 justify-around items-center">
-    100%
+    {{ malePercentage }}%
     <div class="gender-slider">
       <input
         type="range"
@@ -15,19 +15,48 @@
         <span class="dark:text-white">Female</span>
       </div>
     </div>
-    100%
+    {{ femalePercentage }}%
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 // Reactive value for the slider
 const genderValue = ref(50);
 
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    default: () => ({
+      male: 0,
+      female: 0,
+    }),
+  },
+  male: {
+    type: Number,
+    default: 0,
+  },
+  female: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const emit = defineEmits(["update:male", "update:modelValue", "update:female"]);
+
+// Computed properties for percentages
+const malePercentage = computed(() => Math.round(100 - genderValue.value));
+const femalePercentage = computed(() => Math.round(genderValue.value));
+
 // Function to handle slider input
 const updateGender = () => {
-  console.log(`Gender value: ${genderValue.value}%`);
+  emit("update:modelValue", {
+    male: malePercentage.value,
+    female: femalePercentage.value,
+  });
+  emit("update:male", malePercentage.value);
+  emit("update:female", femalePercentage.value);
 };
 </script>
 

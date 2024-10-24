@@ -32,7 +32,56 @@
                   getSocial(social.icon)?.name
                 )
               "
-            />
+            >
+              <template #form>
+                <div class="p-5">
+                  <h2 class="text-center font-bold text-2xl -mt-4 mb-4">
+                    {{ social.label }}
+                  </h2>
+                  <div class="text-left mb-4">
+                    <div class="flex flex-row items-center transition-all">
+                      <UiInputText
+                        type="text"
+                        class="w-full"
+                        :class="
+                          isValidUserName
+                            ? '!border-green-500 !border !border-solid'
+                            : ''
+                        "
+                        v-model="form.identifier"
+                        @keyup.prevent="() => verify()"
+                        :autocomplete="false"
+                        placeholder="Username"
+                      />
+                      <div>
+                        <UtSvg
+                          name="sunshine"
+                          class="spinner ml-4 w-[1.5rem] h-[1.5rem]"
+                          v-show="verifying == constants.LOADING"
+                        />
+                      </div>
+                    </div>
+                    <span
+                      class="text-green-500 !text-left text-sm"
+                      v-if="
+                        isValidUserName &&
+                        !v$.userName.$errors[0]?.$message.toString()
+                      "
+                    >
+                      Your username is good to go!</span
+                    >
+                  </div>
+                  <div>
+                    <UiButtonDefault
+                      variant="primary"
+                      label="Connect"
+                      class="py-2 px-10"
+                      @click="() => connect(social)"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UiButtonAddSocial>
           </template>
         </div>
         <div class="tm__box-598px flex flex-row items-center justify-center">
@@ -75,6 +124,7 @@ useHead({
 
 const { notify } = useNotification();
 const openModal = ref<Record<string, boolean>>({});
+const isValidUserName = ref<boolean | null>(null);
 
 const optionsStore = useOptionsStore();
 const rules = useValidationRules();
@@ -84,23 +134,25 @@ const closeModal = (key: string) => {
   openModal.value[key] = false;
 };
 
-const socials = [
+const socials = ref([
   {
     label: "Instagram",
     icon: "so/instagram",
+    field: "username",
   },
-  {
-    label: "Facebook",
-    icon: "so/facebook",
-  },
-  {
-    label: "X",
-    icon: "so/twitter",
-  },
-  {
-    label: "LinkedIn",
-    icon: "so/linkedin",
-  },
+  // {
+  //   label: "Facebook",
+  //   icon: "so/facebook",
+  //   field: "username",
+  // },
+  // {
+  //   label: "X",
+  //   icon: "so/twitter",
+  // },
+  // {
+  //   label: "LinkedIn",
+  //   icon: "so/linkedin",
+  // },
   {
     label: "Tiktok",
     icon: "so/tiktok",
@@ -109,7 +161,7 @@ const socials = [
     label: "Youtube",
     icon: "so/youtube",
   },
-];
+]);
 
 const getModal = (key: string) => openModal.value[key];
 
@@ -117,6 +169,7 @@ const form = reactive({
   name: "",
   handle: "",
   accessToken: "",
+  identifier: "",
 });
 
 function onOpen(id: string) {
@@ -133,39 +186,19 @@ function getSocial(id: string): Core.SocialType & { connected: boolean } {
     : ({} as any);
 }
 
-function facebookLogin() {
-  window.fbAsyncInit = function () {
-    const FB = window.FB;
-    FB.init({
-      appId: "1871358313281038",
-      xfbml: true,
-      version: "v18.0",
-    });
-
-    FB.login(
-      (response: any) => {
-        if (response.authResponse) {
-          form.accessToken = response.authResponse.accessToken;
-          addSocial();
-        } else {
-          notify({
-            type: "error",
-            title: "Facebook Error",
-            text: "Facebook authorization failed",
-          });
-        }
-      },
-      { scope: "public_profile,instagram_basic" }
-    );
-  };
-
-  window.fbAsyncInit();
-}
+async function connect(social) {}
 
 async function addSocial() {
   await validate();
   await execute();
 }
+
+const api = useAPI();
+const { state: verifying, execute: verify } = useRequestState({
+  action() {
+    return api.socials.getInformation(form.name, form.identifier);
+  },
+});
 
 const { state, execute, v$, validate } = useRequestState({
   validation: {
