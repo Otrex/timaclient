@@ -118,14 +118,14 @@
               ]"
               :tclass="{
                 thead: 'font-bold text-left align-middle',
-                tbody: 'text-center py-2',
+                tbody: 'text-center align-middle py-2',
               }"
             >
               <template #tbody="{ item, row, field }">
                 <div v-if="field === 'created_at'">
                   {{ new Date(item).toLocaleDateString() }}
                 </div>
-                <div v-if="field === 'details'">
+                <div v-if="field === 'details'" class="min-w-[12.5rem]">
                   <div class="flex flex-row gap-2 items-center">
                     <div>
                       <img
@@ -136,8 +136,8 @@
                     <div>{{ item.name || "---" }}</div>
                   </div>
                 </div>
-                <div v-if="field === 'about'">
-                  {{ item || "---" }}
+                <div v-if="field === 'about'" class="min-w-[12.5rem]">
+                  {{ tools.trunc(item, 10) || "---" }}
                 </div>
                 <div v-if="field === 'category'">
                   <span v-if="!item.length">
@@ -147,8 +147,22 @@
                     {{ it }}
                   </span>
                 </div>
-                <div v-if="field === 'timing'">
-                  {{ [item.start, item.end].join(" - ") }}
+                <div v-if="field === 'timing'" class="text-left">
+                  <template v-if="item.start && item.end">
+                    <div>
+                      <b>From: </b
+                      >{{
+                        item.start && new Date(item.start).toLocaleDateString()
+                      }}
+                    </div>
+                    <div>
+                      <b>To: </b
+                      >{{
+                        item.start && new Date(item.end).toLocaleDateString()
+                      }}
+                    </div>
+                  </template>
+                  <div v-else class="text-center">-</div>
                 </div>
                 <div v-if="field === 'status'">
                   <span

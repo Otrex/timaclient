@@ -13,7 +13,7 @@
     <AdminDashboardNavigatorMenuItem
       label="Influencers"
       icon="nav/influencers"
-      to="/admin/dashboard/influencers"
+      to="/admin/influencers"
     />
     <AdminDashboardNavigatorMenuItem
       label="Brands"

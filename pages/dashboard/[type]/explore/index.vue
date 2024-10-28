@@ -250,14 +250,16 @@ const topCampaigns = ref<GetCampaigns["data"]>([]);
 const filterToRequired = tools.truncateList(MAX_INFLUENCER_DISPLAY);
 
 const getRecommended = useRequestState({
-  action: () => api.getCampaigns({ type: "recommendation" }),
+  action: () => api.getInfluencerCampaigns({ type: "recommendation" }),
   onSuccess: (response) => {
-    recommended.value = response.data;
+    console.log(response);
+
+    // recommended.value = response.data;
   },
 });
 
 const getTop = useRequestState({
-  action: () => api.getCampaigns({ type: "top" }),
+  action: () => api.getInfluencerCampaigns({ type: "top" }),
   onSuccess: (response) => {
     topCampaigns.value = response.data;
   },
@@ -283,13 +285,13 @@ const getTopInfluencers = useRequestState({
 
 const getAllCampaigns = useRequestState({
   action: () =>
-    api.getCampaigns({
+    api.getInfluencerCampaigns({
       age: "",
       type: "filter",
       size: "",
       location: "",
       category: "",
-    }),
+    } as any),
   onSuccess(response) {
     allCampaigns.value = response.data;
   },

@@ -214,7 +214,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async fetchCampaigns({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+  async fetchCampaigns({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/campaign',
       requireAuth: true,
@@ -237,7 +237,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async fetchBookmarks({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+  async fetchBookmarks({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/bookmark/fetch',
       requireAuth: true,
@@ -271,7 +271,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async fetchUserReviews({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+  async fetchUserReviews({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request<Core.UserReviewResponse>({
       url: '/admin/users-review',
       requireAuth: true,
@@ -292,7 +292,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getBrandCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+  async getBrandCampaigns({ page = 1, limit = 10, statusProgress }: Payload.GetCampaigns) {
     return this.request<GetCampaignsResponse['data']>({
       url: '/brand/campaign/fetch',
       requireAuth: true,
@@ -301,6 +301,18 @@ export default class TimaAPI extends UploadAPI {
         page,
         limit,
         ...(statusProgress && { statusProgress })
+      }
+    })
+  }
+
+  async getInfluencerCampaigns({ page = 1, limit = 10, type }: Payload.GetCampaigns & { type: any }) {
+    return this.request<GetCampaignsResponse['data']>({
+      url: '/influencer/campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
       }
     })
   }
@@ -339,7 +351,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getAdminCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+  async getAdminCampaigns({ page = 1, limit = 10, statusProgress }: Payload.GetCampaigns) {
     return this.request<Response.GetAdminCampaignDetails>({
       url: '/admin/campaigns',
       requireAuth: true,

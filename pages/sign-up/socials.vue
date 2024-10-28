@@ -74,6 +74,12 @@
                   <div>
                     <UiButtonDefault
                       variant="primary"
+                      label="Verify"
+                      class="py-2 px-10"
+                      @click="() => verify()"
+                    />
+                    <UiButtonDefault
+                      variant="primary"
                       label="Connect"
                       class="py-2 px-10"
                       @click="() => connect(social)"
@@ -104,6 +110,7 @@
 </template>
 
 <script setup lang="ts">
+import { AxiosError } from "axios";
 import type { Core } from "~/lib/interfaces";
 
 definePageMeta({
@@ -194,12 +201,29 @@ async function addSocial() {
 }
 
 const api = useAPI();
+const getterMap = {
+  "so/instagram": async (identifier: string) => {
+    return api.socials.getInstagramByUsername(identifier);
+  },
+  "so/tiktok": async (identifier: string) => {
+    return api.socials.getTiktokByUsername(identifier);
+  },
+  "so/youtube": async (identifier: string) => {
+    return api.socials.getYoutubeByUsername(identifier);
+  },
+};
+
 const { state: verifying, execute: verify } = useRequestState({
-  action() {
-    return api.socials.getInformation(form.name, form.identifier);
+  async action() {
+    const [socialKey] =
+      Object.entries(openModal.value).find(([_, value]) => value) || [];
+    if (!socialKey) throw new AxiosError("No social selected");
+
+    const getter = getterMap[socialKey as keyof typeof getterMap];
+    if (!getter) throw new AxiosError("Invalid social key");
+    return getter(form.identifier);
   },
 });
-
 const { state, execute, v$, validate } = useRequestState({
   validation: {
     rule: rules.ADD_SOCIAL_VALIDATION,
