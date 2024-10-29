@@ -329,3 +329,38 @@ export interface GetBrandInfluencer {
   statusCode: number;
 }
 
+
+export interface GetInfluencerCampaignsResponse {
+  data: Array<{
+    audienceLocation: string[];
+    campaignAbout: string;
+    endDate: string;
+    contentPlacement: string[];
+    campaignObjectiveAwareness: string[];
+    companyName: string;
+    creativeBrief: string;
+    campaignObjectiveAcquisition: string[];
+    referenceLink: string;
+    audienceAgeGroup: string[];
+    statusProgress: string;
+    contentType: string[];
+    campaign_id: string;
+    campaignObjective: string;
+    website: string;
+    audienceSize: string[];
+    campaignRule: string;
+    banner: string;
+    socialMediaPlatform: string[];
+    user_id: string;
+    audienceGender: string[];
+    creativeTone: string;
+    category: string[];
+    campaignName: string;
+    startDate: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  totalCount: number;
+  statusCode: number;
+}

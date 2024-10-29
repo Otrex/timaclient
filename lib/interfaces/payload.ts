@@ -249,6 +249,16 @@ export type GetBrandCampaigns = {
   size?: number;
 };
 
+export interface SearchCampaigns {
+  campaignName?: string;
+  socialMediaPlatform?: string[];
+  audienceDemographics?: string[];
+  category?: string[];
+  page?: number;
+  limit?: number;
+}
+
+
 
 export interface ReviewUser {
   user_id: string;

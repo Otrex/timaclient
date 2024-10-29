@@ -46,24 +46,26 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
-            <div v-for="campaign in recommended" :key="campaign.publicId">
+            <div v-for="campaign in recommended" :key="campaign.campaign_id">
               <NuxtLink
                 class="w-full"
                 :to="{
-                  params: { id: campaign.publicId, type: $route.params.type },
-                  name: 'Explore - Campaign',
+                  params: {
+                    id: campaign.campaign_id,
+                  },
+                  name: 'ViewInfluencerCampaign',
                 }"
               >
                 <DashboardCampaignCard
-                  :image="campaign.creative.thumbnail"
-                  :budget="campaign.overview.plannedBudget"
-                  :category="campaign.creative.creativeTone"
-                  :description="campaign.overview.briefDescription"
-                  :deadline="campaign.creative.endDate"
-                  :brand="campaign.overview.name"
-                  :completion="campaign.status || 0"
-                  :public-id="campaign.publicId"
-                  :title="campaign.overview.name"
+                  :image="campaign.banner"
+                  :budget="0"
+                  :category="campaign.category"
+                  :description="campaign.campaignAbout"
+                  :deadline="campaign.endDate"
+                  :brand="campaign.companyName"
+                  :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+                  :public-id="campaign.campaign_id"
+                  :title="campaign.campaignName"
                 />
               </NuxtLink>
             </div>
@@ -86,24 +88,24 @@
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
             <template v-for="campaign in topCampaigns" :key="campaign.publicId">
-              <NuxtLink
+              <!-- <NuxtLink
                 :to="{
                   params: { id: campaign.publicId, type: $route.params.type },
                   name: 'Explore - Campaign',
                 }"
-              >
-                <DashboardCampaignCard
-                  :image="campaign.creative.thumbnail"
-                  :brand="campaign.overview.name"
-                  :budget="campaign.overview.plannedBudget"
-                  :category="campaign.creative.creativeTone"
-                  :description="campaign.overview.briefDescription"
-                  :deadline="campaign.creative.endDate"
-                  :completion="campaign.status || 0"
-                  :public-id="campaign.publicId"
-                  :title="campaign.overview.name"
-                />
-              </NuxtLink>
+              > -->
+              <DashboardCampaignCard
+                :image="campaign.creative.thumbnail"
+                :brand="campaign.overview.name"
+                :budget="campaign.overview.plannedBudget"
+                :category="campaign.creative.creativeTone"
+                :description="campaign.overview.briefDescription"
+                :deadline="campaign.creative.endDate"
+                :completion="campaign.status || 0"
+                :public-id="campaign.publicId"
+                :title="campaign.overview.name"
+              />
+              <!-- </NuxtLink> -->
             </template>
           </div>
         </template>
@@ -125,24 +127,24 @@
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
             <template v-for="campaign in allCampaigns" :key="campaign.publicId">
-              <NuxtLink
+              <!-- <NuxtLink
                 :to="{
                   params: { id: campaign.publicId, type: $route.params.type },
                   name: 'Explore - Campaign',
                 }"
-              >
-                <DashboardCampaignCard
-                  :image="campaign.creative.thumbnail"
-                  :brand="campaign.overview.name"
-                  :budget="campaign.overview.plannedBudget"
-                  :category="campaign.creative.creativeTone"
-                  :description="campaign.overview.briefDescription"
-                  :deadline="campaign.creative.endDate"
-                  :completion="campaign.status || 0"
-                  :public-id="campaign.publicId"
-                  :title="campaign.overview.name"
-                />
-              </NuxtLink>
+              > -->
+              <DashboardCampaignCard
+                :image="campaign.banner"
+                :budget="0"
+                :category="campaign.category"
+                :description="campaign.campaignAbout"
+                :deadline="campaign.endDate"
+                :brand="campaign.companyName"
+                :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+                :public-id="campaign.campaign_id"
+                :title="campaign.campaignName"
+              />
+              <!-- </NuxtLink> -->
             </template>
           </div>
         </template>

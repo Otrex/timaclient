@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetOverviewStats } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerCampaignsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -306,7 +306,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async getInfluencerCampaigns({ page = 1, limit = 10, type }: Payload.GetCampaigns & { type: any }) {
-    return this.request<GetCampaignsResponse['data']>({
+    return this.request<GetInfluencerCampaignsResponse>({
       url: '/influencer/campaign',
       requireAuth: true,
       method: 'POST',
@@ -417,8 +417,18 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-
-
+  async searchForInfluencerCampaigns({ page = 1, limit = 10, ...others }: Payload.SearchCampaigns) {
+    return this.request<Response.GetCampaigns>({
+      url: '/influencer/campaign/search',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...others
+      }
+    })
+  }
 
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({

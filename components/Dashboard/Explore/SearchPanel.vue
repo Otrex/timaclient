@@ -141,7 +141,8 @@
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
         >
-          <NuxtLink
+          <template v-for="campaign in search" :key="campaign.publicId">
+            <!-- <NuxtLink
             v-for="campaign in search"
             :key="campaign.publicId"
             class="w-full"
@@ -149,7 +150,7 @@
               params: { id: campaign.publicId },
               name: 'Explore - Campaign',
             }"
-          >
+          > -->
             <DashboardCampaignCard
               class="w-full"
               no-max-w
@@ -163,7 +164,8 @@
               :title="campaign.overview.name"
               :completion="campaign.status || 0"
             />
-          </NuxtLink>
+            <!-- </NuxtLink> -->
+          </template>
         </div>
       </template>
     </div>
