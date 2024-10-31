@@ -122,6 +122,14 @@ const routeNameMap: Record<string, any> = {
   ViewBrandCampaignAnalytics: "ViewBrandCampaign",
   ViewbrandCampaignInfluencers: "ViewBrandCampaign",
   ViewbrandCampaignPayments: "ViewBrandCampaign",
+  ViewInfluencerCampaign: defineComponent({
+    components: { UtSvg },
+    methods: { navigateTo },
+    template: `<div class="flex flex-row items-center gap-5">
+      <UtSvg name="nav/back" @click="navigateTo({ name: 'DashboardBrandCampaigns' })" dim w="1.5rem" h="1.5rem" />
+      <h2 class="font-bold"> Dashboard </h2>
+    </div>`,
+  }),
   DashboardCampaignsCreate: defineComponent({
     components: { UtSvg },
     methods: { navigateTo },
