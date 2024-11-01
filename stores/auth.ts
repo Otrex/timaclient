@@ -77,8 +77,41 @@ export const useAuthStore = defineStore("auth", {
         },
       });
     },
+    async clearAllStorageData() {
+      // Clear all cookies
+      document.cookie.split(";").forEach(cookie => {
+        document.cookie = cookie
+          .replace(/^ +/, "")
+          .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+      });
+
+      // Clear localStorage
+      localStorage.clear();
+
+      // Clear the auth store state
+      this.$patch({
+        registration: {
+          type: undefined,
+          email: undefined,
+          publicId: undefined,
+          username: undefined,
+          country: undefined
+        },
+        user: undefined,
+        profile: null,
+        wallet: undefined,
+        authorization: {
+          accessToken: undefined,
+          userType: undefined
+        },
+        connectedSocials: []
+      });
+
+      this.$clearPersist();
+    },
 
     async signIn(payload: Payload.SignIn) {
+
       const response = await this.$api.signIn({
         ...payload,
       });

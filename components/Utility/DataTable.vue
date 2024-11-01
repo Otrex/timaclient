@@ -78,7 +78,7 @@
             </slot>
           </th>
         </thead>
-        <tbody>
+        <tbody v-if="tbody.length">
           <tr
             v-for="(row, index) in tbody"
             :key="index"
@@ -106,6 +106,32 @@
                 />
                 <span v-else>{{ row[item.key] }}</span>
               </slot>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="100%" class="text-center">
+              <div class="py-8 flex flex-col items-center">
+                <svg
+                  class="w-16 h-16 text-gray-300 mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M4 6h16M4 12h16m-7 6h7M4 18h4"
+                  ></path>
+                  <circle cx="12" cy="12" r="8" stroke-dasharray="2 4"></circle>
+                </svg>
+                <p class="text-gray-500 text-lg">No entries found</p>
+                <p class="text-gray-400 text-sm">
+                  Try adjusting your search or filters
+                </p>
+              </div>
             </td>
           </tr>
         </tbody>

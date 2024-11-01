@@ -305,7 +305,8 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getInfluencerCampaigns({ page = 1, limit = 10, type }: Payload.GetCampaigns & { type: any }) {
+  async getInfluencerCampaigns({ page = 1, limit = 10, type, recommended = false,
+    top = false }: Payload.GetCampaigns & { type?: any, recommended?: boolean, top?: boolean }) {
     return this.request<GetInfluencerCampaignsResponse>({
       url: '/influencer/campaign',
       requireAuth: true,
@@ -313,6 +314,8 @@ export default class TimaAPI extends UploadAPI {
       data: {
         page,
         limit,
+        recommended,
+        top,
       }
     })
   }

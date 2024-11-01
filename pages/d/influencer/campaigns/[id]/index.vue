@@ -165,7 +165,11 @@
     >
       <template #more="{ type }">
         <div v-if="type !== 'success'">
-          <UiButtonDefault variant="primary" label="Link Account" />
+          <UiButtonDefault
+            variant="primary"
+            class="w-full py-2"
+            label="Link Account"
+          />
         </div>
       </template>
     </AlertItem>

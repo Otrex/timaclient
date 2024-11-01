@@ -117,18 +117,6 @@ definePageMeta({
   name: "SignUpSocials",
 });
 
-useHead({
-  script: [
-    {
-      async: true,
-      defer: true,
-      nonce: "wreDQhen",
-      crossorigin: "anonymous",
-      src: "https://connect.facebook.net/en_US/sdk.js",
-    },
-  ],
-});
-
 const { notify } = useNotification();
 const openModal = ref<Record<string, boolean>>({});
 const isValidUserName = ref<boolean | null>(null);

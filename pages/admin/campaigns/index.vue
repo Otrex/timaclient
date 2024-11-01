@@ -136,18 +136,21 @@
                     <div>{{ item.name || "---" }}</div>
                   </div>
                 </div>
-                <div v-if="field === 'about'" class="min-w-[12.5rem]">
+                <div v-if="field === 'about'" class="min-w-[12.5rem] text-left">
                   {{ tools.trunc(item, 10) || "---" }}
                 </div>
-                <div v-if="field === 'category'">
+                <div class="flex flex-wrap gap-2" v-if="field === 'category'">
                   <span v-if="!item.length">
                     <i class="text-base">No Categories</i>
                   </span>
-                  <span v-for="(it, i) in item || []">
+                  <span
+                    class="rounded-md bg-gray-300 border px-1 whitespace-nowrap py-[2px]"
+                    v-for="(it, i) in item || []"
+                  >
                     {{ it }}
                   </span>
                 </div>
-                <div v-if="field === 'timing'" class="text-left">
+                <div v-if="field === 'timing'" class="text-left px-1">
                   <template v-if="item.start && item.end">
                     <div>
                       <b>From: </b
