@@ -36,18 +36,28 @@
       v-if="campaignsTabs.includes(route.query.ctab as string || 'active')"
       class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
     >
-      <template v-for="i in tools.range(0, 5)" :key="i">
-        <DashboardCampaignCard
-          :publicId="''"
-          :title="''"
-          :image="''"
-          :category="[]"
-          :brand="''"
-          :description="''"
-          :budget="0"
-          :deadline="''"
-          :completion="0"
-        />
+      <template v-for="(campaign, i) in campaigns" :key="i">
+        <NuxtLink
+          class="w-full"
+          :to="{
+            params: {
+              id: campaign.campaign_id,
+            },
+            name: 'ViewInfluencerCampaign',
+          }"
+        >
+          <DashboardCampaignCard
+            :image="(campaign.banner as string)"
+            :budget="0"
+            :category="campaign.category"
+            :description="campaign.campaignAbout"
+            :deadline="campaign.endDate"
+            :brand="(campaign as any).companyName || ''"
+            :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+            :public-id="(campaign.campaign_id as string)"
+            :title="campaign.campaignName"
+          />
+        </NuxtLink>
       </template>
     </section>
 
@@ -62,6 +72,8 @@
 </template>
 
 <script setup lang="ts">
+import type { GetInfluencerCampaignsResponse } from "~/lib/interfaces/response";
+
 definePageMeta({
   name: "InfluencerCampaigns",
 });
@@ -97,6 +109,16 @@ const tabs = [
     text: "Submissions",
   },
 ];
+
+const api = useAPI();
+const campaigns = ref<GetInfluencerCampaignsResponse["data"]>([]);
+const getAllCampaigns = useRequestState({
+  immediately: true,
+  action: () => api.getInfluencerCampaigns({}),
+  onSuccess(response) {
+    campaigns.value = response.data;
+  },
+});
 </script>
 
 <style>

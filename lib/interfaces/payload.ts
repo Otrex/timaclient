@@ -123,6 +123,28 @@ export interface SignIn {
   password: string;
 }
 
+
+export interface Demographics {
+  genderDistribution: {
+    male: string | number;
+    female: string | number;
+  };
+  ageDistribution: {
+    "13-25": string | number;
+    "26-40": string | number;
+    "41-60": string | number;
+    "60+": string | number;
+  };
+  audienceLocation: string[];
+}
+
+
+
+
+
+
+
+
 export interface ResendOTP {
   email: string;
   username: string;
@@ -226,6 +248,16 @@ export type GetBrandCampaigns = {
   page?: number;
   size?: number;
 };
+
+export interface SearchCampaigns {
+  campaignName?: string;
+  socialMediaPlatform?: string[];
+  audienceDemographics?: string[];
+  category?: string[];
+  page?: number;
+  limit?: number;
+}
+
 
 
 export interface ReviewUser {

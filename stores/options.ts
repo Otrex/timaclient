@@ -23,9 +23,14 @@ export const useOptionsStore = defineStore("options", {
       industries: [],
       campaignOptions: {
         size: [
-          "1 - 2000",
-          "2000 - 5000",
-          "5000 - 10000",
+          "Nano (1,000 - 4,999)",
+          "Nano+ (5000 - 9,999)",
+          "Micro (10,000 - 49,999)",
+          "Micro+ (50,000 - 99,999)",
+          "Macro (100,000 - 499,999)",
+          "Macro+ (500,000 - 999,999)",
+          "Mega (1,000,000 - 9,999,999)",
+          "Mega+ (10,000,000 > Above)",
         ],
         gender: [
           "Male",
@@ -53,21 +58,19 @@ export const useOptionsStore = defineStore("options", {
         contentType: [
           "Image",
           "Video",
-          "Story",
+          "Graphic",
           "Carousel",
-          "Reel",
-          "Post",
-          "Feed",
-          "Live"
+          "Tweet",
+          "Article",
+          "Podcast",
+          "Live",
+          "Song"
         ],
         contentPlacement: [
-          "Feed",
+          "Main Page",
           "Story",
           "Reel",
-          "Carousel",
-          "Post",
-          "Feed",
-          "Live"
+          "Short"
         ],
         creativeTone: [
           "Serious",

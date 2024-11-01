@@ -5,10 +5,15 @@
       @click="open = !open"
       class="flex flex-row bg-gray-100 py-3 rounded-3xl"
     >
-      <div class="flex flex-wrap px-4 w-full">
+      <div class="flex flex-wrap px-4 gap-3 w-full">
         <template v-if="entries.length">
           <span v-for="(entry, idx) in entries" :key="idx">
-            <slot name="entry" :entry="entry"></slot>
+            <div class="flex flex-row gap-1 items-center">
+              <slot name="entry" :entry="entry">{{ entry }}</slot>
+              <button @click="() => removeEntry(entry)">
+                <UtSvg name="cancel" dim w="1.7rem" h="1.7rem" />
+              </button>
+            </div>
           </span>
         </template>
         <template v-else>
@@ -22,17 +27,18 @@
 
     <!-- Dropdown Menu -->
     <div
-      v-if="open"
-      class="absolute w-full mt-2 px-4 bg-gray-100 rounded-md shadow-lg"
+      v-show="open"
+      class="absolute w-full mt-2 px-4 py-4 max-h-[25rem] overflow-y-auto bg-gray-50 rounded border"
     >
       <template v-if="options.length">
         <ul>
           <li
-            v-for="(option, index) in options"
+            v-for="(option, index) in $options"
             :key="index"
-            class="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
+            @click="() => makeSelection(option)"
+            class="flex items-center px-4 py-2 cursor-pointer rounded-md hover:border hover:bg-gray-100"
           >
-            <slot name="option" :option="option"></slot>
+            <slot name="option" :option="option">{{ option }}</slot>
           </li>
         </ul>
       </template>
@@ -45,16 +51,42 @@
 const open = ref(false);
 const props = withDefaults(
   defineProps<{
-    entries: any[];
     options: any[];
+    modelValue?: any;
     placeholder?: string;
   }>(),
   {
     placeholder: "",
     options: () => [],
-    entries: () => [],
   }
 );
+
+const entries = ref<any[]>([]);
+const $options = ref(props.options);
+
+const emit = defineEmits(["update:modelValue"]);
+
+function makeSelection(option: any) {
+  open.value = false;
+  entries.value.push(option);
+  $options.value = $options.value.filter((o) => o !== option);
+  emit("update:modelValue", entries.value);
+}
+
+function removeEntry(entry: any) {
+  $options.value.push(entry);
+  entries.value = entries.value.filter((e) => e !== entry);
+  emit("update:modelValue", entries.value);
+}
+
+onMounted(() => {
+  entries.value =
+    typeof props.modelValue === "string"
+      ? [props.modelValue]
+      : !props.modelValue
+      ? []
+      : props.modelValue;
+});
 </script>
 
 <style scoped>

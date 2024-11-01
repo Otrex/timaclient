@@ -34,26 +34,29 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
-            <div v-for="campaign in recommended" :key="campaign.publicId">
-              <NuxtLink
+            <div v-for="campaign in recommended" :key="campaign.campaign_id">
+              <!-- <NuxtLink
                 class="w-full"
                 :to="{
-                  params: { id: campaign.publicId, type: $route.params.type },
+                  params: {
+                    id: campaign.campaign_id,
+                    type: $route.params.type,
+                  },
                   name: 'Explore - Campaign',
                 }"
-              >
-                <DashboardCampaignCard
-                  :image="campaign.creative.thumbnail"
-                  :budget="campaign.overview.plannedBudget"
-                  :category="campaign.creative.creativeTone"
-                  :description="campaign.overview.briefDescription"
-                  :deadline="campaign.creative.endDate"
-                  :brand="campaign.overview.name"
-                  :completion="campaign.status || 0"
-                  :public-id="campaign.publicId"
-                  :title="campaign.overview.name"
-                />
-              </NuxtLink>
+              > -->
+              <DashboardCampaignCard
+                :image="campaign.banner"
+                :budget="0"
+                :category="campaign.category"
+                :description="campaign.campaignAbout"
+                :deadline="campaign.endDate"
+                :brand="campaign.companyName"
+                :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+                :public-id="campaign.campaign_id"
+                :title="campaign.campaignName"
+              />
+              <!-- </NuxtLink> -->
             </div>
           </div>
         </template>
@@ -75,25 +78,28 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
-            <template v-for="campaign in topCampaigns" :key="campaign.publicId">
-              <NuxtLink
+            <template
+              v-for="campaign in topCampaigns"
+              :key="campaign.campaign_id"
+            >
+              <!-- <NuxtLink
                 :to="{
                   params: { id: campaign.publicId, type: $route.params.type },
                   name: 'Explore - Campaign',
                 }"
-              >
-                <DashboardCampaignCard
-                  :image="campaign.creative.thumbnail"
-                  :brand="campaign.overview.name"
-                  :budget="campaign.overview.plannedBudget"
-                  :category="campaign.creative.creativeTone"
-                  :description="campaign.overview.briefDescription"
-                  :deadline="campaign.creative.endDate"
-                  :completion="campaign.status || 0"
-                  :public-id="campaign.publicId"
-                  :title="campaign.overview.name"
-                />
-              </NuxtLink>
+              > -->
+              <DashboardCampaignCard
+                :image="(campaign.banner as string)"
+                :budget="0"
+                :category="campaign.category"
+                :description="campaign.campaignAbout"
+                :deadline="campaign.endDate"
+                :brand="(campaign.companyName as string)"
+                :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+                :public-id="(campaign.campaign_id as string)"
+                :title="campaign.campaignName"
+              />
+              <!-- </NuxtLink> -->
             </template>
           </div>
         </template>
@@ -114,25 +120,28 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[1.0625rem]"
           >
-            <template v-for="campaign in allCampaigns" :key="campaign.publicId">
-              <NuxtLink
+            <template
+              v-for="campaign in allCampaigns"
+              :key="campaign.campaign_id"
+            >
+              <!-- <NuxtLink
                 :to="{
                   params: { id: campaign.publicId, type: $route.params.type },
                   name: 'Explore - Campaign',
                 }"
-              >
-                <DashboardCampaignCard
-                  :image="campaign.creative.thumbnail"
-                  :brand="campaign.overview.name"
-                  :budget="campaign.overview.plannedBudget"
-                  :category="campaign.creative.creativeTone"
-                  :description="campaign.overview.briefDescription"
-                  :deadline="campaign.creative.endDate"
-                  :completion="campaign.status || 0"
-                  :public-id="campaign.publicId"
-                  :title="campaign.overview.name"
-                />
-              </NuxtLink>
+              > -->
+              <DashboardCampaignCard
+                :image="campaign.banner"
+                :budget="0"
+                :category="campaign.category"
+                :description="campaign.campaignAbout"
+                :deadline="campaign.endDate"
+                :brand="campaign.companyName"
+                :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+                :public-id="campaign.campaign_id"
+                :title="campaign.campaignName"
+              />
+              <!-- </NuxtLink> -->
             </template>
           </div>
         </template>
@@ -194,7 +203,10 @@
 
 <script setup lang="ts">
 import type { Influencer } from "~/lib/interfaces/core";
-import type { GetCampaigns } from "~/lib/interfaces/response";
+import type {
+  GetCampaigns,
+  GetInfluencerCampaignsResponse,
+} from "~/lib/interfaces/response";
 
 definePageMeta({
   name: "Explore",
@@ -212,7 +224,7 @@ const search = ref({
 });
 
 const MAX_INFLUENCER_DISPLAY = 5;
-const allCampaigns = ref<GetCampaigns["data"]>([]);
+const allCampaigns = ref<GetInfluencerCampaignsResponse["data"]>([]);
 const buzzes = ref([
   {
     title: "New influencers on the block",
@@ -245,19 +257,19 @@ type Buzz = {
 
 const categories = ref<Buzz[]>([]);
 const viewSearchFilter = ref<boolean>(false);
-const recommended = ref<GetCampaigns["data"]>([]);
-const topCampaigns = ref<GetCampaigns["data"]>([]);
+const recommended = ref<GetInfluencerCampaignsResponse["data"]>([]);
+const topCampaigns = ref<GetInfluencerCampaignsResponse["data"]>([]);
 const filterToRequired = tools.truncateList(MAX_INFLUENCER_DISPLAY);
 
 const getRecommended = useRequestState({
-  action: () => api.getCampaigns({ type: "recommendation" }),
+  action: () => api.getInfluencerCampaigns({ recommended: true }),
   onSuccess: (response) => {
     recommended.value = response.data;
   },
 });
 
 const getTop = useRequestState({
-  action: () => api.getCampaigns({ type: "top" }),
+  action: () => api.getInfluencerCampaigns({ top: true }),
   onSuccess: (response) => {
     topCampaigns.value = response.data;
   },
@@ -282,14 +294,7 @@ const getTopInfluencers = useRequestState({
 });
 
 const getAllCampaigns = useRequestState({
-  action: () =>
-    api.getCampaigns({
-      age: "",
-      type: "filter",
-      size: "",
-      location: "",
-      category: "",
-    }),
+  action: () => api.getInfluencerCampaigns({}),
   onSuccess(response) {
     allCampaigns.value = response.data;
   },

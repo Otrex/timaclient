@@ -116,7 +116,7 @@
           v-model="campaignStore.newCampaign.campaignRule"
           :error-message="v$.campaignRule?.$errors[0]?.$message.toString()"
           class="w-full h-[9.125rem]"
-          placeholder="Brief"
+          placeholder="Enter your campaign rules"
         />
       </div>
     </div>
@@ -129,7 +129,6 @@
         <UiInputText
           class="w-full"
           v-model="campaignStore.newCampaign.referenceLink"
-          :error-message="v$.referenceLink?.$errors[0]?.$message.toString()"
           placeholder="Sample content reference link"
         />
       </div>

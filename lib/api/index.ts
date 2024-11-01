@@ -1,7 +1,8 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetOverviewStats } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerCampaignsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
+import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
 
 const defaultFilter = {
@@ -12,6 +13,13 @@ const defaultFilter = {
 };
 
 export default class TimaAPI extends UploadAPI {
+  socials: SocialsAPI;
+
+  constructor() {
+    super();
+
+    this.socials = new SocialsAPI(this)
+  }
 
   async refreshAuth(token: string) {
     return this.request<Response.SignIn>({
@@ -206,7 +214,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async fetchCampaigns({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+  async fetchCampaigns({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/campaign',
       requireAuth: true,
@@ -229,7 +237,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async fetchBookmarks({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+  async fetchBookmarks({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/bookmark/fetch',
       requireAuth: true,
@@ -263,7 +271,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async fetchUserReviews({ page = 1, limit = 3 }: Payload.GetCampaigns) {
+  async fetchUserReviews({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request<Core.UserReviewResponse>({
       url: '/admin/users-review',
       requireAuth: true,
@@ -284,7 +292,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getBrandCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+  async getBrandCampaigns({ page = 1, limit = 10, statusProgress }: Payload.GetCampaigns) {
     return this.request<GetCampaignsResponse['data']>({
       url: '/brand/campaign/fetch',
       requireAuth: true,
@@ -293,6 +301,21 @@ export default class TimaAPI extends UploadAPI {
         page,
         limit,
         ...(statusProgress && { statusProgress })
+      }
+    })
+  }
+
+  async getInfluencerCampaigns({ page = 1, limit = 10, type, recommended = false,
+    top = false }: Payload.GetCampaigns & { type?: any, recommended?: boolean, top?: boolean }) {
+    return this.request<GetInfluencerCampaignsResponse>({
+      url: '/influencer/campaign',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        recommended,
+        top,
       }
     })
   }
@@ -331,7 +354,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getAdminCampaigns({ page = 1, limit = 3, statusProgress }: Payload.GetCampaigns) {
+  async getAdminCampaigns({ page = 1, limit = 10, statusProgress }: Payload.GetCampaigns) {
     return this.request<Response.GetAdminCampaignDetails>({
       url: '/admin/campaigns',
       requireAuth: true,
@@ -374,8 +397,41 @@ export default class TimaAPI extends UploadAPI {
 
 
 
+  async updateAudienceDemographics(data: Payload.Demographics) {
+    return this.request<any>({
+      url: `/users/audience-demographic`,
+      requireAuth: true,
+      method: "POST",
+      data: {
+        audienceDemographics: data
+      },
+    });
+  }
 
+  async getBrandInfluencers({ page = 1, limit = 10 }: Payload.GetCampaigns) {
+    return this.request<Response.GetBrandInfluencer>({
+      url: '/brand/influencer/fetch',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit
+      }
+    })
+  }
 
+  async searchForInfluencerCampaigns({ page = 1, limit = 10, ...others }: Payload.SearchCampaigns) {
+    return this.request<Response.GetCampaigns>({
+      url: '/influencer/campaign/search',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...others
+      }
+    })
+  }
 
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({

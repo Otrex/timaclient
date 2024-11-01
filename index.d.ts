@@ -28,7 +28,10 @@ declare module "pinia" {
   export interface DefineStoreOptionsBase<S, Store> {
     monitor?: Array<keyof StoreActions<Store> | string>;
     persist?: Array<keyof StoreState<Store>>;
-    persistWith?: IStore
+    persistWith?: IStore,
+    persistTransformKey?: {
+      [key: keyof StoreState<Store> | string]: (value: StoreState<Store>[keyof StoreState<Store>]) => string
+    }
   }
 }
 

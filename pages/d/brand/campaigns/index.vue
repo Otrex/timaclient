@@ -67,7 +67,7 @@
       <template #loading>
         <UiLoading />
       </template>
-      <div class="mt-10">
+      <div class="my-10">
         <section
           class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
         >

@@ -295,3 +295,72 @@ export interface GetAdminCampaignDetails {
   statusCode: number;
 }
 
+export interface GetBrandInfluencer {
+  totalUsers: number;
+  data: Array<{
+    emailAddress: string;
+    phoneNumber: string;
+    role: string;
+    profile: {
+      country: string;
+      lastName: string;
+      address: string;
+      city: string;
+      profileSetupProgress: string;
+      profileImage: string;
+      transactionPIN?: string;
+      userId: string;
+      firstName: string;
+      createdAt: string;
+      referralCode: string;
+      industries: string[];
+      hasSetTransactionPin: boolean;
+      otherName: string;
+      id: string;
+      state: string;
+      updatedAt: string;
+    };
+    id: string;
+    userName: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}
+
+
+export interface GetInfluencerCampaignsResponse {
+  data: Array<{
+    audienceLocation: string[];
+    campaignAbout: string;
+    endDate: string;
+    contentPlacement: string[];
+    campaignObjectiveAwareness: string[];
+    companyName: string;
+    creativeBrief: string;
+    campaignObjectiveAcquisition: string[];
+    referenceLink: string;
+    audienceAgeGroup: string[];
+    statusProgress: string;
+    contentType: string[];
+    campaign_id: string;
+    campaignObjective: string;
+    website: string;
+    audienceSize: string[];
+    campaignRule: string;
+    banner: string;
+    socialMediaPlatform: string[];
+    user_id: string;
+    audienceGender: string[];
+    creativeTone: string;
+    category: string[];
+    campaignName: string;
+    startDate: string;
+  }>;
+  limit: number;
+  page: number;
+  message: string;
+  totalCount: number;
+  statusCode: number;
+}

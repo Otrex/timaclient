@@ -12,17 +12,6 @@
       <UtNoResource message="Campaign not found" />
     </template>
     <template v-else>
-      <div class="flex justify-end">
-        <!-- <div>
-          <UiButtonDefault
-            p="0.625rem"
-            class="mr-[0.75rem]"
-            variant="info-outline"
-            label="Edit publications"
-          />
-          <UiButtonDefault variant="info" label="Add Publications" p="0.625rem" />
-        </div> -->
-      </div>
       <section class="">
         <div class="h-[24.1875rem] rounded w-full overflow-hidden">
           <UiImg
@@ -37,9 +26,8 @@
             <h3>{{ campaign.campaignName }} Campaign</h3>
             <div class="flex gap-[2rem]">
               <!--
-              <p class="sm">34 publications</p>
+              <p class="sm">34 publications</p> -->
               <p class="sm">34 Influencers</p>
-              -->
               <p class="sm">
                 Date posted:
                 {{ tools.timeAgo(new Date(campaign.createdAt || "")) }}

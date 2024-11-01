@@ -9,7 +9,7 @@
       </div>
       <button
         @click="open"
-        class="bg-[#F59594] py-[0.375rem] text-white max-w-[9.75rem] w-full rounded-[2.5rem]"
+        class="bg-[#d03f3d] py-[0.375rem] text-white max-w-[9.75rem] w-full rounded-[2.5rem]"
       >
         Connect
       </button>

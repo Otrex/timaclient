@@ -179,11 +179,13 @@ const getApplicationsInfluencer = useRequestState({
     response.data.map((a) => getAgeAudienceData.execute(a.submittedBy));
   },
   onError: (err) => {
-    notify({
-      type: "error",
-      title: err.title,
-      text: err.description,
-    });
+    console.log(err);
+
+    // notify({
+    //   type: "error",
+    //   title: err.title,
+    //   text: err.description,
+    // });
   },
 });
 

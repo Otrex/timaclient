@@ -67,6 +67,7 @@ const {
   v$,
 } = useRequestState({
   action: async () => {
+    await authStore.clearAllStorageData();
     await authStore.signIn({
       user: form.identifier,
       password: form.password,

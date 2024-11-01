@@ -12,9 +12,8 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (authStore.authorization.userType === constants.AGENCY) {
     return navigateTo({
-      name: "Campaign",
+      name: "ViewBrandCampaignAnalytics",
       params: {
-        type: constants.AGENCY,
         id: publicId,
       }
     })

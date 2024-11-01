@@ -88,12 +88,57 @@
       </div>
       <div class="md:w-3/4">
         <UiInputMultiSelectLte
-          v-model="campaignStore.newCampaign.audienceLocation"
+          v-model="campaignStore.newCampaign.invitees"
           :error-message="v$.audienceLocation?.$errors[0]?.$message.toString()"
-          v-model:entries="campaignStore.newCampaign.audienceLocation"
-          :options="locations"
+          :options="prospectiveInvitees"
           class="w-full"
-        />
+        >
+          <template #entry="{ entry: option }">
+            <div class="flex items-center gap-3">
+              <div>
+                <div
+                  class="w-[2rem] h-[2rem] rounded-full border overflow-hidden"
+                >
+                  <img
+                    :src="option.profile.profileImage"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div>
+                {{
+                  [option.profile.firstName, option.profile.lastName]
+                    .filter(Boolean)
+                    .join(" ")
+                }}
+              </div>
+            </div>
+          </template>
+          <template #option="{ option }">
+            <div class="flex items-center gap-3">
+              <div>
+                <div
+                  class="w-[2.5rem] h-[2.5rem] rounded-full border overflow-hidden"
+                >
+                  <img
+                    :src="option.profile.profileImage"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div>
+                {{
+                  [option.profile.firstName, option.profile.lastName]
+                    .filter(Boolean)
+                    .join(" ")
+                }}
+              </div>
+            </div>
+          </template>
+        </UiInputMultiSelectLte>
+      </div>
+      <div class="self-center" v-show="state === constants.LOADING">
+        <UtSvg name="sunshine" class="spinner w-[1.2rem] h-[1.2rem]" />
       </div>
     </div>
   </div>
@@ -101,6 +146,7 @@
 
 <script setup lang="ts">
 import type { UseEventBusReturn } from "@vueuse/core";
+import type { GetBrandInfluencer } from "~/lib/interfaces/response";
 
 const props = defineProps<{
   bus?: UseEventBusReturn<string, any>;
@@ -113,6 +159,8 @@ const campaignStore = useCampaignStore();
 const options = computed(() => optionsStore.$campaignOptions);
 const industries = computed(() => optionsStore.$industries);
 const locations = computed(() => optionsStore.$countries);
+
+const prospectiveInvitees = ref<GetBrandInfluencer["data"]>([]);
 
 const v$ = useValidator(
   rules.CREATE_CAMPAIGN_INFLUENCERS,
@@ -134,6 +182,16 @@ props.bus?.on((message) => {
   if (message === "INFLUENCER_SUMMARY") {
     proceed();
   }
+});
+
+const api = useAPI();
+
+const { state } = useRequestState({
+  immediately: true,
+  action: async () => api.getBrandInfluencers({}),
+  onSuccess(response) {
+    prospectiveInvitees.value = response.data;
+  },
 });
 </script>
 
