@@ -103,6 +103,7 @@ const tabs = [
 const api = useAPI();
 const campaigns = ref<GetInfluencerCampaignsResponse["data"]>([]);
 const getAllCampaigns = useRequestState({
+  immediately: true,
   action: () => api.getInfluencerCampaigns({}),
   onSuccess(response) {
     campaigns.value = response.data;
