@@ -37,17 +37,27 @@
       class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
     >
       <template v-for="(campaign, i) in campaigns" :key="i">
-        <DashboardCampaignCard
-          :image="(campaign.banner as string)"
-          :budget="0"
-          :category="campaign.category"
-          :description="campaign.campaignAbout"
-          :deadline="campaign.endDate"
-          :brand="(campaign as any).companyName || ''"
-          :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
-          :public-id="(campaign.campaign_id as string)"
-          :title="campaign.campaignName"
-        />
+        <NuxtLink
+          class="w-full"
+          :to="{
+            params: {
+              id: campaign.campaign_id,
+            },
+            name: 'ViewInfluencerCampaign',
+          }"
+        >
+          <DashboardCampaignCard
+            :image="(campaign.banner as string)"
+            :budget="0"
+            :category="campaign.category"
+            :description="campaign.campaignAbout"
+            :deadline="campaign.endDate"
+            :brand="(campaign as any).companyName || ''"
+            :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+            :public-id="(campaign.campaign_id as string)"
+            :title="campaign.campaignName"
+          />
+        </NuxtLink>
       </template>
     </section>
 
