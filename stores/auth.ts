@@ -18,7 +18,7 @@ type IState = {
     accessToken?: string;
     userType?: UserType;
   };
-  connectedSocials: string[];
+  connectedSocials: any[];
 };
 
 export const useAuthStore = defineStore("auth", {
@@ -233,16 +233,14 @@ export const useAuthStore = defineStore("auth", {
       await this.$api.industryUpdate(industries);
     },
 
-    async updateSocials(data: Payload.AddSocials) {
-      await this.$api.updateSocialPlatforms(this.registration.publicId!, data);
-
-      this.$patch({
-        connectedSocials: [...this.connectedSocials, data.name],
+    async updateSocials(data: Payload.SocialMediaAccount[]) {
+      await this.$api.updateSocialPlatforms({
+        socialMediaAccounts: data,
       });
 
-      return {
-        title: data.name,
-      };
+      this.$patch({
+        connectedSocials: [...this.connectedSocials, ...data],
+      });
     },
 
     async logout() {
@@ -269,7 +267,7 @@ export const useAuthStore = defineStore("auth", {
       });
     },
   },
-  persist: ["registration", "authorization", "user", "profile", "connectedSocials"],
+  persist: ["registration", "authorization", "user", "profile"],
   persistWith: tools.cookieStore(),
 });
 

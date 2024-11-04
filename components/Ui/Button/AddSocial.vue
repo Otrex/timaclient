@@ -7,12 +7,15 @@
         <UtSvg :name="props.icon" class="mb-2" dim w="60px" h="60px" />
         <p>{{ props.label }}</p>
       </div>
+
       <button
         @click="open"
+        v-if="!isCompleted"
         class="bg-[#d03f3d] py-[0.375rem] text-white max-w-[9.75rem] w-full rounded-[2.5rem]"
       >
         Connect
       </button>
+      <div v-else class="text-center text-lg text-green-600">Connected!</div>
     </div>
 
     <Teleport to="body">

@@ -28,9 +28,9 @@
               :icon="social.icon"
               :id="social.icon"
               :isCompleted="
-                authStore.connectedSocials.includes(
-                  getSocial(social.icon)?.name
-                )
+                authStore.connectedSocials
+                  .map((e) => e.platformName)
+                  .includes(social.label)
               "
             >
               <template #form>
@@ -40,19 +40,26 @@
                   </h2>
                   <div class="text-left mb-4">
                     <div class="flex flex-row items-center transition-all">
-                      <UiInputText
-                        type="text"
-                        class="w-full"
-                        :class="
-                          isValidUserName
-                            ? '!border-green-500 !border !border-solid'
-                            : ''
-                        "
-                        v-model="form.identifier"
-                        @keyup.prevent="() => verify()"
-                        :autocomplete="false"
-                        placeholder="Username"
-                      />
+                      <div class="flex flex-row gap-3 w-full">
+                        <UiInputText
+                          type="text"
+                          class="w-full"
+                          :class="
+                            isValidUserName
+                              ? '!border-green-500 !border !border-solid'
+                              : ''
+                          "
+                          v-model="form.identifier"
+                          :autocomplete="false"
+                          placeholder="Username"
+                        />
+                        <UiButtonDefault
+                          variant="primary"
+                          label="Verify"
+                          class="py-2 px-10"
+                          @click="() => verify()"
+                        />
+                      </div>
                       <div>
                         <UtSvg
                           name="sunshine"
@@ -71,18 +78,228 @@
                       Your username is good to go!</span
                     >
                   </div>
+                  <div class="bg-stone-100 mb-5 px-3 py-1 rounded-lg">
+                    <div
+                      class="text-gray-700 italic py-3 text-center"
+                      v-if="!currentSocial"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 mx-auto mb-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Enter your username to verify your account
+                    </div>
+                    <div v-else>
+                      <!-- Instagram Account Details -->
+                      <div
+                        v-if="currentSocialKey === 'so/instagram'"
+                        class="p-4"
+                      >
+                        <div class="flex items-center gap-4 mb-4">
+                          <img
+                            :src="currentSocial['Profile Pic']"
+                            class="w-16 h-16 rounded-full object-cover"
+                            alt="Profile picture"
+                          />
+                          <div>
+                            <h3 class="font-semibold text-lg">
+                              {{ currentSocial["Full Name"] }}
+                            </h3>
+                            <p class="text-gray-600">
+                              @{{ currentSocial["Username"] }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="space-y-2">
+                          <div class="flex items-center gap-2">
+                            <span class="font-medium">Account Type:</span>
+                            <span>{{
+                              currentSocial["Account Type"] === 1
+                                ? "Personal"
+                                : "Business"
+                            }}</span>
+                          </div>
+
+                          <div class="flex items-center gap-2">
+                            <span class="font-medium">Account ID:</span>
+                            <span>{{ currentSocial["Account ID"] }}</span>
+                          </div>
+
+                          <div
+                            v-if="currentSocial['Biography']"
+                            class="flex items-start gap-2"
+                          >
+                            <span class="font-medium">Bio:</span>
+                            <span>{{ currentSocial["Biography"] }}</span>
+                          </div>
+
+                          <div
+                            v-if="currentSocial['Category']"
+                            class="flex items-center gap-2"
+                          >
+                            <span class="font-medium">Category:</span>
+                            <span>{{ currentSocial["Category"] }}</span>
+                          </div>
+
+                          <div class="flex items-center gap-2">
+                            <span class="font-medium">Verified:</span>
+                            <span>{{
+                              currentSocial["Verified"] ? "Yes" : "No"
+                            }}</span>
+                          </div>
+
+                          <div
+                            v-if="currentSocial['Profile Url']"
+                            class="flex items-center gap-2"
+                          >
+                            <span class="font-medium">Profile URL:</span>
+                            <a
+                              :href="currentSocial['Profile Url']"
+                              target="_blank"
+                              class="text-blue-600 hover:underline"
+                            >
+                              {{ currentSocial["Profile Url"] }}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- YouTube Account Details -->
+                      <div
+                        v-if="currentSocialKey === 'so/youtube'"
+                        class="space-y-4"
+                      >
+                        <div class="flex items-center gap-4">
+                          <img
+                            :src="currentSocial.profile_picture_url"
+                            :alt="currentSocial.title"
+                            class="w-16 h-16 rounded-full"
+                          />
+                          <div>
+                            <h3 class="text-lg font-semibold">
+                              {{ currentSocial.title }}
+                            </h3>
+                            <a
+                              :href="currentSocial.channel_url"
+                              target="_blank"
+                              class="text-sm text-blue-600 hover:underline"
+                            >
+                              View Channel
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="space-y-3">
+                          <div class="flex items-start gap-2">
+                            <span class="font-medium">Channel ID:</span>
+                            <span>{{ currentSocial.channel_id }}</span>
+                          </div>
+
+                          <div
+                            v-if="currentSocial.description"
+                            class="flex items-start gap-2"
+                          >
+                            <span class="font-medium">Description:</span>
+                            <span>{{ currentSocial.description }}</span>
+                          </div>
+
+                          <div
+                            v-if="currentSocial.country"
+                            class="flex items-start gap-2"
+                          >
+                            <span class="font-medium">Country:</span>
+                            <span>{{ currentSocial.country }}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- TikTok Account Details -->
+                      <div
+                        v-if="currentSocialKey === 'so/tiktok'"
+                        class="space-y-4"
+                      >
+                        <div class="flex items-center gap-4">
+                          <img
+                            :src="currentSocial.avatar_url"
+                            :alt="currentSocial.nickname"
+                            class="w-16 h-16 rounded-full"
+                          />
+                          <div>
+                            <h3 class="text-lg font-semibold">
+                              {{ currentSocial.nickname }}
+                              <span
+                                v-if="currentSocial.verified"
+                                class="ml-1 text-blue-500"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-5 w-5 inline"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"
+                                  />
+                                </svg>
+                              </span>
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                              @{{ currentSocial.unique_id }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="space-y-3">
+                          <div class="flex items-start gap-2">
+                            <span class="font-medium">User ID:</span>
+                            <span>{{ currentSocial.user_id }}</span>
+                          </div>
+
+                          <div class="flex items-start gap-2">
+                            <span class="font-medium">Bio:</span>
+                            <span>{{ currentSocial.signature }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div>
-                    <UiButtonDefault
-                      variant="primary"
-                      label="Verify"
-                      class="py-2 px-10"
-                      @click="() => verify()"
-                    />
+                    <div
+                      v-if="currentSocial"
+                      class="flex items-center gap-2 my-4"
+                    >
+                      <input
+                        type="checkbox"
+                        v-model="form.confirmOwnership"
+                        id="confirm-ownership"
+                        class="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      />
+                      <label for="confirm-ownership" class="text-gray-700">
+                        I confirm that I am the owner of this account
+                      </label>
+                    </div>
+                  </div>
+                  <div>
                     <UiButtonDefault
                       variant="primary"
                       label="Connect"
                       class="py-2 px-10"
-                      @click="() => connect(social)"
+                      :disabled="!form.confirmOwnership || !form.identifier"
+                      @click="() => connect(social.label, form.identifier)"
                     />
                   </div>
                 </div>
@@ -162,10 +379,11 @@ const getModal = (key: string) => openModal.value[key];
 
 const form = reactive({
   name: "",
-  handle: "",
-  accessToken: "",
   identifier: "",
+  confirmOwnership: false,
 });
+
+const currentSocial = ref<any>(null);
 
 function onOpen(id: string) {
   openModal.value[id] = true;
@@ -181,11 +399,8 @@ function getSocial(id: string): Core.SocialType & { connected: boolean } {
     : ({} as any);
 }
 
-async function connect(social) {}
-
-async function addSocial() {
-  await validate();
-  await execute();
+async function connect(social: string, identifier: string) {
+  await execute(social, identifier);
 }
 
 const api = useAPI();
@@ -201,15 +416,21 @@ const getterMap = {
   },
 };
 
+const currentSocialKey = computed(() => {
+  const [socialKey] =
+    Object.entries(openModal.value).find(([_, value]) => value) || [];
+  return socialKey as keyof typeof getterMap;
+});
+
 const { state: verifying, execute: verify } = useRequestState({
   async action() {
-    const [socialKey] =
-      Object.entries(openModal.value).find(([_, value]) => value) || [];
-    if (!socialKey) throw new AxiosError("No social selected");
-
-    const getter = getterMap[socialKey as keyof typeof getterMap];
-    if (!getter) throw new AxiosError("Invalid social key");
-    return getter(form.identifier);
+    if (!currentSocialKey.value) throw new AxiosError("No social selected");
+    if (!getterMap[currentSocialKey.value])
+      throw new AxiosError("Invalid social key");
+    return getterMap[currentSocialKey.value](form.identifier);
+  },
+  onSuccess(response) {
+    currentSocial.value = response;
   },
 });
 const { state, execute, v$, validate } = useRequestState({
@@ -217,20 +438,29 @@ const { state, execute, v$, validate } = useRequestState({
     rule: rules.ADD_SOCIAL_VALIDATION,
     form,
   },
-  action: () =>
-    authStore.updateSocials({
-      ...form,
-    }),
+  action: async (social: string, identifier: string) => {
+    await authStore.updateSocials([
+      ...authStore.connectedSocials,
+      {
+        platformName: social,
+        userName: identifier,
+      },
+    ]);
+  },
   onSuccess(response) {
     notify({
       type: "success",
-      title: response.title,
+      title: "Success",
       text: "Social Account updated",
     });
 
     Object.keys(openModal.value).forEach((key) => {
       openModal.value[key] = false;
     });
+
+    form.identifier = "";
+    form.confirmOwnership = false;
+    currentSocial.value = null;
   },
   onError(error) {
     notify({

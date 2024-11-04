@@ -20,6 +20,20 @@ export default defineNuxtConfig({
     },
     // layoutTransition: { name: 'page', mode: 'out-in' }
   },
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: process.env.API_SOCIALS_BASE_URL, // Your API URL
+        changeOrigin: true,
+        prependPath: true,
+      }
+    },
+    routeRules: {
+      '/api/**': {
+        proxy: process.env.API_SOCIALS_BASE_URL,
+      }
+    }
+  },
   router: {
     options: {
       scrollBehaviorType: 'smooth'

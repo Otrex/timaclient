@@ -1,5 +1,6 @@
 import type TimaAPI from ".";
 import Api from "../core/Api";
+import type { InstagramProfileResponse, YoutubeChannelResponse } from "./types/responses";
 
 export default class SocialsAPI extends Api {
   tima: TimaAPI;
@@ -11,14 +12,14 @@ export default class SocialsAPI extends Api {
   }
 
   async getYoutubeByUsername(username: string) {
-    return this.request<any>({
+    return this.request<YoutubeChannelResponse>({
       url: `/youtube/channel/${username}`,
       method: "GET",
     });
   }
 
   async getInstagramByUsername(username: string) {
-    return this.request<any>({
+    return this.request<InstagramProfileResponse>({
       url: `/instagram/profile/${username}`,
       method: "GET",
     });

@@ -5,6 +5,15 @@ export interface BrandProfileSetup {
   companyName: string, website: string
 }
 
+export interface SocialMediaAccount {
+  platformName: string;
+  userName: string;
+}
+
+export interface SocialMediaAccounts {
+  socialMediaAccounts: SocialMediaAccount[];
+}
+
 export interface InfluencerProfileSetup {
   firstName: string
   lastName: string
@@ -78,11 +87,6 @@ export interface AddInfluencerBookmark {
 export interface ReviewApplication {
   status: string;
   applicationId: string;
-}
-export interface AddSocials {
-  name: string;
-  handle: string;
-  accessToken: string;
 }
 
 export interface PasswordReset {

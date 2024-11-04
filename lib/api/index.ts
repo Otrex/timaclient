@@ -433,6 +433,20 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async updateSocialPlatforms(data: Payload.SocialMediaAccounts) {
+    return this.request<Response.UpdateSocials>({
+      url: `/users/social-accounts`,
+      requireAuth: true,
+      method: "POST",
+      data,
+    });
+  }
+
+
+
+
+
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
@@ -875,13 +889,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async updateSocialPlatforms(publicId: string, data: Payload.AddSocials) {
-    return this.request<Response.UpdateSocials>({
-      url: `/agency/v1/social-media/linked/user/${publicId}`,
-      method: "PUT",
-      data,
-    });
-  }
+
 
   async updatePassword(data: Payload.UpdatePassword) {
     return this.request<Response.UpdatePassword>({
