@@ -364,3 +364,29 @@ export interface GetInfluencerCampaignsResponse {
   totalCount: number;
   statusCode: number;
 }
+
+
+export interface GetInfluencerApplicationsResponse {
+  data: Array<{
+    influencer_id: string;
+    applicationStatus: string;
+    application_id: string;
+    user: {
+      role: string;
+      email: string;
+      username: string;
+    };
+    campaign_id: string;
+    appliedAt: string;
+    userProfile: {
+      firstName: string;
+      lastName: string;
+      profilePicture: string;
+      country: string;
+      industries: string[];
+      otherName: string;
+    };
+  }>;
+  message: string;
+  statusCode: number;
+}

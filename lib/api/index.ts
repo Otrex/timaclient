@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerCampaignsResponse, GetOverviewStats } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerCampaignsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -395,6 +395,20 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getCampaignApplicants({ page = 1, limit = 10, campaign_id, applicationStatus }: Payload.GetCampaigns & { campaign_id: string, applicationStatus?: "PENDING" | "APPROVED" | "DECLINED" }) {
+    return this.request<GetInfluencerApplicationsResponse>({
+      url: '/brand/campaign/application',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        campaign_id,
+        ...(applicationStatus && { applicationStatus })
+      }
+    })
+  }
+
 
 
   async updateAudienceDemographics(data: Payload.Demographics) {
@@ -609,17 +623,6 @@ export default class TimaAPI extends UploadAPI {
   async getApplicantsByCampaign(campaignId: string, data: Payload.Filter) {
     return this.request<Response.GetApplications>({
       url: this.querify(`/agency/v1/applications/campaign/${campaignId}`, data),
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
-  async getCampaignApplicants(campaignId: string, data: Payload.Filter) {
-    return this.request<Response.GetApplications>({
-      url: this.querify(
-        `/agency/v1/applications/applicant/${campaignId}`,
-        data
-      ),
       requireAuth: true,
       method: "GET",
     });

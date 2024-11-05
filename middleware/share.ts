@@ -18,12 +18,8 @@ export default defineNuxtRouteMiddleware((to) => {
       }
     })
   } else {
-    return navigateTo({
-      name: "Explore - Campaign",
-      params: {
-        type: authStore.authorization.userType,
-        id: publicId,
-      }
-    })
+    console.log("type", type);
+
+    return navigateTo(`/d/influencer/campaigns/${publicId}`);
   }
 });

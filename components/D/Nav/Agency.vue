@@ -1,6 +1,10 @@
 <template>
   <div class="flex flex-col gap-[1rem]">
-    <!-- <DashboardNavigatorMenuItem label="Explore" icon="nav/search" /> -->
+    <DashboardNavigatorMenuItem
+      label="Explore"
+      icon="nav/search"
+      :to="{ name: 'DashboardBrandExplore' }"
+    />
     <DashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"

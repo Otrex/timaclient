@@ -4,9 +4,7 @@ import * as handler from "./perms";
 
 
 const dashboardBlock = async (profile: IProfile) => {
-
-
-  return;
+  return
 }
 
 const registerBlock = async (profile: IProfile) => {

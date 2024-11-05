@@ -55,7 +55,7 @@
 
         <div class="mt-[1.625rem]">
           <div
-            class="inline-flex px-2 flex-row md:gap-10 items-start mb-2 justify-between"
+            class="inline-flex px-2 flex-row md:gap-10 gap-3 items-start mb-2 justify-between"
           >
             <UtTabNuxtLink name="ViewBrandCampaignAnalytics">
               Analytics

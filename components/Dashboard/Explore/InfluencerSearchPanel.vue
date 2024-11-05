@@ -107,7 +107,7 @@
         <div>
           <label class="block mb-[0.875rem]">Influencer size</label>
           <UiInputSelect
-            :options="tools.generationOptions(campaignOpts.size)"
+            :options="tools.generationOptions(campaignOpts.size || [])"
             class="w-full"
             v-model="form.size"
             placeholder="-- Select --"
@@ -125,7 +125,7 @@
         <div>
           <label class="block mb-[0.875rem]">Audience age range</label>
           <UiInputSelect
-            :options="tools.generationOptions(campaignOpts.ageGroup)"
+            :options="tools.generationOptions(campaignOpts.ageGroup || [])"
             class="w-full"
             v-model="form.ageGroup"
             placeholder="-- Select --"
@@ -134,7 +134,7 @@
         <div>
           <label class="block mb-[0.875rem]">Audience Gender</label>
           <UiInputSelect
-            :options="tools.generationOptions(campaignOpts.gender)"
+            :options="tools.generationOptions(campaignOpts.gender || [])"
             class="w-full"
             v-model="form.gender"
             placeholder="-- Select --"

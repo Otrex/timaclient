@@ -116,6 +116,7 @@ const routeNameMap: Record<string, any> = {
   "Notification/CampaignApplication": "Notification >>> Campaign Applications",
   "Notification/Invitations": "Notification >>> Invitations",
   InfluencerCampaigns: "Campaign",
+  DashboardBrandExplore: "Explore",
   BrandCampaign: "Campaign",
   AttachContent: "Attach Files",
   DashboardBrandCampaigns: "Campaigns",

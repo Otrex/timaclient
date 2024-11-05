@@ -3,12 +3,9 @@ import Api from "../core/Api";
 import type { InstagramProfileResponse, YoutubeChannelResponse } from "./types/responses";
 
 export default class SocialsAPI extends Api {
-  tima: TimaAPI;
-
   static readonly SOCIALS = ["youtube", "instagram", "tiktok"];
-  constructor(private api: TimaAPI) {
+  constructor(private tima: TimaAPI) {
     super();
-    this.tima = api
   }
 
   async getYoutubeByUsername(username: string) {

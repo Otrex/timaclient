@@ -90,25 +90,23 @@
               v-for="application in pendingApplication"
               :key="application.applicationId"
             >
-              <NuxtLink
-                :to="{
-                  name: 'Campaign Application Influencer',
-                  params: {
-                    id: application.applicationId,
-                  },
-                }"
-              >
-                <DashboardCampaignApplication
-                  :id="application.applicationId"
-                  type="Independent"
-                  :name="application.username"
-                  :socials="application.socialMediaPlatforms"
-                  :profilePicture="application.profilePicture"
-                  :questionAndAnswers="QandA(application)"
-                  @accept="triggerAccept"
-                  @create-contract="triggerCreateContract"
-                />
-              </NuxtLink>
+              <DashboardCampaignApplication
+                :id="application.application_id"
+                type="Independent"
+                :name="
+                  [
+                    application?.userProfile?.firstName,
+                    application?.userProfile?.lastName,
+                  ]
+                    .filter((e) => e)
+                    .join(' ')
+                "
+                :socials="[]"
+                :profilePicture="application?.userProfile?.profilePicture"
+                :questionAndAnswers="QandA([] as any[])"
+                @accept="triggerAccept"
+                @create-contract="triggerCreateContract"
+              />
             </template>
           </div>
           <UiModalConfirmAction
@@ -149,6 +147,7 @@
 <script setup lang="ts">
 import { Core } from "~/lib/interfaces";
 import type { Application } from "~/lib/interfaces/core";
+import type { GetInfluencerApplicationsResponse } from "~/lib/interfaces/response";
 
 definePageMeta({
   name: "ViewbrandCampaignInfluencers",
@@ -183,23 +182,16 @@ function QandA(data: Application) {
 
 const actionId = ref();
 const action = ref<Application>();
-const pendingApplication = ref<Application[]>([]);
+const pendingApplication = ref<GetInfluencerApplicationsResponse["data"]>([]);
 const getCampaignPendingApplications = useRequestState({
   immediately: true,
   action: () =>
-    api.getCampaignApplicationsByStatus({
-      campaignId: route.params.id as string,
-      sortBy: "createdOn",
-      status: "PENDING",
-      sortIn: "DESC",
-      page: 0,
-      size: 10,
+    api.getCampaignApplicants({
+      campaign_id: route.params.id as string,
+      applicationStatus: "PENDING",
     }),
   onSuccess: (response) => {
-    pendingApplication.value = response.data.map((e) => ({
-      ...(e as any),
-      socialMediaPlatforms: JSON.parse((e as any).socialMediaPlatform),
-    }));
+    pendingApplication.value = response.data;
   },
   onError: (err) => {
     if (err.title) {
@@ -214,7 +206,6 @@ const getCampaignPendingApplications = useRequestState({
 
 const influencers = ref<Core.ApprovedCampaignInfluencer[]>([]);
 const getApplicationsInfluencer = useRequestState({
-  immediately: true,
   action: () =>
     api.getCampaignApplicationsByStatus({
       campaignId: route.params.id as string,
