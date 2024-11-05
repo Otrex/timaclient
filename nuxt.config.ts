@@ -81,7 +81,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseUrl: process.env.API_BASE_URL,
-      socialsBaseUrl: process.env.API_SOCIALS_BASE_URL
+      socialsBaseUrl: process.env.API_SOCIALS_BASE_URL,
+      mode: process.env.APP_MODE || 'production',
     }
   }
 })
