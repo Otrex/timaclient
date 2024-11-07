@@ -390,3 +390,25 @@ export interface GetInfluencerApplicationsResponse {
   message: string;
   statusCode: number;
 }
+
+
+export interface GetInfluencerProfileResponse {
+  data: {
+    country: string;
+    lastName: string;
+    role: string;
+    city: string;
+    profileImage: string;
+    userName: string;
+    firstName: string;
+    emailAddress: string;
+    phoneNumber: string;
+    street: string;
+    industries: string[];
+    otherName: string;
+    id: string;
+    state: string;
+  };
+  message: string;
+  statusCode: number;
+}

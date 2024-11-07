@@ -69,7 +69,7 @@
       </template>
       <div class="my-10">
         <section
-          class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
+          class="grid mb-10 sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-4"
         >
           <template v-for="(cam, i) in campaigns" :key="i">
             <DashboardCampaignCard

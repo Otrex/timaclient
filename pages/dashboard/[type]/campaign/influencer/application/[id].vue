@@ -173,7 +173,7 @@
             <UiButtonDefault
               variant="primary"
               class="py-[0.625rem] px-[2.5rem]"
-              label="Create Contract"
+              label="Accept"
               @click="triggerCreateContract"
             />
           </div>

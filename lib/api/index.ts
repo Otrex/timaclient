@@ -408,9 +408,6 @@ export default class TimaAPI extends UploadAPI {
       }
     })
   }
-
-
-
   async updateAudienceDemographics(data: Payload.Demographics) {
     return this.request<any>({
       url: `/users/audience-demographic`,
@@ -447,6 +444,17 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getInfluencerById(id: string | number) {
+    return this.request<Response.GetInfluencerProfileResponse>({
+      url: `/brand/influencer-profile`,
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "influecer_id": id
+      }
+    })
+  }
+
   async updateSocialPlatforms(data: Payload.SocialMediaAccounts) {
     return this.request<Response.UpdateSocials>({
       url: `/users/social-accounts`,
@@ -454,6 +462,24 @@ export default class TimaAPI extends UploadAPI {
       method: "POST",
       data,
     });
+  }
+
+  async reviewInfluencerApplication(data: Payload.CampaignApplication) {
+    return this.request({
+      url: '/brand/influencer/review',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
+  async inviteInfluencer(data: Omit<Payload.CampaignApplication, 'applicationStatus'>) {
+    return this.request({
+      url: '/brand/influencer/invite-campaign',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
   }
 
 
@@ -708,13 +734,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getInfluencerById(publicId: string) {
-    return this.request<Response.GetSearchInfluencer>({
-      url: `/agency/v1/influencer/search/id/${publicId}`,
-      requireAuth: true,
-      method: "GET",
-    });
-  }
+
 
   async getBookmarks() {
     return this.request<IResponse<Core.InfluencerBookmark[]>>({

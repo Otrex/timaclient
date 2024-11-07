@@ -41,16 +41,16 @@
 
       <div class="flex mt-[2rem] gap-[0.625rem] mb-[.5rem]">
         <UiButtonDefault
-          @click.prevent="$emit('create-contract', props.id)"
-          label="Create Contract"
-          variant="primary"
-          class="px-[1rem]"
-        />
-        <UiButtonDefault
           label="View"
           variant="inverse-primary"
           @click.capture="$emit('view', props.id)"
-          class="px-[1rem] !text-red-600"
+          class="px-[1rem] w-full !text-red-600"
+        />
+        <UiButtonDefault
+          @click.prevent="$emit('create-contract', props.id)"
+          label="Accept"
+          variant="primary"
+          class="px-[1.5rem] py-2 w-full"
         />
       </div>
     </article>

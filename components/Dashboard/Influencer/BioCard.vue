@@ -2,12 +2,8 @@
   <UtLoadPresenter
     not-found-message="Influencer data not found"
     loading-message="Fetching Influencer details"
-    :data="result === null"
-    :state="
-      state === constants.LOADING || profileState === constants.LOADING
-        ? constants.LOADING
-        : 'IDLE'
-    "
+    :data="influencer === null"
+    :state="state"
   >
     <section
       class="bg-[#F7F7F7] dark:bg-slate-300 dark:text-black p-[1.25rem] h-full rounded-md"
@@ -17,15 +13,25 @@
           <div class="flex items-center">
             <div class="w-[4rem] h-[4rem] rounded-full overflow-hidden">
               <UiImg
-                :src="result?.profilePicture"
+                :src="influencer?.profileImage"
                 class="w-full h-full object-cover"
                 alt="user profile"
               />
             </div>
           </div>
           <div>
-            <h4 class="font-bold">{{ result?.fullName }}</h4>
-            <p class="nl mb-[0.75rem]">{{ result?.username }}</p>
+            <h4 class="font-bold">
+              {{
+                [
+                  influencer?.firstName,
+                  influencer?.otherName,
+                  influencer?.lastName,
+                ]
+                  .filter((e) => e)
+                  .join(" ")
+              }}
+            </h4>
+            <p class="nl mb-[0.75rem]">{{ influencer?.userName }}</p>
             <UiInputStars :length="6" v-model="stars" :disabled="false" />
           </div>
         </div>
@@ -101,6 +107,7 @@
 // import { Doughnut } from "vue-chartjs";
 import type {
   GetApplication,
+  GetInfluencerProfileResponse,
   GetSearchInfluencer,
 } from "~/lib/interfaces/response";
 
@@ -127,28 +134,6 @@ const data = ref({
 const { notify } = useNotification();
 const api = useAPI();
 const result = ref<GetApplication["data"] | GetSearchInfluencer["data"]>();
-
-const { state, execute } = useRequestState({
-  action: () => api.getApplicationById(props.applicationId!),
-  onSuccess: (response) => {
-    result.value = response.data;
-  },
-});
-
-const { state: profileState, execute: profileExecute } = useRequestState({
-  action: () => api.getInfluencerById(props.publicId),
-  onSuccess: (response) => {
-    result.value = response.data;
-  },
-});
-
-onMounted(() => {
-  if (props.applicationId) {
-    execute();
-  } else {
-    profileExecute();
-  }
-});
 
 const addBookmark = useRequestState({
   action: () =>
@@ -189,6 +174,16 @@ const options = ref<any>({
         pointStyle: "circle",
       },
     },
+  },
+});
+
+// New
+const influencer = ref<GetInfluencerProfileResponse["data"] | null>(null);
+const { state } = useRequestState({
+  immediately: true,
+  action: () => api.getInfluencerById(props.publicId),
+  onSuccess(response) {
+    influencer.value = response.data;
   },
 });
 </script>

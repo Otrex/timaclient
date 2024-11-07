@@ -17,11 +17,11 @@
           @click="$emit('close')"
         />
       </header>
-      <section class="px-5">
-        <div class="py-3">
+      <section class="">
+        <div class="py-3 px-5">
           <UiInputText search class="!py-2" placeholder="Search Influencers" />
         </div>
-        <div class="pb-4">
+        <div class="pb-4 max-h-[65vh] px-5 pr-8 overflow-y-auto">
           <p class="mb-2">Suggested</p>
           <label
             v-for="(influencer, idx) in influencers"
@@ -47,7 +47,22 @@
               </div>
             </div>
             <div>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                :value="influencer"
+                @change="
+                  (e: any) => {
+                    if (e.target.checked) {
+                      selectedInfluencers.push(influencer);
+                    } else {
+                      selectedInfluencers.splice(
+                        selectedInfluencers.indexOf(influencer),
+                        1
+                      );
+                    }
+                  }
+                "
+              />
             </div>
           </label>
         </div>
@@ -61,7 +76,14 @@
           label="Cancel"
           @click="$emit('close')"
         />
-        <UiButtonDefault variant="primary" class="!py-2 !px-6" label="Invite" />
+        <UiButtonDefault
+          variant="primary"
+          @click="() => inviteAll()"
+          class="!py-2 !px-6"
+          :loading="invitationState === constants.LOADING"
+          :disabled="invitationState === constants.LOADING"
+          label="Invite"
+        />
       </footer>
     </template>
   </div>
@@ -71,7 +93,11 @@ import type { GetBrandInfluencer } from "~/lib/interfaces/response";
 
 const api = useAPI();
 const influencers = ref<GetBrandInfluencer["data"]>([]);
+const selectedInfluencers = ref<GetBrandInfluencer["data"]>([]);
 
+const props = defineProps<{
+  campaign_id: string;
+}>();
 const { state: fetchInfluencers } = useRequestState({
   immediately: true,
   action() {
@@ -79,6 +105,37 @@ const { state: fetchInfluencers } = useRequestState({
   },
   onSuccess(data) {
     influencers.value = data.data;
+  },
+  onError(error) {
+    console.log(error);
+  },
+});
+
+const { execute: inviteAll, state: invitationState } = useRequestState({
+  action: async () => {
+    const batchSize = 3;
+    const influencerBatches = [];
+    const returnValue = [];
+
+    for (let i = 0; i < selectedInfluencers.value.length; i += batchSize) {
+      const batch = selectedInfluencers.value.slice(i, i + batchSize);
+      const requests = batch.map((influencer) => {
+        return api.inviteInfluencer({
+          campaign_id: props.campaign_id,
+          influencer_id: influencer.id,
+        });
+      });
+      influencerBatches.push(Promise.all(requests));
+    }
+
+    for (const batch of influencerBatches) {
+      returnValue.push(await batch);
+    }
+
+    return returnValue;
+  },
+  onSuccess(data) {
+    alert("Invited");
   },
   onError(error) {
     console.log(error);

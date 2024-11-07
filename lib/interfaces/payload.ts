@@ -5,6 +5,13 @@ export interface BrandProfileSetup {
   companyName: string, website: string
 }
 
+export interface CampaignApplication {
+  campaign_id: string;
+  influencer_id: string;
+  status: "APPROVED" | "DECLINED" | "PENDING";
+}
+
+
 export interface SocialMediaAccount {
   platformName: string;
   userName: string;

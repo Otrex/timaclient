@@ -139,6 +139,14 @@ const routeNameMap: Record<string, any> = {
       <h2 class="font-bold">Campaign >>> <span class="text-[#B0B0B0]">Create a campaign</span> </h2>
     </div>`,
   }),
+  BrandInfluencerProfile: defineComponent({
+    components: { UtSvg },
+    methods: { navigateTo },
+    template: `<div class="flex flex-row items-center gap-5">
+      <UtSvg name="nav/back" @click="navigateTo({ name: 'DashboardBrandCampaigns' })" dim w="1.5rem" h="1.5rem" />
+      <h2 class="font-bold">Campaign >>> <span class="text-[#B0B0B0] font-normal">Influencers</span> </h2>
+    </div>`,
+  }),
 };
 
 const routeName = computed(

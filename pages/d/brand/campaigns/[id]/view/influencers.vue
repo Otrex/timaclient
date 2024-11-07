@@ -32,7 +32,10 @@
         backdrop-color="rgba(0,0,0,.3)"
         v-model:state="invite"
       >
-        <ModalsInviteInfluencer @close="invite = false" />
+        <ModalsInviteInfluencer
+          :campaign_id="(route.params.id as string)"
+          @close="invite = false"
+        />
       </UtModal>
 
       <section class="mt-[2rem]">
@@ -46,28 +49,22 @@
             <template v-for="(influencer, idx) in influencers" :key="idx">
               <NuxtLink
                 :to="{
-                  name: 'Campaign >>> Influencers',
-                  query: {
-                    applicationId: influencer.applicationId,
-                    publicId: influencer.userPublicId,
-                  },
+                  name: 'BrandInfluencerProfile',
+                  params: { id: influencer.influencer_id },
                 }"
               >
                 <DashboardInfluencerCard
-                  :name="influencer.userName"
-                  :socialMedia="influencer.socialMediaPlatforms"
-                  :profilePicture="
-                    influencer.insight.profilePictureUrl ||
-                    influencer.profilePicture
-                  "
-                  :public-id="influencer.userPublicId"
-                  :cover="influencer.profilePicture"
-                  :earnedMedia="influencer.insight.followers"
-                  :engagements="influencer.insight.avgEngagement"
-                  :comments="influencer.insight.totalComments"
-                  :likes="influencer.insight.totalLikes"
-                  :saved="influencer.insight.totalMedia"
-                  :date="String(influencer.applicationDate)"
+                  :name="influencer?.user?.username"
+                  :socialMedia="[]"
+                  :profilePicture="influencer.userProfile.profilePicture"
+                  :public-id="influencer.influencer_id"
+                  :cover="influencer.userProfile.profilePicture"
+                  :earnedMedia="0"
+                  :engagements="0"
+                  :comments="0"
+                  :likes="0"
+                  :saved="0"
+                  :date="new Date().toDateString()"
                 />
               </NuxtLink>
             </template>
@@ -103,9 +100,10 @@
                 "
                 :socials="[]"
                 :profilePicture="application?.userProfile?.profilePicture"
-                :questionAndAnswers="QandA([] as any[])"
-                @accept="triggerAccept"
-                @create-contract="triggerCreateContract"
+                :questionAndAnswers="QandA"
+                @create-contract="
+                  () => triggerAccept(application?.influencer_id)
+                "
               />
             </template>
           </div>
@@ -204,19 +202,16 @@ const getCampaignPendingApplications = useRequestState({
   },
 });
 
-const influencers = ref<Core.ApprovedCampaignInfluencer[]>([]);
+const influencers = ref<GetInfluencerApplicationsResponse["data"]>([]);
 const getApplicationsInfluencer = useRequestState({
+  immediately: true,
   action: () =>
-    api.getCampaignApplicationsByStatus({
-      campaignId: route.params.id as string,
-      sortBy: "createdOn",
-      status: "APPROVED",
-      sortIn: "DESC",
-      page: 0,
-      size: 10,
+    api.getCampaignApplicants({
+      campaign_id: route.params.id as string,
+      applicationStatus: "APPROVED",
     }),
   onSuccess: (response) => {
-    influencers.value = response.data.map(trx);
+    influencers.value = response.data;
   },
   onError: (err) => {
     notify({
@@ -228,16 +223,24 @@ const getApplicationsInfluencer = useRequestState({
 });
 
 const { state, execute: review } = useRequestState({
-  action: (status: string) =>
-    api.reviewApplication({
-      applicationId: actionId.value,
+  action: ({
+    status,
+    influencerId,
+  }: {
+    status: "APPROVED" | "DECLINED" | "PENDING";
+    influencerId: string;
+  }) => {
+    return api.reviewInfluencerApplication({
+      campaign_id: route.params.id as string,
+      influencer_id: influencerId,
       status,
-    }),
+    });
+  },
   onSuccess(response) {
     getCampaignPendingApplications.execute();
     notify({
       title: "Successfully Reviewed Application",
-      text: response.message,
+      text: "You have successfully reviewed this application",
       type: "success",
     });
   },
@@ -256,15 +259,11 @@ const triggerAccept = (id: string) => {
   confirmAccept.value.open();
 };
 
-const confirmCreateContract = ref();
-const triggerCreateContract = (id: string) => {
-  actionId.value = id;
-  action.value = pendingApplication.value.find((e) => e.applicationId === id);
-  showCreateContract.value = true;
-};
-
 const accept = () => {
-  review("APPROVED").then(() => {
+  review({
+    status: "APPROVED",
+    influencerId: actionId.value,
+  }).then(() => {
     confirmAccept.value.close();
   });
 };
