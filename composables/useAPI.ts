@@ -9,8 +9,8 @@ export default function () {
   api.setStore(tools.cookieStore());
   api.setBaseUrl(config.public.baseUrl);
   // api.socials.setBaseUrl(config.public.mode == 'development' ? ' /api' : config.public.socialsBaseUrl);
-  api.socials.setBaseUrl("/api");
-  // api.socials.setBaseUrl('https://tima-data-service-8xssl.ondigitalocean.app/api');
+  // api.socials.setBaseUrl("/api");
+  api.socials.setBaseUrl('https://tima-data-service-8xssl.ondigitalocean.app/api');
   api.set401handler(() => useAuthStore().refreshAuth());
   api.setStoreGetter({
     accessToken: {
