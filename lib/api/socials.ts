@@ -1,6 +1,6 @@
 import type TimaAPI from ".";
 import Api from "../core/Api";
-import type { InstagramProfileResponse, YoutubeChannelResponse } from "./types/responses";
+import type { InstagramProfileResponse, TiktokProfileResponse, TwitterProfileResponse, XProfileResponse, YoutubeChannelResponse } from "./types/responses";
 
 export default class SocialsAPI extends Api {
   static readonly SOCIALS = ["youtube", "instagram", "tiktok"];
@@ -22,8 +22,15 @@ export default class SocialsAPI extends Api {
     });
   }
 
+  async getXByUsername(username: string) {
+    return this.request<XProfileResponse>({
+      url: `/twitter/user/${username}`,
+      method: "GET",
+    });
+  }
+
   async getTiktokByUsername(username: string) {
-    return this.request<any>({
+    return this.request<TiktokProfileResponse>({
       url: `/tiktok/user/${username}`,
       method: "GET",
     });
@@ -49,4 +56,6 @@ export default class SocialsAPI extends Api {
       method: "GET",
     });
   }
+
+
 }

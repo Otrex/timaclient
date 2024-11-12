@@ -9,7 +9,7 @@
       <DashboardInfluencerBioCard :publicId="(route.params.id as string)" />
     </aside>
     <aside
-      class="w-full md:w-2/3 md:h-full pt-[1.4375rem] md:overflow-auto md:pr-[0.1875rem]"
+      class="w-full md:w-2/3 md:h-full pt-[1.4375rem] md:overflow-auto md:pr-8"
     >
       <div
         class="inline-flex px-2 flex-row md:gap-10 gap-3 items-start mb-2 justify-between"

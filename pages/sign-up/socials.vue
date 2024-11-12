@@ -274,6 +274,50 @@
                           </div>
                         </div>
                       </div>
+
+                      <!-- Twitter Account Details -->
+                      <div
+                        v-if="currentSocialKey === 'so/twitter'"
+                        class="space-y-4"
+                      >
+                        <div class="flex items-center gap-4">
+                          <img
+                            :src="currentSocial.profile_image_url"
+                            :alt="currentSocial.name"
+                            class="w-16 h-16 rounded-full"
+                          />
+                          <div>
+                            <h3 class="text-lg font-semibold">
+                              {{ currentSocial.name }}
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                              @{{ currentSocial.username }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="space-y-3">
+                          <div class="flex items-start gap-2">
+                            <span class="font-medium">User ID:</span>
+                            <span>{{ currentSocial.user_id }}</span>
+                          </div>
+
+                          <div class="grid grid-cols-2 gap-4">
+                            <div>
+                              <p class="text-sm text-gray-600">Followers</p>
+                              <p class="font-semibold">
+                                {{ currentSocial.follower_count }}
+                              </p>
+                            </div>
+                            <div>
+                              <p class="text-sm text-gray-600">Following</p>
+                              <p class="font-semibold">
+                                {{ currentSocial.following_count }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -413,6 +457,9 @@ const getterMap = {
   },
   "so/youtube": async (identifier: string) => {
     return api.socials.getYoutubeByUsername(identifier);
+  },
+  "so/twitter": async (identifier: string) => {
+    return api.socials.getXByUsername(identifier);
   },
 };
 

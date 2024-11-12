@@ -396,6 +396,15 @@ export interface GetInfluencerProfileResponse {
   data: {
     country: string;
     lastName: string;
+    socialMediaAccounts: {
+      userName: string;
+      platformName: string;
+      data?: {
+        avgLikes: number;
+        followers: number;
+        avgEngagement: number;
+      };
+    }[]
     role: string;
     city: string;
     profileImage: string;

@@ -4,7 +4,7 @@ import path from 'path'
 
 export default defineNuxtConfig({
   ssr: false,
-  spaLoadingTemplate: "app.splash.html",
+  // spaLoadingTemplate: "app.splash.html",
   devtools: { enabled: true },
   app: {
     head: {

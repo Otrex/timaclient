@@ -73,3 +73,40 @@ export interface TiktokProfileResponse {
 }
 
 
+export interface TwitterProfileResponse {
+  user_id: string;
+  username: string;
+  name: string;
+  profile_image_url: string;
+  follower_count: number;
+  following_count: number;
+  total_likes: number;
+  total_comments: number;
+  total_retweets: number;
+  total_quotes: number;
+  average_likes: number;
+  average_comments: number;
+  average_retweets: number;
+  average_quotes: number;
+  engagement_rate: number;
+  estimated_reach: number;
+}
+
+export interface XProfileResponse {
+  "user_id": string,
+  "Username": string,
+  "Name": string,
+  "Profile Image": string,
+  "Followers": number,
+  "Following": number,
+  "Total Likes": number,
+  "Total Comments": number,
+  "Total Retweets": number,
+  "Total Quotes": number,
+  "Average Likes": number,
+  "Average Comments": number,
+  "Average Retweets": number,
+  "Average Quotes": number,
+  "Engagement Rate": number,
+  "Estimated Reach": number
+}
