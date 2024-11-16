@@ -18,8 +18,8 @@ definePageMeta({
       if (!Object.keys(to.params).includes("type") && userType) {
         const redirect: Record<UserType, string> = {
           [UserType.BRAND]: "DashboardBrandCampaigns",
+          [UserType.INFLUENCER]: "InfluencerDashboard",
           [UserType.SUPERADMIN]: "AdminRedirect",
-          [UserType.INFLUENCER]: "Dashboard",
           [UserType.ADMIN]: "AdminRedirect",
         };
 

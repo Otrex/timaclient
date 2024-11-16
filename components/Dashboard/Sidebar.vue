@@ -74,9 +74,9 @@ watch(mode, () => {
   console.log(mode.value, colorMode.value);
 
   if (mode.value) {
-    colorMode.preference = "light";
+    colorMode.value = "light";
   } else {
-    colorMode.preference = "dark";
+    colorMode.value = "dark";
   }
 });
 
@@ -85,10 +85,10 @@ onMounted(() => {
 });
 
 const toggleColor = () => {
-  if (colorMode.preference === "light") {
-    colorMode.preference = "dark";
+  if (colorMode.value === "light") {
+    colorMode.value = "dark";
   } else {
-    colorMode.preference = "light";
+    colorMode.value = "light";
   }
 };
 

@@ -87,7 +87,9 @@ export interface Campaign {
   invitees: any[] /// Delete later
   createdAt?: string;
   campaign_id?: string;
+  companyName?: string;
   campaignName: string;
+  applicationStatus?: string;
   campaignObjective: string;
   campaignAbout: string;
   campaignWebsite: string;

@@ -226,6 +226,31 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async influencerSearchCampaigns({ limit = 10, page = 1, ...others }: Payload.SearchCampaignsInterval) {
+    return this.request<Response.GetSearchCampaignsResponse>({
+      url: '/influencer/campaign/search',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...others
+      }
+    })
+  }
+
+  async influencerContentUpload(campaignId: string, contentLink: string) {
+    return this.request({
+      url: '/influencer/campaign/content-upload',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": campaignId,
+        "contentLink": contentLink
+      }
+    })
+  }
+
   async viewCampaign(id: string | number) {
     return this.request({
       url: '/influencer/campaign/info',

@@ -1,6 +1,7 @@
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import type { Getter, IRequestOptions, IStore } from "../interfaces/utils";
 import axios from "axios";
+import type { Store } from "./LocalStore";
 
 export class ApiError extends Error {
   title: string;
@@ -21,7 +22,7 @@ export default class Api {
   private handle401?: (config: AxiosRequestConfig) => Promise<void>;
   private getters?: Record<string, Getter>;
   private instance: AxiosInstance;
-  private store?: IStore;
+  private store: Record<string, Store> = {};
 
   private ACCESS_TOKEN_KEY = "accessToken";
   private REQUIRE_AUTH_HEADER = "x-tima-requires-auth";
@@ -41,8 +42,11 @@ export default class Api {
       if (!requiresAuth) return config;
 
 
-      const accessToken = this.getStoreData(this.ACCESS_TOKEN_KEY);
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
+      if (this.store && this.store.auth) {
+        const auth = this.store.auth.getItem();
+        config.headers['Authorization'] = `Bearer ${auth.accessToken}`;
+      }
+
       return config;
     });
   }
@@ -55,27 +59,6 @@ export default class Api {
         return Promise.reject(error)
       }
 
-      // const hasCompletedRetries = retries >= this.MAX_RETRY;
-
-      // if (hasCompletedRetries && this.store) {
-      //   const storeGetters = Object.values((this.getters || {}));
-      //   storeGetters.forEach(({ key }) => this.store!.clear && this.store!.clear(key))
-      //   location.href = this.BASE_ROUTE;
-      // }
-
-      // if (!hasCompletedRetries) {
-      //   return new Promise((resolve, reject) => {
-      //     retries += 1;
-      //     this.handle401!(error.config).then(() => {
-      //       resolve(axios(error.config))
-      //       retries = 0;
-      //     }).catch(() => {
-      //       retries = 0;
-      //       reject(error)
-      //     });
-      //   })
-      // }
-
       return Promise.reject(error)
     })
   }
@@ -84,16 +67,12 @@ export default class Api {
     return this.store
   }
 
-  public setStoreGetter(getters: Record<string, Getter>) {
-    this.getters = getters;
-  }
-
   public set401handler(handler: (config: AxiosRequestConfig) => Promise<any>) {
     this.handle401 = handler;
   }
 
-  public setStore(store: IStore) {
-    this.store = store;
+  public setStore(key: string, store: Store) {
+    this.store[key] = store;
     return this;
   }
 
@@ -105,17 +84,6 @@ export default class Api {
   public querify(url: string, data: Record<string, any> = {}) {
     const queryParams = (new URLSearchParams(data)).toString().trim();
     return queryParams ? `${url}?${queryParams}` : url;
-  }
-
-  public getStoreData(key: string) {
-    if (!this.store) return;
-    if (!this.getters) return;
-
-
-    if (Object.keys(this.getters).includes(key) && this.getters[key]) {
-      const { key: storeKey, getter } = this.getters[key];
-      return getter(this.store.get(storeKey));
-    }
   }
 
   public async request<R, T = any>(options: IRequestOptions<T>) {

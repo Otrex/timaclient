@@ -86,8 +86,7 @@ const {
     });
   },
   onSuccess() {
-    window.location.href =
-      (route.query.redirect as string) || "/dashboard/redirect";
+    window.location.href = (route.query.redirect as string) || "/d/redirect";
   },
 });
 </script>

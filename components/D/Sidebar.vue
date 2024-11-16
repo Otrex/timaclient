@@ -12,10 +12,9 @@
           <UtSvg name="logo/tima-2" class="w-[8rem] aspect-[3/1]" />
         </div>
         <div class="mt-[4.625rem]">
-          <!-- <DashboardNavigatorInfluencer
-            v-if="authStore.profile?.role === constants.INFLUENCER"
-          /> -->
-          <DNavAgency />
+          <DNavInfluencer v-if="userType === constants.INFLUENCER" />
+          <DNavAgency v-if="userType === constants.BRAND" />
+
           <div class="mt-[1rem] flex flex-col gap-[1rem]">
             <DashboardNavigatorMenuItem label="Help/Support" icon="nav/help" />
             <DashboardNavigatorMenuItem label="Darkmode" icon="nav/darkmode">
@@ -33,7 +32,7 @@
       <div>
         <div class="px-[1.125rem] dark:border-slate-900">
           <div class="mt-[1rem] mb-[3.75rem] flex flex-col gap-[1rem]">
-            <DashboardNavigatorMenuItem
+            <!-- <DashboardNavigatorMenuItem
               label="Settings"
               icon="nav/setting"
               :to="{
@@ -42,7 +41,7 @@
                   type: authStore.profile?.role,
                 },
               }"
-            />
+            /> -->
             <DashboardNavigatorMenuItem
               @click="logout"
               class="text-red-600"
@@ -60,17 +59,14 @@
 <script setup lang="ts">
 const colorMode = useColorMode();
 const authStore = useAuthStore();
+const loading = ref(false);
 const mode = ref(true);
 
-const loading = ref(false);
-
 watch(mode, () => {
-  console.log(mode.value, colorMode.preference);
-
   if (mode.value) {
-    colorMode.preference = "light";
+    colorMode.value = "light";
   } else {
-    colorMode.preference = "dark";
+    colorMode.value = "dark";
   }
 });
 
@@ -78,14 +74,9 @@ onMounted(() => {
   mode.value = colorMode.value === "light" ? true : false;
 });
 
-const toggleColor = () => {
-  if (colorMode.preference === "light") {
-    colorMode.preference = "dark";
-  } else {
-    colorMode.preference = "light";
-  }
-};
-
+const userType = computed(() => {
+  return authStore.userType;
+});
 const logout = async () => {
   try {
     loading.value = true;

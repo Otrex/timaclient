@@ -29,8 +29,9 @@ export default defineNuxtConfig({
       }
     },
     routeRules: {
-      '/api/**': {
+      '/api/!(image)/**': {
         proxy: process.env.API_SOCIALS_BASE_URL,
+        cors: true
       }
     }
   },

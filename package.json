@@ -43,6 +43,7 @@
     "js-sha512": "^0.8.0",
     "lucide-vue-next": "^0.438.0",
     "mitt": "^3.0.1",
+    "node-fetch": "^3.3.2",
     "pinia": "^2.1.7",
     "radix-vue": "^1.9.5",
     "tailwind-merge": "^2.5.2",

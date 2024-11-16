@@ -118,11 +118,15 @@ const routeNameMap: Record<string, any> = {
   InfluencerCampaigns: "Campaign",
   DashboardBrandExplore: "Explore",
   BrandCampaign: "Campaign",
-  AttachContent: "Attach Files",
+  InfluencerDashboard: "Dashboard",
+  AttachContent: "Attach Content Files",
   DashboardBrandCampaigns: "Campaigns",
   ViewBrandCampaignAnalytics: "ViewBrandCampaign",
   ViewbrandCampaignInfluencers: "ViewBrandCampaign",
   ViewbrandCampaignPayments: "ViewBrandCampaign",
+  InfluencerSubmitContent: defineComponent({
+    template: '<h3 class="font-bold">Attach Files</h3>',
+  }),
   ViewInfluencerCampaign: defineComponent({
     components: { UtSvg },
     methods: { navigateTo },

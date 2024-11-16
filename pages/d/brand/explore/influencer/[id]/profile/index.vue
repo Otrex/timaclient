@@ -12,7 +12,7 @@
           class="md:w-1/3 w-full"
           :class="
             isActive(sm.platformName.toLowerCase())
-              ? '!border-blue-500 rounded-xl !border'
+              ? '!border-blue-500 rounded-xl !border-2'
               : ''
           "
         >

@@ -4,10 +4,7 @@
       label="Dashboard"
       icon="nav/dash"
       :to="{
-        name: 'Dashboard',
-        params: {
-          type: $route.params.type,
-        },
+        name: 'InfluencerDashboard',
       }"
     />
     <!-- <DashboardNavigatorMenuItem
@@ -20,36 +17,33 @@
         },
       }"
     /> -->
-    <DashboardNavigatorMenuItem
+    <!-- <DashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"
       :to="{
         name: 'InfluencerCampaigns',
-        params: {
-          type: $route.params.type,
-        },
       }"
-    />
+    /> -->
     <!--
     <DashboardNavigatorMenuItem
       label="Influencers"
       icon="nav/influencers"
       to="/dashboard/influencers"
     /> -->
-    <DashboardNavigatorMenuItem
+    <!-- <DashboardNavigatorMenuItem
       :to="{
         name: 'Bookmark',
       }"
       label="Bookmark"
       icon="nav/bookmark"
-    />
+    /> -->
     <!-- <DashboardNavigatorMenuItem label="Finance" icon="nav/payment" :to="{
       name: 'Payment',
       params: {
         type: $route.params.type,
       },
     }" /> -->
-    <DashboardNavigatorMenuItem
+    <!-- <DashboardNavigatorMenuItem
       label="Finance"
       icon="nav/payment"
       :to="{
@@ -58,7 +52,7 @@
           type: $route.params.type,
         },
       }"
-    />
+    /> -->
     <!-- <DashboardNavigatorMenuItem
       label="Draft"
       icon="nav/draft"

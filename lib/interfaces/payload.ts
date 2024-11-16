@@ -254,6 +254,16 @@ export interface GetCampaigns {
   statusProgress?: "APPROVED" | "DECLINED" | "PENDING"
 }
 
+export interface SearchCampaignsInterval {
+  campaignName: string;
+  socialMediaPlatform: string[];
+  audienceDemographics: string[];
+  category: string[];
+  page?: number;
+  limit?: number;
+}
+
+
 export type GetBrandCampaigns = {
   name: string;
   page?: number;

@@ -421,3 +421,20 @@ export interface GetInfluencerProfileResponse {
   message: string;
   statusCode: number;
 }
+
+
+export interface GetSearchCampaignsResponse {
+  data: {
+    statusProgress: string;
+    audienceDemographics: string[];
+    socialMediaPlatform: string[];
+    category: string[];
+    campaignName: string;
+    campaign_id: string;
+  }[];
+  totalCampaigns: number;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}

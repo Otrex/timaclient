@@ -2,6 +2,8 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { ProfileSetupState, UserType } from "~/lib/enums";
 import type { Payload } from "~/lib/interfaces";
 import type { AccountWallet, User, UserProfile } from "~/lib/interfaces/core";
+import { auth, profile } from "./persisted";
+
 
 type IState = {
   registration: {
@@ -41,10 +43,10 @@ export const useAuthStore = defineStore("auth", {
   }),
   getters: {
     isAuthenticated(state) {
-      return !!state.authorization.accessToken // && state.user?.hasVerifiedEmail;
+      return !!auth.getItem() // && state.user?.hasVerifiedEmail;
     },
     userType(state) {
-      return state.authorization.userType;
+      return auth.getItem()?.userType;
     },
     progress(state) {
       const profile = state.profile;
@@ -128,6 +130,11 @@ export const useAuthStore = defineStore("auth", {
         },
         wallet: response.data.accountWallet,
       });
+
+      auth.setItem({
+        accessToken: response.data.token,
+        userType: response.data.user.role,
+      })
     },
 
     async refreshAuth() {
@@ -268,7 +275,27 @@ export const useAuthStore = defineStore("auth", {
     },
   },
   persist: ["registration", "authorization", "user", "profile"],
-  persistWith: tools.cookieStore(),
+  persistWith: {
+    set: (key, value) => {
+      const data = [
+        ...(profile.getItem() || []),
+        {
+          key,
+          value
+        }
+      ]
+      profile.setItem(data)
+    },
+    get: (key) => {
+      const content = profile.getItem();
+      return content?.find(item => item.key === key)?.value;
+    },
+    clear: (key) => {
+      let data = profile.getItem() || [];
+      data = data.filter(item => item.key !== key)
+      profile.setItem(data)
+    }
+  },
 });
 
 if (import.meta.hot) {

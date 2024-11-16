@@ -143,9 +143,12 @@
         </section>
 
         <section
+          v-if="campaign.applicationStatus?.includes('not_applied')"
           class="text-center flex md:gap-8 gap-4 items-center justify-center"
         >
-          <button class="text-red-700">Report this campaign to TIMA</button>
+          <button @click="showReportForm = true" class="text-red-700">
+            Report this campaign to TIMA
+          </button>
           <UiButtonDefault
             @click="() => apply()"
             :loading="application === constants.LOADING"
@@ -153,6 +156,20 @@
             variant="primary"
             class="py-[0.75rem] px-[3.75rem]"
             label="Apply to this campaign"
+          />
+        </section>
+
+        <section class="flex justify-center mt-5">
+          <UiButtonDefault
+            @click="
+              () =>
+                navigateTo({
+                  name: 'InfluencerSubmitContent',
+                })
+            "
+            variant="primary"
+            class="py-[0.75rem] px-[3.75rem]"
+            label="Submit Content"
           />
         </section>
       </div>
@@ -174,21 +191,52 @@
       </template>
     </AlertItem>
 
+    <UtModal
+      v-model:state="showReportForm"
+      m-width="34.3125rem"
+      content-class="mx-auto mt-[10%]"
+    >
+      <div class="bg-white dark:bg-gray-700 p-3 pb-5 px-5 rounded-2xl">
+        <div class="flex items-center justify-between mb-2">
+          <h1 class="text-xl max-w-[200px] leading-10">Reason</h1>
+          <button class="" @click="showReportForm = false">
+            <UtSvg name="cancel" dim w="1.5rem" h="1.5rem" />
+          </button>
+        </div>
+        <div>
+          <textarea
+            cols="30"
+            class="w-full mb-5 min-h-[18.75rem] rounded-lg border dark:border-gray-600 dark:bg-gray-600/50"
+          />
+        </div>
+        <div>
+          <UiButtonDefault
+            variant="primary"
+            class="w-full py-2"
+            label="Submit"
+          />
+        </div>
+      </div>
+    </UtModal>
+
     <section>
       <h4 class="my-5">Similar Campaigns</h4>
 
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 xl:grid-cols-4">
-        <template v-for="i in tools.range(1, 3)" :key="i">
+        <template
+          v-for="campaign in similarCampaigns"
+          :key="campaign.campaign_id"
+        >
           <DashboardCampaignCard
-            :publicId="''"
-            :title="''"
-            :image="''"
-            :category="[]"
-            :brand="''"
-            :description="''"
+            :publicId="campaign.campaign_id || ''"
+            :title="campaign.campaignName"
+            :image="(campaign.banner as string)"
+            :category="campaign.category"
+            :brand="campaign.companyName || ''"
+            :description="campaign.campaignAbout"
             :budget="0"
-            :deadline="''"
-            :completion="0"
+            :deadline="campaign.endDate"
+            :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
           />
         </template>
       </div>
@@ -197,20 +245,19 @@
 </template>
 
 <script setup lang="ts">
-import type { GetCampaign } from "~/lib/interfaces/response";
+import type { GetCampaign, GetCampaigns } from "~/lib/interfaces/response";
 definePageMeta({
   name: "ViewInfluencerCampaign",
 });
 
 const colorExtract = useImageColorExtract();
 const image = ref<HTMLImageElement>();
-const optionsStore = useOptionsStore();
-const { notify } = useNotification();
 const avgColor = ref(0);
 
 const api = useAPI();
 const route = useRoute();
 const campaign = ref<GetCampaign["data"]>();
+const showReportForm = ref(false);
 
 const alert = reactive({
   on: false,
@@ -247,6 +294,14 @@ watch(
     }
   }
 );
+const similarCampaigns = ref<GetCampaigns["data"]>([]);
+const getSimilarCampaigns = useRequestState({
+  immediately: true,
+  action: () => api.getInfluencerCampaigns({ recommended: true }),
+  onSuccess: (response: any) => {
+    similarCampaigns.value = response.data;
+  },
+});
 
 const { state: application, execute: apply } = useRequestState({
   action: () => api.applyToCampaign(route.params.id as string),
@@ -260,8 +315,6 @@ const { state: application, execute: apply } = useRequestState({
     });
   },
   onError: (response) => {
-    console.log(response.__error.response.data.message);
-
     alert.on = true;
     alert.type = "error";
     alert.title =

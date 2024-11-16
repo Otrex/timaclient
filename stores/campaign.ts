@@ -51,6 +51,7 @@ export const useCampaignStore = defineStore("campaign", {
         banner: this.newCampaign.banner as File,
         requestBody: {
           ...this.newCampaign,
+          viewType: !this.newCampaign.viewType,
           influencerID: this.newCampaign.invitees.map(invitee => invitee.id)
         }
       })

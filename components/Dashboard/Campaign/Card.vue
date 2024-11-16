@@ -80,12 +80,13 @@
         class="flex flex-col h-[calc(100%_-_12.9375rem_-_1.25rem)] p-3 px-5 justify-between"
       >
         <div>
-          <h3 class="!text-[1.3493rem] leading-3">{{ props.brand }}</h3>
+          <h3 class="!text-[1.3493rem] leading-3">{{ props.title }}</h3>
           <span
             v-if="props.category && props.category.length"
             class="text-[--clr-grey-300] text-[0.8125rem]"
-            >{{ props.category }}</span
           >
+            <TextTrunc :text="props.category.join(', ')" :max="15" show-btn />
+          </span>
           <p
             class="text-[--clr-grey-400] dark:text-slate-50 mt-[0.5625rem] nl mb-[1rem]"
           >

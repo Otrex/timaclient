@@ -9,6 +9,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     "/sandbox",
     "/auth/*",
     "/sign-up/*",
+    "/api/*",
     "/share/*"
   ];
 
