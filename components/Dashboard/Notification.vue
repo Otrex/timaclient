@@ -11,7 +11,12 @@
     </button>
 
     <NuxtLink
-      :to="{ name: 'Notification' }"
+      :to="{
+        name:
+          useAuthStore().userType === constants.BRAND
+            ? 'BrandNotification'
+            : 'InfluencerNotification',
+      }"
       class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
     >
       <UtSvg
@@ -118,70 +123,70 @@
 </template>
 
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
-import type { Core } from "~/lib/interfaces";
+// import { onClickOutside } from "@vueuse/core";
+// import type { Core } from "~/lib/interfaces";
 const route = useRoute();
 const $router = useRouter();
 
-type AppNotification = {
-  id: number;
-  title: string;
-  content: string;
-  isRead: boolean;
-};
+// type AppNotification = {
+//   id: number;
+//   title: string;
+//   content: string;
+//   isRead: boolean;
+// };
 
-const ONE_MINUTE = 1000 * 60;
-const activeTab = ref(0);
-const open = ref(false);
-const modalState = ref(false);
-const target = ref<HTMLDivElement>();
-const notifications = ref<AppNotification[]>([]);
+// const ONE_MINUTE = 1000 * 60;
+// const activeTab = ref(0);
+// const open = ref(false);
+// const modalState = ref(false);
+// const target = ref<HTMLDivElement>();
+// const notifications = ref<AppNotification[]>([]);
 
-onClickOutside(target, (event) => {
-  open.value = false;
-});
+// onClickOutside(target, (event) => {
+//   open.value = false;
+// });
 
-const api = useAPI();
+// const api = useAPI();
 
-watch(open, () => {
-  getNotifications(open.value);
-});
+// watch(open, () => {
+//   getNotifications(open.value);
+// });
 
-function format(notification: Core.Notification) {
-  return {
-    id: Math.random(),
-    title: notification.title,
-    content: notification.message,
-    isRead: notification.status != "NEW",
-  };
-}
+// function format(notification: Core.Notification) {
+//   return {
+//     id: Math.random(),
+//     title: notification.title,
+//     content: notification.message,
+//     isRead: notification.status != "NEW",
+//   };
+// }
 
-const { state, execute } = useRequestState({
-  immediately: true,
-  action: () =>
-    api.getNotifications({
-      page: 0,
-      size: 10,
-      sortIn: "asc",
-      sortBy: "createdOn",
-    }),
-  onSuccess(response) {
-    notifications.value = response.data.map(format);
-  },
-});
+// const { state, execute } = useRequestState({
+//   immediately: true,
+//   action: () =>
+//     api.getNotifications({
+//       page: 0,
+//       size: 10,
+//       sortIn: "asc",
+//       sortBy: "createdOn",
+//     }),
+//   onSuccess(response) {
+//     notifications.value = response.data.map(format);
+//   },
+// });
 
-async function getNotifications(iterate: boolean): Promise<any> {
-  await execute();
-  await tools.delay(ONE_MINUTE);
-  if (!iterate) return;
-  return getNotifications(iterate);
-}
+// async function getNotifications(iterate: boolean): Promise<any> {
+//   await execute();
+//   await tools.delay(ONE_MINUTE);
+//   if (!iterate) return;
+//   return getNotifications(iterate);
+// }
 
-const currentNotification = ref<AppNotification>();
-async function openNotification(notification: AppNotification) {
-  modalState.value = true;
-  currentNotification.value = notification;
-}
+// const currentNotification = ref<AppNotification>();
+// async function openNotification(notification: AppNotification) {
+//   modalState.value = true;
+//   currentNotification.value = notification;
+// }
 
 const goToCalendar = () => {
   $router.push(`/dashboard/${route.params.type}/calendar`);

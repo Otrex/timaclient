@@ -117,6 +117,20 @@ export interface CreateApplication {
   userMotivationBrief: string;
 }
 
+export interface ContentReview {
+  campaign_id: string;
+  content_id: string;
+  status: "APPROVED" | "DECLINED" | "PENDING";
+}
+
+
+export interface GetNotifications {
+  "page"?: number,
+  "limit"?: number,
+  "type": "NEWS" | "ACTIVITIES" | "ALERTS", //Optional NEWS/ACTIVITIES/ALERTS
+  "days": 1 | 7 | 30 //1/7/30 optional
+}
+
 export interface Filter {
   page: number;
   size: number;

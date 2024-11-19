@@ -9,22 +9,25 @@
       <div
         class="mb-[1.25rem] rounded rounded-b-none overflow-hidden h-[12.9375rem] relative"
       >
-        <template v-if="authStore.authorization.userType !== 'BRAND'">
+        <template v-if="authStore.userType !== 'BRAND'">
           <button
             v-if="!props.isBookmark"
-            style="--tw-ring-opacity: 0.2"
             :disabled="state === constants.LOADING"
             :class="[
-              'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
+              'absolute active:ring-4 transition-all hover:ring-2 tag rounded-md z-[999]  right-[0.75rem] top-[0.75rem]',
             ]"
             @click.prevent.capture="() => execute()"
           >
             <UtSvg
               v-if="state === constants.LOADING"
               name="sunshine"
-              :class="['spinner w-[1.5rem] h-[1.5rem]']"
+              :class="['spinner w-[1.5rem] tag h-[1.5rem]']"
             />
-            <UtSvg v-else name="bookmark" :class="['w-[1.5rem] h-[1.5rem]']" />
+            <UtSvg
+              v-else
+              name="bookmark"
+              :class="['w-[1.5rem] tag h-[1.5rem]']"
+            />
           </button>
         </template>
         <button
@@ -39,9 +42,9 @@
           <UtSvg
             v-if="deleteState === constants.LOADING"
             name="sunshine"
-            :class="['spinner w-[1.5rem] h-[1.5rem]']"
+            :class="['spinner w-[1.5rem] tag h-[1.5rem]']"
           />
-          <UtSvg v-else name="trash" :class="['w-[1.5rem] h-[1.5rem]']" />
+          <UtSvg v-else name="trash" :class="['w-[1.5rem] tag h-[1.5rem]']" />
         </button>
         <UiImg
           ref="image"
@@ -84,17 +87,33 @@
               tools.formatDate(props.deadline)
             }}</span>
           </p>
-          <div v-if="props.completion === 100">
-            <span class="text-green-500 text-[0.875rem]">Completed</span>
-          </div>
-          <div v-else class="flex items-center gap-[0.625rem]">
-            <div class="bg-[#D9D9D9] w-full rounded-lg overflow-hidden">
-              <div
-                class="bg-[#333] h-[0.4375rem] w-[--percent]"
-                :style="`--percent: ${props.completion}%`"
-              ></div>
+
+          <div class="flex flex-row gap-3 justify-between items-center">
+            <div class="flex w-full items-center">
+              <div class="w-full" v-if="props.completion === 100">
+                <span class="text-green-500 text-[0.875rem]">Completed</span>
+              </div>
+              <div v-else class="flex items-center w-full gap-[0.625rem]">
+                <div class="bg-[#D9D9D9] w-full rounded-lg overflow-hidden">
+                  <div
+                    class="bg-[#333] h-[0.4375rem] w-[--percent]"
+                    :style="`--percent: ${props.completion}%`"
+                  ></div>
+                </div>
+                <div class="whitespace-nowrap">{{ props.completion }}%</div>
+              </div>
             </div>
-            <div class="whitespace-nowrap">{{ props.completion }}%</div>
+            <div v-if="props.status" class="ml-auto">
+              <div
+                class="text-sm"
+                :class="[
+                  props.status === 'APPROVED' && '!text-green-500',
+                  'text-gray-500',
+                ]"
+              >
+                {{ props.status }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -111,6 +130,7 @@ const props = defineProps<{
   budget: number;
   deadline: string;
   completion: number;
+  status?: string;
   title: string;
   publicId: string;
   noMaxWidth?: boolean;
@@ -165,3 +185,10 @@ const { state: deleteState, execute: deleteBookmark } = useRequestState({
   },
 });
 </script>
+<style>
+.tag {
+  color: rgba(0, 0, 0, 0.6);
+  mix-blend-mode: difference;
+  filter: invert(1);
+}
+</style>

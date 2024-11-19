@@ -1,7 +1,10 @@
 <template>
   <div class="md:px-8 px-4">
     <transition mode="out-in">
-      <div class="text-center relative" v-if="state === constants.LOADING">
+      <div
+        class="text-center h-[300px] relative"
+        v-if="state === constants.LOADING"
+      >
         <UtLoaderIndicator
           class="absolute inset-0"
           message="Fetching Campaign"
@@ -213,12 +216,16 @@
         <div>
           <textarea
             cols="30"
-            class="w-full mb-5 min-h-[18.75rem] rounded-lg border dark:border-gray-600 dark:bg-gray-600/50"
+            v-model="reportReason"
+            class="w-full p-5 mb-5 min-h-[18.75rem] rounded-lg border dark:border-gray-600 dark:bg-gray-600/50"
           />
         </div>
         <div>
           <UiButtonDefault
             variant="primary"
+            @click="() => report()"
+            :loading="isReporting === constants.LOADING"
+            :disabled="isReporting === constants.LOADING"
             class="w-full py-2"
             label="Submit"
           />
@@ -265,6 +272,8 @@ const api = useAPI();
 const route = useRoute();
 const campaign = ref<GetCampaign["data"]>();
 const showReportForm = ref(false);
+const reportReason = ref("");
+const { notify } = useNotification();
 
 const alert = reactive({
   on: false,
@@ -307,6 +316,25 @@ const getSimilarCampaigns = useRequestState({
   action: () => api.getInfluencerCampaigns({ recommended: true }),
   onSuccess: (response: any) => {
     similarCampaigns.value = response.data;
+  },
+});
+
+const { execute: report, state: isReporting } = useRequestState({
+  action: () =>
+    api.reportCampaign(route.params.id as string, reportReason.value),
+  onSuccess: (response: any) => {
+    notify({
+      title: "Report sent",
+      text: "Report has been successfully sent",
+      type: "success",
+    });
+  },
+  onError: (response) => {
+    notify({
+      title: "Error",
+      text: response.__error?.response?.data?.message,
+      type: "error",
+    });
   },
 });
 

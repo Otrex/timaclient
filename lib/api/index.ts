@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerCampaignsResponse, GetOverviewStats } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -274,6 +274,42 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getCampaignContents(id: string | number, applicationStatus = "", { page = 1, limit = 10 }) {
+    return this.request<GetInfluencerContentApplicationsResponse>({
+      url: '/brand/campaign/contents',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id,
+        ...(applicationStatus ? { applicationStatus } : {}),
+        "page": page,
+        "limit": limit
+      }
+    })
+  }
+
+
+  async reviewContent(data: Payload.ContentReview) {
+    return this.request({
+      url: '/brand/influencer/content-review',
+      requireAuth: true,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  async reportCampaign(id: string | number, reason: string) {
+    return this.request({
+      url: '/influencer/campaign/report',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id,
+        "reason": reason
+      }
+    })
+  }
+
   async bookmarkCampaign(id: string | number) {
     return this.request({
       url: '/influencer/bookmark',
@@ -283,6 +319,17 @@ export default class TimaAPI extends UploadAPI {
         "campaign_id": id
       }
     })
+  }
+
+  async deleteBookmark(id: string) {
+    return this.request({
+      url: `/influencer/bookmark/delete`,
+      requireAuth: true,
+      method: "POST",
+      data: {
+        "bookmark_id": id
+      }
+    });
   }
 
   async applyToCampaign(id: string | number) {
@@ -507,6 +554,19 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getNotifications({ page = 1, limit = 10, ...others }: Payload.GetNotifications) {
+    return this.request<Response.GetNotifications>({
+      url: '/users/notifications',
+      requireAuth: true,
+      method: "POST",
+      data: {
+        page,
+        limit,
+        ...others
+      },
+    });
+  }
+
 
 
 
@@ -687,13 +747,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getNotifications(data: Payload.Filter) {
-    return this.request<Response.GetNotifications>({
-      url: this.querify("/alert/v1/notifications", data),
-      requireAuth: true,
-      method: "GET",
-    });
-  }
 
   async getDemographicsInsightById(
     publicId: string,
@@ -759,16 +812,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-
-
-  async getBookmarks() {
-    return this.request<IResponse<Core.InfluencerBookmark[]>>({
-      url: `/agency/v1/bookmarks`,
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
   async searchInfluencers(filter: Partial<Core.ExploreInfluencerFilter>) {
     return this.request<Response.GetApprovedInfluencers>({
       url: this.querify(`/agency/v1/influencer/search/campaign`, filter),
@@ -810,13 +853,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async deleteBookmark(name: string) {
-    return this.request({
-      url: `/agency/v1/bookmarks/title/${name}`,
-      requireAuth: true,
-      method: "DELETE",
-    });
-  }
+
 
   async getPaymentStats() {
     return this.request<Response.GetPaymentStats>({

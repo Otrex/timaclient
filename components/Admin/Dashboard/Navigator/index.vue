@@ -21,6 +21,11 @@
       to="/admin/brands"
     />
     <AdminDashboardNavigatorMenuItem
+      label="Requests"
+      icon="nav/requests"
+      to="/admin/requests"
+    />
+    <AdminDashboardNavigatorMenuItem
       label="Finance"
       icon="nav/payment"
       to="/admin/dashboard/finance"

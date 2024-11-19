@@ -143,7 +143,6 @@
 </template>
 
 <script setup lang="ts">
-import { Core } from "~/lib/interfaces";
 import type { Application } from "~/lib/interfaces/core";
 import type { GetInfluencerApplicationsResponse } from "~/lib/interfaces/response";
 

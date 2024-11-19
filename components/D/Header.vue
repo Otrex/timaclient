@@ -84,7 +84,7 @@
     <div class="flex justify-end">
       <div class="flex flex-row gap-[0.625rem] items-center">
         <div class="flex items-center">
-          <!-- <DashboardNotification /> -->
+          <DashboardNotification />
         </div>
         <div class="flex items-center">
           <DashboardUserMenu
@@ -118,12 +118,14 @@ const routeNameMap: Record<string, any> = {
   InfluencerCampaigns: "Campaign",
   DashboardBrandExplore: "Explore",
   BrandCampaign: "Campaign",
+  BrandNotification: "Notification",
   InfluencerDashboard: "Dashboard",
   AttachContent: "Attach Content Files",
   DashboardBrandCampaigns: "Campaigns",
   ViewBrandCampaignAnalytics: "ViewBrandCampaign",
   ViewbrandCampaignInfluencers: "ViewBrandCampaign",
   ViewbrandCampaignPayments: "ViewBrandCampaign",
+  ViewBrandCampaignContents: "ViewBrandCampaign",
   InfluencerSubmitContent: defineComponent({
     template: '<h3 class="font-bold">Attach Files</h3>',
   }),
@@ -131,7 +133,7 @@ const routeNameMap: Record<string, any> = {
     components: { UtSvg },
     methods: { navigateTo },
     template: `<div class="flex flex-row items-center gap-5">
-      <UtSvg name="nav/back" @click="navigateTo({ name: 'DashboardBrandCampaigns' })" dim w="1.5rem" h="1.5rem" />
+      <UtSvg name="nav/back" @click="navigateTo({ name: 'InfluencerDashboard' })" dim w="1.5rem" h="1.5rem" />
       <h2 class="font-bold"> Dashboard </h2>
     </div>`,
   }),

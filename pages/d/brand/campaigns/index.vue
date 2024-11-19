@@ -82,6 +82,7 @@
               :description="cam.campaignAbout"
               :budget="+cam.planningBudget"
               :deadline="cam.endDate"
+              :status="cam.statusProgress"
               :completion="0"
             />
           </template>

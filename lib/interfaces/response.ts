@@ -139,6 +139,7 @@ export interface GetCampaignsResponse extends IResponse<{
     campaignRule: string;
     banner: string;
     socialMediaPlatform: string[];
+    statusProgress?: string;
     user_id: string;
     audienceGender: string[];
     viewType: boolean;
@@ -435,6 +436,43 @@ export interface GetSearchCampaignsResponse {
   totalCampaigns: number;
   limit: number;
   page: number;
+  message: string;
+  statusCode: number;
+}
+
+export interface CreateBookmarkResponse {
+  "data": {
+    "bookmark_id": string,
+    "influencer_id": string,
+    "campaign_id": string
+  },
+  "message": "Bookmark saved successfully",
+  "statusCode": 200
+}
+
+export interface GetInfluencerContentApplicationsResponse {
+  data: {
+    opened?: boolean;
+    influencer_id: string;
+    content_link: string;
+    applicationStatus: string;
+    application_id: string;
+    user: {
+      role: string;
+      email: string;
+      username: string;
+    };
+    campaign_id: string;
+    appliedAt: string;
+    userProfile: {
+      firstName: string;
+      lastName: string;
+      profilePicture: string;
+      country: string;
+      industries: string[];
+      otherName: string;
+    };
+  }[];
   message: string;
   statusCode: number;
 }

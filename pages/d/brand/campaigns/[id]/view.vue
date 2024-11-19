@@ -66,10 +66,15 @@
             <UtTabNuxtLink name="ViewbrandCampaignPayments">
               Payments
             </UtTabNuxtLink>
+            <UtTabNuxtLink name="ViewBrandCampaignContents">
+              Contents
+            </UtTabNuxtLink>
           </div>
-          <Transition>
-            <NuxtPage />
-          </Transition>
+          <div v-show="campaign">
+            <Transition>
+              <NuxtPage />
+            </Transition>
+          </div>
         </div>
       </section>
       <UtModal
