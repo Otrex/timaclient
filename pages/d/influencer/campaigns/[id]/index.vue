@@ -159,7 +159,10 @@
           />
         </section>
 
-        <section class="flex justify-center mt-5">
+        <section
+          v-else-if="campaign.applicationStatus === 'APPROVED'"
+          class="flex justify-center mt-5"
+        >
           <UiButtonDefault
             @click="
               () =>
@@ -171,6 +174,10 @@
             class="py-[0.75rem] px-[3.75rem]"
             label="Submit Content"
           />
+        </section>
+
+        <section class="text-red-500 text-lg font-semibold text-center" v-else>
+          You application is awaiting approval
         </section>
       </div>
     </transition>

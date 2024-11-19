@@ -1,7 +1,6 @@
 <template>
   <transition mode="out-in">
     <div
-      v-show="key"
       :class="[
         !noMaxWidth || ' max-w-[23.5rem]',
         'h-full dark:border-slate-500 rounded dark:bg-slate-800 outline-solid outline-slate-200 hover:outline-4 hover:outline-red-600 outline',
@@ -17,28 +16,15 @@
             :disabled="state === constants.LOADING"
             :class="[
               'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
-              avgColor < 128
-                ? 'active:ring-slate-100'
-                : 'active:ring-slate-700',
             ]"
             @click.prevent.capture="() => execute()"
           >
             <UtSvg
               v-if="state === constants.LOADING"
               name="sunshine"
-              :class="[
-                'spinner w-[1.5rem] h-[1.5rem]',
-                avgColor > 128 ? 'text-black' : 'text-white',
-              ]"
+              :class="['spinner w-[1.5rem] h-[1.5rem]']"
             />
-            <UtSvg
-              v-else
-              name="bookmark"
-              :class="[
-                'w-[1.5rem] h-[1.5rem]',
-                avgColor > 128 ? 'text-black' : 'text-white',
-              ]"
-            />
+            <UtSvg v-else name="bookmark" :class="['w-[1.5rem] h-[1.5rem]']" />
           </button>
         </template>
         <button
@@ -47,26 +33,15 @@
           :disabled="state === constants.LOADING"
           :class="[
             'absolute active:ring-4 rounded-md  right-[0.75rem] top-[0.75rem]',
-            avgColor < 128 ? 'active:ring-slate-100' : 'active:ring-slate-700',
           ]"
           @click.prevent.capture="() => deleteBookmark(c(props.bookmarkId))"
         >
           <UtSvg
             v-if="deleteState === constants.LOADING"
             name="sunshine"
-            :class="[
-              'spinner w-[1.5rem] h-[1.5rem]',
-              avgColor > 128 ? 'text-black' : 'text-white',
-            ]"
+            :class="['spinner w-[1.5rem] h-[1.5rem]']"
           />
-          <UtSvg
-            v-else
-            name="trash"
-            :class="[
-              'w-[1.5rem] h-[1.5rem]',
-              avgColor > 128 ? 'text-black' : 'text-white',
-            ]"
-          />
+          <UtSvg v-else name="trash" :class="['w-[1.5rem] h-[1.5rem]']" />
         </button>
         <UiImg
           ref="image"
@@ -145,25 +120,12 @@ const props = defineProps<{
 
 const emit = defineEmits(["re-update"]);
 
-const key = ref(0);
 const api = useAPI();
-const avgColor = ref(0);
 const { notify } = useNotification();
 const image = ref<HTMLImageElement>();
-const colorExtract = useImageColorExtract();
 const authStore = useAuthStore();
 
 const c = <T>(e?: T) => e!;
-
-onMounted(() => {
-  try {
-    colorExtract.getAverageColor(props.image!).then((value) => {
-      avgColor.value = value;
-    });
-
-    key.value = 1;
-  } catch (error) {}
-});
 
 const { state, execute } = useRequestState({
   action: () => api.bookmarkCampaign(props.publicId),

@@ -106,6 +106,7 @@ const { state, execute } = useRequestState({
       title: "Success",
       text: "Content uploaded successfully",
     });
+    cancel();
   },
   onError: (error) => {
     notify({
