@@ -87,7 +87,7 @@
           <tr v-show="content.opened">
             <td colspan="100%">
               <div class="bg-gray-50 p-6">
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <h3 class="text-sm font-semibold mb-2">
                       Application Details
