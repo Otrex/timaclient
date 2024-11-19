@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen w-full overflow-hidden">
     <div
-      class="grid h-full w-full grid-rows-[auto_1fr] grid-cols-[200px_1fr] lg:grid-cols-[250px_1fr] [grid-template-areas:'aside_header'_'aside_main']"
+      class="grid h-full w-full grid-rows-[auto_1fr] sm:grid-cols-[200px_1fr] lg:grid-cols-[250px_1fr] [grid-template-areas:'aside_header'_'aside_main']"
     >
       <aside
         :class="[
