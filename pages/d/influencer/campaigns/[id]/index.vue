@@ -195,6 +195,7 @@
           <UiButtonDefault
             variant="primary"
             class="w-full py-2"
+            @click="() => navigateTo({ name: 'SignUpSocials' })"
             label="Link Account"
           />
         </div>
