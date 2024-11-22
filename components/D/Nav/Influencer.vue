@@ -17,13 +17,13 @@
         },
       }"
     /> -->
-    <!-- <DashboardNavigatorMenuItem
+    <DashboardNavigatorMenuItem
       label="Campaigns"
       icon="nav/campaign"
       :to="{
         name: 'InfluencerCampaigns',
       }"
-    /> -->
+    />
     <!--
     <DashboardNavigatorMenuItem
       label="Influencers"
