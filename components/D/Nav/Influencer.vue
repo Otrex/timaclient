@@ -21,7 +21,7 @@
       label="Campaigns"
       icon="nav/campaign"
       :to="{
-        name: 'InfluencerCampaigns',
+        name: 'InfluencerCampaignsState',
       }"
     />
     <!--

@@ -12,7 +12,8 @@
         "
       />
     </div>
-    <div class="mt-8">
+
+    <div v-if="loadingStats !== constants.LOADING" class="mt-8">
       <div class="flex flex-wrap gap-4">
         <NuxtLink
           v-for="(tag, index) in tags"
@@ -31,6 +32,13 @@
             >
           </div>
         </NuxtLink>
+      </div>
+    </div>
+    <div v-else>
+      <div class="flex justify-center items-center h-10">
+        <div
+          class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"
+        ></div>
       </div>
     </div>
 
@@ -131,6 +139,19 @@ const tags = [
   { status: "incomplete", count: 5, active: false },
   { status: "contents", count: 120, active: false },
 ];
+
+const { state: loadingStats } = useRequestState({
+  immediately: true,
+  action: async () => api.brandOverviewStats(),
+  onSuccess: ({ data }) => {
+    tags[0].count = data.all_campaigns;
+    tags[1].count = data.approved;
+    tags[2].count = data.pending;
+    tags[3].count = data.completed;
+    tags[4].count = data.declined; // Contest this with the backend guy
+    tags[5].count = data.all_contents;
+  },
+});
 
 const addedFilter = computed(() => {
   if (route.query.status === "all") {

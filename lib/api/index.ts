@@ -660,6 +660,22 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async brandOverviewStats() {
+    return this.request<Response.GetBrandOverviewStatsResponse>({
+      method: "POST",
+      requireAuth: true,
+      url: "/brand/overview-stat",
+    })
+  }
+
+  async fetchInvites() {
+    return this.request({
+      url: "/influencer/fetch-invites",
+      requireAuth: true,
+      method: "POST",
+    })
+  }
+
   async getBankDetails() {
     return this.request<Response.BankDetailUpdate>({
       url: "/payment/v1/bank/customers/_self",

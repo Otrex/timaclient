@@ -126,6 +126,7 @@ const routeNameMap: Record<string, any> = {
   ViewbrandCampaignInfluencers: "ViewBrandCampaign",
   ViewbrandCampaignPayments: "ViewBrandCampaign",
   ViewBrandCampaignContents: "ViewBrandCampaign",
+  InfluencerCampaignsState: "Campaign",
   InfluencerSubmitContent: defineComponent({
     template: '<h3 class="font-bold">Attach Files</h3>',
   }),

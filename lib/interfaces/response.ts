@@ -476,3 +476,17 @@ export interface GetInfluencerContentApplicationsResponse {
   message: string;
   statusCode: number;
 }
+
+
+export interface GetBrandOverviewStatsResponse {
+  data: {
+    approved: number;
+    declined: number;
+    all_contents: number;
+    pending: number;
+    completed: number;
+    all_campaigns: number;
+  };
+  message: string;
+  statusCode: number;
+}
