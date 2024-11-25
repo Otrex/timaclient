@@ -8,8 +8,8 @@ export default function () {
   api.setStore('auth', auth);
   api.setBaseUrl(config.public.baseUrl);
 
-  api.socials.setBaseUrl(config.public.mode == 'development' ? ' /api' : config.public.socialsBaseUrl);
-  api.socials.setBaseUrl("/api");
+  api.socials.setBaseUrl(config.public.socialsBaseUrl);
+  api.socials.setProxyUrl(config.public.proxyBaseUrl);
   // api.socials.setBaseUrl('https://tima-data-service-8xssl.ondigitalocean.app/api');
 
   return api;

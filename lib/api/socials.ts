@@ -8,6 +8,11 @@ export default class SocialsAPI extends Api {
     super();
   }
 
+  setProxyUrl(url: string) {
+    const baseUrl = this.$instance.defaults.baseURL
+    this.setBaseUrl(`${url}/proxy?url=${baseUrl}`);
+  }
+
   async getYoutubeByUsername(username: string) {
     return this.request<YoutubeChannelResponse>({
       url: `/youtube/channel/${username}`,

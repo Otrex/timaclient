@@ -67,6 +67,10 @@ export default class Api {
     return this.store
   }
 
+  get $instance() {
+    return this.instance
+  }
+
   public set401handler(handler: (config: AxiosRequestConfig) => Promise<any>) {
     this.handle401 = handler;
   }

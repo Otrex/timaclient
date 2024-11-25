@@ -1,5 +1,6 @@
 export default function () {
   function getImageObjectUrl(imageUrl: string): Promise<string> {
+    const config = useRuntimeConfig();
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = "Anonymous";
@@ -17,7 +18,7 @@ export default function () {
       img.onerror = (error) => {
         reject(error);
       };
-      img.src = imageUrl;
+      img.src = config.public.proxyBaseUrl + '/image-proxy?url=' + imageUrl;
     });
   }
 
