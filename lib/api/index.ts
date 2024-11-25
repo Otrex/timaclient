@@ -522,7 +522,7 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: 'POST',
       data: {
-        "influecer_id": id
+        "influencer_id": id
       }
     })
   }
