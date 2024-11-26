@@ -136,7 +136,7 @@ const tags = [
   { status: "active", count: 30, active: false },
   { status: "pending", count: 20, active: false },
   { status: "completed", count: 10, active: false },
-  { status: "incomplete", count: 5, active: false },
+  { status: "declined", count: 5, active: false },
   { status: "contents", count: 120, active: false },
 ];
 
@@ -166,7 +166,11 @@ const addedFilter = computed(() => {
     return "PENDING";
   }
 
-  if (route.query.status === "incomplete") {
+  // if (route.query.status === "completed") {
+  //   return "COMPLETED";
+  // }
+
+  if (route.query.status === "declined") {
     return "DECLINED";
   }
 });
