@@ -43,16 +43,13 @@
         type: $route.params.type,
       },
     }" /> -->
-    <!-- <DashboardNavigatorMenuItem
+    <DashboardNavigatorMenuItem
       label="Finance"
       icon="nav/payment"
       :to="{
-        name: 'Finance',
-        params: {
-          type: $route.params.type,
-        },
+        name: 'InfluencerFinance',
       }"
-    /> -->
+    />
     <!-- <DashboardNavigatorMenuItem
       label="Draft"
       icon="nav/draft"
