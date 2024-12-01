@@ -161,7 +161,7 @@
                     variant="primary"
                     :loading="approving === constants.LOADING"
                     :disabled="approving === constants.LOADING"
-                    @click="() => approveOrReject('APPROVED', content)"
+                    @click="reasonModal = content"
                     class="px-6 py-2"
                     label="Approve"
                   />
@@ -172,6 +172,37 @@
         </template>
       </tbody>
     </table>
+    <UtModal
+      v-model:state="reasonModal"
+      m-width="34.3125rem"
+      content-class="mx-auto mt-[10%]"
+    >
+      <div class="bg-white dark:bg-gray-700 p-3 pb-5 px-5 rounded-2xl">
+        <div class="flex items-center justify-between mb-2">
+          <h1 class="text-xl max-w-[200px] leading-10">Reason</h1>
+          <button class="" @click="reasonModal = null">
+            <UtSvg name="cancel" dim w="1.5rem" h="1.5rem" />
+          </button>
+        </div>
+        <div>
+          <textarea
+            cols="30"
+            v-model="reason"
+            class="w-full p-5 mb-5 min-h-[18.75rem] rounded-lg border dark:border-gray-600 dark:bg-gray-600/50"
+          />
+        </div>
+        <div>
+          <UiButtonDefault
+            variant="primary"
+            @click="() => approveOrReject('APPROVED', reasonModal)"
+            :loading="approving === constants.LOADING"
+            :disabled="approving === constants.LOADING"
+            class="w-full py-2"
+            label="Submit"
+          />
+        </div>
+      </div>
+    </UtModal>
   </div>
 </template>
 
@@ -184,11 +215,13 @@ definePageMeta({
 });
 
 const api = useAPI();
+const reasonModal = ref<any>(null);
+const reason = ref("");
 const route = useRoute();
 const { notify } = useNotification();
 const contents = ref<GetInfluencerContentApplicationsResponse["data"]>([]);
-
-const { state, execute } = useRequestState({
+//
+useRequestState({
   immediately: true,
   async action() {
     return api.getCampaignContents(route.params.id as string, "", {
@@ -208,10 +241,12 @@ const { state: approving, execute: approveOrReject } = useRequestState({
       campaign_id: content.campaign_id,
       content_id: content.application_id,
       status,
+      ...(status == "DECLINED" ? { reason: reason.value } : {}),
     });
   },
 
   onSuccess(response) {
+    reason.value = "";
     notify({
       type: "success",
       title: "Content reviewed successfully",

@@ -46,7 +46,7 @@
           :class="['cardTab', activeTab === 0 && 'active']"
         >
           <div class="text-center">
-            <h1 class="font-semibold text-xl">100</h1>
+            <h1 class="font-semibold text-xl">0</h1>
             <p class="text-base text-[#545454]">Total transactions</p>
           </div>
         </button>
@@ -58,7 +58,7 @@
           :class="['cardTab', activeTab === 1 && 'active']"
         >
           <div class="text-center">
-            <h1 class="font-semibold text-xl">100</h1>
+            <h1 class="font-semibold text-xl">0</h1>
             <p class="text-base text-[#545454]">Completed Payment</p>
           </div>
         </button>
@@ -70,7 +70,7 @@
           :class="['cardTab', activeTab === 2 && 'active']"
         >
           <div class="text-center">
-            <h1 class="font-semibold text-xl">100</h1>
+            <h1 class="font-semibold text-xl">0</h1>
             <p class="text-base text-[#545454]">Pending Payment</p>
           </div>
         </button>

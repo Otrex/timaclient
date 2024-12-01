@@ -70,7 +70,7 @@ export const register: RegisterHandler = {
       });
     }
 
-    if (progress === ProfileSetupState.INDUSTRY_SELECTED) {
+    if ([ProfileSetupState.INDUSTRY_SELECTED, "SOCIAL_ACCOUNT_SETUP"].includes(progress)) {
       return navigateTo({
         name: "SignUpSocials",
         params: {
