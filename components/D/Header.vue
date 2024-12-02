@@ -120,6 +120,7 @@ const routeNameMap: Record<string, any> = {
   BrandCampaign: "Campaign",
   BrandNotification: "Notification",
   InfluencerDashboard: "Dashboard",
+  BrandFinance: "Finance",
   AttachContent: "Attach Content Files",
   DashboardBrandCampaigns: "Campaigns",
   ViewBrandCampaignAnalytics: "ViewBrandCampaign",

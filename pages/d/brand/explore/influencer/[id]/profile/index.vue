@@ -1,5 +1,6 @@
 <template>
-  <div class="py-[1rem]">
+  <div v-if="state === constants.LOADING">L O A D I N G . . .</div>
+  <div class="py-[1rem]" v-else>
     <p class="font-semibold text-base mb-[0.75rem]">Social Media Platform</p>
 
     <div class="flex flex-col md:flex-row mb-[2rem] gap-[1.25rem]">
@@ -35,14 +36,16 @@
         <div class="w-full flex items-center flex-row gap-3 md:w-1/3">
           <UtSvg name="thumbs" dim w="2rem" h="2rem" />
           <div>
-            <p class="-mb-2">{{ tools.formatNumber(metrics.likes || 0) }}</p>
+            <p class="-mb-2 dark:text-black">
+              {{ tools.formatNumber(metrics.likes || 0) }}
+            </p>
             <span class="text-[#777] text-xs">Average Likes</span>
           </div>
         </div>
         <div class="w-full flex flex-row gap-3 md:w-1/3">
           <UtSvg name="xeye" dim w="2rem" h="2rem" />
           <div>
-            <p class="-mb-2">
+            <p class="-mb-2 dark:text-black">
               {{ tools.formatNumber(metrics.engagementRate || 0) }}
             </p>
             <span class="text-[#777] text-xs">Average Views</span>
@@ -51,7 +54,7 @@
         <div class="w-full flex flex-row gap-3 md:w-1/3">
           <UtSvg name="comments" dim w="2rem" h="2rem" />
           <div>
-            <p class="-mb-2">
+            <p class="-mb-2 dark:text-black">
               {{ tools.formatNumber(metrics.followers || 0) }}
             </p>
             <span class="text-[#777] text-xs">Average followers</span>
@@ -85,62 +88,64 @@
     </div>
 
     <section class="bg-[#F1F9FF] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5">Audience Age range</p>
+      <p class="text-base mb-5 dark:text-black">Audience Age range</p>
       <div><UiBar class="w-full" :data="[]" /></div>
     </section>
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5">Likes History</p>
+      <p class="text-base mb-5 dark:text-black">Likes History</p>
       <div><UiBar class="w-full" :data="[]" /></div>
     </section>
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5">Comments History</p>
+      <p class="text-base mb-5 dark:text-black">Comments History</p>
       <div><UiBar class="w-full" :data="[]" /></div>
     </section>
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5">Views History</p>
+      <p class="text-base mb-5 dark:text-black">Views History</p>
       <div><UiBar class="w-full" :data="[]" /></div>
     </section>
 
     <section class="mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5">Trending Posts</p>
       <div>
-        <table class="min-w-full bg-white border border-gray-200">
-          <thead class="bg-gray-50">
+        <table
+          class="min-w-full bg-white dark:border-gray-800 dark:bg-transparent border border-gray-200"
+        >
+          <thead class="bg-gray-50 dark:text-white dark:bg-transparent">
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 dark:text-white dark:border-gray-800 border-b border-gray-200"
             >
               Rank
             </th>
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
             >
               Post Title
             </th>
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
             >
               Post Date
             </th>
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
             >
               Likes
             </th>
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
             >
               Comments
             </th>
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
             >
               Views
             </th>
             <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b border-gray-200"
+              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
             >
               URL
             </th>

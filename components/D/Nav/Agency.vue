@@ -23,17 +23,14 @@
       label="Influencers"
       icon="nav/influencers"
       to="/dashboard/influencers"
-    /> 
-     <DashboardNavigatorMenuItem
+    />  -->
+    <DashboardNavigatorMenuItem
       label="Payment"
       icon="nav/payment"
       :to="{
-        name: 'Payment',
-        params: {
-          type: $route.params.type,
-        },
+        name: 'BrandFinance',
       }"
-    /> -->
+    />
     <!-- <DashboardNavigatorMenuItem
       label="Draft"
       icon="nav/draft"
