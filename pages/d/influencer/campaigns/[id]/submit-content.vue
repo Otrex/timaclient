@@ -75,6 +75,20 @@
 
     <div class="text-center mt-7">
       <UiButtonDefault
+        @click="
+          () =>
+            router.push({
+              name: 'ViewInfluencerCampaign',
+              params: {
+                id: route.params.id,
+              },
+            })
+        "
+        variant="info"
+      >
+        Go Back
+      </UiButtonDefault>
+      <UiButtonDefault
         variant="primary"
         label="Submit"
         @click="submit"
@@ -97,6 +111,7 @@ const route = useRoute();
 const { notify } = useNotification();
 const api = useAPI();
 
+const router = useRouter();
 const { state, execute } = useRequestState({
   action: () =>
     api.influencerContentUpload(route.params.id as string, link.value),
