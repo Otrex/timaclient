@@ -18,7 +18,7 @@ const api = useAPI();
 const {} = useRequestState({
   immediately: true,
   async action() {
-    return await Promise.all([
+    return Promise.all([
       api.getNotifications({
         type: "ACTIVITIES",
         days: pageData.days,

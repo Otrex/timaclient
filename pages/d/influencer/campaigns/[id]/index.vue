@@ -329,6 +329,9 @@ const { execute: report, state: isReporting } = useRequestState({
       text: "Report has been successfully sent",
       type: "success",
     });
+
+    showReportForm.value = false;
+    getCampaign();
   },
   onError: (response) => {
     notify({
