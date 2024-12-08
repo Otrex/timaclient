@@ -13,6 +13,12 @@ interface IState {
   paymentStatus: string[];
   banks: Bank[];
   __header: null | string;
+  withdrawalBanks: any[];
+}
+
+export enum PaymentMethod {
+  FLUTTERWAVE = "FLUTTERWAVE",
+  PAYSTACK = "PAYSTACK",
 }
 
 export const useOptionsStore = defineStore("options", {
@@ -20,6 +26,7 @@ export const useOptionsStore = defineStore("options", {
     return {
       __header: null,
       countries: [],
+      withdrawalBanks: [],
       industries: [],
       campaignOptions: {
         size: [
@@ -125,7 +132,7 @@ export const useOptionsStore = defineStore("options", {
     $campaignOptions: (state) => state.campaignOptions,
     $creativesOptions: (state) => state.creativesOptions,
     $paymentStatus: (state) => tools.generationOptions(state.paymentStatus),
-    $paymentMethods: (state) => (state.paymentMethods || []).map(e => e.name),
+    $paymentMethods: (state) => [PaymentMethod.PAYSTACK, PaymentMethod.FLUTTERWAVE],
     $industries: (state) => state.industries,
     $socials: (state) => state.socialTypes.map(st => ({ ...st, icon: tools.resolveSocialsIcon(st.name) })),
     $socialsByIcon: (state) => (icon: `socials/${string}` | string) => state.socialTypes.find(st => tools.resolveSocialsIcon(st.name) === icon),
@@ -149,6 +156,7 @@ export const useOptionsStore = defineStore("options", {
       await Promise.all([
         this.getCountries(),
         this.getIndustries(),
+        this.getWithdrawalBanks()
       ]);
     },
 
@@ -186,12 +194,14 @@ export const useOptionsStore = defineStore("options", {
       })
     },
 
-    async getPaymentMethods() {
-      const response = await this.$api.getPaymentMethods();
+    async getWithdrawalBanks() {
+      const response = await this.$api.getWithdrawalBanks();
+      console.log(response);
+
       this.$patch({
-        paymentMethods: response.data
+        withdrawalBanks: response as any
       })
-    },
+    }
   },
 });
 

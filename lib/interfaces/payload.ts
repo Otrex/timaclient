@@ -52,6 +52,20 @@ export interface CreateCampaign {
   requestBody: Core.Campaign;
 }
 
+export interface ChangePassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface BankAccountCreate {
+  accountName: string;
+  accountNumber: string;
+  bankName: string;
+  bankCode: string;
+}
+
+
+
 
 /// OLD
 

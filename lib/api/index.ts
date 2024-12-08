@@ -407,6 +407,41 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async updateCoverImage(file: File) {
+    const data = new FormData();
+    data.append('banner', file);
+    return this.request({
+      url: '/users/update-banner',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
+  async changePassword(data: Payload.ChangePassword) {
+    return this.request({
+      url: '/users/change-password',
+      requireAuth: true,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  async getWithdrawalBanks() {
+    return this.request({
+      url: '/wallet/withdrawal_bank',
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
+  async createWithdrawalBanks(data: Payload.BankAccountCreate) {
+    return this.request({
+      url: '/wallet/withdrawal_bank',
+      requireAuth: true,
+      method: 'POST',
+      data: data
+    })
+  }
   async getBrandCampaign(id: string | number) {
     return this.request<Response.GetCampaign>({
       url: `/brand/campaign/fetch-single`,
@@ -981,15 +1016,6 @@ export default class TimaAPI extends UploadAPI {
       method: "PUT",
     });
   }
-
-  async updateCoverImage(fileName: string) {
-    return this.request<Response.GetUserProfile>({
-      url: `/user/v1/profile/setting/${fileName}`,
-      requireAuth: true,
-      method: "PUT",
-    });
-  }
-
 
 
   async updatePassword(data: Payload.UpdatePassword) {

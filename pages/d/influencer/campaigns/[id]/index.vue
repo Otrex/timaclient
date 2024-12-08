@@ -311,8 +311,9 @@ watch(
     }
   }
 );
+
 const similarCampaigns = ref<GetCampaigns["data"]>([]);
-const getSimilarCampaigns = useRequestState({
+useRequestState({
   immediately: true,
   action: () => api.getInfluencerCampaigns({ recommended: true }),
   onSuccess: (response: any) => {

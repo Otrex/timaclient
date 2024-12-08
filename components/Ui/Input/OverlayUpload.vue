@@ -214,7 +214,8 @@ function open() {
 
 async function save() {
   if (file.value) {
-    await upload(file.value);
+    emit("update:file", file.value);
+    emit("update:url", file.value);
     // modalState.value = false;
   }
 }

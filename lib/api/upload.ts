@@ -64,6 +64,10 @@ export default class UploadAPI extends Api {
   toFormData(obj: Record<string, any>): FormData {
     const formData = new FormData();
 
+    if (obj['profileImage']) {
+      formData.append('profileImage', obj['profileImage']);
+    }
+
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         const value = obj[key];

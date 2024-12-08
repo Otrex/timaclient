@@ -15,6 +15,7 @@ export interface UserProfile {
   hasVerifiedPhone: boolean
   companyName: string
   profileImage: string
+  banner?: string
   hasVerifiedEmail: boolean
   userName: string
   phoneNumber: string
@@ -30,6 +31,8 @@ export interface User {
   createdAt: string
   emailAddress: string
   phoneNumber: string
+  firstName?: string
+  lastName?: string
   role: UserType
   user_id: string
   hasVerifiedPhone: boolean

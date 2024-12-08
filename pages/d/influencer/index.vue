@@ -19,46 +19,55 @@
         </div>
       </section>
 
-      <div class="flex flex-row justify-between">
-        <h4 class="mb-5 font-semibold text-xl">Recommended Campaigns</h4>
-      </div>
-      <template v-if="tools.requestState(getRecommended) === constants.LOADING">
-        <UtLoaderIndicator message="Fetching recommendations" />
-      </template>
-      <template v-else-if="recommended.length === 0">
-        <div>
-          <UtNoResource
-            message="No Recommended Campaigns"
-            style="--height: 400px"
-          />
+      <template
+        v-if="
+          tools.requestState(getRecommended) == constants.LOADING ||
+          recommended.length > 0
+        "
+      >
+        <div class="flex flex-row justify-between">
+          <h4 class="mb-5 font-semibold text-xl">Recommended Campaigns</h4>
         </div>
-      </template>
-      <template v-else>
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[1.0625rem]"
+        <template
+          v-if="tools.requestState(getRecommended) === constants.LOADING"
         >
-          <div v-for="campaign in recommended" :key="campaign.campaign_id">
-            <NuxtLink
-              class="w-full"
-              :to="{
-                params: { id: campaign.campaign_id },
-                name: 'ViewInfluencerCampaign',
-              }"
-            >
-              <DashboardCampaignCard
-                :image="(campaign.banner as string)"
-                :budget="0"
-                :category="campaign.category"
-                :description="campaign.campaignAbout"
-                :deadline="campaign.endDate"
-                :brand="(campaign as any).companyName || ''"
-                :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
-                :public-id="(campaign.campaign_id as string)"
-                :title="campaign.campaignName"
-              />
-            </NuxtLink>
+          <UtLoaderIndicator message="Fetching recommendations" />
+        </template>
+        <template v-else-if="recommended.length === 0">
+          <div>
+            <UtNoResource
+              message="No Recommended Campaigns"
+              style="--height: 400px"
+            />
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[1.0625rem]"
+          >
+            <div v-for="campaign in recommended" :key="campaign.campaign_id">
+              <NuxtLink
+                class="w-full"
+                :to="{
+                  params: { id: campaign.campaign_id },
+                  name: 'ViewInfluencerCampaign',
+                }"
+              >
+                <DashboardCampaignCard
+                  :image="(campaign.banner as string)"
+                  :budget="0"
+                  :category="campaign.category"
+                  :description="campaign.campaignAbout"
+                  :deadline="campaign.endDate"
+                  :brand="(campaign as any).companyName || ''"
+                  :completion="campaign.statusProgress === 'APPROVED' ? 10 : 0"
+                  :public-id="(campaign.campaign_id as string)"
+                  :title="campaign.campaignName"
+                />
+              </NuxtLink>
+            </div>
+          </div>
+        </template>
       </template>
 
       <h4 class="my-5 font-semibold text-xl">Top Campaigns for the week</h4>
