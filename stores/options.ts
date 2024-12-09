@@ -155,8 +155,9 @@ export const useOptionsStore = defineStore("options", {
     async loadOptions() {
       await Promise.all([
         this.getCountries(),
+        this.getBankList(),
         this.getIndustries(),
-        this.getWithdrawalBanks()
+        this.getWithdrawalBanks(),
       ]);
     },
 
@@ -180,6 +181,10 @@ export const useOptionsStore = defineStore("options", {
       })
     },
 
+    getBankNameByCode(code: any) {
+      return this.banks.find((bank: any) => bank.code === code)?.name
+    },
+
     async getIndustries() {
       const response = await this.$api.getIndustries();
       this.$patch({
@@ -200,6 +205,13 @@ export const useOptionsStore = defineStore("options", {
 
       this.$patch({
         withdrawalBanks: response as any
+      })
+    },
+
+    async getBankList() {
+      const response = await this.$api.getBankList();
+      this.$patch({
+        banks: response.data
       })
     }
   },

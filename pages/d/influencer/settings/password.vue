@@ -85,7 +85,6 @@ definePageMeta({
 
 const isEditable = inject<boolean>("isEditable");
 
-const props = defineProps<{ isEditable?: boolean }>();
 const form = reactive({
   currentPassword: "",
   confirmPassword: "",

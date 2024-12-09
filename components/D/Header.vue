@@ -128,6 +128,8 @@ const routeNameMap: Record<string, any> = {
   InfluencerSettingPayment: "Settings",
   AttachContent: "Attach Content Files",
   DashboardBrandCampaigns: "Campaigns",
+  InfluencerSettingIndustry: "Settings",
+  InfluencerSettingAccount: "Settings",
   ViewBrandCampaignAnalytics: "ViewBrandCampaign",
   ViewbrandCampaignInfluencers: "ViewBrandCampaign",
   ViewbrandCampaignPayments: "ViewBrandCampaign",

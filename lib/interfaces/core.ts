@@ -21,6 +21,10 @@ export interface UserProfile {
   phoneNumber: string
   street: string
   industries: string[]
+  socialMediaAccounts?: {
+    platformName: string
+    userName: string
+  }[]
   referralCode: string
   hasSetTransactionPIN: boolean
   id: string

@@ -33,7 +33,7 @@
         </template>
       </UiInputDropdown>
     </div>
-    <UiSpinner v-if="state === constants.LOADING" />
+    <UtSpinner v-if="state === constants.LOADING" />
     <div
       v-else
       class="grid gap-5 md:gap-[3.0625rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3"

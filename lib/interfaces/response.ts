@@ -490,3 +490,27 @@ export interface GetBrandOverviewStatsResponse {
   message: string;
   statusCode: number;
 }
+export interface BankResponse {
+  country: string;
+  code: string;
+  pay_with_bank: boolean;
+  longcode: string;
+  active: boolean;
+  type: string;
+  supports_transfer: boolean;
+  createdAt: string;
+  is_deleted: boolean;
+  name: string;
+  currency: string;
+  id: number;
+  slug: string;
+  gateway: string;
+  updatedAt: string;
+}
+
+
+export interface GetBankList {
+  data: BankResponse[];
+  message: string;
+  statusCode: number;
+}

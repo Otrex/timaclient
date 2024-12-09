@@ -427,6 +427,15 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getBankList() {
+    return this.request<Response.GetBankList>({
+      url: '/wallet/bank-list',
+      requireAuth: true,
+      method: 'GET'
+    })
+  }
+
+
   async getWithdrawalBanks() {
     return this.request({
       url: '/wallet/withdrawal_bank',
@@ -440,6 +449,18 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: 'POST',
       data: data
+    })
+  }
+
+  async changeTransactionPin(data: {
+    oldPIN: string,
+    newPIN: string
+  }) {
+    return this.request({
+      url: '/users/change-pin',
+      requireAuth: true,
+      method: 'POST',
+      data,
     })
   }
   async getBrandCampaign(id: string | number) {
@@ -522,6 +543,17 @@ export default class TimaAPI extends UploadAPI {
       method: "POST",
       data: {
         audienceDemographics: data
+      },
+    });
+  }
+
+  async updateIndustries(industries: string[]) {
+    return this.request<any>({
+      url: `/users/update-industries`,
+      requireAuth: true,
+      method: "POST",
+      data: {
+        industries: industries
       },
     });
   }
@@ -1053,16 +1085,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async updateIndustries(data: string[]) {
-    return this.request<Response.UpdateIndustries>({
-      url: "/agency/v1/user/industry",
-      method: "PUT",
-      requireAuth: true,
-      data: {
-        selectedIndustries: data,
-      },
-    });
-  }
 
   async updateInfluencerNotificationSetting(
     data: Payload.NotificationSettings
