@@ -33,11 +33,13 @@
         <div class="px-[1.125rem] dark:border-slate-900">
           <div class="mt-[1rem] mb-[3.75rem] flex flex-col gap-[1rem]">
             <DashboardNavigatorMenuItem
-              v-if="userType === constants.INFLUENCER"
               label="Settings"
               icon="nav/setting"
               :to="{
-                name: 'InfluencerSettingPersonal',
+                name:
+                  userType === constants.INFLUENCER
+                    ? 'InfluencerSettingPersonal'
+                    : 'BrandSettingPersonal',
               }"
             />
             <DashboardNavigatorMenuItem
