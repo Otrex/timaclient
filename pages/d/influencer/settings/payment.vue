@@ -40,7 +40,12 @@
         </div>
         <div class="flex items-center w-full">
           <UiInputSelect
-            :options="tools.generationOptions(optionsStore.$paymentMethods)"
+            :options="
+              optionsStore.withdrawalBanks.map((e) => ({
+                label: `${e.bankName} (${e.accountNumber})`,
+                value: e.id,
+              }))
+            "
             class="w-full"
             :disabled="!isEditable"
             placeholder="Select Bank"

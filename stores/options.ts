@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import countries from "~/assets/data/countries.json"
 import type { Bank, Country, SocialType } from "~/lib/interfaces/core";
-import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods } from "~/lib/interfaces/response";
+import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods, GetWithdrawalBanksResponse } from "~/lib/interfaces/response";
 
 interface IState {
   countries: Country[];
@@ -13,7 +13,7 @@ interface IState {
   paymentStatus: string[];
   banks: Bank[];
   __header: null | string;
-  withdrawalBanks: any[];
+  withdrawalBanks: GetWithdrawalBanksResponse['data'];
 }
 
 export enum PaymentMethod {
@@ -201,10 +201,8 @@ export const useOptionsStore = defineStore("options", {
 
     async getWithdrawalBanks() {
       const response = await this.$api.getWithdrawalBanks();
-      console.log(response);
-
       this.$patch({
-        withdrawalBanks: response as any
+        withdrawalBanks: response.data
       })
     },
 

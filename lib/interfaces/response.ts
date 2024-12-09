@@ -423,6 +423,17 @@ export interface GetInfluencerProfileResponse {
   statusCode: number;
 }
 
+export interface GetWithdrawalBanksResponse {
+  data: {
+    bankCode: string;
+    accountName: string;
+    bankName: string;
+    id: string;
+    accountNumber: string;
+  }[];
+  message: string;
+  statusCode: number;
+}
 
 export interface GetSearchCampaignsResponse {
   data: {

@@ -437,8 +437,8 @@ export default class TimaAPI extends UploadAPI {
 
 
   async getWithdrawalBanks() {
-    return this.request({
-      url: '/wallet/withdrawal_bank',
+    return this.request<Response.GetWithdrawalBanksResponse>({
+      url: '/wallet/withdrawal_banks',
       requireAuth: true,
       method: 'GET',
     })

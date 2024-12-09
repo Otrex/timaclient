@@ -48,7 +48,7 @@
         </div>
       </template>
     </transition>
-    <div
+    <!-- <div
       class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
     >
       <div class="flex flex-row justify-between mb-[0.75rem] items-center">
@@ -73,7 +73,7 @@
       <div>
         <Bar :data="data" class="inline-block" :options="options" />
       </div>
-    </div>
+    </div> -->
 
     <div>
       <div class="flex mb-[1.875rem] flex-row items-center justify-between">
