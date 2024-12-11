@@ -1,206 +1,227 @@
 <template>
   <div class="p-[1.25rem]">
-    <transition mode="out-in">
-      <template v-if="tools.requestState(getStats) === constants.LOADING">
-        <div class="mb-4">
-          <div class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]">
-            <UtLoaderIndicator message="Fetching Statistics" />
-          </div>
-        </div>
-      </template>
-      <template v-else-if="!paymentStats">
-        <UtNoResource message="No statistics yet" />
-      </template>
-      <template v-else>
-        <div class="grid sm:grid-cols-3 gap-[1.25rem] mb-[1.25rem]">
-          <div
-            class="bg-[rgba(228,_243,_255,_0.5)] py-[40px] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
-          >
-            <div class="text-center">
-              <h3 class="text-[2.1875rem]">
-                {{ paymentStats.totalTransactions }}
-              </h3>
-              <p>Total transactions</p>
+    <div class="flex justify-end">
+      <UiInputDropdown
+        class="max-w-[17.5rem] inline-flex w-full"
+        view-class="!py-1.5 !px-5"
+        v-model="filter"
+        :options="[
+          'Last 7 days',
+          'Last 14 days',
+          'Last 30 days',
+          'Last 90 days',
+        ]"
+      >
+        <template #select="{ data, isOpen }">
+          <div class="flex flex-row gap-2 items-center">
+            <div>
+              <UtSvg name="logo/calendar" class="w-[1.5rem] mb-1 h-[1.5rem]" />
             </div>
+            <div class="text-center w-full text-gray-600">{{ data }}</div>
           </div>
-
-          <div
-            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
-          >
-            <div class="text-center">
-              <h3 class="text-[2.1875rem]">
-                {{ paymentStats.completedTransactions }}
-              </h3>
-              <p>Complete Payment</p>
-            </div>
-          </div>
-
-          <div
-            class="bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem] max-h-[200px] h-full flex items-center justify-center"
-          >
-            <div class="text-center">
-              <h3 class="text-[2.1875rem]">
-                {{ paymentStats.pendingTransactions }}
-              </h3>
-              <p>Yet to be balanced</p>
-            </div>
-          </div>
-        </div>
-      </template>
-    </transition>
-    <!-- <div
-      class="p-[1.5625rem] mb-[2.625rem] bg-[rgba(228,_243,_255,_0.5)] rounded-[0.75rem]"
-    >
-      <div class="flex flex-row justify-between mb-[0.75rem] items-center">
-        <div>
-          <h1>Payment graph</h1>
-        </div>
-        <div>
-          <select
-            v-model="paymentYear"
-            class="border-none dark:bg-[rgba(228,_243,_255,_0.5)] rounded-md"
-          >
-            <template
-              v-for="(year, idx) in tools.range(2010, new Date().getFullYear())"
-              :key="idx"
-            >
-              <option :value="year">{{ year }}</option>
-            </template>
-          </select>
+        </template>
+      </UiInputDropdown>
+    </div>
+    <section class="flex flex-col my-5 sm:flex-row gap-5">
+      <div class="bg-gray-100 w-full p-6 rounded-lg">
+        <h4 class="font-semibold">Budget</h4>
+        <div class="w-[18.75rem]">
+          <Doughnut :data="ddata" class="inline-block" :options="doptions" />
         </div>
       </div>
+      <div class="bg-gray-100 w-full p-6 rounded-lg">
+        <h4 class="font-semibold mb-5">Campaigns</h4>
+        <div class="mb-5">
+          <p class="uppercase text-sm">ALL Campaigns</p>
+          <p class="text-[#058EF8] font-semibold">120</p>
+        </div>
+        <div class="mb-5">
+          <p class="uppercase text-sm">Total Spent</p>
+          <p class="text-[#058EF8] font-semibold">120</p>
+        </div>
+      </div>
+      <div class="bg-gray-100 w-full p-6 rounded-lg">
+        <h4 class="font-semibold mb-5">Platforms</h4>
+        <div class="mb-5">
+          <p class="uppercase text-sm">ALL Platforms</p>
+          <p class="text-[#058EF8] font-semibold">120</p>
+        </div>
+        <div class="mb-5">
+          <p class="uppercase text-sm">Total Spent</p>
+          <p class="text-[#058EF8] font-semibold">120</p>
+        </div>
+      </div>
+    </section>
 
+    <section>
+      <div
+        class="flex flex-col items-center mb-5 justify-between gap-5 sm:flex-row"
+      >
+        <h3 class="text-lg font-semibold">Campaign</h3>
+
+        <div class="max-w-[31.25rem] w-full">
+          <UiInputText
+            type="search"
+            class="w-full text-sm"
+            placeholder="Search"
+          />
+        </div>
+      </div>
       <div>
-        <Bar :data="data" class="inline-block" :options="options" />
-      </div>
-    </div> -->
-
-    <div>
-      <div class="flex mb-[1.875rem] flex-row items-center justify-between">
-        <div class="text-[1.25rem]">Transactions</div>
-        <div class="max-w-[40rem] w-full">
-          <div class="whitespace-nowrap inline-flex justify-end w-full">
-            <UiInputText
-              search
-              placeholder="Search Transactions"
-              class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
-            />
-            <UiInputSelect
-              class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
-              :options="[
-                { label: 'All', value: 'ALL' },
-                { label: 'Partial', value: 'PARTIAL' },
-                { label: 'Completed', value: 'COMPLETED' },
-              ]"
-              @change="search"
-              v-model="searchStatus"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <table class="w-full x-table">
-          <thead>
-            <th class="font-normal text-left">Campaign name</th>
-            <th class="font-normal">Brand name</th>
-            <th class="font-normal">Earning</th>
-            <th class="font-normal">Balance</th>
-            <th class="font-normal">Payment date</th>
-            <th class="font-normal">Payment status</th>
-            <th></th>
+        <table class="w-full">
+          <thead class="text-left">
+            <th class="py-3">Campaign Name</th>
+            <th>Total Amount</th>
+            <th>Amount Paid</th>
+            <th>Status</th>
+            <th>Action</th>
           </thead>
           <tbody>
-            <template
-              v-if="
-                tools.requestState(getTransactions) === constants.LOADING ||
-                tools.requestState(searchTransactions) === constants.LOADING
-              "
-            >
-              <tr>
-                <td colspan="7">
-                  <UtLoaderIndicator message="Fetching transactions" />
-                </td>
-              </tr>
-            </template>
-            <template v-else-if="transactions.length === 0">
-              <tr>
-                <td colspan="7">
-                  <UtNoResource message="No transactions yet" />
-                </td>
-              </tr>
-            </template>
-            <template
-              v-else
-              v-for="(transaction, idx) in searchFilter(transactions)"
-              :key="idx"
-            >
-              <tr>
-                <td>
-                  <div class="flex gap-[1rem] items-center flex-row">
-                    <div>
-                      <div
-                        class="bg-[#D9D9D9] rounded-md overflow-hidden aspect-square w-[1.875rem]"
-                      >
-                        <UiImg
-                          class="w-full h-full object-cover"
-                          :src="transaction.campaignImage"
-                          v-if="transaction.campaignImage"
-                          :alt="transaction.campaignName"
-                        />
-                      </div>
-                    </div>
-                    <div>{{ transaction.campaignName }}</div>
+            <tr>
+              <td>
+                <div class="flex flex-row items-center gap-3">
+                  <div
+                    class="w-[2.4rem] h-[2.4rem] bg-gray-100 rounded-lg overflow-hidden"
+                  ></div>
+                  <div class="text-sm">
+                    <p>Nike lebron shoe</p>
+                    <p class="text-[0.875rem]">TIMA subscription</p>
                   </div>
-                </td>
-                <td class="align-middle text-center">
-                  {{ transaction.brandName }}
-                </td>
-                <td class="align-middle text-center">
-                  {{ tools.formatCurrency(transaction.earning || 0) }}
-                </td>
-                <td class="align-middle text-center">
-                  {{ tools.formatCurrency(transaction.balance) }}
-                </td>
-                <td class="align-middle text-center">
-                  {{
-                    tools.formatDate(transaction.transactionDate || new Date())
-                  }}
-                </td>
-                <td class="align-middle text-center">
-                  <template v-if="transaction.status === 'COMPLETED'">
-                    <span class="text-[#2DBA62]">Completed</span>
-                  </template>
-                  <template v-else-if="transaction.status === 'PENDING'">
-                    <span class="text-[#FFCA5B]">Yet to be balanced</span>
-                  </template>
-                  <template v-else-if="transaction.status === 'PARTIAL'">
-                    <span class="text-blue-500">Part payment made</span>
-                  </template>
-                  <template v-else>
-                    <span>--</span>
-                  </template>
-                </td>
-                <td class="align-middle text-center">
-                  <UtMoreActions :data-id="transaction.publicId" />
-                </td>
-              </tr>
-            </template>
+                </div>
+              </td>
+              <td>$11,223</td>
+              <td>$11,223</td>
+              <td>
+                <DStatusView status="ongoing" />
+              </td>
+              <td>
+                <div class="inline-flex items-center">
+                  <UiButtonDefault
+                    variant="primary"
+                    class="text-sm py-2 px-5"
+                    label="Pay Now"
+                  />
+                  <button
+                    class="p-2 ml-2 text-gray-600 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-full transition-colors duration-200 active:bg-gray-100"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
+
+    <section class="mt-14">
+      <div
+        class="flex flex-col items-center mb-5 justify-between gap-5 sm:flex-row"
+      >
+        <h3 class="text-lg font-semibold">Platforms</h3>
+
+        <div class="max-w-[31.25rem] w-full">
+          <UiInputText
+            type="search"
+            class="w-full text-sm"
+            placeholder="Search"
+          />
+        </div>
+      </div>
+      <div>
+        <table class="w-full">
+          <thead class="text-left">
+            <th class="py-3">Platform</th>
+            <th>Budget</th>
+            <th>Amount Spent</th>
+            <th>Status</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="inline-flex flex-row items-center gap-3">
+                  <div
+                    class="w-[2.4rem] h-[2.4rem] bg-gray-100 rounded-lg overflow-hidden"
+                  >
+                    <UtSvg name="socials/tiktok" />
+                  </div>
+                  <div class="text-sm">Tiktok</div>
+                </div>
+              </td>
+              <td>$11,223</td>
+              <td>$11,223</td>
+              <td>
+                <DStatusView status="ongoing" class="w-full" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import { watchThrottled } from "@vueuse/core";
-import { Bar } from "vue-chartjs";
+import { Doughnut } from "vue-chartjs";
 import type { Core } from "~/lib/interfaces";
 import defs from "~/utils/defs";
 
 definePageMeta({
   name: "BrandFinance",
+});
+
+const filter = ref("");
+const doptions = ref<any>({
+  responsive: true,
+  rotation: -90,
+  aspectRatio: 1.5,
+  circumference: 180,
+  cutout: "80%",
+
+  plugins: {
+    legend: {
+      position: "right",
+      itemSpacing: 2,
+      labels: {
+        boxWidth: 20,
+        fontSize: 8, // Adjust the box width as needed
+        pointStyle: "circle",
+      },
+    },
+  },
+});
+
+const ddata = ref({
+  labels: ["Spent", "Available"],
+  datasets: [
+    {
+      data: [300, 50],
+      backgroundColor: ["#F02727", "#058EF8"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB"],
+      borderWidth: 0,
+      pointStyle: "circle",
+    },
+  ],
 });
 
 const BG_COLORS = ["#AAD9FB", "#2AA2FD", "#FFB009", "#AA7506", "#FFE5AD"];

@@ -7,6 +7,7 @@
     <button
       @click="toggleDropdown"
       class="px-3 py-3 border border-gray-300 rounded-[10px] bg-white w-full cursor-pointer"
+      :class="viewClass"
     >
       <slot
         name="select"
@@ -42,6 +43,7 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  viewClass: String,
   modelValue: {
     type: [String, Number, Object],
     default: undefined,
