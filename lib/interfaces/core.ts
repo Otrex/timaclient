@@ -151,6 +151,17 @@ export type LocaleData = {
 };
 
 
+export interface IPlan {
+  name: string;
+  description: string;
+  currency: string;
+  yearlyPrice: number;
+  monthlyPrice: number;
+  features: string[];
+  countries: string[];
+}
+
+
 export interface AccountResolution {
   account_number: string;
   bank_id: number;

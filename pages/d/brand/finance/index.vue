@@ -1,5 +1,5 @@
 <template>
-  <div class="p-[1.25rem]">
+  <div class="p-[1.25rem] px-8">
     <div class="flex justify-end">
       <UiInputDropdown
         class="max-w-[17.5rem] inline-flex w-full"
@@ -22,8 +22,8 @@
         </template>
       </UiInputDropdown>
     </div>
-    <section class="flex flex-col my-5 sm:flex-row gap-5">
-      <div class="bg-gray-100 w-full p-6 rounded-lg">
+    <section class="flex flex-col dark:text-black my-5 sm:flex-row gap-5">
+      <div class="bg-gray-100 dark:text-black w-full p-6 rounded-lg">
         <h4 class="font-semibold">Budget</h4>
         <div class="w-[18.75rem]">
           <Doughnut :data="ddata" class="inline-block" :options="doptions" />
@@ -100,8 +100,18 @@
                     variant="primary"
                     class="text-sm py-2 px-5"
                     label="Pay Now"
+                    @click="payment = true"
                   />
                   <button
+                    @click="
+                      () =>
+                        navigateTo({
+                          name: 'BrandFinanceCampaign',
+                          params: {
+                            id: 1,
+                          },
+                        })
+                    "
                     class="p-2 ml-2 text-gray-600 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-full transition-colors duration-200 active:bg-gray-100"
                   >
                     <svg
@@ -177,6 +187,103 @@
         </table>
       </div>
     </section>
+
+    <UtModal
+      m-width="40rem"
+      v-model:state="payment"
+      content-class="mx-auto mt-[10%]"
+      backdrop-color="rgba(0,0,0,.4)"
+    >
+      <div class="bg-white dark:text-black p-7 rounded-3xl">
+        <section class="pb-5 mb-5 border-b">
+          <h3 class="font-semibold">Payment Method</h3>
+          <p class="text-sm">
+            Select payment method you want to use to complete the transaction.
+          </p>
+        </section>
+
+        <section class="flex flex-row mb-5 items-stretch gap-5">
+          <label class="block border rounded-lg p-2 w-full">
+            <div class="flex items-center h-full gap-2">
+              <div>
+                <UtSvg name="tab/house" class="w-7 h-7" />
+              </div>
+              <div>
+                <p class="text-sm">Bank Transfer</p>
+                <p class="text-xs">(Only available in Nigeria)</p>
+              </div>
+            </div>
+            <input
+              type="radio"
+              name="payment"
+              value="bank_transfer"
+              class="mr-2 hidden"
+            />
+          </label>
+          <label class="block p-2 rounded-lg border w-full">
+            <div class="flex flex-col h-full items-center">
+              <UtSvg name="paystack" class="h-[1.875rem] w-[6.9375rem]" />
+              <p class="text-xs">(Only available in Africa)</p>
+            </div>
+            <input
+              type="radio"
+              name="payment"
+              value="paystack"
+              class="mr-2 hidden"
+            />
+          </label>
+          <label class="block p-2 rounded-lg border w-full">
+            <div class="flex h-full justify-center items-center gap-2">
+              <UtSvg name="stripe" class="w-[6.25rem] h-[1.875rem]" />
+            </div>
+            <input
+              type="radio"
+              name="payment"
+              value="stripe"
+              class="mr-2 hidden"
+            />
+          </label>
+        </section>
+
+        <section class="mb-7">
+          <UiInputText placeholder="$ " class="text-sm" />
+          <div class="flex flex-row gap-1 text-xs items-center text-red-600">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.9974 4.99984C10.4576 4.99984 10.8307 5.37293 10.8307 5.83317V11.6665C10.8307 12.1267 10.4576 12.4998 9.9974 12.4998C9.53716 12.4998 9.16406 12.1267 9.16406 11.6665V5.83317C9.16406 5.37293 9.53716 4.99984 9.9974 4.99984Z"
+                fill="#DD524D"
+              />
+              <path
+                d="M8.95573 13.9582C8.95573 14.5335 9.4221 14.9998 9.9974 14.9998C10.5727 14.9998 11.0391 14.5335 11.0391 13.9582C11.0391 13.3829 10.5727 12.9165 9.9974 12.9165C9.4221 12.9165 8.95573 13.3829 8.95573 13.9582Z"
+                fill="#DD524D"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M1.66406 9.99984C1.66406 5.39746 5.39502 1.6665 9.9974 1.6665C14.5998 1.6665 18.3307 5.39746 18.3307 9.99984C18.3307 14.6022 14.5998 18.3332 9.9974 18.3332C5.39502 18.3332 1.66406 14.6022 1.66406 9.99984ZM9.9974 3.33317C6.3155 3.33317 3.33073 6.31794 3.33073 9.99984C3.33073 13.6817 6.3155 16.6665 9.9974 16.6665C13.6793 16.6665 16.6641 13.6817 16.6641 9.99984C16.6641 6.31794 13.6793 3.33317 9.9974 3.33317Z"
+                fill="#DD524D"
+              />
+            </svg>
+
+            <span class="inline-block mt-0.5">
+              You must pay 70% of your budget
+            </span>
+          </div>
+        </section>
+
+        <section>
+          <UiButtonDefault variant="primary" class="w-full py-2">
+            Pay Now
+          </UiButtonDefault>
+        </section>
+      </div>
+    </UtModal>
   </div>
 </template>
 
@@ -190,6 +297,7 @@ definePageMeta({
   name: "BrandFinance",
 });
 
+const payment = ref(true);
 const filter = ref("");
 const doptions = ref<any>({
   responsive: true,

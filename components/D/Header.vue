@@ -114,6 +114,8 @@ const backButtonComponent = (returnRoute: string, title: string) =>
 
 const routeNameMap: Record<string, any> = {
   CreateCampaign: "Campaign >>> Create a campaign",
+  BrandFinanceCampaign: "FinanceInfo",
+  // BrandFinanceCampaign: "Finance >>> Finance Info",
   "Campaign Application Influencer": "Campaign Application",
   "Notification/CampaignApplication": "Notification >>> Campaign Applications",
   "Notification/Invitations": "Notification >>> Invitations",

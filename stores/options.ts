@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import countries from "~/assets/data/countries.json"
 import type { Bank, Country, SocialType } from "~/lib/interfaces/core";
-import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods, GetWithdrawalBanksResponse } from "~/lib/interfaces/response";
+import type { GetCampaignOptions, GetCreativesOptions, GetPaymentMethods, GetPlansResponse, GetWithdrawalBanksResponse } from "~/lib/interfaces/response";
 
 interface IState {
   countries: Country[];
@@ -12,6 +12,7 @@ interface IState {
   socialTypes: SocialType[];
   paymentStatus: string[];
   banks: Bank[];
+  plans: GetPlansResponse['data'];
   __header: null | string;
   withdrawalBanks: GetWithdrawalBanksResponse['data'];
 }
@@ -26,6 +27,7 @@ export const useOptionsStore = defineStore("options", {
     return {
       __header: null,
       countries: [],
+      plans: [],
       withdrawalBanks: [],
       industries: [],
       campaignOptions: {
@@ -196,6 +198,15 @@ export const useOptionsStore = defineStore("options", {
       const response = await this.$api.getBanks();
       this.$patch({
         banks: response.data
+      })
+    },
+
+    async getPlans() {
+      const response = await this.$api.getPlans();
+      console.log(response);
+
+      this.$patch({
+        plans: response.data
       })
     },
 

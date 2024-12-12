@@ -32,7 +32,7 @@ const props = defineProps({
   backdropColor: String,
   contentClass: String,
   state: {
-    type: Boolean,
+    type: [Boolean, Object],
     default: false,
   },
   mWidth: {
@@ -65,17 +65,17 @@ function backdropClose() {
 }
 
 onMounted(() => {
-  contentState.value = props.state;
-  backdropState.value = props.state;
+  contentState.value = !!props.state;
+  backdropState.value = !!props.state;
 });
 
 watch(
   () => props.state,
   (state) => {
     if (state) {
-      backdropState.value = state;
+      backdropState.value = !!state;
       setTimeout(() => {
-        contentState.value = state;
+        contentState.value = !!state;
       }, 400);
     } else {
       emit("close:state");

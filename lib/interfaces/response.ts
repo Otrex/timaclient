@@ -525,3 +525,38 @@ export interface GetBankList {
   message: string;
   statusCode: number;
 }
+
+
+export interface GetPlansResponse {
+  data: {
+    locationEnabled: boolean;
+    features: string[];
+    defaultPrice: {
+      monthlyPrice: number;
+      yearlyPrice: number;
+      currency: string;
+    };
+    referralBonus: string;
+    active: boolean;
+    planName: string;
+    id: string;
+    locationBasedPricing: {
+      EU: {
+        monthlyPrice: number;
+        yearlyPrice: number;
+        currency: string;
+      };
+      US: {
+        monthlyPrice: number;
+        yearlyPrice: number;
+        currency: string;
+      };
+    };
+  }[];
+  totalPages: number;
+  limit: number;
+  totalPlans: number;
+  message: string;
+  currentPage: number;
+  statusCode: number;
+}

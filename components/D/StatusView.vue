@@ -1,7 +1,7 @@
 <template>
   <span
     class="text-center inline-block text-sm capitalize py-2.5 px-5 rounded-3xl"
-    :class="color"
+    :class="[color, sizeClass]"
   >
     {{ status }}
   </span>
@@ -10,6 +10,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   status: string;
+  size?: "sm" | "md" | "lg";
 }>();
 
 const color = computed(() => {
@@ -37,6 +38,18 @@ const color = computed(() => {
       return "text-yellow-600";
     default:
       return "bg-gray-200";
+  }
+});
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case "sm":
+      return "text-xs py-1.5 px-3";
+    case "lg":
+      return "text-base py-3 px-6";
+    case "md":
+    default:
+      return "text-sm py-2.5 px-5";
   }
 });
 </script>

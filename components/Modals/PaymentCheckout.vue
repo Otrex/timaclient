@@ -1,15 +1,17 @@
 <template>
-  <div class="bg-white rounded-[0.5rem] w-full flex flex-row items-stretch">
-    <div class="p-7 w-full">
+  <div
+    class="bg-white dark:text-black rounded-[0.5rem] w-full flex flex-col sm:flex-row items-stretch"
+  >
+    <div class="p-7 sm:w-auto w-full">
       <h3 class="mb-3 text-xl font-bold">Payment Method</h3>
 
-      <div class="flex flex-wrap justify-between gap-[1rem]">
+      <div class="flex flex-col justify-between gap-[1rem]">
         <UiInputOption
           type="single"
           name="paymentMethod"
           v-model="opt"
           value="credit-debit"
-          main-class="border !w-[158px] bg-white py-[33px] px-6 !h-full text-center font-bold !rounded-[1rem] border-[#2BA2FD]/10"
+          main-class="border w-full sm:!w-[158px] bg-white py-[33px] px-6 !h-full text-center font-bold !rounded-[1rem] border-[#2BA2FD]/10"
           active-class="!bg-[#E4F4FE] border border-[#2BA2FD]"
         >
           Credit Or Debit Card
@@ -18,8 +20,8 @@
           type="single"
           name="paymentMethod"
           v-model="opt"
-          value="paystack"
-          main-class="border py-10 bg-white px-6 !w-[158px] flex items-center !rounded-[1rem] border-[#2BA2FD]/10"
+          value="PAYSTACK"
+          main-class="border py-10 bg-white px-6 w-full sm:!w-[158px] flex items-center !rounded-[1rem] border-[#2BA2FD]/10"
           active-class="!bg-[#E4F4FE] border border-[#2BA2FD]"
         >
           <UtSvg name="paystack" class="w-[130px] h-[44px] mx-auto" />
@@ -28,14 +30,14 @@
           type="single"
           name="paymentMethod"
           v-model="opt"
-          value="stripe"
-          main-class="border text-center bg-white !w-[158px] flex !items-center py-10 px-6 h-full !rounded-[1rem] border-[#2BA2FD]/10"
+          value="STRIPE"
+          main-class="border text-center bg-white w-full sm:!w-[158px] flex !items-center py-10 px-6 h-full !rounded-[1rem] border-[#2BA2FD]/10"
           active-class="!bg-[#E4F4FE] border border-[#2BA2FD]"
         >
           <UtSvg name="stripe" class="w-[70px] h-[30px] my-[7px] mx-auto" />
         </UiInputOption>
       </div>
-      <div class="mt-8">
+      <!-- <div class="mt-8">
         <div>
           <label
             for="cardHolderName"
@@ -85,9 +87,9 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
-    <div class="bg-[#F9F9F9] p-7 rounded-[0.5rem] w-full max-w-[34.375rem]">
+    <div class="bg-[#F9F9F9] p-7 rounded-[0.5rem] w-full">
       <div>
         <div class="flex flex-row items-center justify-between">
           <h3 class="mb-3 text-xl font-bold">Order Summary</h3>
@@ -96,7 +98,14 @@
             id="country"
             class="py-2 min-w-[11.25rem] px-4 rounded-[1.875rem] border border-[#2BA2FD]"
           >
-            <option value="Nigeria">Nigeria</option>
+            <option>-- Select --</option>
+            <option
+              v-for="(p, idx) in props.plan.countries"
+              :key="idx"
+              :value="p"
+            >
+              {{ p }}
+            </option>
             <!-- Add more countries as needed -->
           </select>
         </div>
@@ -108,7 +117,10 @@
       <div>
         <div class="flex mb-2 flex-row items-center justify-between">
           <h3 class="text-xl font-bold">Basic Plan</h3>
-          <p class="text-base text-[#545454]">$1250</p>
+          <p class="text-base text-[#545454]">
+            {{ plan.currency }}
+            {{ plan && isYearly ? plan?.yearlyPrice : plan?.monthlyPrice }}
+          </p>
         </div>
         <div>
           <span class="text-base text-[#545454]">Annual Subscription</span>
@@ -118,18 +130,24 @@
       <div>
         <div class="flex mb-2 flex-row items-center justify-between">
           <span class="text-base text-[#545454]">Estimated Tax</span>
-          <span class="text-base text-[#545454]">$12</span>
+          <span class="text-base text-[#545454]"> {{ plan.currency }} 0</span>
         </div>
         <div class="flex flex-row items-center justify-between">
           <h3 class="text-xl font-bold">Total</h3>
-          <h3 class="text-xl font-bold">$1250.12</h3>
+          <h3 class="text-xl font-bold">
+            {{ plan.currency }}
+            {{ plan && isYearly ? plan?.yearlyPrice : plan?.monthlyPrice }}
+          </h3>
         </div>
         <hr class="my-3" />
       </div>
       <div>
         <div class="flex mb-2 flex-row items-center justify-between">
           <h3 class="text-xl font-bold">Total Billed Annually</h3>
-          <span class="text-base text-[#545454]">$1250.12</span>
+          <span class="text-base text-[#545454]">
+            {{ plan.currency }}
+            {{ plan && isYearly ? plan?.yearlyPrice : plan?.monthlyPrice }}
+          </span>
         </div>
         <div class="flex mb-8 flex-row items-center justify-between">
           <span class="text-base text-[#545454]"
@@ -147,10 +165,17 @@
       </div>
       <div class="flex flex-row items-center mb-10 justify-between">
         <h3 class="text-xl font-bold">Total</h3>
-        <h3 class="text-xl font-bold">$1250.18</h3>
+        <h3 class="text-xl font-bold">
+          {{ plan.currency }}
+          {{ plan && isYearly ? plan?.yearlyPrice : plan?.monthlyPrice }}
+        </h3>
       </div>
       <div>
-        <UiButtonDefault variant="primary" class="w-full py-3">
+        <UiButtonDefault
+          @click="fundWallet"
+          variant="primary"
+          class="w-full py-3"
+        >
           Place Order
         </UiButtonDefault>
       </div>
@@ -159,15 +184,46 @@
 </template>
 
 <script lang="ts" setup>
+import type { IPlan } from "~/lib/interfaces/core";
+
 const opt = ref("paystack");
 
-const selectedCountry = ref<string>("Nigeria");
+const props = defineProps<{
+  plan: IPlan | boolean;
+  country: string;
+  isYearly?: boolean;
+}>();
+
+const emit = defineEmits(["update:country"]);
+
+const selectedCountry = computed({
+  get: function () {
+    return props.country;
+  },
+  set: function (value) {
+    emit("update:country", value);
+  },
+});
 
 const form = reactive({
   cardHolderName: "",
   creditCardNumber: "",
   cvv: "",
   expiryDate: "",
+});
+
+const api = useAPI();
+
+const {} = useRequestState({
+  action: async () => {
+    return api.fundWallet({
+      amount:
+        props.plan && props.isYearly
+          ? props.plan?.yearlyPrice
+          : props.plan?.monthlyPrice,
+      paymentMethod: opt.value as any,
+    });
+  },
 });
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-[3.4375rem]">
+  <div class="pt-[3.4375rem] dark:text-black">
     <div class="mb-5 text-lg">
       <p>Streamlining Payments and Invoices for Your Business Success</p>
     </div>
@@ -11,14 +11,17 @@
           id="country"
           class="py-2 min-w-[11.25rem] px-4 rounded-[1.875rem] border border-[#2BA2FD]"
         >
-          <option value="Nigeria">Nigeria</option>
+          <option>-- Select --</option>
+          <option v-for="(p, idx) in plans[0].countries" :key="idx" :value="p">
+            {{ p }}
+          </option>
           <!-- Add more countries as needed -->
         </select>
       </div>
 
       <div class="flex items-center justify-center mb-5">
         <label for="billingType">Monthly</label>
-        <UiInputSwitch class="mx-4" />
+        <UiInputSwitch class="mx-4" v-model="isYearly" />
         <label for="billingType"
           >Yearly
           <span class="text-[#74C2FF] text-base">(Save up to 24%)</span></label
@@ -31,7 +34,7 @@
         v-for="plan in plans"
         :key="plan.name"
         :class="[
-          'bg-[#F7FCFF] rounded-[1.25rem] p-5 border border-[#2AA2FF] flex-1',
+          'bg-[#F7FCFF] rounded-[1.25rem] p-5 border border-[#2AA2FF] sm:w-1/3',
           plan.name.toLowerCase(),
         ]"
       >
@@ -40,8 +43,9 @@
         >
           {{ plan.name }}
         </h3>
-        <p class="text-base">{{ plan.description }}</p>
+        <!-- <p class="text-base">{{ plan.description }}</p> -->
         <h2 class="text-lg my-3">
+          {{ plan.currency }}
           {{ isYearly ? plan.yearlyPrice : plan.monthlyPrice }}/{{
             isYearly ? "Year" : "Month"
           }}
@@ -57,7 +61,7 @@
         </ul>
         <div class="my-3">
           <button
-            @click="purchasePlan(plan.name)"
+            @click="purchasePlan(plan)"
             class="bg-[#74C2FF] w-full text-base hover:bg-blue-500 rounded-[1.875rem] text-white px-5 py-2 mt-5"
           >
             Purchase
@@ -66,83 +70,65 @@
       </div>
     </div>
     <UtModal
-      m-width="75rem"
+      m-width="50rem"
       v-model:state="showPayment"
       content-class="mx-auto mt-[10%]"
       backdrop-color="rgba(0,0,0,.4)"
     >
-      <ModalsPaymentCheckout @close="showPayment = false" />
+      <ModalsPaymentCheckout
+        @close="showPayment = false"
+        @update:country="(v) => (selectedCountry = v)"
+        :country="selectedCountry"
+        :plan="showPayment"
+        :is-yearly="isYearly"
+      />
     </UtModal>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { IPlan } from "~/lib/interfaces/core";
+
 const isEditable = inject<boolean>("isEditable");
 
 definePageMeta({
   name: "BrandSettingBillingSubscription",
+  middleware: [
+    async function (to, from) {
+      const optionsStore = useOptionsStore();
+      try {
+        await optionsStore.getPlans();
+      } catch (error) {}
+    },
+  ],
 });
 
-const showPayment = ref(false);
+const showPayment = ref<IPlan | boolean>(false);
 const optionsStore = useOptionsStore();
 const { notify } = useNotification();
 
-interface Plan {
-  name: string;
-  description: string;
-  yearlyPrice: string;
-  monthlyPrice: string;
-  features: string[];
-}
-
-const selectedCountry = ref<string>("Nigeria");
+const selectedCountry = ref<string | any>("US");
 const isYearly = ref<boolean>(true);
-const plans = ref<Plan[]>([
-  {
-    name: "Basic",
-    description:
-      "Our Basic Plan offers features for small teams to manage their needs effectively at an affordable price.",
-    yearlyPrice: "$1250",
-    monthlyPrice: "$150",
-    features: [
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-    ],
-  },
-  {
-    name: "Advanced",
-    description:
-      "Our Advanced Plan offers features for growing teams with additional tools for effectiveness.",
-    yearlyPrice: "$1500",
-    monthlyPrice: "$180",
-    features: [
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-    ],
-  },
-  {
-    name: "Premium",
-    description:
-      "Our Premium Plan offers comprehensive features for larger teams that need robust tools.",
-    yearlyPrice: "$2000",
-    monthlyPrice: "$240",
-    features: [
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-      "Access to core features",
-    ],
-  },
-]);
 
-const purchasePlan = (planName: string): void => {
-  showPayment.value = true;
+const plans = computed(() => {
+  return optionsStore.plans.map((e) => {
+    const pricing =
+      e.locationBasedPricing[
+        selectedCountry.value as keyof typeof e.locationBasedPricing
+      ];
+    return {
+      name: e.planName,
+      description: "Plan Description",
+      currency: pricing?.currency,
+      yearlyPrice: pricing?.yearlyPrice,
+      monthlyPrice: pricing?.monthlyPrice,
+      features: e.features,
+      countries: Object.keys(e.locationBasedPricing),
+    };
+  });
+});
+
+const purchasePlan = (plan: IPlan): void => {
+  showPayment.value = plan;
 };
 </script>
