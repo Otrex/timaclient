@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, PaymentAuthorizationResponse } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -177,10 +177,10 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async fundWallet(data: {
-    "amount": number,
-    "paymentGateway": "FLUTTERWAVE" | "PAYSTACK" //PAYSTACK OR FLUTTERWAVE
+    amount: number,
+    paymentGateway: "FLUTTERWAVE" | "PAYSTACK" //PAYSTACK OR FLUTTERWAVE
   }) {
-    return this.request<IResponse>({
+    return this.request<PaymentAuthorizationResponse>({
       url: "/wallet/fund",
       requireAuth: true,
       method: "POST",

@@ -172,7 +172,8 @@
       </div>
       <div>
         <UiButtonDefault
-          @click="fundWallet"
+          @click="() => fundWallet()"
+          :loading="state === RequestState.LOADING"
           variant="primary"
           class="w-full py-3"
         >
@@ -184,9 +185,10 @@
 </template>
 
 <script lang="ts" setup>
+import { RequestState } from "~/lib/enums";
 import type { IPlan } from "~/lib/interfaces/core";
 
-const opt = ref("paystack");
+const opt = ref("PAYSTACK");
 
 const props = defineProps<{
   plan: IPlan | boolean;
@@ -194,7 +196,7 @@ const props = defineProps<{
   isYearly?: boolean;
 }>();
 
-const emit = defineEmits(["update:country"]);
+const emit = defineEmits(["update:country", "close"]);
 
 const selectedCountry = computed({
   get: function () {
@@ -205,24 +207,22 @@ const selectedCountry = computed({
   },
 });
 
-const form = reactive({
-  cardHolderName: "",
-  creditCardNumber: "",
-  cvv: "",
-  expiryDate: "",
-});
-
 const api = useAPI();
 
-const {} = useRequestState({
+const { state, execute: fundWallet } = useRequestState({
   action: async () => {
     return api.fundWallet({
       amount:
         props.plan && props.isYearly
           ? props.plan?.yearlyPrice
           : props.plan?.monthlyPrice,
-      paymentMethod: opt.value as any,
+      paymentGateway: opt.value.toUpperCase() as "FLUTTERWAVE" | "PAYSTACK",
     });
+  },
+
+  onSuccess: (res) => {
+    window.open(res.data.authorization_url, "_blank");
+    emit("close");
   },
 });
 </script>

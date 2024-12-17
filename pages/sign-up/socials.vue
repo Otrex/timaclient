@@ -401,10 +401,10 @@ const socials = ref([
   //   icon: "so/facebook",
   //   field: "username",
   // },
-  // {
-  //   label: "X",
-  //   icon: "so/twitter",
-  // },
+  {
+    label: "X",
+    icon: "so/twitter",
+  },
   // {
   //   label: "LinkedIn",
   //   icon: "so/linkedin",

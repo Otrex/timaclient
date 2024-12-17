@@ -560,3 +560,14 @@ export interface GetPlansResponse {
   currentPage: number;
   statusCode: number;
 }
+
+
+export interface PaymentAuthorizationResponse {
+  data: {
+    reference: string;
+    authorization_url: string;
+    access_code: string;
+  };
+  message: string;
+  status: boolean;
+}
