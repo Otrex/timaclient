@@ -21,10 +21,12 @@
       <div>
         <table class="w-full">
           <thead class="text-left">
-            <th class="py-3">Influencer Name</th>
-            <th>Posts/Deliverables</th>
-            <th>Amount Spent</th>
-            <th>Total</th>
+            <tr>
+              <th class="py-3">Influencer Name</th>
+              <th>Posts/Deliverables</th>
+              <th>Amount Spent</th>
+              <th>Total</th>
+            </tr>
           </thead>
           <tbody class="text-sm">
             <tr>

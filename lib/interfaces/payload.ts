@@ -315,3 +315,16 @@ export interface ReviewUser {
   reason?: string;
 }
 
+
+export interface BankInformation {
+  bankDetails: {
+    bankCode: string;
+    accountNumber: string;
+    accountName: string;
+    bankName: string;
+  };
+  platformPrices: Array<{
+    platform: string;
+    price: number;
+  }>;
+}

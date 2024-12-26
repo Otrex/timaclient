@@ -42,24 +42,28 @@
         </div>
         <div>
           <table>
-            <tr>
-              <td class="pb-[0.625rem]"><p class="nl">Influencer name:</p></td>
-              <td class="pb-[0.625rem]">
-                <p>{{ application?.fullName }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pb-[0.625rem]"><p class="nl">Email address:</p></td>
-              <td class="pb-[0.625rem]">
-                <p>{{ application?.email }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td><p class="nl">Phone number:</p></td>
-              <td>
-                <p>{{ application?.phoneNumber }}</p>
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td class="pb-[0.625rem]">
+                  <p class="nl">Influencer name:</p>
+                </td>
+                <td class="pb-[0.625rem]">
+                  <p>{{ application?.fullName }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="pb-[0.625rem]"><p class="nl">Email address:</p></td>
+                <td class="pb-[0.625rem]">
+                  <p>{{ application?.email }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td><p class="nl">Phone number:</p></td>
+                <td>
+                  <p>{{ application?.phoneNumber }}</p>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

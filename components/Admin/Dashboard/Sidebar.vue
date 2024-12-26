@@ -10,7 +10,9 @@
       <div class="pt-[1.75rem] px-[1.125rem]">
         <div class="px-[0.75rem] flex">
           <UtSvg name="logo/tima-2" class="w-[8rem] aspect-[3/1]" />
-          <span class="text-[32px] font-bold opacity-70">Admin</span>
+          <span class="text-[32px] font-bold dark:text-white opacity-70"
+            >Admin</span
+          >
         </div>
         <div class="mt-[4.625rem]">
           <AdminDashboardNavigator />

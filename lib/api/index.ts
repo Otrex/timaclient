@@ -222,6 +222,18 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async makeSubscriptionPayment() {
+
+  }
+
+  async deactivateAccount() {
+    return this.request({
+      url: "/users/deactivate-account",
+      requireAuth: true,
+      method: "POST",
+    });
+  }
+
   async getUserProfile() {
     return this.request<IResponse<Core.User>>({
       url: "/users/profile",
@@ -659,9 +671,14 @@ export default class TimaAPI extends UploadAPI {
   }
 
 
-
-
-
+  async updatePaymentInformation(data: Payload.BankInformation) {
+    return this.request({
+      url: '/influencer/payment-information',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
 
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
@@ -1100,15 +1117,6 @@ export default class TimaAPI extends UploadAPI {
       data,
     });
   }
-
-  async deactivateUser() {
-    return this.request({
-      url: "/user/v1/account/deactivate",
-      requireAuth: true,
-      method: "PUT",
-    });
-  }
-
 
   async updateInfluencerNotificationSetting(
     data: Payload.NotificationSettings

@@ -64,14 +64,15 @@ const mode = ref(true);
 
 watch(mode, () => {
   if (mode.value) {
-    colorMode.value = "light";
-  } else {
     colorMode.value = "dark";
+  } else {
+    colorMode.value = "light";
   }
 });
 
 onMounted(() => {
-  mode.value = colorMode.value === "light" ? true : false;
+  mode.value = colorMode.value === "dark" ? true : false;
+  colorMode.preference = colorMode.value;
 });
 
 const userType = computed(() => {

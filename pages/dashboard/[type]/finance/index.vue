@@ -111,13 +111,15 @@
       <div class="border border-[#BBBBBB] rounded-xl">
         <table class="w-full rounded-xl">
           <thead class="">
-            <th class="font-normal text-left">Campaign name</th>
-            <th class="font-normal">Brand name</th>
-            <th class="font-normal">Amount</th>
-            <th class="font-normal">Transaction date</th>
-            <th class="font-normal">Expected payment date</th>
-            <th class="font-normal">Payment status</th>
-            <th></th>
+            <tr>
+              <th class="font-normal text-left">Campaign name</th>
+              <th class="font-normal">Brand name</th>
+              <th class="font-normal">Amount</th>
+              <th class="font-normal">Transaction date</th>
+              <th class="font-normal">Expected payment date</th>
+              <th class="font-normal">Payment status</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             <template

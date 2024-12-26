@@ -4,8 +4,10 @@ import path from 'path'
 
 export default defineNuxtConfig({
   ssr: false,
+
   // spaLoadingTemplate: "app.splash.html",
   devtools: { enabled: true },
+
   app: {
     head: {
       charset: 'utf-8',
@@ -20,6 +22,7 @@ export default defineNuxtConfig({
     },
     // layoutTransition: { name: 'page', mode: 'out-in' }
   },
+
   nitro: {
     devProxy: {
       '/api': {
@@ -35,12 +38,15 @@ export default defineNuxtConfig({
       }
     }
   },
+
   router: {
     options: {
       scrollBehaviorType: 'smooth'
     }
   },
+
   css: ['~/assets/css/main.css'],
+
   components: [
     { path: '~/components/Ui', prefix: 'Ui' },
     { path: '~/components/Utility', prefix: 'Ut' },
@@ -55,9 +61,16 @@ export default defineNuxtConfig({
   ], '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', 'shadcn-nuxt'],
 
   image: {},
+
+  shadcn: {
+    prefix: 'shadcn',
+    componentDir: './components/shadcn'
+  },
+
   build: {
     transpile: ["uuid", "@vuelidate/core"],
   },
+
   vite: {
     plugins: [
       // Config Link: https://github.com/vbenjs/vite-plugin-svg-icons
@@ -67,18 +80,22 @@ export default defineNuxtConfig({
       }),
     ],
   },
+
   ...({
     pinia: {
       storesDirs: ['./stores/**'],
     },
   }),
+
   colorMode: {
     classSuffix: ''
   },
+
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
     configPath: '~/tailwind.config.ts'
   },
+
   runtimeConfig: {
     public: {
       baseUrl: process.env.API_BASE_URL,
@@ -86,5 +103,7 @@ export default defineNuxtConfig({
       socialsBaseUrl: process.env.API_SOCIALS_BASE_URL,
       mode: process.env.APP_MODE || 'production',
     }
-  }
+  },
+
+  compatibilityDate: '2024-12-23'
 })

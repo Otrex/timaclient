@@ -31,7 +31,7 @@
     <UiModalConfirmAction
       ref="confirm"
       @onapprove="approveDeactivation"
-      :loading="state === constants.LOADING"
+      :loading="state === 'LOADING'"
       @oncancel="deactivateUser = false"
     >
       <template #title> Confirm Deactivation </template>
@@ -60,7 +60,7 @@ const confirm = ref<{
 }>();
 
 const { execute, state } = useRequestState({
-  action: async () => api.deactivateUser(),
+  action: async () => api.deactivateAccount(),
   onError(e) {
     notify({
       type: "error",

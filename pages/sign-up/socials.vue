@@ -21,8 +21,8 @@
           <template v-for="social in socials" :key="social.icon">
             <UiButtonAddSocial
               class="w-[15rem]"
-              :label="social.label"
               @open="onOpen"
+              :label="social.label"
               :modal="getModal(social.icon)"
               @closeModal="closeModal(social.icon)"
               :icon="social.icon"

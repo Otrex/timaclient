@@ -19,11 +19,11 @@
       label="Bookmark"
       icon="nav/bookmark"
     /> -->
-    <!--<DashboardNavigatorMenuItem
+    <DashboardNavigatorMenuItem
       label="Influencers"
       icon="nav/influencers"
       to="/dashboard/influencers"
-    />  -->
+    />
     <DashboardNavigatorMenuItem
       label="Payment"
       icon="nav/payment"

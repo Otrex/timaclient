@@ -2,11 +2,13 @@
   <div>
     <table class="w-full">
       <thead class="bg-gray-200 py-2">
-        <th class="py-2 text-left px-5">Influencer</th>
-        <th>Content Link</th>
-        <th>Status</th>
-        <th>Applied At</th>
-        <th>&nbsp;</th>
+        <tr>
+          <th class="py-2 text-left px-5">Influencer</th>
+          <th>Content Link</th>
+          <th>Status</th>
+          <th>Applied At</th>
+          <th>&nbsp;</th>
+        </tr>
       </thead>
       <tbody>
         <template v-for="(content, idx) in contents" :key="idx">

@@ -20,7 +20,7 @@
           <DashboardCampaignDataSocialCard
             :social="sm.platformName.toLowerCase()"
             :followers="sm?.data?.followers || 0"
-            :engagement-rate="sm?.data?.avgEngagement || 0"
+            :engagement-rate="Math.round(sm?.data?.avgEngagement || 0)"
             :likes="sm?.data?.avgLikes || 0"
           />
         </NuxtLink>
@@ -46,7 +46,7 @@
           <UtSvg name="xeye" dim w="2rem" h="2rem" />
           <div>
             <p class="-mb-2 dark:text-black">
-              {{ tools.formatNumber(metrics.engagementRate || 0) }}
+              {{ tools.formatNumber(Math.round(metrics.engagementRate || 0)) }}
             </p>
             <span class="text-[#777] text-xs">Average Views</span>
           </div>
@@ -114,41 +114,43 @@
           class="min-w-full bg-white dark:border-gray-800 dark:bg-transparent border border-gray-200"
         >
           <thead class="bg-gray-50 dark:text-white dark:bg-transparent">
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 dark:text-white dark:border-gray-800 border-b border-gray-200"
-            >
-              Rank
-            </th>
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-            >
-              Post Title
-            </th>
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-            >
-              Post Date
-            </th>
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-            >
-              Likes
-            </th>
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-            >
-              Comments
-            </th>
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-            >
-              Views
-            </th>
-            <th
-              class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-            >
-              URL
-            </th>
+            <tr>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 dark:text-white dark:border-gray-800 border-b border-gray-200"
+              >
+                Rank
+              </th>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+              >
+                Post Title
+              </th>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+              >
+                Post Date
+              </th>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+              >
+                Likes
+              </th>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+              >
+                Comments
+              </th>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+              >
+                Views
+              </th>
+              <th
+                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+              >
+                URL
+              </th>
+            </tr>
           </thead>
 
           <tbody v-if="postData.length > 0">

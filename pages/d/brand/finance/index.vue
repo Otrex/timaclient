@@ -70,11 +70,13 @@
       <div>
         <table class="w-full">
           <thead class="text-left">
-            <th class="py-3">Campaign Name</th>
-            <th>Total Amount</th>
-            <th>Amount Paid</th>
-            <th>Status</th>
-            <th>Action</th>
+            <tr>
+              <th class="py-3">Campaign Name</th>
+              <th>Total Amount</th>
+              <th>Amount Paid</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
@@ -160,10 +162,12 @@
       <div>
         <table class="w-full">
           <thead class="text-left">
-            <th class="py-3">Platform</th>
-            <th>Budget</th>
-            <th>Amount Spent</th>
-            <th>Status</th>
+            <tr>
+              <th class="py-3">Platform</th>
+              <th>Budget</th>
+              <th>Amount Spent</th>
+              <th>Status</th>
+            </tr>
           </thead>
           <tbody>
             <tr>

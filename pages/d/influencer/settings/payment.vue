@@ -16,6 +16,7 @@
         label="Change PIN"
       />
     </div>
+
     <div class="flex flex-col gap-[1.5rem] max-w-[65.875rem]">
       <div class="flex md:flex-row items-center flex-col">
         <div class="sm:max-w-[22.125rem] w-full">
@@ -46,6 +47,7 @@
                 value: e.id,
               }))
             "
+            v-model="fullForm.bankId"
             class="w-full"
             :disabled="!isEditable"
             placeholder="Select Bank"
@@ -58,9 +60,9 @@
         class="flex md:flex-row flex-col"
       >
         <div class="sm:max-w-[22.125rem] w-full">
-          <label class="text-[1.25rem] font-medium block"
-            >Charge per Post</label
-          >
+          <label class="text-[1.25rem] font-medium block">
+            Charge per Post
+          </label>
         </div>
         <div class="flex flex-col gap-1 items-center w-full">
           <UiInputSelect
@@ -87,6 +89,17 @@
       </div>
 
       <div v-else>Please add your social media account</div>
+
+      <div class="text-right">
+        <UiButtonDefault
+          variant="primary"
+          :disabled="!isEditable"
+          :loading="updatingPaymentInfo === constants.LOADING"
+          @click="() => updatePaymentInfo()"
+          class="py-2 text-sm px-5"
+          label="Update Information"
+        />
+      </div>
     </div>
 
     <UtModal
@@ -237,6 +250,7 @@ const pinForm = reactive({
 
 const fullForm = reactive({
   chargePerPost: {} as Record<string, any>,
+  bankId: undefined as string | undefined,
 });
 
 const isEditable = inject<boolean>("isEditable");
@@ -252,6 +266,38 @@ const { state, execute: resolve } = useRequestState({
     form.accountName = data.account_name;
   },
 });
+
+const { state: updatingPaymentInfo, execute: updatePaymentInfo } =
+  useRequestState({
+    action: async () => {
+      const bank = optionsStore.withdrawalBanks.find(
+        (e) => e.id == fullForm.bankId
+      );
+
+      if (!bank) {
+        throw new Error("Bank not found or no bank selected");
+      }
+
+      return api.updatePaymentInformation({
+        bankDetails: {
+          accountNumber: bank?.accountNumber ?? "",
+          accountName: bank?.accountName ?? "",
+          bankName: optionsStore.getBankNameByCode(bank?.bankName)!,
+          bankCode: bank?.bankCode ?? "",
+        },
+        platformPrices: Object.entries(fullForm.chargePerPost).map(
+          ([key, value]) => ({
+            platform: key,
+            price: value,
+          })
+        ),
+      });
+    },
+    onError: (res) => {
+      alert(res.message);
+      console.log(res);
+    },
+  });
 
 const { execute: addBank, state: addingBank } = useRequestState({
   action: async () =>

@@ -23,7 +23,12 @@
     <AdminDashboardNavigatorMenuItem
       label="Requests"
       icon="nav/requests"
-      to="/admin/requests"
+      :to="{
+        name: 'admin.requests.all.requests',
+        params: {
+          type: 'brand',
+        },
+      }"
     />
     <AdminDashboardNavigatorMenuItem
       label="Finance"

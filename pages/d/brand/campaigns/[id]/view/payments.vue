@@ -36,13 +36,15 @@
       <div>
         <table class="w-full x-table no-clr">
           <thead>
-            <th class="font-normal text-left">Influencer’s name</th>
-            <th class="font-normal">Amount paid</th>
-            <th class="font-normal">Balance</th>
-            <th class="font-normal">Payment date</th>
-            <th class="font-normal">Payment status</th>
-            <th class="font-normal">Payment method</th>
-            <th></th>
+            <tr>
+              <th class="font-normal text-left">Influencer’s name</th>
+              <th class="font-normal">Amount paid</th>
+              <th class="font-normal">Balance</th>
+              <th class="font-normal">Payment date</th>
+              <th class="font-normal">Payment status</th>
+              <th class="font-normal">Payment method</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             <template
