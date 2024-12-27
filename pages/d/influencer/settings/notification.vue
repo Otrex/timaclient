@@ -1,5 +1,6 @@
 <template>
-  <div class="pt-[3.4375rem] max-w-[65.875rem]">
+  <div v-if="retrievingState == constants.LOADING">LOADING....</div>
+  <div v-else class="pt-[3.4375rem] max-w-[65.875rem]">
     <div class="flex flex-col gap-[1.5rem]">
       <div class="flex md:flex-row flex-col">
         <div class="max-w-[22.125rem] w-full">
@@ -85,17 +86,35 @@ const isEditable = inject<boolean>("isEditable");
 
 const profileStore = useProfileStore();
 const { notify } = useNotification();
+const api = useAPI();
 
-const form = useWatchedForm({
-  monitor: profileStore.$profile?.notificationSetting,
-  fields: {
-    campaignUpdateAlert: false,
-    paymentUpdateAlert: false,
+const form = reactive({
+  campaignUpdateAlert: false,
+  paymentUpdateAlert: false,
+});
+
+const { state: retrievingState } = useRequestState({
+  immediately: true,
+  action: () => api.getInfluencerNotificationSetting(),
+  onSuccess({ data }) {
+    form.campaignUpdateAlert = data.campaignUpdates;
+    form.paymentUpdateAlert = data.paymentNotification;
+  },
+  onError(e) {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
   },
 });
 
 const { execute, state } = useRequestState({
-  action: () => profileStore.updateNotificationSettings(form),
+  action: () =>
+    api.updateInfluencerNotificationSetting({
+      paymentNotification: form.paymentUpdateAlert,
+      campaignUpdates: form.campaignUpdateAlert,
+    }),
   onError(e) {
     notify({
       type: "error",

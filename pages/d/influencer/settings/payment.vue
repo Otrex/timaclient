@@ -265,6 +265,13 @@ const { state, execute: resolve } = useRequestState({
   onSuccess: ({ data }) => {
     form.accountName = data.account_name;
   },
+  onError: (e) => {
+    notify({
+      type: "error",
+      title: e.title,
+      text: e.description,
+    });
+  },
 });
 
 const { state: updatingPaymentInfo, execute: updatePaymentInfo } =
@@ -293,9 +300,19 @@ const { state: updatingPaymentInfo, execute: updatePaymentInfo } =
         ),
       });
     },
+    onSuccess: () => {
+      notify({
+        text: "Payment Information Updated Successfully",
+        title: "Request Successful",
+        type: "success",
+      });
+    },
     onError: (res) => {
-      alert(res.message);
-      console.log(res);
+      notify({
+        text: res.description,
+        title: res.title,
+        type: "error",
+      });
     },
   });
 

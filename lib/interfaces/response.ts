@@ -451,6 +451,17 @@ export interface GetSearchCampaignsResponse {
   statusCode: number;
 }
 
+
+export interface GetNotificationSettingsResponse {
+  data: {
+    paymentNotification: boolean;
+    campaignUpdates: boolean;
+  };
+  message: string;
+  statusCode: number;
+}
+
+
 export interface CreateBookmarkResponse {
   "data": {
     "bookmark_id": string,

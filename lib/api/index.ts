@@ -13,6 +13,7 @@ const defaultFilter = {
 };
 
 export default class TimaAPI extends UploadAPI {
+
   socials: SocialsAPI;
 
   constructor() {
@@ -240,6 +241,26 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: "GET",
     });
+  }
+
+  async getInfluencerNotificationSetting() {
+    return this.request<Response.GetNotificationSettingsResponse>({
+      url: "/users/notification-settings",
+      requireAuth: true,
+      method: "GET",
+    })
+  }
+
+  async updateInfluencerNotificationSetting(data: {
+    paymentNotification: boolean,
+    campaignUpdates: boolean
+  }) {
+    return this.request<Response.GetNotificationSettingsResponse>({
+      url: "/users/notification-settings",
+      requireAuth: true,
+      method: "POST",
+      data
+    })
   }
 
   async getIndustries() {
@@ -1118,16 +1139,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async updateInfluencerNotificationSetting(
-    data: Payload.NotificationSettings
-  ) {
-    return this.request<Response.GenericStringRes>({
-      url: "/agency/v1/settings/toggle",
-      requireAuth: true,
-      method: "PATCH",
-      data,
-    });
-  }
 
   async updateBrandInformation(data: Payload.UpdateBrandInformation) {
     return this.request<Response.UpdateBrandInformation>({

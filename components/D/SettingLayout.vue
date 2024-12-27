@@ -3,7 +3,7 @@
     <div class="h-[17rem] relative flex items-end px-[2.5rem]">
       <div class="absolute inset-0 overflow-clip bg-green-500 w-full">
         <UiImg
-          :src="profile.banner || '/img/setting-backdrop.jpg'"
+          :src="profile?.banner || '/img/setting-backdrop.jpg'"
           class="object-cover w-full h-full"
           alt="profile image"
         />
@@ -74,7 +74,7 @@
     </div>
     <div class="px-[2.5rem] pb-[1.9375rem]">
       <div>
-        <slot></slot>
+        <slot :isEditable="isEditable"></slot>
       </div>
     </div>
   </section>

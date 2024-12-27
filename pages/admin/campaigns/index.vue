@@ -179,7 +179,7 @@
                     >{{ item || "PENDING" }}</span
                   >
                 </div>
-                <div v-else-if="field === 'action'">
+                <!-- <div v-else-if="field === 'action'">
                   <template v-if="item.statusProgress === 'APPROVED'">
                     <i class="text-base">No Actions</i>
                   </template>
@@ -195,7 +195,7 @@
                     </select>
                     <UtSpinner size="18px" :noText="true" v-else />
                   </template>
-                </div>
+                </div> -->
               </template>
             </UtDataTable>
           </div>
@@ -248,14 +248,7 @@ const statusCard = ref([
 
 const data = ref<any[]>([]);
 const tabFilters = ref<any>("all");
-const thead = [
-  "Details",
-  "About",
-  "Category",
-  "Timing",
-  "Status",
-  "Action",
-].map((e) => ({
+const thead = ["Details", "About", "Category", "Timing", "Status"].map((e) => ({
   label: e,
   key: e.toLowerCase().replace(" ", "_"),
 }));

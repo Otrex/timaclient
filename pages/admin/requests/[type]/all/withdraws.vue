@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: "admin.requests.all.requests",
+  name: "admin.requests.all.withdraws",
 });
 </script>
 

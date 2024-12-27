@@ -6,15 +6,22 @@
           <NuxtLink
             active-class="link-style-active"
             class="link-style"
-            :to="{ params: { type: 'brands' } }"
-            :class="route.params.type == 'brands' && 'link-style'"
+            :to="{
+              params: { type: 'brands' },
+              name: 'admin.requests.all.requests',
+            }"
+            :class="route.params.type == 'brands' && 'link-style-active'"
           >
             Brands
           </NuxtLink>
           <NuxtLink
             class="link-style"
             active-class="link-style-active"
-            :to="{ params: { type: 'influencers' } }"
+            :class="route.params.type == 'influencers' && 'link-style-active'"
+            :to="{
+              params: { type: 'influencers' },
+              name: 'admin.requests.all.requests',
+            }"
           >
             Influencers
           </NuxtLink>

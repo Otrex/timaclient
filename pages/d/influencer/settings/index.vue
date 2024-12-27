@@ -197,6 +197,9 @@ const { execute, state } = useRequestState({
     const { userName, ...others } = form;
     return authStore.updateProfile({
       ...others,
+      ...(typeof form.phoneNumber === "object" && "number" in form.phoneNumber
+        ? { phoneNumber: (form.phoneNumber as any)?.number }
+        : { phoneNumber: form.phoneNumber }),
       ...(userName === authStore.profile?.userName ? {} : { userName }),
     });
   },

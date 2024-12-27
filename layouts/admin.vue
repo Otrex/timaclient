@@ -68,6 +68,7 @@ const backMap: Record<string, string> = {
 // const currentRoute = computed(() => $route.name as string);
 
 function goBack() {
+  window.history.back();
   // if (!Object.keys(backMap).includes($route.name as string)) {
   //     $router.back();
   // } else if ("back" in $route.query) {

@@ -7,14 +7,20 @@
         <NuxtLink
           active-class="link-style-active"
           class="link-style"
-          :to="{ params: { type: $route.params.type } }"
+          :to="{
+            params: { type: $route.params.type },
+            name: 'admin.requests.all.requests',
+          }"
         >
           All Requests
         </NuxtLink>
         <NuxtLink
           active-class="link-style-active"
           class="link-style"
-          :to="{ params: { type: $route.params.type } }"
+          :to="{
+            params: { type: $route.params.type },
+            name: 'admin.requests.all.users',
+          }"
         >
           New User
         </NuxtLink>
@@ -22,7 +28,10 @@
           active-class="link-style-active"
           class="link-style"
           v-if="$route.params.type == 'brands'"
-          :to="{ params: { type: 'brands' } }"
+          :to="{
+            params: { type: 'brands' },
+            name: 'admin.requests.all.campaigns',
+          }"
         >
           Campaigns
         </NuxtLink>
@@ -30,7 +39,10 @@
           active-class="link-style-active"
           class="link-style"
           v-else
-          :to="{ params: { type: 'brands' } }"
+          :to="{
+            params: { type: 'influencers' },
+            name: 'admin.requests.all.withdraws',
+          }"
         >
           Withdrawal
         </NuxtLink>
@@ -85,47 +97,7 @@
     </div>
 
     <section>
-      <table
-        class="w-full border rounded-lg border-separate border-spacing-0 overflow-hidden"
-      >
-        <thead>
-          <tr class="bg-gray-200 !font-normal text-left">
-            <th class="py-3 px-3">Name</th>
-            <th class="py-2 px-3">Request Type</th>
-            <th class="py-2 px-3">Date</th>
-            <th class="py-2 px-3">Status</th>
-            <th class="py-2 px-3">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="px-3 text-[0.9375rem]">MTN NG</td>
-            <td class="px-3 text-[0.9375rem]">New User</td>
-            <td class="px-3 text-[0.9375rem]">15 Oct 2024</td>
-            <td class="px-3 text-[0.9375rem]">
-              <span
-                :class="[
-                  'rounded-2xl px-2 py-0.5 text-base',
-                  true && 'text-white bg-yellow-400',
-                ]"
-                >Pending</span
-              >
-            </td>
-            <td class="py-2 text-[0.9375rem] px-3">
-              <button
-                @click="
-                  navigateTo({
-                    name: 'admin.requests.user',
-                  })
-                "
-                class="px-4 py-1 border !text-[0.875rem] rounded-md text-base border-gray-400 hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors"
-              >
-                Review
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <NuxtPage />
     </section>
   </div>
 </template>
@@ -143,7 +115,6 @@ const $route = useRoute();
 const filter = ref("All");
 const type = computed(() => route.params.type as string);
 
-const showStatusBar = ref<Checked>(true);
-const showActivityBar = ref<Checked>(false);
-const showPanel = ref<Checked>(false);
+provide("tabFilter", filter);
+provide("filter", filter);
 </script>

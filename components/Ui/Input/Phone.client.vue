@@ -6,6 +6,8 @@
         '!border-2 !border-[#efefef] bg-[#efefef] dark:text-black !rounded-[2.5rem]',
         props.errorMessage && '!border-red-600',
       ]"
+      autocomplete="phone"
+      aria-autocomplete="inline"
       :inputClass="[
         inputClass,
         'focus:border-none bg-[#efefef] !rounded-tr-[2.5rem] w-full text-[1.1875rem] p-[0.75rem] !rounded-br-[2.5rem]',

@@ -136,6 +136,7 @@ const routeNameMap: Record<string, any> = {
   BrandSettingBillingTransactions: "Settings",
   BrandSettingBillingSubscription: "Settings",
   BrandSettingPersonal: "Settings",
+  InfluencerSettingNotification: "Settings",
   ViewBrandCampaignAnalytics: "ViewBrandCampaign",
   ViewbrandCampaignInfluencers: "ViewBrandCampaign",
   ViewbrandCampaignPayments: "ViewBrandCampaign",
