@@ -5,6 +5,14 @@
   outline: 1px solid rgba(255, 0, 0, 0.3);
 }
 
+.link-style {
+  @apply rounded-lg text-sm px-3 py-1 bg-gray-300 dark:bg-gray-800/50;
+}
+
+.link-style-active {
+  @apply dark:bg-gray-900 bg-gray-600 text-white;
+}
+
 .tm__box-598px {
   @apply mx-auto max-w-[calc(37.375rem_+_2.5rem)] px-[calc(2.5rem_/_2)];
 }

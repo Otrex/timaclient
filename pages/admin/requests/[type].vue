@@ -29,13 +29,3 @@
 <script setup lang="ts">
 const route = useRoute();
 </script>
-
-<style scoped>
-.link-style {
-  @apply rounded-lg text-sm px-3 dark:bg-gray-800/50;
-}
-
-.link-style-active {
-  @apply dark:bg-gray-900;
-}
-</style>
