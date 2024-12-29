@@ -264,7 +264,6 @@ const { state, execute: proceed } = useRequestState({
 const { state: updating, execute: update } = useRequestState({
   action: () => {
     const payload: Record<string, any> = {
-      userName: form.username,
       phoneNumber: form.phone,
       industries: form.industries,
       address: form.address,
@@ -276,6 +275,10 @@ const { state: updating, execute: update } = useRequestState({
 
     if (!form.documents.every((e: any) => typeof e === "string")) {
       payload.documents = form.documents;
+    }
+
+    if (form.username != user?.value?.userName) {
+      payload.userName = form.username;
     }
 
     return api.updateProfile(payload);

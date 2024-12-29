@@ -315,7 +315,10 @@ watch(
 const similarCampaigns = ref<GetCampaigns["data"]>([]);
 useRequestState({
   immediately: true,
-  action: () => api.getInfluencerCampaigns({ recommended: true }),
+  action: () =>
+    api.getSimilarCampaigns({
+      campaign_id: route.params.id as string,
+    }),
   onSuccess: (response: any) => {
     similarCampaigns.value = response.data;
   },

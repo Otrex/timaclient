@@ -170,6 +170,11 @@ export const useAuthStore = defineStore("auth", {
           userType: response.data.user.role,
         }
       });
+
+      auth.setItem({
+        accessToken: response.data.token,
+        userType: response.data.user.role,
+      })
     },
 
     async getProfile() {

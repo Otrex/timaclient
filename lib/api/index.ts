@@ -271,6 +271,18 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+  async getInfluencerCompletedCampaigns({ page = 1, limit = 10 }: Payload.GetCampaigns) {
+    return this.request<any>({
+      url: '/influencer/campaign/completed',
+      requireAuth: true,
+      method: "POST",
+      data: {
+        "page": page,
+        "size": limit
+      }
+    })
+  }
+
   async fetchCampaigns({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/campaign',
@@ -434,8 +446,19 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getInfluencerCampaigns({ page = 1, limit = 10, type, recommended = false,
-    top = false }: Payload.GetCampaigns & { type?: any, recommended?: boolean, top?: boolean }) {
+  async getInfluencerCampaigns({
+    page = 1,
+    limit = 10,
+    type,
+    recommended = false,
+    top = false,
+    status
+  }: Payload.GetCampaigns & {
+    type?: any,
+    recommended?: boolean,
+    top?: boolean,
+    status?: string
+  }) {
     return this.request<GetInfluencerCampaignsResponse>({
       url: '/influencer/campaign',
       requireAuth: true,
@@ -445,6 +468,20 @@ export default class TimaAPI extends UploadAPI {
         limit,
         recommended,
         top,
+        ...(status && { status }),
+      }
+    })
+  }
+
+  async getSimilarCampaigns({ page = 1, limit = 5, campaign_id }) {
+    return this.request<GetInfluencerCampaignsResponse>({
+      url: '/influencer/campaign/similar',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        campaign_id
       }
     })
   }
@@ -798,7 +835,7 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async fetchInvites() {
-    return this.request({
+    return this.request<any>({
       url: "/influencer/fetch-invites",
       requireAuth: true,
       method: "POST",

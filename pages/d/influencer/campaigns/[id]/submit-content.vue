@@ -84,6 +84,7 @@
               },
             })
         "
+        class="!bg-transparent px-5 mr-5"
         variant="info"
       >
         Go Back
