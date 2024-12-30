@@ -78,14 +78,14 @@
     </div>
 
     <!-- chart -->
-
+    <!-- 
     <div class="mt-10" v-if="activeTab === 0">
       <Bar
         :data="data"
         class="inline-block w-full min-h-[200px] md:min-h-[561px] md:max-h-[561px]"
         :options="options"
       />
-    </div>
+    </div> -->
 
     <!-- table -->
 
@@ -212,7 +212,7 @@
       backdrop-color="rgba(0,0,0,.05)"
     >
       <div v-if="withdrawState === 'init'" class="bg-white p-6 rounded-lg">
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-5">
           <div>
             <h1 class="font-semibold text-xl text-[#333333]">Withdraw</h1>
             <p class="text-sm text-[#545454]">Send funds from your wallet</p>
@@ -223,27 +223,19 @@
           </div>
         </div>
 
-        <div class="my-4 h-px border border-[#BBBBBB]"></div>
-
         <div>
-          <div
-            class="flex items-center border border-[#BBBBBB] rounded-xl p-2 gap-2 w-full"
-          >
-            <div>
-              <UtSvg name="dollar" class="text-black" dim w="24px" h="24px" />
-            </div>
-
-            <div class="w-full">
-              <input
-                class="block w-full outline-none shadow-none border-none focus:border-none focus:shadow-none focus:outline-none"
-                placeholder="Enter amount"
-              />
+          <div class="relative">
+            <UiInputText class="pl-10" type="number" />
+            <div
+              class="absolute w-[3.75rem] flex items-center justify-center left-0 inset-y-0"
+            >
+              {{ "₦" }}
             </div>
           </div>
 
           <div class="py-2 w-full flex items-center justify-end">
-            <h1 class="text-[#777777] text-base">
-              Available <span class="text-[#545454] text-2xl">$0</span>
+            <h1 class="text-[#777777] items-center flex gap-2 text-base">
+              Available: <span class="text-[#545454] text-2xl">$0</span>
             </h1>
           </div>
         </div>
