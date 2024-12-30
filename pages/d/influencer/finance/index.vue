@@ -314,8 +314,15 @@ const wallet = ref<any>(null);
 
 onMounted(async () => {
   try {
-    console.log([await api.getWalletTransactions()]);
-    const { data } = await api.getWalletAddress();
+    console.log([
+      await api.getWalletTransactions({
+        type: "CREDIT",
+        days: "30",
+        page: 1,
+        limit: 10,
+      }),
+    ]);
+    const { data } = await api.getWalletBalance();
 
     wallet.value = data.balance;
   } catch (error) {}

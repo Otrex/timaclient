@@ -25,6 +25,7 @@
         <div class="flex items-center w-full">
           <UiInputSelect
             :options="tools.generationOptions(optionsStore.$paymentMethods)"
+            v-model="fullForm.paymentMethod"
             class="w-full"
             :disabled="!isEditable"
             placeholder="Select payment method"
@@ -235,6 +236,8 @@ const showChangePinModal = ref(false);
 const socialMediaPlatform = ref(
   authStore.profile?.socialMediaAccounts?.at(0)?.platformName ?? "instagram"
 );
+
+const paymentInfo = computed(() => authStore.profile?.paymentInformation);
 const optionsStore = useOptionsStore();
 const form = reactive({
   accountNumber: "",
@@ -249,8 +252,13 @@ const pinForm = reactive({
 });
 
 const fullForm = reactive({
-  chargePerPost: {} as Record<string, any>,
-  bankId: undefined as string | undefined,
+  chargePerPost: Object.fromEntries(
+    paymentInfo.value?.platformPrices.map((e) => [e.platform, e.price]) || []
+  ) as Record<string, any>,
+  bankId: optionsStore.withdrawalBanks.find(
+    (e) => e.accountNumber == paymentInfo.value?.bankDetails.accountNumber
+  )?.id as string | undefined,
+  paymentMethod: paymentInfo.value?.paymentMethod,
 });
 
 const isEditable = inject<boolean>("isEditable");

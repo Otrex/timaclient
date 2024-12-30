@@ -392,6 +392,45 @@ export interface GetInfluencerApplicationsResponse {
   statusCode: number;
 }
 
+export interface GetInfluencerApplicationsWithCampaignResponse {
+  data: Array<{
+    influencer_id: string;
+    applicationStatus: string;
+    campaign: {
+      campaignObjective: string;
+      audienceLocation: string[];
+      campaignAbout: string;
+      planningBudget: string;
+      audienceSize: string[];
+      endDate: string;
+      contentPlacement: string[];
+      campaignRule: string;
+      campaignObjectiveAwareness: string[];
+      creativeBrief: string;
+      campaignObjectiveAcquisition: string[];
+      banner: string;
+      referenceLink: string;
+      audienceAgeGroup: string[];
+      statusProgress: string;
+      socialMediaPlatform: string[];
+      user_id: string;
+      audienceGender: string[];
+      creativeTone: string;
+      category: string[];
+      campaignName: string;
+      contentType: string[];
+      campaign_id: string;
+      startDate: string;
+    };
+    application_id: string;
+    campaign_id: string;
+    appliedAt: string;
+  }>;
+  message: string;
+  statusCode: number;
+}
+
+
 
 export interface GetInfluencerProfileResponse {
   data: {

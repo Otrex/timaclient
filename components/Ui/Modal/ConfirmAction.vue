@@ -7,9 +7,9 @@
       backdrop-color="rgba(0,0,0,.05)"
     >
       <div class="model-wrapper rounded-lg relative">
-        <div class="bg-white rounded-lg shadow-md">
+        <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md">
           <div
-            class="font-bold px-5 border-b border-slate-100 py-3 items-center justify-between flex flex-row"
+            class="font-bold px-5 py-3 items-center justify-between flex flex-row"
           >
             <div>
               <slot name="title"></slot>
@@ -45,7 +45,7 @@
             />
             <UiButtonDefault
               label="Cancel"
-              class="px-3 py-1"
+              class="px-3 py-1 dark:text-gray-100 hover:dark:text-gray-600"
               variant="secondary"
               @click="close"
             />

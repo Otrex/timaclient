@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, PaymentAuthorizationResponse } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerApplicationsWithCampaignResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, PaymentAuthorizationResponse } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -207,7 +207,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getWalletAddress() {
+  async getWalletBalance() {
     return this.request<IResponse<{ balance: number }>>({
       url: "/wallet/balance",
       requireAuth: true,
@@ -215,14 +215,24 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getWalletTransactions() {
+  async getWalletTransactions({ page = 1, limit = 20, type, days }: {
+    "page": number,
+    "limit": number,
+    "type": 'CREDIT' | 'DEBIT',
+    "days": "1" | "7" | "30"
+  }) {
     return this.request<any>({
       url: "/wallet/transactions",
       requireAuth: true,
       method: "POST",
+      data: {
+        page,
+        limit,
+        ...(type && { type }),
+        ...(days && { days })
+      }
     });
   }
-
   async makeSubscriptionPayment() {
 
   }
@@ -473,7 +483,7 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getSimilarCampaigns({ page = 1, limit = 5, campaign_id }) {
+  async getSimilarCampaigns({ page = 1, limit = 5, campaign_id }: { page?: number, limit?: number, campaign_id: string }) {
     return this.request<GetInfluencerCampaignsResponse>({
       url: '/influencer/campaign/similar',
       requireAuth: true,
@@ -482,6 +492,19 @@ export default class TimaAPI extends UploadAPI {
         page,
         limit,
         campaign_id
+      }
+    })
+  }
+
+  async getInfluencerApplications({ page = 1, limit = 10, applicationStatus }: { page?: number, limit?: number, applicationStatus: string }) {
+    return this.request<GetInfluencerApplicationsWithCampaignResponse>({
+      url: '/influencer/campaign/application',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...(applicationStatus && { applicationStatus })
       }
     })
   }
@@ -814,6 +837,19 @@ export default class TimaAPI extends UploadAPI {
       url: `/agency/v1/campaigns/${publicId}`,
       requireAuth: true,
       method: "DELETE",
+    });
+  }
+
+  async endCampaign(publicId: string) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          data: {
+            status: "success",
+            message: "Campaign ended successfully",
+          },
+        });
+      }, 2000);
     });
   }
 

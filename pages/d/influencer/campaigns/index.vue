@@ -93,7 +93,7 @@
     </section>
 
     <section v-if="route.query.ctab === 'invitations'">
-      <DashboardNotifySection invites="" />
+      <DashboardNotifySection :invites="invites" />
     </section>
 
     <section v-if="notificationTabs.includes(route.query.ctab as string)">
@@ -143,8 +143,26 @@ const tabs = [
 ];
 
 const api = useAPI();
-const campaigns = ref<GetInfluencerCampaignsResponse["data"]>([]);
+
 const invites = ref<any[]>([]);
+const applications = ref<any[]>([]);
+const campaigns = ref<GetInfluencerCampaignsResponse["data"]>([]);
+
+const { state: gapplications, execute: getApplications } = useRequestState({
+  action: async () => api.getInfluencerApplications({ applicationStatus: "" }),
+  onSuccess(response) {
+    console.log(response.data);
+    applications.value = response.data;
+  },
+});
+
+const { state: gettingInvitations, execute: getInvites } = useRequestState({
+  action: () => api.fetchInvites(),
+  onSuccess(response) {
+    console.log(response.data);
+    invites.value = response.data;
+  },
+});
 
 const { state: fetchingCampaigns, execute: getCampaigns } = useRequestState({
   action: (status: string) =>
@@ -156,21 +174,28 @@ const { state: fetchingCampaigns, execute: getCampaigns } = useRequestState({
   },
 });
 
-onBeforeRouteUpdate((to) => {
-  getCampaigns((to.query.ctab || "active") as string);
-});
+function getData(tab: string) {
+  if (campaignsTabs.includes(tab)) {
+    getCampaigns(tab);
+  }
 
-useRequestState({
-  immediately: true,
-  action: () => api.fetchInvites(),
-  onSuccess(response) {
-    console.log(response.data);
-    invites.value = response.data;
-  },
+  if (tab === "applications") {
+    console.log(tab);
+
+    getApplications();
+  }
+
+  if (tab === "invitations") {
+    getInvites();
+  }
+}
+
+onBeforeRouteUpdate((to) => {
+  getData((to.query.ctab || "active") as string);
 });
 
 onMounted(() => {
-  getCampaigns(currentTab.value);
+  getData(currentTab.value);
 });
 </script>
 

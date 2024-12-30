@@ -76,6 +76,15 @@
             </Transition>
           </div>
         </div>
+        <div class="flex justify-center mt-10">
+          <UiButtonDefault
+            @click="() => confirmEnd?.open()"
+            variant="primary"
+            class="py-3 px-10"
+          >
+            End Campaign
+          </UiButtonDefault>
+        </div>
       </section>
       <UtModal
         m-width="31.25rem"
@@ -87,6 +96,18 @@
           :type="constants.CAMPAIGN"
         />
       </UtModal>
+      <UiModalConfirmAction
+        :loading="endingState === constants.LOADING"
+        @onapprove="endCampaign"
+        ref="confirmEnd"
+      >
+        <template #title>
+          <div>End Campaign</div>
+        </template>
+        <template #body>
+          <div>Are you sure you want to end this campaign?</div>
+        </template>
+      </UiModalConfirmAction>
       <UiModalConfirmAction
         :loading="deletingState === constants.LOADING"
         @onapprove="deleteCampaign"
@@ -109,6 +130,7 @@ import { Core } from "~/lib/interfaces";
 const api = useAPI();
 const route = useRoute();
 const confirmAccept = ref();
+const confirmEnd = ref();
 const campaign = ref<Core.Campaign | null>(null);
 const openShare = ref(false);
 const { notify } = useNotification();
@@ -118,6 +140,27 @@ const { state } = useRequestState({
   immediately: true,
   onSuccess: (response) => {
     campaign.value = response.data as any;
+  },
+});
+
+const { state: endingState, execute: endCampaign } = useRequestState({
+  action: () => api.endCampaign(route.params.id as string),
+  onSuccess: (response) => {
+    notify({
+      title: "Campaign ended",
+      text: "Campaign has been ended successfully",
+      type: "success",
+    });
+    navigateTo({
+      name: "Campaign",
+    });
+  },
+  onError(error) {
+    notify({
+      title: "Review Failed",
+      text: error.description,
+      type: "error",
+    });
   },
 });
 

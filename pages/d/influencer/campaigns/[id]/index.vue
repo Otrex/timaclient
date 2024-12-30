@@ -353,9 +353,10 @@ const { state: application, execute: apply } = useRequestState({
     alert.type = "success";
     alert.message = "Application submitted successfully";
 
-    navigateTo({
-      name: "Explore",
-    });
+    // navigateTo({
+    //   name: "ViewInfluencerCampaign",
+    //   params: { id: route.params.id },
+    // });
   },
   onError: (response) => {
     alert.on = true;

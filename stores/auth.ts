@@ -14,7 +14,18 @@ type IState = {
     country?: string;
   };
   user?: User;
-  profile: Partial<User> & Partial<UserProfile> | null
+  profile: (Partial<User> & Partial<UserProfile> | null) & {
+    paymentInformation?: {
+      "bankDetails": {
+        "bankCode": string,
+        "accountName": string,
+        "bankName": string,
+        "accountNumber": string
+      },
+      "paymentMethod": string,
+      "platformPrices": Array<{ "price": number, "platform": string }>
+    }
+  }
   wallet?: AccountWallet;
   authorization: {
     accessToken?: string;
