@@ -96,6 +96,15 @@
       <DashboardNotifySection :invites="invites" />
     </section>
 
+    <section
+      v-if="route.query.ctab === 'applications'"
+      class="grid sm:grid-cols-3 grid-cols-2 gap-4"
+    >
+      <template v-for="campaign in applications" :key="campaign.campaign_id">
+        <DAppCardMini :campaign="campaign" />
+      </template>
+    </section>
+
     <section v-if="notificationTabs.includes(route.query.ctab as string)">
       <DashboardNotifyReview />
     </section>
@@ -112,7 +121,7 @@ definePageMeta({
 const route = useRoute();
 const currentTab = computed(() => (route.query?.ctab || "active") as string);
 const campaignsTabs = ["active", "upcoming", "completed"];
-const notificationTabs = ["submissions", "applications"];
+const notificationTabs = ["submissions"];
 
 const tabs = [
   {

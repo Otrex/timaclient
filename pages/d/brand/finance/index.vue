@@ -22,14 +22,18 @@
         </template>
       </UiInputDropdown>
     </div>
-    <section class="flex flex-col dark:text-black my-5 sm:flex-row gap-5">
-      <div class="bg-gray-100 dark:text-black w-full p-6 rounded-lg">
+    <section class="grid grid-cols-3 dark:text-black my-5 sm:flex-row gap-5">
+      <div
+        class="bg-gray-100 dark:text-black border dark:border-gray-800 w-full p-6 rounded-lg"
+      >
         <h4 class="font-semibold">Budget</h4>
         <div class="w-[18.75rem]">
           <Doughnut :data="ddata" class="inline-block" :options="doptions" />
         </div>
       </div>
-      <div class="bg-gray-100 w-full p-6 rounded-lg">
+      <div
+        class="bg-gray-100 w-full border dark:border-gray-800 p-6 rounded-lg"
+      >
         <h4 class="font-semibold mb-5">Campaigns</h4>
         <div class="mb-5">
           <p class="uppercase text-sm">ALL Campaigns</p>
@@ -40,7 +44,9 @@
           <p class="text-[#058EF8] font-semibold">120</p>
         </div>
       </div>
-      <div class="bg-gray-100 w-full p-6 rounded-lg">
+      <!-- <div
+        class="bg-gray-100 w-full border dark:border-gray-800 p-6 rounded-lg"
+      >
         <h4 class="font-semibold mb-5">Platforms</h4>
         <div class="mb-5">
           <p class="uppercase text-sm">ALL Platforms</p>
@@ -50,7 +56,7 @@
           <p class="uppercase text-sm">Total Spent</p>
           <p class="text-[#058EF8] font-semibold">120</p>
         </div>
-      </div>
+      </div> -->
     </section>
 
     <section>
@@ -71,30 +77,35 @@
         <table class="w-full">
           <thead class="text-left">
             <tr>
-              <th class="py-3">Campaign Name</th>
-              <th>Total Amount</th>
-              <th>Amount Paid</th>
+              <th class="py-3">Transaction ID</th>
+              <th>Amount</th>
+              <th>Description</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              v-for="transaction in transactions"
+              :key="transaction.transaction_id"
+            >
               <td>
                 <div class="flex flex-row items-center gap-3">
                   <div
                     class="w-[2.4rem] h-[2.4rem] bg-gray-100 rounded-lg overflow-hidden"
                   ></div>
                   <div class="text-sm">
-                    <p>Nike lebron shoe</p>
-                    <p class="text-[0.875rem]">TIMA subscription</p>
+                    <p>{{ transaction.transaction_id }}</p>
+                    <p class="text-[0.875rem]">
+                      {{ transaction.transactionReference }}
+                    </p>
                   </div>
                 </div>
               </td>
-              <td>$11,223</td>
-              <td>$11,223</td>
+              <td>{{ tools.formatCurrency(transaction.amount) }}</td>
+              <td>{{ transaction.description }}</td>
               <td>
-                <DStatusView status="ongoing" />
+                <DStatusView :status="transaction.status" />
               </td>
               <td>
                 <div class="inline-flex items-center">
@@ -110,7 +121,7 @@
                         navigateTo({
                           name: 'BrandFinanceCampaign',
                           params: {
-                            id: 1,
+                            id: transaction.transaction_id,
                           },
                         })
                     "
@@ -145,7 +156,7 @@
       </div>
     </section>
 
-    <section class="mt-14">
+    <!-- <section class="mt-14">
       <div
         class="flex flex-col items-center mb-5 justify-between gap-5 sm:flex-row"
       >
@@ -190,7 +201,7 @@
           </tbody>
         </table>
       </div>
-    </section>
+    </section> -->
 
     <UtModal
       m-width="40rem"
@@ -301,7 +312,7 @@ definePageMeta({
   name: "BrandFinance",
 });
 
-const payment = ref(true);
+const payment = ref(false);
 const filter = ref("");
 const doptions = ref<any>({
   responsive: true,
@@ -374,16 +385,26 @@ const options = ref<any>({
 
 const api = useAPI();
 const transactions = ref<Core.InfluencerTransaction[]>([]);
+
+const searchQuery = ref<string>("");
+const searchStatus = ref<string>("");
+
 const getTransactions = useRequestState({
-  action: () => api.getInfluencerTransactions(),
+  action: () =>
+    api.getWalletTransactions({
+      page: 1,
+      limit: 10,
+      type: "CREDIT",
+      days: "30",
+    }),
   immediately: true,
   onSuccess: (response) => {
+    console.log(response);
+
     transactions.value = response.data;
   },
 });
 
-const searchQuery = ref<string>("");
-const searchStatus = ref<string>("");
 const searchTransactions = useRequestState({
   action: () => api.getInfluencerTransactionsByStatus(searchStatus.value),
   immediately: true,

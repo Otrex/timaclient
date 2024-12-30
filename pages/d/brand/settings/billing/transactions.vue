@@ -42,6 +42,7 @@ definePageMeta({
 });
 
 const filter = ref("all");
+const authStore = useAuthStore();
 const thead = ["Transactions", "Amount", "Date", "Status", "Action"].map(
   (e) => ({
     label: e,
@@ -62,6 +63,15 @@ const tbody = [
     id: 1,
   },
 ];
+
+const api = useAPI();
+
+const {} = useRequestState({
+  action: () => api.getTransactions(),
+  onSuccess(data) {
+    console.log(data);
+  },
+});
 </script>
 
 <style></style>
