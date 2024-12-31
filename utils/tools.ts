@@ -219,9 +219,9 @@ export default {
     }
 
     const formattedNumber = number.toLocaleString('en-US', {
+      minimumFractionDigits: decimalPlaces,
       style: 'currency',
       currency: 'NGN', // Set currency code as per your requirement (default is USD)
-      minimumFractionDigits: decimalPlaces,
     });
 
     let result = formattedNumber;

@@ -621,3 +621,70 @@ export interface PaymentAuthorizationResponse {
   message: string;
   status: boolean;
 }
+
+export interface GetTransactionsResponse {
+  data: {
+    transaction_id: string;
+    createdAt: string;
+    amount: number;
+    transactionReference: string;
+    description: string;
+    type: string;
+    transaction_type: string;
+    userId: string;
+    status: string;
+  }[];
+  message: string;
+  statusCode: number;
+}
+
+export interface GetInfluencerSubmissions {
+  data: {
+    pagination: {
+      totalItems: number
+      totalPages: number
+      pageSize: number
+      currentPage: number
+    }
+    contents: {
+      influencer_id: string
+      createdAt: string
+      contentLink: string
+      campaignInfo: {
+        audienceLocation: string[]
+        campaignAbout: string
+        endDate: string
+        contentPlacement: string[]
+        campaignObjectiveAwareness: string[]
+        companyName: string
+        creativeBrief: string
+        campaignObjectiveAcquisition: string[]
+        referenceLink: string
+        audienceAgeGroup: string[]
+        statusProgress: string
+        applicationStatus: string
+        contentType: string[]
+        campaign_id: string
+        campaignObjective: string
+        website: string
+        planningBudget: string
+        audienceSize: string[]
+        campaignRule: string
+        banner: string
+        socialMediaPlatform: string[]
+        user_id: string
+        audienceGender: string[]
+        creativeTone: string
+        category: string[]
+        campaignName: string
+        startDate: string
+      }
+      id: string
+      campaign_id: string
+      contentStatus: string
+      updatedAt: string
+    }[]
+  }
+  message: string
+  statusCode: number
+}

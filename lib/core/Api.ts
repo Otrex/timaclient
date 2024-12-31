@@ -44,8 +44,6 @@ export default class Api {
 
       if (this.store && this.store.auth) {
         const auth = this.store.auth.getItem();
-        console.log(auth, this.store.auth);
-
         config.headers['Authorization'] = `Bearer ${auth.accessToken}`;
       }
 

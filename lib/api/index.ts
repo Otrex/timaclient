@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerApplicationsWithCampaignResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, PaymentAuthorizationResponse } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerApplicationsWithCampaignResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, GetTransactionsResponse, PaymentAuthorizationResponse } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -221,7 +221,7 @@ export default class TimaAPI extends UploadAPI {
     "type": 'CREDIT' | 'DEBIT',
     "days": "1" | "7" | "30"
   }) {
-    return this.request<any>({
+    return this.request<GetTransactionsResponse>({
       url: "/wallet/transactions",
       requireAuth: true,
       method: "POST",
@@ -758,6 +758,19 @@ export default class TimaAPI extends UploadAPI {
       requireAuth: true,
       method: 'POST',
       data
+    })
+  }
+
+  async getInfluencerSubmissions({ page = 1, limit = 10, ...others }: Payload.GetInfluencerSubmissions) {
+    return this.request<Response.GetInfluencerSubmissions>({
+      url: '/influencer/campaign/contents',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...others
+      }
     })
   }
 

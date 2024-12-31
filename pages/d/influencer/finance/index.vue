@@ -102,7 +102,7 @@
         <div class="md:max-w-[431px] md:w-5/12 flex justify-end">
           <UiInputText
             search
-            placeholder="Search completed payment"
+            placeholder="Search transactions"
             class="bg-transparent placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
           />
         </div>
@@ -112,29 +112,17 @@
         <table class="w-full rounded-xl">
           <thead class="">
             <tr>
-              <th class="font-normal text-left">Campaign name</th>
-              <th class="font-normal">Brand name</th>
+              <th class="font-normal text-left">Transaction ID</th>
+              <th class="font-normal">Description</th>
               <th class="font-normal">Amount</th>
-              <th class="font-normal">Transaction date</th>
-              <th class="font-normal">Expected payment date</th>
-              <th class="font-normal">Payment status</th>
+              <th class="font-normal">Type</th>
+              <th class="font-normal">Date</th>
+              <th class="font-normal">Status</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <template
-              v-if="
-                tools.requestState(getTransactions) === constants.LOADING ||
-                tools.requestState(searchTransactions) === constants.LOADING
-              "
-            >
-              <tr>
-                <td colspan="7">
-                  <UtLoaderIndicator message="Fetching transactions" />
-                </td>
-              </tr>
-            </template>
-            <template v-else-if="transactions.length === 0">
+            <template v-if="transactions.length === 0">
               <tr>
                 <td colspan="7">
                   <UtNoResource message="No transactions yet" />
@@ -149,53 +137,34 @@
               <tr>
                 <td>
                   <div class="flex gap-[1rem] items-center flex-row">
-                    <div>
-                      <div
-                        class="bg-[#D9D9D9] rounded-md overflow-hidden aspect-square w-[1.875rem]"
-                      >
-                        <UiImg
-                          class="w-full h-full object-cover"
-                          :src="transaction.campaignImage"
-                          v-if="transaction.campaignImage"
-                          :alt="transaction.campaignName"
-                        />
-                      </div>
-                    </div>
-                    <div>{{ transaction.campaignName }}</div>
+                    <div>{{ transaction.transaction_id }}</div>
                   </div>
                 </td>
                 <td class="align-middle text-center">
-                  {{ transaction.brandName }}
+                  {{ transaction.description }}
                 </td>
                 <td class="align-middle text-center">
-                  {{ tools.formatCurrency(transaction.earning || 0) }}
+                  {{ formatMoney(transaction.amount || 0) }}
                 </td>
                 <td class="align-middle text-center">
-                  {{
-                    tools.formatDate(transaction.transactionDate || new Date())
-                  }}
+                  {{ transaction.transaction_type }}
                 </td>
                 <td class="align-middle text-center">
-                  {{
-                    tools.formatDate(transaction.transactionDate || new Date())
-                  }}
+                  {{ new Date(transaction.createdAt).toLocaleDateString() }}
                 </td>
                 <td class="align-middle text-center">
                   <template v-if="transaction.status === 'COMPLETED'">
                     <span class="text-[#2DBA62]">Completed</span>
                   </template>
                   <template v-else-if="transaction.status === 'PENDING'">
-                    <span class="text-[#FFCA5B]">Yet to be balanced</span>
-                  </template>
-                  <template v-else-if="transaction.status === 'PARTIAL'">
-                    <span class="text-blue-500">Part payment made</span>
+                    <span class="text-[#FFCA5B]">Pending</span>
                   </template>
                   <template v-else>
-                    <span>--</span>
+                    <span>{{ transaction.status }}</span>
                   </template>
                 </td>
                 <td class="align-middle text-center">
-                  <UtMoreActions :data-id="transaction.publicId" />
+                  <UtMoreActions :data-id="transaction.transaction_id" />
                 </td>
               </tr>
             </template>
@@ -211,7 +180,7 @@
       content-class="rounded-xl mx-auto md:!mt-auto"
       backdrop-color="rgba(0,0,0,.05)"
     >
-      <div v-if="withdrawState === 'init'" class="bg-white p-6 rounded-lg">
+      <div v-if="withdrawState === 'init'" class="bg-white p-6 rounded-2xl">
         <div class="flex justify-between mb-5">
           <div>
             <h1 class="font-semibold text-xl text-[#333333]">Withdraw</h1>
@@ -225,7 +194,7 @@
 
         <div>
           <div class="relative">
-            <UiInputText class="pl-10" type="number" />
+            <UiInputText class="pl-10" :max-length="balance" type="number" />
             <div
               class="absolute w-[3.75rem] flex items-center justify-center left-0 inset-y-0"
             >
@@ -235,34 +204,25 @@
 
           <div class="py-2 w-full flex items-center justify-end">
             <h1 class="text-[#777777] items-center flex gap-2 text-base">
-              Available: <span class="text-[#545454] text-2xl">$0</span>
+              Available:
+              <span class="text-[#545454] text-2xl">{{
+                tools.formatCurrency(balance)
+              }}</span>
             </h1>
           </div>
         </div>
 
         <div>
-          <div
-            class="cursor-pointer flex items-center justify-between border border-[#BBBBBB] rounded-xl py-2 px-4 gap-2 w-full"
-          >
-            <div class="w-full">
-              <h1 class="text-[#545454] text-base">John David Kano</h1>
-              <p class="text-sm text-[#545454]">
-                <span class="">. Guaranty Trust bank</span>
-                <span class="">. 2000524190</span>
-                <span class="">. NGN</span>
-              </p>
-            </div>
-
-            <div>
-              <UtSvg
-                name="chevron-down"
-                class="text-black"
-                dim
-                w="14px"
-                h="14px"
-              />
-            </div>
-          </div>
+          <UiInputSelect
+            :options="
+              optionsStore.withdrawalBanks.map((e) => ({
+                label: `${e.bankName} (${e.accountNumber})`,
+                value: e.id,
+              }))
+            "
+            class="w-full"
+            placeholder="Select Bank"
+          />
         </div>
 
         <div>
@@ -302,7 +262,10 @@ definePageMeta({
 });
 
 const api = useAPI();
+const optionsStore = useOptionsStore();
 const wallet = ref<any>(null);
+const balance = ref<number>(30);
+const transactions = ref<any>([]);
 
 onMounted(async () => {
   try {
@@ -328,6 +291,10 @@ const activeTab = ref(0);
 /* modal logic */
 const auth = useAuthStore();
 const { notify } = useNotification();
+
+onMounted(async () => {
+  await optionsStore.getWithdrawalBanks();
+});
 
 const pinModal = reactive({
   set: false,
@@ -500,15 +467,6 @@ watchThrottled(
 
 /* transactions list logic */
 const route = useRoute();
-
-const transactions = ref<Core.InfluencerTransaction[]>([]);
-const getTransactions = useRequestState({
-  action: () => api.getInfluencerTransactions(),
-  immediately: true,
-  onSuccess: (response) => {
-    transactions.value = response.data;
-  },
-});
 
 const searchQuery = ref<string>("");
 const searchStatus = ref<string>("");

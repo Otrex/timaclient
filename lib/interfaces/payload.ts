@@ -11,6 +11,12 @@ export interface CampaignApplication {
   status: "APPROVED" | "DECLINED" | "PENDING";
 }
 
+export interface GetInfluencerSubmissions {
+  page: number;
+  limit: number;
+  [key: string]: any;
+}
+
 
 export interface SocialMediaAccount {
   platformName: string;
