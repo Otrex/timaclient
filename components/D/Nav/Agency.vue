@@ -22,7 +22,9 @@
     <DashboardNavigatorMenuItem
       label="Influencers"
       icon="nav/influencers"
-      to="/dashboard/influencers"
+      :to="{
+        name: 'BrandViewInfluencers',
+      }"
     />
     <DashboardNavigatorMenuItem
       label="Payment"
