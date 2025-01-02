@@ -1,5 +1,5 @@
 <template>
-  <div @click="onOpen" class="relative dev h-full">
+  <div @click="onOpen" class="relative h-full">
     <div v-if="event" class="bg-[#BBE1FF] h-full rounded-lg">
       <div
         class="bg-[#65BCFF]/80 border-b border-dashed border-black px-4 py-2 rounded-t-lg"

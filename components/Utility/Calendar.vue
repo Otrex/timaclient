@@ -2,7 +2,7 @@
   <div class="p-5 h-[calc(100vh-100px)]">
     <div class="flex justify-between items-center mb-4">
       <div class="font-medium text-lg flex items-center gap-6">
-        <h5>{{ currentMonth }} {{ currentDate.getFullYear() }}</h5>
+        <h5>{{ currentMonth }} {{ currentDate.year() }}</h5>
         <button
           class="hover:bg-gray-200 active:bg-gray-300 outline py-2 text-base px-4 outline-[#BBBBBB]/60 rounded-[10px]"
         >
@@ -36,9 +36,9 @@
       </div>
       <div class="max-h-screen overflow-y-auto">
         <div class="grid-temp">
-          <div class="border-x border-t">&nbsp;</div>
+          <div class="border-x border-t"> </div>
           <template v-for="(day, index) in daysOfWeek" :key="index">
-            <div class="border flex-1">&nbsp;</div>
+            <div class="border flex-1"> </div>
           </template>
         </div>
         <template v-for="(time, index) in timeSlots" :key="index">
@@ -69,57 +69,52 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
+import dayjs from "dayjs";
 
-const currentDate = ref(new Date(2025, 0, 1));
+const currentDate = ref(dayjs("2025-01-01"));
 const dateRange = ref({
-  start: new Date(2020, 0, 6),
-  end: new Date(2020, 0, 10),
+  start: dayjs("2020-01-06").toDate(),
+  end: dayjs("2020-01-10").toDate(),
 });
 
 const currentMonth = computed(() => {
-  return currentDate.value.toLocaleString("default", {
-    month: "long",
-  });
+  return currentDate.value.format("MMMM");
 });
 
 const daysOfWeek = computed(() => {
   const days = [];
   for (let i = 0; i < 7; i++) {
-    const date = new Date(currentDate.value);
-    date.setDate(date.getDate() - date.getDay() + i);
-    const dayName = date.toLocaleString("en-US", { weekday: "short" });
-    const dayNumber = date.getDate();
-    days.push(
-      `${dayName.toUpperCase()} ${dayNumber.toString().padStart(2, "0")}`
-    );
+    const date = currentDate.value.startOf("week").add(i, "day");
+    const dayName = date.format("ddd");
+    const dayNumber = date.format("DD");
+    days.push(`${dayName.toUpperCase()} ${dayNumber}`);
   }
   return days;
 });
 
 const timeSlots = ref(["8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM"]);
 
-// Events could be loaded via API or passed in as a prop
 const events = ref<any[]>([
   {
     id: 1,
-    day: new Date(2024, 10, 13),
+    day: dayjs("2024-11-13"),
     time: "9 AM",
     title: "Naija Made It Campaign Starts",
   },
   {
     id: 2,
-    day: new Date(2024, 10, 18),
+    day: dayjs("2024-11-18"),
     time: "10 AM",
     title: "Naija Made It Campaign Starts",
   },
 ]);
 
 const prevWeek = () => {
-  currentDate.value.setDate(currentDate.value.getDate() - 7);
+  currentDate.value = currentDate.value.subtract(7, "day");
 };
 
 const nextWeek = () => {
-  currentDate.value.setDate(currentDate.value.getDate() + 7);
+  currentDate.value = currentDate.value.add(7, "day");
 };
 
 const getEvent = (day: string, time: string) => {
@@ -127,36 +122,25 @@ const getEvent = (day: string, time: string) => {
   const [timeValue, period] = time.split(" ");
   const hour = period === "PM" ? parseInt(timeValue) + 12 : parseInt(timeValue);
 
-  const eventDate = new Date(
-    currentDate.value.getFullYear(),
-    currentDate.value.getMonth(),
-    parseInt(dayNumber),
-    hour
-  );
+  const eventDate = dayjs()
+    .year(currentDate.value.year())
+    .month(currentDate.value.month())
+    .date(parseInt(dayNumber))
+    .hour(hour);
 
   return (
     Array.isArray(events.value) &&
     events.value?.find((event) => {
-      return (
-        eventDate?.toLocaleDateString() ===
-        (event?.day || new Date(event?.scheduleTime))?.toLocaleDateString()
-      );
+      const eventDay = dayjs(event?.scheduleTime || event?.day);
+      return eventDate.format("YYYY-MM-DD") === eventDay.format("YYYY-MM-DD");
     })
   );
 };
 
-const formatEventDate = (date: Date) => {
-  const dayName = date
-    .toLocaleString("en-US", { weekday: "short" })
-    .toUpperCase();
-  const dayNumber = date.getDate().toString().padStart(2, "0");
-  return `${dayName} ${dayNumber}`;
+const formatEventDate = (date: dayjs.Dayjs) => {
+  return date.format("ddd DD").toUpperCase();
 };
 
-// onMounted(() => {
-//   // Set the initial date to today
-//   currentDate.value = new Date();
-// });
 const api = useAPI();
 
 const { execute: getCalendar } = useRequestState({
@@ -166,6 +150,7 @@ const { execute: getCalendar } = useRequestState({
     events.value = response.data;
   },
 });
+
 const { execute: setupCalendar } = useRequestState({
   action: (...args: any) => api.setupCalendarEvents(args),
   onSuccess: (response) => {},
