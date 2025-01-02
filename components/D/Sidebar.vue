@@ -60,19 +60,26 @@
 const colorMode = useColorMode();
 const authStore = useAuthStore();
 const loading = ref(false);
-const mode = ref(true);
+const mode = ref(
+  localStorage.getItem("colorMode") === "dark" || colorMode.value === "dark"
+);
 
 watch(mode, () => {
-  if (mode.value) {
-    colorMode.value = "dark";
-  } else {
-    colorMode.value = "light";
-  }
+  const newMode = mode.value ? "dark" : "light";
+  colorMode.value = newMode;
+  colorMode.preference = newMode;
+  localStorage.setItem("colorMode", newMode);
 });
 
 onMounted(() => {
-  mode.value = colorMode.value === "dark" ? true : false;
-  colorMode.preference = colorMode.value;
+  const savedMode = localStorage.getItem("colorMode");
+  if (savedMode) {
+    mode.value = savedMode === "dark";
+    colorMode.value = savedMode;
+    colorMode.preference = savedMode;
+  } else {
+    mode.value = colorMode.value === "dark";
+  }
 });
 
 const userType = computed(() => {

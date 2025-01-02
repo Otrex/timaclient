@@ -1,6 +1,6 @@
 <template>
-  <div class="relative h-full">
-    <div @click="onOpen" class="bg-[#BBE1FF] h-full rounded-lg">
+  <div @click="onOpen" class="relative dev h-full">
+    <div v-if="event" class="bg-[#BBE1FF] h-full rounded-lg">
       <div
         class="bg-[#65BCFF]/80 border-b border-dashed border-black px-4 py-2 rounded-t-lg"
       >
@@ -26,11 +26,17 @@
 const props = defineProps({
   time: String,
   title: String,
+  event: {
+    type: Object,
+    default: () => null,
+  },
 });
 const position = ref({
   x: 0,
   y: 0,
 });
+
+const uid = ref(Math.random().toString(36).substring(2, 9));
 
 const open = ref(false);
 
@@ -40,7 +46,20 @@ function onOpen(e: MouseEvent) {
     y: e.clientY,
   };
   open.value = !open.value;
+  window.dispatchEvent(
+    new CustomEvent("info:click", {
+      detail: uid,
+    })
+  );
 }
+
+onMounted(() => {
+  window.addEventListener("info:click", (e: CustomEvent | Event) => {
+    if (e.detail != uid) {
+      open.value = false;
+    }
+  });
+});
 </script>
 
 <style></style>

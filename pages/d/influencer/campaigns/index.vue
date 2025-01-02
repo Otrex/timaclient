@@ -32,7 +32,7 @@
         :data="campaigns"
         :state="fetchingCampaigns"
       >
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <template v-for="(campaign, i) in campaigns" :key="i">
             <NuxtLink
               class="w-full"
@@ -66,7 +66,7 @@
         :data="applications"
         :state="gapplications"
       >
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <template
             v-for="campaign in applications"
             :key="campaign.campaign_id"
@@ -83,7 +83,7 @@
         :data="submissions"
         :state="gettingSubmissions"
       >
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <template v-for="campaign in submissions" :key="campaign.campaign_id">
             <DContentSubmissionCard :item="campaign" />
           </template>

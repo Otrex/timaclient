@@ -54,10 +54,9 @@
               <div class="border flex-1 aspect-square">
                 <div class="aspect-square w-full p-1">
                   <CalendarEvent
-                    v-if="getEvent(day, time)"
                     v-bind="getEvent(day, time)"
+                    :event="getEvent(day, time)"
                   />
-                  <div v-else>&nbsp;</div>
                 </div>
               </div>
             </template>
@@ -71,7 +70,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 
-const currentDate = ref(new Date(2024, 9, 13));
+const currentDate = ref(new Date(2025, 0, 1));
 const dateRange = ref({
   start: new Date(2020, 0, 6),
   end: new Date(2020, 0, 10),
@@ -100,14 +99,16 @@ const daysOfWeek = computed(() => {
 const timeSlots = ref(["8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM"]);
 
 // Events could be loaded via API or passed in as a prop
-const events = ref([
+const events = ref<any[]>([
   {
-    day: new Date(2024, 9, 13),
-    time: "8 AM",
+    id: 1,
+    day: new Date(2024, 10, 13),
+    time: "9 AM",
     title: "Naija Made It Campaign Starts",
   },
   {
-    day: new Date(2024, 9, 12),
+    id: 2,
+    day: new Date(2024, 10, 18),
     time: "10 AM",
     title: "Naija Made It Campaign Starts",
   },
@@ -123,18 +124,25 @@ const nextWeek = () => {
 
 const getEvent = (day: string, time: string) => {
   const [_, dayNumber] = day.split(" ");
+  const [timeValue, period] = time.split(" ");
+  const hour = period === "PM" ? parseInt(timeValue) + 12 : parseInt(timeValue);
+
   const eventDate = new Date(
     currentDate.value.getFullYear(),
     currentDate.value.getMonth(),
-    parseInt(dayNumber)
+    parseInt(dayNumber),
+    hour
   );
 
-  return events.value.find((event) => {
-    return (
-      eventDate.toLocaleDateString() === event.day.toLocaleDateString() &&
-      event.time === time
-    );
-  });
+  return (
+    Array.isArray(events.value) &&
+    events.value?.find((event) => {
+      return (
+        eventDate?.toLocaleDateString() ===
+        (event?.day || new Date(event?.scheduleTime))?.toLocaleDateString()
+      );
+    })
+  );
 };
 
 const formatEventDate = (date: Date) => {
@@ -149,6 +157,19 @@ const formatEventDate = (date: Date) => {
 //   // Set the initial date to today
 //   currentDate.value = new Date();
 // });
+const api = useAPI();
+
+const { execute: getCalendar } = useRequestState({
+  immediately: true,
+  action: () => api.getCalendarEvents(),
+  onSuccess: (response) => {
+    events.value = response.data;
+  },
+});
+const { execute: setupCalendar } = useRequestState({
+  action: (...args: any) => api.setupCalendarEvents(args),
+  onSuccess: (response) => {},
+});
 </script>
 <style>
 .bordered,
