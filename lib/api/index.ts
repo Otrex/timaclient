@@ -552,6 +552,44 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async withdrawFunds(data: Payload.WithdrawFunds) {
+    return this.request({
+      url: '/wallet/withdraw',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
+  async getWalletStats() {
+    return this.request<Response.GetWalletStats>({
+      url: '/wallet/stats',
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
+
+  async getCalendarEvents() {
+    return this.request<Response.GetCalendarEvents>({
+      url: '/users/calendar',
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
+
+  async setupCalendarEvents(payload: any) {
+    const data = this.toFormData({
+      ...payload,
+    });
+
+    return this.request({
+      url: '/users/calendar',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
 
   async getWithdrawalBanks() {
     return this.request<Response.GetWithdrawalBanksResponse>({

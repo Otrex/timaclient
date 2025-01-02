@@ -6,6 +6,15 @@ export interface CreateUser extends IResponse<{
   token: string
 }> { }
 
+export interface GetWalletStats extends IResponse<{
+  data: {
+    totalTransactions: number;
+    totalPendingPayments: number;
+    balance: number;
+    totalCompletedPayments: number;
+  };
+}> { }
+
 export interface Login
   extends IResponse<{
     accountWallet: Core.AccountWallet;

@@ -44,8 +44,8 @@
               }"
             >
               <DashboardCampaignCard
-                :image="(campaign.banner as string)"
                 :budget="0"
+                :image="(campaign.banner as string)"
                 :category="campaign.category"
                 :description="campaign.campaignAbout"
                 :deadline="campaign.endDate"

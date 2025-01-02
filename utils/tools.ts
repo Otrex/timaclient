@@ -214,8 +214,10 @@ export default {
   },
   timeAgo: useTimeAgo,
   formatCurrency(number: number, currencySymbol = "₦", decimalPlaces = 0) {
+    console.log(number);
+
     if (typeof number !== 'number' || isNaN(number)) {
-      throw new Error('Invalid input. Please provide a valid number.');
+      return "---"
     }
 
     const formattedNumber = number.toLocaleString('en-US', {

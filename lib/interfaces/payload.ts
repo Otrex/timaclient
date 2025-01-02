@@ -11,6 +11,11 @@ export interface CampaignApplication {
   status: "APPROVED" | "DECLINED" | "PENDING";
 }
 
+export interface WithdrawFunds {
+  amount: number;
+  transactionPin: string;
+}
+
 export interface GetInfluencerSubmissions {
   page: number;
   limit: number;

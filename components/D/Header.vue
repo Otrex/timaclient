@@ -36,7 +36,7 @@
 
           <UiButtonDefault
             v-if="routeName === 'ViewBrandCampaign'"
-            @click="navigateTo({ name: 'DashboardCampaignsCreate' })"
+            @click="() => navigateTo({ name: 'DashboardCampaignsCreate' })"
             class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
             variant="primary"
           >
@@ -79,6 +79,15 @@
     </div>
     <div class="flex justify-end">
       <div class="flex flex-row gap-[0.625rem] items-center">
+        <NuxtLink
+          :to="`/d/${user?.role?.toLowerCase()}/calendar`"
+          class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
+        >
+          <UtSvg
+            name="calendar"
+            class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
+          />
+        </NuxtLink>
         <DashboardNotification />
         <DashboardUserMenu
           :image="profile?.profileImage || '#'"

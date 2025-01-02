@@ -1,15 +1,5 @@
 <template>
   <div ref="target" class="inline-flex flex-row">
-    <button
-      @click="goToCalendar"
-      class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
-    >
-      <UtSvg
-        name="calendar"
-        class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
-      />
-    </button>
-
     <NuxtLink
       :to="{
         name:

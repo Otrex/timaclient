@@ -18,8 +18,8 @@
               <div>
                 <h1 class="font-semibold text-xl text-[#333333]">My Wallet</h1>
                 <p class="flex items-end gap-2 text-[#333333]">
-                  <span class="text-base text-[#545454]"> USD </span>
-                  {{ formatMoney(wallet) }}
+                  <span class="text-base text-[#545454]"> NGN </span>
+                  {{ tools.formatCurrency(wallet) }}
                 </p>
               </div>
             </div>
@@ -28,7 +28,12 @@
               <UiButtonDefault
                 class="w-full px-3 py-2"
                 variant="primary"
-                @click="pinModal.set = true"
+                @click="
+                  () => {
+                    withdrawState = 'init';
+                    pinModal.set = true;
+                  }
+                "
               >
                 <div class="flex gap-3">
                   <UtSvg name="send" dim w="21px" h="21px" />
@@ -46,7 +51,9 @@
           :class="['cardTab', activeTab === 0 && 'active']"
         >
           <div class="text-center">
-            <h1 class="font-semibold text-xl">0</h1>
+            <h1 class="font-semibold text-xl">
+              {{ walletStats.totalTransactions }}
+            </h1>
             <p class="text-base text-[#545454]">Total transactions</p>
           </div>
         </button>
@@ -58,7 +65,9 @@
           :class="['cardTab', activeTab === 1 && 'active']"
         >
           <div class="text-center">
-            <h1 class="font-semibold text-xl">0</h1>
+            <h1 class="font-semibold text-xl">
+              {{ walletStats.totalCompletedPayments }}
+            </h1>
             <p class="text-base text-[#545454]">Completed Payment</p>
           </div>
         </button>
@@ -70,7 +79,9 @@
           :class="['cardTab', activeTab === 2 && 'active']"
         >
           <div class="text-center">
-            <h1 class="font-semibold text-xl">0</h1>
+            <h1 class="font-semibold text-xl">
+              {{ walletStats.totalPendingPayments }}
+            </h1>
             <p class="text-base text-[#545454]">Pending Payment</p>
           </div>
         </button>
@@ -110,7 +121,7 @@
 
       <div class="border border-[#BBBBBB] rounded-xl">
         <table class="w-full rounded-xl">
-          <thead class="">
+          <thead class="bg-blue-200">
             <tr>
               <th class="font-normal text-left">Transaction ID</th>
               <th class="font-normal">Description</th>
@@ -144,10 +155,24 @@
                   {{ transaction.description }}
                 </td>
                 <td class="align-middle text-center">
-                  {{ formatMoney(transaction.amount || 0) }}
+                  {{ tools.formatCurrency(transaction.amount || 0) }}
                 </td>
                 <td class="align-middle text-center">
-                  {{ transaction.transaction_type }}
+                  <span
+                    v-if="transaction.transaction_type === 'TRANSFER'"
+                    class="text-[#2DBA62] bg-[#2DBA62]/10 px-3 py-1 rounded-full"
+                    >Received</span
+                  >
+                  <span
+                    v-else-if="transaction.transaction_type === 'DEBIT'"
+                    class="text-[#FF4D4D] bg-[#FF4D4D]/10 px-3 py-1 rounded-full"
+                    >Debit</span
+                  >
+                  <span
+                    v-else
+                    class="text-[#545454] bg-[#545454]/10 px-3 py-1 rounded-full"
+                    >{{ transaction.transaction_type }}</span
+                  >
                 </td>
                 <td class="align-middle text-center">
                   {{ new Date(transaction.createdAt).toLocaleDateString() }}
@@ -160,7 +185,26 @@
                     <span class="text-[#FFCA5B]">Pending</span>
                   </template>
                   <template v-else>
-                    <span>{{ transaction.status }}</span>
+                    <span
+                      v-if="transaction.status === 'SUCCESSFUL'"
+                      class="text-[#2DBA62] bg-[#2DBA62]/10 px-3 py-1 rounded-full"
+                      >Successful</span
+                    >
+                    <span
+                      v-else-if="transaction.status === 'FAILED'"
+                      class="text-[#FF4D4D] bg-[#FF4D4D]/10 px-3 py-1 rounded-full"
+                      >Failed</span
+                    >
+                    <span
+                      v-else-if="transaction.status === 'ABANDONED'"
+                      class="text-[#777777] bg-[#777777]/10 px-3 py-1 rounded-full"
+                      >Abandoned</span
+                    >
+                    <span
+                      v-else
+                      class="text-[#545454] bg-[#545454]/10 px-3 py-1 rounded-full"
+                      >{{ transaction.status }}</span
+                    >
                   </template>
                 </td>
                 <td class="align-middle text-center">
@@ -194,9 +238,14 @@
 
         <div>
           <div class="relative">
-            <UiInputText class="pl-10" :max-length="balance" type="number" />
+            <UiInputText
+              class="pl-10"
+              :max-length="wallet"
+              v-model="form.amount"
+              type="number"
+            />
             <div
-              class="absolute w-[3.75rem] flex items-center justify-center left-0 inset-y-0"
+              class="absolute w-[3.75rem] flex items-center justify-center dark:text-black left-0 inset-y-0"
             >
               {{ "₦" }}
             </div>
@@ -206,7 +255,7 @@
             <h1 class="text-[#777777] items-center flex gap-2 text-base">
               Available:
               <span class="text-[#545454] text-2xl">{{
-                tools.formatCurrency(balance)
+                tools.formatCurrency(wallet)
               }}</span>
             </h1>
           </div>
@@ -220,6 +269,7 @@
                 value: e.id,
               }))
             "
+            v-model="form.bankId"
             class="w-full"
             placeholder="Select Bank"
           />
@@ -231,7 +281,7 @@
               variant="primary"
               class="py-2 px-8"
               label="Withdraw"
-              @click=""
+              @click="() => (withdrawState = 'pin')"
             />
           </div>
         </div>
@@ -241,6 +291,7 @@
         <ModalsSetPin
           title="Enter Transaction Pin"
           description="Please create a PIN for secure transactions"
+          :loading="withdrawing === constants.LOADING"
           @submit="onSubmit"
           label="Create"
         />
@@ -264,22 +315,13 @@ definePageMeta({
 const api = useAPI();
 const optionsStore = useOptionsStore();
 const wallet = ref<any>(null);
-const balance = ref<number>(30);
 const transactions = ref<any>([]);
+const walletStats = ref<any>({});
 
 onMounted(async () => {
   try {
-    console.log([
-      await api.getWalletTransactions({
-        type: "CREDIT",
-        days: "30",
-        page: 1,
-        limit: 10,
-      }),
-    ]);
     const { data } = await api.getWalletBalance();
-
-    wallet.value = data.balance;
+    wallet.value = +data.balance;
   } catch (error) {}
 });
 
@@ -296,6 +338,19 @@ onMounted(async () => {
   await optionsStore.getWithdrawalBanks();
 });
 
+useRequestState({
+  immediately: true,
+  action: async () => api.getWalletStats(),
+  onSuccess: ({ data }) => {
+    walletStats.value = data;
+  },
+});
+
+const form = reactive({
+  amount: 0,
+  bankId: "",
+});
+
 const pinModal = reactive({
   set: false,
   confirm: false,
@@ -304,12 +359,26 @@ const pinModal = reactive({
 
 function onSubmit(pin: string) {
   pinModal.pin = pin;
-  pinModal.confirm = true;
+  withdraw();
+  pinModal.set = false;
 }
 
-async function onConfirm(pin: string) {
-  // execute();
-}
+const { execute: withdraw, state: withdrawing } = useRequestState({
+  action: async () =>
+    api.withdrawFunds({
+      amount: form.amount,
+      transactionPin: pinModal.pin,
+    }),
+
+  onSuccess: () => {
+    withdrawState.value = "suucess";
+    notify({
+      type: "success",
+      title: "Withdrawal Request Successful",
+      text: "Your withdrawal request has been sent successfully",
+    });
+  },
+});
 
 const { execute, state, v$ } = useRequestState({
   validation: {
@@ -471,7 +540,13 @@ const route = useRoute();
 const searchQuery = ref<string>("");
 const searchStatus = ref<string>("");
 const searchTransactions = useRequestState({
-  action: () => api.getInfluencerTransactionsByStatus(searchStatus.value),
+  action: () =>
+    api.getWalletTransactions({
+      type: "CREDIT",
+      days: "30",
+      page: 1,
+      limit: 10,
+    }),
   immediately: true,
   onSuccess: (response) => {
     transactions.value = response.data;
@@ -499,13 +574,6 @@ const getStats = useRequestState({
     paymentStats.value = response.data;
   },
 });
-
-function formatMoney(amount: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(amount);
-}
 </script>
 
 <style>
