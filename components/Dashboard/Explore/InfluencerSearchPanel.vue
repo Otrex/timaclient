@@ -25,7 +25,7 @@
         <UiInputOption
           name="socials"
           type="single"
-          v-model="form.socialMedia"
+          v-model="form.socialMediaPlatform"
           value="instagram"
           main-class="!rounded-[0.5625rem] flex items-center justify-center w-full max-w-[3.6875rem] h-[2.8125rem]"
         >
@@ -37,7 +37,7 @@
         <UiInputOption
           name="socials"
           type="single"
-          v-model="form.socialMedia"
+          v-model="form.socialMediaPlatform"
           value="youtube"
           main-class="!rounded-[0.5625rem] h-full flex items-center justify-center w-full max-w-[3.6875rem] max-h-[2.8125rem]"
         >
@@ -49,7 +49,7 @@
         <UiInputOption
           name="socials"
           type="single"
-          v-model="form.socialMedia"
+          v-model="form.socialMediaPlatform"
           value="tiktok"
           main-class="!rounded-[0.5625rem] h-full flex items-center justify-center w-full max-w-[3.6875rem] max-h-[2.8125rem]"
         >
@@ -58,7 +58,7 @@
         <UiInputOption
           name="socials"
           type="single"
-          v-model="form.socialMedia"
+          v-model="form.socialMediaPlatform"
           value="facebook"
           main-class="!rounded-[0.5625rem] h-full flex items-center justify-center w-full max-w-[3.6875rem] max-h-[2.8125rem]"
         >
@@ -71,7 +71,7 @@
           type="single"
           name="socials"
           value="twitter"
-          v-model="form.socialMedia"
+          v-model="form.socialMediaPlatform"
           main-class="!rounded-[0.5625rem] h-full flex items-center justify-center w-full max-w-[3.6875rem] max-h-[2.8125rem]"
         >
           <UtSvg
@@ -83,7 +83,7 @@
           name="socials"
           type="single"
           value="linkedin"
-          v-model="form.socialMedia"
+          v-model="form.socialMediaPlatform"
           main-class="!rounded-[0.5625rem] h-full flex items-center justify-center w-full max-w-[3.6875rem] max-h-[2.8125rem]"
         >
           <UtSvg
@@ -105,15 +105,21 @@
           />
         </div>-->
         <div>
-          <label class="block mb-[0.875rem]">Influencer size</label>
+          <label class="block mb-[0.875rem]"
+            >Influencer Audience Demographics</label
+          >
           <UiInputSelect
-            :options="tools.generationOptions(campaignOpts.size || [])"
+            :options="
+              tools.generationOptions(
+                optionsStore.$campaignOptions?.ageGroup || []
+              )
+            "
             class="w-full"
-            v-model="form.size"
+            v-model="form.audienceDemographics"
             placeholder="-- Select --"
           />
         </div>
-        <div>
+        <!-- <div>
           <label class="block mb-[0.875rem]">Audience location</label>
           <UiInputSelect
             :options="optionsStore.$countries"
@@ -130,13 +136,13 @@
             v-model="form.ageGroup"
             placeholder="-- Select --"
           />
-        </div>
+        </div> -->
         <div>
-          <label class="block mb-[0.875rem]">Audience Gender</label>
+          <label class="block mb-[0.875rem]">Category</label>
           <UiInputSelect
-            :options="tools.generationOptions(campaignOpts.gender || [])"
+            :options="tools.generationOptions(optionsStore.$industries || [])"
             class="w-full"
-            v-model="form.gender"
+            v-model="form.category"
             placeholder="-- Select --"
           />
         </div>
@@ -202,28 +208,21 @@
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
           >
             <template v-for="(influencer, idx) in influencers" :key="idx">
-              <NuxtLink
-                :to="{
-                  name: 'Campaign >>> Influencers',
-                }"
-              >
-                <DashboardInfluencerCard
-                  :name="influencer.userName"
-                  :socialMedia="influencer.socialMediaPlatforms"
-                  :profilePicture="
-                    influencer.insight.profilePictureUrl ||
-                    influencer.profilePicture
-                  "
-                  :public-id="influencer.userPublicId"
-                  :cover="influencer.profilePicture"
-                  :earnedMedia="influencer.insight.followers"
-                  :engagements="influencer.insight.avgEngagement"
-                  :comments="influencer.insight.totalComments"
-                  :likes="influencer.insight.totalLikes"
-                  :saved="influencer.insight.totalMedia"
-                  :date="String(influencer.applicationDate)"
-                />
-              </NuxtLink>
+              <DashboardInfluencerCard
+                :name="influencer.userName"
+                :socialMedia="
+                  influencer.socialMediaAccounts.map((e) => e.platformName)
+                "
+                :profilePicture="influencer.profileImage"
+                :public-id="influencer.user_id"
+                :cover="influencer.profileImage"
+                :earnedMedia="0"
+                :engagements="0"
+                :comments="0"
+                :likes="0"
+                :saved="0"
+                :date="String(influencer.createdAt)"
+              />
             </template>
           </div>
         </template>
@@ -234,6 +233,7 @@
 
 <script setup lang="ts">
 import { Core } from "~/lib/interfaces";
+import type { GetInfluencersResponse } from "~/lib/interfaces/response";
 
 const props = defineProps<{
   modelValue?: {
@@ -250,24 +250,28 @@ const form = reactive<Partial<Core.ExploreInfluencerFilter>>({});
 
 const api = useAPI();
 const optionsStore = useOptionsStore();
-const search = ref<Core.Campaign[]>([]);
 const emits = defineEmits(["update:state"]);
-const campaignOpts = computed(() => optionsStore.$campaignOptions[0] || []);
 const viewSearchFilter = ref(false);
-const influencers = ref<Core.ApprovedCampaignInfluencer[]>([]);
+const influencers = ref<GetInfluencersResponse["data"]>([]);
 
 const {
   state,
   execute,
   clear: clearSearch,
 } = useRequestState({
-  action: () => api.searchInfluencers(form),
+  action: () =>
+    api.searchInfluencers({
+      ...form,
+      audienceDemographics: [form.audienceDemographics as any],
+      category: [form.category as any],
+    }),
   onSuccess: (response) => {
-    influencers.value = response.data.map((e) => ({
-      ...e,
-      socialMediaPlatforms: JSON.parse(e.socialMediaPlatforms as any),
-    }));
+    influencers.value = response.data;
   },
+});
+
+onMounted(async () => {
+  await optionsStore.loadOptions().catch(() => {});
 });
 
 const clearFilter = () => {

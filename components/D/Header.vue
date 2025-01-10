@@ -154,6 +154,7 @@ const routeNameMap: Record<string, any> = {
   InfluencerFinance: "Finance",
   InfluencerCalendar: "Calendar",
   InfluencerNotification: "Notifications",
+  BrandViewInfluencers: "Influencers",
   InfluencerSubmitContent: defineComponent({
     template: '<h3 class="font-bold">Attach Files</h3>',
   }),

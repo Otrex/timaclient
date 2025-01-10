@@ -135,12 +135,18 @@ export type AgeGenderData = {
 };
 
 export type ExploreInfluencerFilter = {
-  size: string;
-  ageGroup: string;
-  location: string;
-  gender: string;
-  socialMedia: string;
-  costPerPost: number;
+  // size: string;
+  // ageGroup: string;
+  // location: string;
+  // gender: string;
+  // socialMedia: string;
+  // costPerPost: number;
+
+  name: string;
+  socialMediaPlatform: string[];
+  audienceDemographics: string[];
+  category: string[];
+
 }
 
 export type SearchFilter = { page: number; size: number; sortIn: 'desc' | 'asc'; sortBy: string }
@@ -605,11 +611,31 @@ export interface BankDetails {
 }
 
 export interface Influencer {
-  influencerCategory: string[];
-  audienceSize: string[];
-  audienceGender: string[];
-  audienceAgeGroup: string[];
-  audienceLocation: string[];
+  statusProgress: string;
+  emailAddress: string;
+  phoneNumber: string;
+  role: string;
+  profile: {
+    country: string;
+    lastName: string;
+    address: string;
+    city: string;
+    profileSetupProgress: string;
+    profileImage: string;
+    userId: string;
+    createdAt: string;
+    firstName: string;
+    referralCode: string;
+    industries: string[];
+    hasSetTransactionPin: boolean;
+    otherName: string;
+    id: string;
+    state: string;
+    updatedAt: string;
+  };
+  id: string;
+  userName: string;
+  paymentInformation: Record<string, never>;
 }
 
 export interface Overview {

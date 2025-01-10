@@ -11,6 +11,7 @@
             :title="buzz.title"
             :bg="buzz.bg"
             :influencers="buzz.influencers"
+            :loading="buzz.loading"
             :see-more="{
               name: 'Influencers',
               query: {
@@ -58,20 +59,22 @@ definePageMeta({
 });
 const buzzes = ref([
   {
-    title: "New influencers on the block",
+    title: "Recommended on the block",
     bg: { from: "#00EAFF", to: "#3C8CE7" },
     influencers: [] as Influencer[],
+    loading: true,
   },
   {
     title: "Top 100 influencers for the week",
     bg: { from: "#ABDCFF", to: "#0396FF" },
     influencers: [] as Influencer[],
+    loading: true,
   },
-  {
-    title: "Top categories for the week",
-    bg: { from: "#65FDF0", to: "#1D6FA3" },
-    influencers: [] as string[],
-  },
+  // {
+  //   title: "Top categories for the week",
+  //   bg: { from: "#65FDF0", to: "#1D6FA3" },
+  //   influencers: [] as string[],
+  // },
 ]);
 
 const bgColor = [
@@ -85,54 +88,61 @@ type Buzz = {
   data: { category: string; influencers: Influencer[] };
 };
 const api = useAPI();
-const route = useRoute();
 const categories = ref<Buzz[]>([]);
 const MAX_INFLUENCER_DISPLAY = 5;
 const filterToRequired = tools.truncateList(MAX_INFLUENCER_DISPLAY);
 
-const getNewInfluencers = useRequestState({
+useRequestState({
   immediately: true,
   action: () => api.getLatestInfluencers(),
   onSuccess: (response) => {
     buzzes.value[0].influencers = filterToRequired(response.data);
+    buzzes.value[0].loading = false;
+  },
+  onError: (error) => {
+    buzzes.value[0].loading = false;
   },
 });
 
-const getTopInfluencers = useRequestState({
+useRequestState({
   immediately: true,
   action: () =>
     api.getTopInfluencers({
-      page: 0,
+      page: 1,
       size: 5,
     }),
   onSuccess: (response) => {
     buzzes.value[1].influencers = filterToRequired(response.data);
+    buzzes.value[1].loading = false;
+  },
+  onError: (error) => {
+    buzzes.value[1].loading = false;
   },
 });
 
-const getTopCategories = useRequestState({
-  immediately: true,
-  action: async () => {
-    const response = await api.getTopCategories();
-    const influencers = await Promise.all(
-      response.data.map((j) => {
-        return api.getInfluencersByCategory(j);
-      })
-    );
+// useRequestState({
+//   immediately: true,
+//   action: async () => {
+//     const response = await api.getTopCategories();
+//     const influencers = await Promise.all(
+//       response.data.map((j) => {
+//         return api.getInfluencersByCategory(j);
+//       })
+//     );
 
-    return [response.data || [], influencers.map((e) => e.data) || []] as const;
-  },
-  onSuccess: ([$categories, influencers]) => {
-    buzzes.value[2].influencers = $categories; // This uses the 5 count number of category to display
-    categories.value = influencers.map((influencer, i) => {
-      return {
-        title: `${$categories[i]} Influencers`,
-        data: { category: $categories[i], influencers: influencer },
-        bg: bgColor[i % 3],
-      };
-    });
-  },
-});
+//     return [response.data || [], influencers.map((e) => e.data) || []] as const;
+//   },
+//   onSuccess: ([$categories, influencers]) => {
+//     buzzes.value[2].influencers = $categories; // This uses the 5 count number of category to display
+//     categories.value = influencers.map((influencer, i) => {
+//       return {
+//         title: `${$categories[i]} Influencers`,
+//         data: { category: $categories[i], influencers: influencer },
+//         bg: bgColor[i % 3],
+//       };
+//     });
+//   },
+// });
 </script>
 
 <style></style>

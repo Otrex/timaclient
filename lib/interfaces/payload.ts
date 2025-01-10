@@ -320,6 +320,19 @@ export interface SearchCampaigns {
 
 
 
+export interface SearchInfluencerFilters {
+  page?: number;
+  limit?: number;
+  name?: string;
+  socialMediaPlatform?: string[];
+  audienceDemographics?: string[];
+  category?: string[];
+  statusProgress?: "APPROVED" | "DECLINED" | "PENDING";
+}
+
+
+
+
 export interface ReviewUser {
   user_id: string;
   review: 'APPROVED' | 'DECLINED';

@@ -1,5 +1,5 @@
 <template>
-  <div>Infleuncers</div>
+  <div class="p-5">Influencer</div>
 </template>
 
 <script setup lang="ts">

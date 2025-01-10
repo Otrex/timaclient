@@ -3,7 +3,21 @@
     class="var p-[1.25rem] pt-[2.5rem] flex flex-col justify-between rounded-[1.25rem] bg-gradient-to-br from-[--from] to-[--to]"
   >
     <h3 class="text-white text-[1.5rem]">{{ props.title }}</h3>
-    <template v-if="$props.influencers && $props.influencers.length > 0">
+    <template v-if="props.loading">
+      <div class="flex items-center justify-center h-50">
+        <div class="relative w-16 h-16">
+          <div
+            class="absolute w-full h-full border-4 border-white rounded-full animate-ping opacity-75"
+          ></div>
+          <div
+            class="absolute w-full h-full border-4 border-white border-t-transparent rounded-full animate-spin"
+          ></div>
+        </div>
+      </div>
+    </template>
+    <template
+      v-if="props.influencers && props.influencers.length > 0 && !props.loading"
+    >
       <div
         class="flex flex-wrap gap-[0.75rem] mx-auto justify-center max-w-[15rem] w-full mt-[2.0625rem] mb-[3.75rem]"
       >
@@ -30,8 +44,8 @@
               class="w-full h-full object-cover"
             /> -->
             <UiImg
-              :src="influencer.profilePicture"
-              class="w-full h-full object-cover bg-white"
+              :src="influencer.profile.profileImage"
+              class="w-full -mb-3 h-full object-cover bg-white"
             />
           </template>
         </div>
@@ -61,6 +75,7 @@ const props = defineProps<{
     from: string;
     to: string;
   };
+  loading?: boolean;
   title: string;
   images?: string[];
   seeMore?: RouteLocationRaw;

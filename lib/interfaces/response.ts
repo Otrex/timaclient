@@ -6,6 +6,7 @@ export interface CreateUser extends IResponse<{
   token: string
 }> { }
 
+export interface GetCalendarEvents { }
 export interface GetWalletStats extends IResponse<{
   data: {
     totalTransactions: number;
@@ -543,6 +544,30 @@ export interface GetInfluencerContentApplicationsResponse {
       otherName: string;
     };
   }[];
+  message: string;
+  statusCode: number;
+}
+
+export interface GetInfluencersResponse {
+  data: {
+    country: string;
+    createdAt: string;
+    emailAddress: string;
+    socialMediaAccounts: {
+      platformName?: string;
+      userName?: string;
+    }[];
+    user_id: string;
+    industries: string[];
+    profileImage: string;
+    userName: string;
+    updatedAt: string;
+    firstName?: string;
+    lastName?: string;
+  }[];
+  limit: number;
+  totalInfluencers: number;
+  page: number;
   message: string;
   statusCode: number;
 }

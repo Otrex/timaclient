@@ -812,6 +812,18 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getTopInfluencers(data: Partial<Payload.Filter>) {
+    return this.request<Response.GetInfluencers>({
+      url: "/brand/influencer/fetch",
+      requireAuth: true,
+      method: "POST",
+      data: {
+        ...data,
+        top: true
+      }
+    });
+  }
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
@@ -892,16 +904,14 @@ export default class TimaAPI extends UploadAPI {
   }
 
   async endCampaign(publicId: string) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: {
-            status: "success",
-            message: "Campaign ended successfully",
-          },
-        });
-      }, 2000);
-    });
+    return this.request<any>({
+      url: '/brand/campaign/close',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": publicId
+      }
+    })
   }
 
 
@@ -915,9 +925,31 @@ export default class TimaAPI extends UploadAPI {
 
   async brandOverviewStats() {
     return this.request<Response.GetBrandOverviewStatsResponse>({
-      method: "POST",
-      requireAuth: true,
       url: "/brand/overview-stat",
+      requireAuth: true,
+      method: "POST",
+    })
+  }
+
+  async getLatestInfluencers({ page = 1, limit = 10 }: { page?: number; limit?: number } = {}) {
+    return this.request<Response.GetInfluencers>({
+      url: "/brand/influencer/fetch",
+      requireAuth: true,
+      method: "POST",
+      data: {
+        page,
+        limit,
+        recommended: true,
+      }
+    });
+  }
+
+  async searchInfluencers(payload: Partial<Payload.SearchInfluencerFilters>) {
+    return this.request<Response.GetInfluencersResponse>({
+      url: "/brand/influencer/search",
+      requireAuth: true,
+      method: "POST",
+      data: payload
     })
   }
 
@@ -1081,13 +1113,6 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async searchInfluencers(filter: Partial<Core.ExploreInfluencerFilter>) {
-    return this.request<Response.GetApprovedInfluencers>({
-      url: this.querify(`/agency/v1/influencer/search/campaign`, filter),
-      requireAuth: true,
-      method: "GET",
-    });
-  }
 
   async getDemographyInsights(data: Payload.DemographyInsight) {
     return this.request<Response.GetDemographyInsights>({
@@ -1168,21 +1193,9 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getLatestInfluencers() {
-    return this.request<Response.GetInfluencers>({
-      url: "/agency/v1/influencer/search/latest",
-      requireAuth: true,
-      method: "GET",
-    });
-  }
 
-  async getTopInfluencers(data: Partial<Payload.Filter>) {
-    return this.request<Response.GetInfluencers>({
-      url: this.querify(`/agency/v1/influencer/search/top`, data),
-      requireAuth: true,
-      method: "GET",
-    });
-  }
+
+
 
   async getTopCategories() {
     return this.request<IResponse<string[]>>({
