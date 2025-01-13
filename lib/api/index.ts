@@ -443,7 +443,7 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getBrandCampaigns({ page = 1, limit = 10, statusProgress }: Payload.GetCampaigns) {
+  async getBrandCampaigns({ page = 1, limit = 10, ...others }: Payload.GetCampaigns) {
     return this.request<GetCampaignsResponse['data']>({
       url: '/brand/campaign/fetch',
       requireAuth: true,
@@ -451,7 +451,7 @@ export default class TimaAPI extends UploadAPI {
       data: {
         page,
         limit,
-        ...(statusProgress && { statusProgress })
+        ...others
       }
     })
   }
@@ -516,7 +516,7 @@ export default class TimaAPI extends UploadAPI {
     body.append('banner', banner);
     body.append('requestBody', JSON.stringify(rest.requestBody));
 
-    return this.request({
+    return this.request<Response.ICreateCampaign>({
       url: '/brand/campaign',
       requireAuth: true,
       method: 'POST',
@@ -713,14 +713,15 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
-  async getBrandInfluencers({ page = 1, limit = 10 }: Payload.GetCampaigns) {
+  async getBrandInfluencers({ page = 1, limit = 10, ...others }: Payload.GetCampaigns) {
     return this.request<Response.GetBrandInfluencer>({
       url: '/brand/influencer/fetch',
       requireAuth: true,
       method: 'POST',
       data: {
         page,
-        limit
+        limit,
+        ...others
       }
     })
   }

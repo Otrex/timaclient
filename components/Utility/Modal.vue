@@ -13,7 +13,7 @@
           v-show="contentState"
           :class="[
             contentState && 'fade-in-from-top',
-            'max-w w-full m-auto',
+            'max-w w-full overflow-y-auto m-auto',
             props.contentClass,
           ]"
         >

@@ -1,6 +1,6 @@
 <template>
   <div class="p-[1.75rem] pt-[0rem]">
-    <template v-if="state === constants.LOADING">
+    <template v-if="state === RequestState.LOADING">
       <div class="text-center relative">
         <UtLoaderIndicator
           class="absolute inset-0"
@@ -125,6 +125,7 @@
 </template>
 
 <script setup lang="ts">
+import { RequestState } from "~/lib/enums";
 import { Core } from "~/lib/interfaces";
 
 const api = useAPI();

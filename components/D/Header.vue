@@ -3,40 +3,32 @@
     class="w-full flex md:flex-row items-center gap-[1.875rem] justify-between py-[1rem] px-[1.75rem] dark:border-slate-900"
   >
     <div class="flex items-center flex-row gap-3">
-      <div class="flex md:hidden">
-        <button class="" @click="openMenu">
-          <UtSvg name="menu" dim w="1.5rem" h="1.5rem" class="text-black" />
-        </button>
-      </div>
+      <button class="flex md:hidden" @click="openMenu">
+        <UtSvg name="menu" dim w="1.5rem" h="1.5rem" class="text-black" />
+      </button>
       <div class="whitespace-nowrap">
         <slot name="left">
           <div class="flex items-center gap-3">
-            <h2 class="font-bold" v-if="typeof routeName === 'string'">
-              {{ routeName === "ViewBrandCampaign" ? "Campaign" : routeName }}
-            </h2>
-            <component :is="routeName" />
+            <h2 class="font-bold" v-html="getFormattedRouteName"></h2>
           </div>
         </slot>
       </div>
     </div>
     <div class="w-full hidden md:block justify-self-start max-w-[42.5rem]">
       <slot name="middle">
-        <div
-          class="flex gap-[1.25rem] relative"
-          v-if="routeName === 'ViewBrandCampaign'"
-        >
+        <div class="flex gap-[1.25rem] relative" v-if="isCampaignRoute">
           <UiInputText
             class="w-full"
-            @keyup.prevent="() => search('campaign')"
-            :loading="searchState === constants.LOADING"
+            @keyup.prevent="handleSearch"
+            :loading="searchState === RequestState.LOADING"
             v-model="searchQuery"
             placeholder="Search campaigns"
             search
           />
 
           <UiButtonDefault
-            v-if="routeName === 'ViewBrandCampaign'"
-            @click="() => navigateTo({ name: 'DashboardCampaignsCreate' })"
+            v-if="isCampaignRoute"
+            @click="goToCreateCampaign"
             class="px-[1.125rem] sm:text-sm md:text-lg whitespace-nowrap py-[0.625rem]"
             variant="primary"
           >
@@ -53,7 +45,7 @@
             <div class="flex justify-between items-center mb-3">
               <p>Search Results:</p>
               <button
-                @click="searchResults = []"
+                @click="clearSearch"
                 class="active:ring-4 active:ring-slate-200"
               >
                 <UtSvg name="close" dim w="1rem" h="1rem" />
@@ -104,27 +96,18 @@ import { useDebounceFn } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
 import { useAuthStore } from "~/stores/auth";
 import UtSvg from "../Utility/Svg.vue";
+import { RequestState } from "~/lib/enums";
 
 const route = useRoute();
+const router = useRouter();
 const $emit = defineEmits(["open-menu"]);
 
 const searchQuery = ref("");
 const searchResults = ref<Core.CampaignByName[]>([]);
 
-const backButtonComponent = (returnRoute: string, title: string) =>
-  defineComponent({
-    components: { UtSvg },
-    methods: { navigateTo },
-    template: `<div class="flex flex-row items-center gap-5">
-      <UtSvg name="nav/back" @click="navigateTo({ name: '${returnRoute}' })" dim w="1.5rem" h="1.5rem" />
-      <h2 class="font-bold">${title}</h2>
-    </div>`,
-  });
-
-const routeNameMap: Record<string, any> = {
+const routeNameMap: Record<string, string> = {
   CreateCampaign: "Campaign >>> Create a campaign",
   BrandFinanceCampaign: "FinanceInfo",
-  // BrandFinanceCampaign: "Finance >>> Finance Info",
   "Campaign Application Influencer": "Campaign Application",
   "Notification/CampaignApplication": "Notification >>> Campaign Applications",
   "Notification/Invitations": "Notification >>> Invitations",
@@ -146,35 +129,28 @@ const routeNameMap: Record<string, any> = {
   BrandSettingBillingSubscription: "Settings",
   BrandSettingPersonal: "Settings",
   InfluencerSettingNotification: "Settings",
-  ViewBrandCampaignAnalytics: "ViewBrandCampaign",
-  ViewbrandCampaignInfluencers: "ViewBrandCampaign",
-  ViewbrandCampaignPayments: "ViewBrandCampaign",
-  ViewBrandCampaignContents: "ViewBrandCampaign",
+  ViewBrandCampaignAnalytics: "Campaign",
+  ViewbrandCampaignInfluencers: "Campaign",
+  ViewbrandCampaignPayments: "Campaign",
+  ViewBrandCampaignContents: "Campaign",
   InfluencerCampaignsState: "Campaign",
   InfluencerFinance: "Finance",
   InfluencerCalendar: "Calendar",
   InfluencerNotification: "Notifications",
   BrandViewInfluencers: "Influencers",
-  InfluencerSubmitContent: defineComponent({
-    template: '<h3 class="font-bold">Attach Files</h3>',
-  }),
-  ViewInfluencerCampaign: backButtonComponent(
-    "InfluencerDashboard",
-    "Dashboard"
-  ),
-  DashboardCampaignsCreate: backButtonComponent(
-    "DashboardBrandCampaigns",
-    'Campaign >>> <span class="text-[#B0B0B0]">Create a campaign</span>'
-  ),
-  BrandInfluencerProfile: backButtonComponent(
-    "DashboardBrandCampaigns",
-    'Campaign >>> <span class="text-[#B0B0B0] font-normal">Influencers</span>'
-  ),
+  InfluencerSubmitContent: "Attach Files",
+  ViewInfluencerCampaign: "Dashboard",
+  DashboardCampaignsCreate:
+    'Campaign >>> <span class="text-[#B0B0B0]">Create a campaign</span>',
+  BrandInfluencerProfile:
+    'Campaign >>> <span class="text-[#B0B0B0] font-normal">Influencers</span>',
 };
 
-const routeName = computed(
+const getFormattedRouteName = computed(
   () => routeNameMap[route.name as string] || route.name
 );
+const isCampaignRoute = computed(() => route.name === "ViewBrandCampaign");
+
 const authStore = useAuthStore();
 const profile = computed(() => authStore.profile || null);
 const user = computed(() => authStore.user || null);
@@ -199,22 +175,29 @@ const { execute: searchForCampaigns, state: searchState } = useRequestState({
 });
 
 const search = useDebounceFn(
-  (type: string) => {
-    if (type === "campaign") {
-      searchForCampaigns(searchQuery.value);
-    }
+  () => {
+    searchForCampaigns(searchQuery.value);
   },
   1000,
   { maxWait: 5000 }
 );
 
-function navigateToCampaign(campaignId: string) {
+const handleSearch = () => search();
+const clearSearch = () => {
   searchResults.value = [];
   searchQuery.value = "";
-  navigateTo({
+};
+
+function navigateToCampaign(campaignId: string) {
+  clearSearch();
+  router.push({
     name: "Explore - Campaign",
     params: { id: campaignId },
   });
+}
+
+function goToCreateCampaign() {
+  router.push({ name: "DashboardCampaignsCreate" });
 }
 
 function openMenu() {

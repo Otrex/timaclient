@@ -24,7 +24,9 @@
         </div>
         <div class="flex items-center w-full">
           <UiInputSelect
-            :options="tools.generationOptions(optionsStore.$paymentMethods)"
+            :options="
+              tools.generationOptions(optionsStore.$paymentMethods || [])
+            "
             v-model="fullForm.paymentMethod"
             class="w-full"
             :disabled="!isEditable"
@@ -253,10 +255,10 @@ const pinForm = reactive({
 
 const fullForm = reactive({
   chargePerPost: Object.fromEntries(
-    paymentInfo.value?.platformPrices.map((e) => [e.platform, e.price]) || []
+    paymentInfo.value?.platformPrices?.map((e) => [e.platform, e.price]) || []
   ) as Record<string, any>,
   bankId: optionsStore.withdrawalBanks.find(
-    (e) => e.accountNumber == paymentInfo.value?.bankDetails.accountNumber
+    (e) => e.accountNumber == paymentInfo.value?.bankDetails?.accountNumber
   )?.id as string | undefined,
   paymentMethod: paymentInfo.value?.paymentMethod,
 });

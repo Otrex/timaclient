@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <div class="tima__form">
+    <!-- <div class="tima__form">
       <div class="md:w-1/4 pt-2">
         <label class="w-full block whitespace-nowrap">
           Invite <sub class="md:block">(select influencer to invite)</sub>
@@ -140,7 +140,7 @@
       <div class="self-center" v-show="state === constants.LOADING">
         <UtSvg name="sunshine" class="spinner w-[1.2rem] h-[1.2rem]" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

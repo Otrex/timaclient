@@ -322,6 +322,7 @@ export interface GetBrandInfluencer {
       transactionPIN?: string;
       userId: string;
       firstName: string;
+      socialMediaAccounts: any[];
       createdAt: string;
       referralCode: string;
       industries: string[];
@@ -721,4 +722,47 @@ export interface GetInfluencerSubmissions {
   }
   message: string
   statusCode: number
+}
+
+
+export interface ICreateCampaign {
+  data: {
+    audienceLocation: string[],
+    "campaignAbout": string,
+    "endDate": string | Date,
+    "contentPlacement": string[],
+    "campaignObjectiveAwareness": string[],
+    "companyName": string,
+    "creativeBrief": string,
+    "campaignObjectiveAcquisition": string[],
+    "referenceLink": string,
+    "audienceAgeGroup": string,
+    "contentType": string[],
+    "campaign_id": string,
+    "campaignObjective": string,
+    "website": "www.bennyj.com",
+    "planningBudget": "1000",
+    "audienceSize": [
+      "Nano+ (5000 - 9,999)"
+    ],
+    "campaignRule": "- Do not peek",
+    "banner": "https://tima-service.nyc3.digitaloceanspaces.com/campaign_banner_image/5f25cfca-f5f8-4b21-bcb0-44a8f3437ba8_illustration-john-light-0061869a.png",
+    "socialMediaPlatform": [
+      "instagram",
+      "tiktok"
+    ],
+    "user_id": "670cf8761e75392dee1d8dee",
+    "audienceGender": [
+      "Male"
+    ],
+    "creativeTone": "[\"Funny\"]",
+    "category": [
+      "Business & Entrepreneurship",
+      "Finance"
+    ],
+    "campaignName": "Best Man",
+    "startDate": "2025-01-15"
+  },
+  "message": "Campaign created successfully",
+  "statusCode": 200
 }

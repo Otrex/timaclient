@@ -158,6 +158,12 @@ const showCreateContract = ref(false);
 
 const invite = ref<boolean>(false);
 
+onMounted(() => {
+  if (route.query?.action === "invite") {
+    invite.value = true;
+  }
+});
+
 function trx(data: any) {
   if (!data) return data;
   data.socialMediaPlatforms = JSON.parse(data.socialMediaPlatforms);

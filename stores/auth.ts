@@ -25,7 +25,7 @@ type IState = {
       "paymentMethod": string,
       "platformPrices": Array<{ "price": number, "platform": string }>
     }
-  }
+  } | null;
   wallet?: AccountWallet;
   authorization: {
     accessToken?: string;

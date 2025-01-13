@@ -129,7 +129,17 @@
     <UiModalSuccessModal
       ref="successModal"
       message="Congratulations! Your campaign has been successfully posted on our platform"
-    />
+    >
+      <div class="text-center">
+        <p class="mb-3">Let's proceed to invite influencers</p>
+        <UiButtonDefault
+          variant="primary"
+          class="py-2"
+          @click="goToInvite"
+          label="Invite Influencers"
+        />
+      </div>
+    </UiModalSuccessModal>
   </div>
 </template>
 
@@ -144,16 +154,17 @@ const campaignStore = useCampaignStore();
 const { notify } = useNotification();
 const successModal = ref();
 const loadingModal = ref();
+const createCampaignId = ref("");
 
 const { state, execute } = useRequestState({
   action: async () => {
     loadingModal.value.open();
-    campaignStore.createCampaign();
+    return campaignStore.createCampaign();
   },
-  onSuccess: () => {
+  onSuccess: (response) => {
     loadingModal.value.close();
     successModal.value.open();
-
+    createCampaignId.value = response.data.campaign_id;
     setTimeout(() => {
       successModal.value.close();
       navigateTo({
@@ -184,6 +195,22 @@ props.bus?.on((message) => {
     execute();
   }
 });
+
+onMounted(() => {
+  successModal.value.open();
+});
+
+function goToInvite() {
+  navigateTo({
+    name: "ViewbrandCampaignInfluencers",
+    params: {
+      id: createCampaignId.value,
+    },
+    query: {
+      action: "invite",
+    },
+  });
+}
 </script>
 
 <style></style>

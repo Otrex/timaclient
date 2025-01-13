@@ -15,6 +15,7 @@
             <div class="text-center mx-auto max-w-[43.75rem]">
               {{ props.message || "Successful" }}
             </div>
+            <slot />
           </div>
         </div>
       </div>

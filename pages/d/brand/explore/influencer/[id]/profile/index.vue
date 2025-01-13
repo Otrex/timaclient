@@ -1,5 +1,15 @@
 <template>
-  <div v-if="state === constants.LOADING">L O A D I N G . . .</div>
+  <div
+    v-if="state === RequestState.LOADING"
+    class="flex items-center justify-center min-h-[50vh]"
+  >
+    <div class="flex flex-col items-center gap-4">
+      <div
+        class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"
+      ></div>
+      <p class="text-gray-600 text-sm">Loading profile information...</p>
+    </div>
+  </div>
   <div class="py-[1rem]" v-else>
     <p class="font-semibold text-base mb-[0.75rem]">Social Media Platform</p>
 
@@ -67,30 +77,29 @@
       <div class="w-full py-5">
         <StatsLocale
           :loading-countries="
-            tools.requestState(getCountriesData) === constants.LOADING
+            tools.requestState(getCountriesData) === RequestState.LOADING
           "
           :loading-cities="
-            tools.requestState(getCitiesData) === constants.LOADING
+            tools.requestState(getCitiesData) === RequestState.LOADING
           "
           :countries="countryData"
           :cities="cityData"
         />
-        <!-- <StatsAudienceAgeRange
-          :loading="
-            tools.requestState(getAgeAudienceData) === constants.LOADING
-          "
-          :data="ageGenderData"
-        /> -->
       </div>
       <div class="w-full">
-        <StatsEthnicity />
+        <StatsAudienceAgeRange
+          :loading="
+            tools.requestState(getAgeAudienceData) === RequestState.LOADING
+          "
+          :data="ageGenderData"
+        />
       </div>
     </div>
 
-    <section class="bg-[#F1F9FF] mb-5 rounded-lg p-5 gap-5 items-center">
+    <!-- <section class="bg-[#F1F9FF] mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5 dark:text-black">Audience Age range</p>
       <div><UiBar class="w-full" :data="[]" /></div>
-    </section>
+    </section> -->
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5 dark:text-black">Likes History</p>
@@ -209,10 +218,11 @@
 </template>
 
 <script setup lang="ts">
-import { DemographyType } from "~/lib/enums";
+import { DemographyType, RequestState } from "~/lib/enums";
 import type { Core } from "~/lib/interfaces";
 import type { AgeGenderData, LocaleData } from "~/lib/interfaces/core";
 import type { GetInfluencerProfileResponse } from "~/lib/interfaces/response";
+import { tools } from "#build/imports";
 
 const props = defineProps<{ publicId: string }>();
 const api = useAPI();
@@ -253,25 +263,35 @@ const { state } = useRequestState({
     const promises = response.data.socialMediaAccounts.map(async (sm, idx) => {
       try {
         if (sm.platformName.toLowerCase() === "instagram") {
-          const res = await api.socials.getInstagramByUsername(sm.userName);
+          const [res, datares] = await Promise.all([
+            api.socials.getInstagramByUsername(sm.userName),
+            api.socials.getInstagramPostByUsername(sm.userName),
+          ]);
+
           return [
             "instagram",
             {
               avgEngagement: res["Engagement Rate"],
               avgLikes: res["Average Likes"],
               followers: res["Followers"],
+              history: datares,
             },
           ];
         }
 
         if (sm.platformName.toLowerCase() === "tiktok") {
-          const res = await api.socials.getTiktokByUsername(sm.userName);
+          const [res, datares] = await Promise.all([
+            api.socials.getTiktokByUsername(sm.userName),
+            api.socials.getTiktokPostByUsername(sm.userName),
+          ]);
+
           return [
             "tiktok",
             {
               avgEngagement: res.engagement_metrics?.average_likes_per_video,
               avgLikes: res.engagement_metrics?.total_likes,
               followers: res.follower_count,
+              history: datares,
             },
           ];
         }

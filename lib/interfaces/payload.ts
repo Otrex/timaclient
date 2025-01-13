@@ -8,7 +8,11 @@ export interface BrandProfileSetup {
 export interface CampaignApplication {
   campaign_id: string;
   influencer_id: string;
-  status: "APPROVED" | "DECLINED" | "PENDING";
+  status?: "APPROVED" | "DECLINED" | "PENDING";
+  platformPrices?: {
+    platform: string;
+    price: number;
+  }[];
 }
 
 export interface WithdrawFunds {
@@ -290,6 +294,10 @@ export interface UpdateBrandInformation {
 export interface GetCampaigns {
   limit?: number;
   page?: number;
+  "recommended"?: boolean,
+  "top"?: boolean,
+  withApprovedContent?: boolean;
+  status?: "active" | "upcoming" | "completed"
   statusProgress?: "APPROVED" | "DECLINED" | "PENDING"
 }
 

@@ -52,17 +52,6 @@
             placeholder="Search Campaigns"
             class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-400] placeholder:text-base !py-2 w-full border-[color:--clr-grey-500]"
           />
-          <select
-            class="py-2 rounded-3xl px-3 border border-slate-300"
-            name="filter"
-            v-model="filter"
-            id=""
-          >
-            <option value="all" default>All</option>
-            <option value="APPROVED">Active</option>
-            <option value="PENDING">Pending</option>
-            <option value="DECLINED">Declined</option>
-          </select>
         </div>
       </div>
     </div>
@@ -191,7 +180,14 @@ const { state, execute } = useRequestState({
     api.getBrandCampaigns({
       page: pageData.page,
       limit: pageData.limit,
-      statusProgress: addedFilter.value,
+      ...(route.query.status &&
+      ["all", "active", "pending", "declined", "contents"].includes(
+        String(route.query.status)
+      )
+        ? route.query.status == "contents"
+          ? { withApprovedContent: true }
+          : { statusProgress: addedFilter.value }
+        : route.query),
     }),
   immediately: true,
   onSuccess: (response) => {

@@ -47,7 +47,7 @@ export const useCampaignStore = defineStore("campaign", {
 
   actions: {
     async createCampaign() {
-      await this.$api.createCampaign({
+      return this.$api.createCampaign({
         banner: this.newCampaign.banner as File,
         requestBody: {
           ...this.newCampaign,

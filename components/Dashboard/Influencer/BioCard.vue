@@ -3,7 +3,7 @@
     not-found-message="Influencer data not found"
     loading-message="Fetching Influencer details"
     :data="influencer === null"
-    :state="state"
+    :state="state!"
   >
     <section
       class="bg-[#F7F7F7] dark:bg-slate-300 dark:text-black p-[1.25rem] h-full rounded-md"
@@ -39,13 +39,15 @@
         <div class="text-right">
           <div>
             <button
-              :disabled="tools.requestState(addBookmark) === constants.LOADING"
+              :disabled="
+                tools.requestState(addBookmark) === RequestState.LOADING
+              "
               @click="addBookmark.execute()"
               class="active:ring-2 inline-block hover:bg-slate-50 rounded-md active:ring-slate-100"
             >
               <UtSvg
                 name="bookmark-solid"
-                v-if="tools.requestState(addBookmark) !== constants.LOADING"
+                v-if="tools.requestState(addBookmark) !== RequestState.LOADING"
                 class="text-[#999]"
                 w="1.3125rem"
                 h="1.3125rem"
@@ -105,16 +107,14 @@
 
 <script setup lang="ts">
 // import { Doughnut } from "vue-chartjs";
+import { RequestState } from "~/lib/enums";
+import { tools } from "#build/imports";
+
 import type {
   GetApplication,
   GetInfluencerProfileResponse,
   GetSearchInfluencer,
 } from "~/lib/interfaces/response";
-
-const props = defineProps<{
-  publicId: string;
-  applicationId?: string;
-}>();
 
 const categories = ref(["fish", "obi", "red"]);
 const stars = ref(0);
@@ -177,14 +177,10 @@ const options = ref<any>({
   },
 });
 
-// New
-const influencer = ref<GetInfluencerProfileResponse["data"] | null>(null);
-const { state } = useRequestState({
-  immediately: true,
-  action: () => api.getInfluencerById(props.publicId),
-  onSuccess(response) {
-    influencer.value = response.data;
-  },
-});
+const influencer = inject<GetInfluencerProfileResponse["data"] | null>(
+  "influencer"
+);
+
+const state = inject<string | undefined>("loading");
 </script>
 <style></style>
