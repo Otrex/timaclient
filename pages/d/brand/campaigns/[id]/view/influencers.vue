@@ -64,6 +64,13 @@
                   :comments="0"
                   :likes="0"
                   :saved="0"
+                  @open:rater="
+                    () => {
+                      xinfluencer = influencer;
+                      openRateForm = true;
+                    }
+                  "
+                  :allow-rating="allowRating"
                   :date="new Date().toDateString()"
                 />
               </NuxtLink>
@@ -157,6 +164,9 @@ const { notify } = useNotification();
 const showCreateContract = ref(false);
 
 const invite = ref<boolean>(false);
+const allowRating = inject("allowRating") as Ref<boolean>;
+const openRateForm = inject("openRateForm") as Ref<boolean>;
+const xinfluencer = inject("influencer") as Ref<any>;
 
 onMounted(() => {
   if (route.query?.action === "invite") {

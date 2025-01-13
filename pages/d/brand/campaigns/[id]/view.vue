@@ -120,6 +120,74 @@
           <div>Are you sure you want to delete this campaign?</div>
         </template>
       </UiModalConfirmAction>
+      <UiModalConfirmAction
+        :loading="deletingState === constants.LOADING"
+        @onapprove="
+          () => {
+            allowRating = true;
+            rateInfluencer?.close();
+          }
+        "
+        ref="rateInfluencer"
+      >
+        <template #title>
+          <div>Rate our Influencer</div>
+        </template>
+        <template #body>
+          <div>
+            How would you rate our influencer’s for their performance on the
+            Back To School campaign?
+          </div>
+        </template>
+      </UiModalConfirmAction>
+      <UtModal
+        m-width="31.25rem"
+        backdrop-color="rgba(0,0,0,.3)"
+        v-model:state="openRateForm"
+      >
+        <div class="bg-white rounded-lg p-4">
+          <div class="flex justify-between">
+            <div class="font-semibold text-xl">Rate This Influencer</div>
+            <div>
+              <X @click="openRateForm = false" class="size-5" />
+            </div>
+          </div>
+
+          <div class="my-4">HOW WOULD YOU RATE THIS INFLUENCER?</div>
+
+          <div class="flex flex-row gap-3 items-center">
+            <div class="size-[3rem]">
+              <img
+                :src="influencer?.profile.profileImage"
+                alt=""
+                class="size-[3rem] rounded-full bg-green-400 object-cover"
+              />
+            </div>
+            <div>{{ influencer?.userName }}</div>
+          </div>
+
+          <div class="text-center">
+            <UiInputStars class="scale-125" v-model="form.rating" :length="5" />
+          </div>
+
+          <div class="my-4">
+            <textarea
+              class="w-full border-2 border-gray-200 rounded-lg p-2"
+              placeholder="Write a review"
+              v-model="form.review"
+            ></textarea>
+          </div>
+
+          <div>
+            <UiButtonDefault
+              variant="primary"
+              class="w-full py-2"
+              @click="() => rateTheInfluencer()"
+              label="Submit"
+            />
+          </div>
+        </div>
+      </UtModal>
     </template>
   </div>
 </template>
@@ -127,20 +195,57 @@
 <script setup lang="ts">
 import { RequestState } from "~/lib/enums";
 import { Core } from "~/lib/interfaces";
+import { X } from "lucide-vue-next";
 
 const api = useAPI();
 const route = useRoute();
 const confirmAccept = ref();
+const rateInfluencer = ref();
+const openRateForm = ref(false);
+const allowRating = ref(false);
 const confirmEnd = ref();
 const campaign = ref<Core.Campaign | null>(null);
 const openShare = ref(false);
 const { notify } = useNotification();
+const influencer = ref();
+
+provide("allowRating", allowRating);
+provide("openRateForm", openRateForm);
+provide("influencer", influencer);
+
+const form = reactive({
+  rating: 0,
+  review: "",
+});
 
 const { state } = useRequestState({
   action: () => api.getBrandCampaign(route.params.id as string),
   immediately: true,
   onSuccess: (response) => {
     campaign.value = response.data as any;
+  },
+});
+
+const { execute: rateTheInfluencer } = useRequestState({
+  action: () =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    }),
+  onSuccess: (response) => {
+    notify({
+      title: "Review submitted",
+      text: "Review has been submitted successfully",
+      type: "success",
+    });
+  },
+  onError(error) {
+    notify({
+      title: "Review Failed",
+      text: error.description,
+      type: "error",
+    });
   },
 });
 
@@ -152,9 +257,10 @@ const { state: endingState, execute: endCampaign } = useRequestState({
       text: "Campaign has been ended successfully",
       type: "success",
     });
-    navigateTo({
-      name: "Campaign",
-    });
+    rateInfluencer.value?.open();
+    // navigateTo({
+    //   name: "Campaign",
+    // });
   },
   onError(error) {
     notify({

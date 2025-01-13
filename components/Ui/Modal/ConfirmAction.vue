@@ -62,6 +62,8 @@ const props = defineProps<{ loading?: boolean }>();
 
 const modalState = ref(false);
 const open = () => {
+  console.log("open:true");
+
   modalState.value = true;
 };
 

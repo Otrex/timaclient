@@ -118,6 +118,14 @@
         </p>
       </div>
     </div>
+    <div v-if="allowRating" class="border-t">
+      <button
+        @click.stop.capture="$emit('open:rater', props.publicId)"
+        class="w-full py-[1.25rem] text-red-500 text-center uppercase"
+      >
+        RATE THIS INFLUENCER
+      </button>
+    </div>
   </article>
 </template>
 
@@ -135,6 +143,7 @@ const props = defineProps<{
   profilePicture: string;
   isBookmark?: boolean;
   publicId: string;
+  allowRating?: boolean;
 }>();
 
 const key = ref(0);
@@ -151,7 +160,7 @@ onMounted(() => {
 });
 
 const api = useAPI();
-const $emit = defineEmits(["refresh"]);
+const $emit = defineEmits(["refresh", "open:rater"]);
 const { notify } = useNotification();
 
 const { state, execute } = useRequestState({
