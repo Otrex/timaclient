@@ -74,22 +74,18 @@
         Campaigns completed: 86
       </div>
 
-      <div class="mb-[2.1875rem]">
+      <div class="mb-[2.1875rem]" v-if="(influencer as any)?.bio">
         <p class="nl font-bold">Bio</p>
         <p class="nl">
-          Lorem ipsum dolor sit amet consectetur. Hendrerit varius tristique
-          scelerisque purus. Purus mauris lacus volutpat convallis elementum
-          fringilla nam vulputate phasellus. Volutpat pulvinar ac dolor mauris
-          mauris consequat mauris nibh. Tincidunt tincidunt sed eget natoque in
-          turpis neque auctor ullamcorper.
+          {{ (influencer as any)?.bio }}
         </p>
       </div>
 
-      <div class="mb-[1.5rem]">
+      <div class="mb-[1rem]">
         <p class="nl">Languages: <b>English</b></p>
       </div>
 
-      <div>
+      <div class="pb-[1.25rem]">
         <p class="nl">Categories</p>
         <div class="flex flex-wrap gap-3">
           <template v-for="(category, idx) in categories" :key="idx">
@@ -97,6 +93,29 @@
               class="text-[0.875rem] rounded text-white bg-[#696969] px-[0.6875rem] py-[0.125rem]"
             >
               {{ category }}
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div>
+        <p class="nl">Average Cost Per Post:</p>
+        <div class="flex flex-wrap gap-3">
+          <template
+            v-for="(platformPrice, idx) in influencer?.paymentInformation
+              ?.platformPrices || []"
+            :key="idx"
+          >
+            <div
+              class="text-[0.875rem] flex flex-row gap-3 items-center rounded py-[0.125rem]"
+            >
+              <UtSvg
+                dim
+                w="1.8rem"
+                h="1.8rem"
+                :name="`so/${platformPrice.platform.toLowerCase()}`"
+              />
+              <b>{{ tools.formatCurrency(platformPrice.price) }}</b>
             </div>
           </template>
         </div>

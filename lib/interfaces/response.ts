@@ -455,7 +455,17 @@ export interface GetInfluencerProfileResponse {
         followers: number;
         avgEngagement: number;
       };
-    }[]
+    }[];
+    paymentInformation?: {
+      bankDetails: {
+        bankCode: string,
+        accountName: string,
+        bankName: string,
+        accountNumber: string
+      },
+      paymentMethod: "PAYSTACK" | "FLUTTERWAVE",
+      platformPrices: { price: number, platform: string }[]
+    }
     role: string;
     city: string;
     profileImage: string;

@@ -67,7 +67,7 @@ const mapInfluencerData = (item: any) => ({
 
 const { state: topInfluencing } = useRequestState({
   immediately: true,
-  action: () => api.getBrandInfluencers({ page: 1, limit: 5, top: true }),
+  action: () => api.getBrandInfluencers({ page: 1, limit: 6, top: true }),
   onSuccess: ({ data }) => {
     topInfluencers.value = data.map(mapInfluencerData);
   },
@@ -76,7 +76,7 @@ const { state: topInfluencing } = useRequestState({
 const { state: recommending } = useRequestState({
   immediately: true,
   action: () =>
-    api.getBrandInfluencers({ page: 1, limit: 5, recommended: true }),
+    api.getBrandInfluencers({ page: 1, limit: 6, recommended: true }),
   onSuccess: ({ data }) => {
     recommended.value = data.map(mapInfluencerData);
   },
@@ -84,7 +84,7 @@ const { state: recommending } = useRequestState({
 
 const { state: influencing } = useRequestState({
   immediately: true,
-  action: () => api.getBrandInfluencers({ page: 1, limit: 5 }),
+  action: () => api.getBrandInfluencers({ page: 1, limit: 20 }),
   onSuccess: ({ data }) => {
     influencers.value = data.map(mapInfluencerData);
   },
