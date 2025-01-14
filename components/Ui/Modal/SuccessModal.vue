@@ -12,7 +12,7 @@
             <div class="flex items-center mb-[5.625rem] justify-center">
               <UtSvg name="success" />
             </div>
-            <div class="text-center mx-auto max-w-[43.75rem]">
+            <div class="text-center dark:text-black mx-auto max-w-[43.75rem]">
               {{ props.message || "Successful" }}
             </div>
             <slot />

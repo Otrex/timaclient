@@ -131,7 +131,7 @@
       message="Congratulations! Your campaign has been successfully posted on our platform"
     >
       <div class="text-center">
-        <p class="mb-3">Let's proceed to invite influencers</p>
+        <p class="mb-3 dark:text-black">Let's proceed to invite influencers</p>
         <UiButtonDefault
           variant="primary"
           class="py-2"
