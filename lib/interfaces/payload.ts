@@ -302,10 +302,10 @@ export interface GetCampaigns {
 }
 
 export interface SearchCampaignsInterval {
-  campaignName: string;
-  socialMediaPlatform: string[];
-  audienceDemographics: string[];
-  category: string[];
+  campaignName?: string;
+  socialMediaPlatform?: string[];
+  audienceDemographics?: string[];
+  category?: string[];
   page?: number;
   limit?: number;
 }

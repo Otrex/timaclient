@@ -318,6 +318,19 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async brandSearchCampaigns({ limit = 10, page = 1, ...others }: Payload.SearchCampaignsInterval) {
+    return this.request<any>({
+      url: '/brand/campaign/search',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        page,
+        limit,
+        ...others
+      }
+    })
+  }
+
   async influencerContentUpload(campaignId: string, contentLink: string) {
     return this.request({
       url: '/influencer/campaign/content-upload',

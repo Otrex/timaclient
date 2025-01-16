@@ -13,7 +13,13 @@
       />
     </div>
 
-    <div v-if="loadingStats !== constants.LOADING" class="mt-8">
+    <div
+      v-if="
+        loadingStats !== constants.LOADING ||
+        searchCampaigns !== constants.LOADING
+      "
+      class="mt-8"
+    >
       <div class="flex flex-wrap gap-4">
         <NuxtLink
           v-for="(tag, index) in tags"
@@ -49,6 +55,8 @@
         <div class="flex flex-row items-center gap-4">
           <UiInputText
             search
+            v-model="query"
+            @update:modelValue="searchForCampaigns"
             placeholder="Search Campaigns"
             class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-400] placeholder:text-base !py-2 w-full border-[color:--clr-grey-500]"
           />
@@ -76,7 +84,7 @@
               :image="cam.banner"
               :category="cam.category"
               :brand="authStore.profile?.companyName!"
-              :description="cam.campaignAbout"
+              :description="cam.campaignAbout || ''"
               :budget="+cam.planningBudget"
               :deadline="cam.endDate"
               :status="cam.statusProgress"
@@ -97,6 +105,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDebounceFn } from "@vueuse/core";
 import type { Core } from "~/lib/interfaces";
 import type { GetCampaignsResponse } from "~/lib/interfaces/response";
 
@@ -175,6 +184,21 @@ function viewCampaign(campaign: Core.Campaign) {
   });
 }
 
+const query = ref("");
+const searchCampaigns = useRequestState({
+  action: () => {
+    return api.brandSearchCampaigns({
+      campaignName: query.value,
+    });
+  },
+
+  onSuccess(response) {
+    const { data, ...others } = response;
+    campaigns.value = response.data;
+    Object.assign(pageData, others);
+  },
+});
+
 const { state, execute } = useRequestState({
   action: () =>
     api.getBrandCampaigns({
@@ -199,6 +223,11 @@ const { state, execute } = useRequestState({
     console.log(error);
   },
 });
+
+const searchForCampaigns = useDebounceFn(() => {
+  if (query.value) searchCampaigns.execute();
+  else execute();
+}, 1000);
 </script>
 
 <style></style>
