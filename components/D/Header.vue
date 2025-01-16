@@ -140,6 +140,7 @@ const routeNameMap: Record<string, string> = {
   BrandViewInfluencers: "Influencers",
   InfluencerSubmitContent: "Attach Files",
   ViewInfluencerCampaign: "Dashboard",
+  BrandViewSpecialInfluencers: "Influencers",
   DashboardCampaignsCreate:
     'Campaign >>> <span class="text-[#B0B0B0]">Create a campaign</span>',
   BrandInfluencerProfile:

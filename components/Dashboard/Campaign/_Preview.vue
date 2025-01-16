@@ -159,12 +159,16 @@ const createCampaignId = ref("");
 const { state, execute } = useRequestState({
   action: async () => {
     loadingModal.value.open();
-    return campaignStore.createCampaign();
+    const response = await campaignStore.createCampaign();
+    createCampaignId.value = response.data.campaign_id;
+    return response;
   },
   onSuccess: (response) => {
     loadingModal.value.close();
-    successModal.value.open();
-    createCampaignId.value = response.data.campaign_id;
+    if (createCampaignId.value) {
+      successModal.value.open();
+    }
+
     setTimeout(() => {
       successModal.value.close();
       navigateTo({
@@ -194,10 +198,6 @@ props.bus?.on((message) => {
   if (message === "SUBMIT" && state.value !== constants.LOADING) {
     execute();
   }
-});
-
-onMounted(() => {
-  successModal.value.open();
 });
 
 function goToInvite() {

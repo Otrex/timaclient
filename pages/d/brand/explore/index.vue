@@ -6,23 +6,32 @@
       <h2 class="text-[2rem] mb-[1.375rem]">The Buzz</h2>
       <div class="flex flex-col md:flex-row gap-[1.125rem]">
         <template v-for="(buzz, idx) in buzzes" :key="idx">
-          <UiBuzzCard
-            class="w-full"
-            :title="buzz.title"
-            :bg="buzz.bg"
-            :influencers="buzz.influencers"
-            :loading="buzz.loading"
-            :see-more="{
-              name: 'Influencers',
-              query: {
-                title: buzz.title,
-                type:
-                  typeof buzz.influencers?.at(0) === 'string'
-                    ? 'category'
-                    : 'influencers',
+          <NuxtLink
+            :to="{
+              name: 'BrandViewSpecialInfluencers',
+              params: {
+                type: buzz.value,
               },
             }"
-          />
+          >
+            <UiBuzzCard
+              class="w-full"
+              :title="buzz.title"
+              :bg="buzz.bg"
+              :influencers="buzz.influencers"
+              :loading="buzz.loading"
+              :see-more="{
+                name: 'Influencers',
+                query: {
+                  title: buzz.title,
+                  type:
+                    typeof buzz.influencers?.at(0) === 'string'
+                      ? 'category'
+                      : 'influencers',
+                },
+              }"
+            />
+          </NuxtLink>
         </template>
       </div>
     </section>
@@ -62,12 +71,14 @@ const buzzes = ref([
     title: "Recommended on the block",
     bg: { from: "#00EAFF", to: "#3C8CE7" },
     influencers: [] as Influencer[],
+    value: "recommended",
     loading: true,
   },
   {
     title: "Top 100 influencers for the week",
     bg: { from: "#ABDCFF", to: "#0396FF" },
     influencers: [] as Influencer[],
+    value: "top100",
     loading: true,
   },
   // {
