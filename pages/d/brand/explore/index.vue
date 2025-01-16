@@ -7,6 +7,7 @@
       <div class="flex flex-col md:flex-row gap-[1.125rem]">
         <template v-for="(buzz, idx) in buzzes" :key="idx">
           <NuxtLink
+            class="w-full h-full"
             :to="{
               name: 'BrandViewSpecialInfluencers',
               params: {
@@ -15,7 +16,7 @@
             }"
           >
             <UiBuzzCard
-              class="w-full"
+              class="w-full h-full"
               :title="buzz.title"
               :bg="buzz.bg"
               :influencers="buzz.influencers"
