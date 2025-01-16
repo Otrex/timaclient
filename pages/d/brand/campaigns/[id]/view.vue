@@ -37,13 +37,13 @@
           <div>
             <button
               @click="openShare = true"
-              class="bg-[#111] text-white mr-3 text-sm !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+              class="bg-[#111] rounded-xl text-white mr-3 text-sm !px-[0.9375rem] p-[0.625rem]"
             >
               Share Campaign
             </button>
             <button
               @click="confirmAccept.open()"
-              class="text-sm bg-slate-200 !px-[0.9375rem] rounded-4xl p-[0.625rem]"
+              class="text-sm rounded-xl bg-slate-200 !px-[0.9375rem] p-[0.625rem]"
             >
               Delete Campaign
             </button>
