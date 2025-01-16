@@ -135,7 +135,6 @@ import type {
   GetSearchInfluencer,
 } from "~/lib/interfaces/response";
 
-const categories = ref(["fish", "obi", "red"]);
 const stars = ref(0);
 const data = ref({
   labels: ["Hot", "Warm", "Cold"],
@@ -199,6 +198,8 @@ const options = ref<any>({
 const influencer = inject<GetInfluencerProfileResponse["data"] | null>(
   "influencer"
 );
+
+const categories = computed(() => influencer?.value?.industries || []);
 
 const state = inject<string | undefined>("loading");
 </script>
