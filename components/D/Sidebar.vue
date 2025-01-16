@@ -16,7 +16,11 @@
           <DNavAgency v-if="userType === constants.BRAND" />
 
           <div class="mt-[1rem] flex flex-col gap-[1rem]">
-            <DashboardNavigatorMenuItem label="Help/Support" icon="nav/help" />
+            <DashboardNavigatorMenuItem
+              :to="{ name: 'Help & Support' }"
+              label="Help/Support"
+              icon="nav/help"
+            />
             <DashboardNavigatorMenuItem label="Darkmode" icon="nav/darkmode">
               <template #right>
                 <UiInputSwitch

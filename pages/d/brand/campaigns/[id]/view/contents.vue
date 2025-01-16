@@ -1,7 +1,7 @@
 <template>
   <div>
     <table class="w-full">
-      <thead class="bg-gray-200 py-2">
+      <thead class="bg-gray-200 dark:bg-gray-600 py-2">
         <tr>
           <th class="py-2 text-left px-5">Influencer</th>
           <th>Content Link</th>
@@ -37,7 +37,7 @@
                     <span
                       v-for="(industry, idx) in content.userProfile.industries"
                       :key="idx"
-                      class="bg-gray-200 mr-2 rounded-md px-2 py-1 text-xs"
+                      class="bg-gray-200 dark:bg-gray-600 mr-2 rounded-md px-2 py-1 text-xs"
                     >
                       {{ industry }}
                     </span>
@@ -58,7 +58,7 @@
               <span
                 :class="[
                   content.applicationStatus === 'PENDING' && '!text-yellow-500',
-                  'text-sm text-gray-400',
+                  'text-sm dark:text-gray-400 text-gray-500',
                 ]"
                 >{{ content.applicationStatus }}</span
               >

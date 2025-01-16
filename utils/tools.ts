@@ -140,7 +140,7 @@ export default {
   },
 
   linkTo: (link: string, target = '_blank') => {
-    window.location.href = link;
+    window.open(link, target);
   },
 
   toObjectURL: (file: File | string): string => {

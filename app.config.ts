@@ -7,7 +7,7 @@ type IAppConfig = {
   supportEmail: string
 }
 export default defineAppConfig<IAppConfig>({
-  supportEmail: 'obisiket@gmail.com',
+  supportEmail: 'admin@tima.agency',
   authStoreKey: 'pinia-persist.auth.authorization',
   thumbnailBaseUrl: "https://tima-resources.s3.us-east-2.amazonaws.com/thumbnailPicture",
   toastConfig: {

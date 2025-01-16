@@ -83,11 +83,7 @@
 
 <script setup lang="ts">
 import type { Core } from "~/lib/interfaces";
-import type {
-  GetApprovedInfluencers,
-  GetBookmarks,
-  GetInfluencersBookmark,
-} from "~/lib/interfaces/response";
+import type { GetApprovedInfluencers } from "~/lib/interfaces/response";
 
 definePageMeta({
   name: "Bookmark",

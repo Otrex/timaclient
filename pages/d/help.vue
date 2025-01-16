@@ -48,17 +48,58 @@ const form = reactive({
   body: "",
 });
 
-const fullMessage = computed(
-  () =>
-    `mailto:${appConfig.supportEmail}?subject=${form.subject}&body=${form.body}`
-);
+const formMailer = (
+  options: Partial<{ subject: string; body: string; cc: string }>
+) => {
+  let main = `mailto:${appConfig.supportEmail}?`;
+
+  main += Object.entries(options)
+    .filter(([_, value]) => value)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  return main;
+};
+
+const openTabAndDetectClose = (url) => {
+  const newWindow = window.open(url, "_blank");
+
+  if (newWindow) {
+    const interval = setInterval(() => {
+      if (newWindow.closed) {
+        clearInterval(interval);
+        form.body = "";
+        form.subject = "";
+        alert("Message sent successfully");
+      }
+    }, 1000);
+  } else {
+    form.body = "";
+    form.subject = "";
+    console.log("Failed to open the tab.");
+  }
+};
+
+const openTab = (mailtoLink: string) => {
+  console.log(mailtoLink);
+
+  const a = document.createElement("a");
+  a.href = mailtoLink;
+  a.target = "_blank";
+  a.click();
+};
 
 const sendMessage = () => {
-  loading.value = true;
-  if (form.body && form.subject) {
-    tools.linkTo(fullMessage.value);
+  if (!form.subject || !form.body) {
+    return alert("Please fill all the fields");
   }
-  loading.value = false;
+
+  openTabAndDetectClose(
+    formMailer({
+      subject: form.subject,
+      body: form.body,
+    })
+  );
 };
 </script>
 
