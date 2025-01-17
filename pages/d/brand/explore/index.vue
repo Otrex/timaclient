@@ -1,6 +1,8 @@
 <template>
   <div class="px-[1.625rem] mb-[2.5rem] pt-[1.875rem] pb-[2.5rem]">
-    <DashboardExploreInfluencerSearchPanel class="mb-[2rem]" />
+    <DashboardExploreInfluencerSearchPanel
+      class="mb-[2rem] overflow-y-auto -mx-6 max-h-[70vh]"
+    />
 
     <section class="mb-[3.25rem]">
       <h2 class="text-[2rem] mb-[1.375rem]">The Buzz</h2>

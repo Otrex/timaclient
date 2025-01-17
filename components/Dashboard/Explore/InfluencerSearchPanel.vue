@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <div>
       <UiButtonDefault
         v-show="!viewSearchFilter"
@@ -10,7 +10,10 @@
         Open Search Filter
       </UiButtonDefault>
     </div>
-    <section v-show="viewSearchFilter">
+    <section
+      class="sticky z-10 top-0 bg-white dark:bg-gray-800"
+      v-show="viewSearchFilter"
+    >
       <div class="flex flex-row justify-between">
         <p class="nl mb-[1.125rem]">Select a social media channel</p>
         <button
@@ -96,14 +99,14 @@
       <div
         class="grid md:grid-cols-3 items-end sm:gap-x-[1.75rem] md:gap-x-[3rem] gap-y-[1.75rem]"
       >
-        <!--<div>
-          <label class="block mb-[0.875rem]">Influencer location</label>
-          <UiInputSelect
-            :options="tools.generationOptions(['Main page', 'story'])"
+        <div>
+          <label class="block mb-[0.875rem]">Influencer name</label>
+          <UiInputText
             class="w-full"
-            placeholder="-- Select --"
+            v-model="form.name"
+            placeholder="e.g John Jones"
           />
-        </div>-->
+        </div>
         <div>
           <label class="block mb-[0.875rem]"
             >Influencer Audience Demographics</label
@@ -186,7 +189,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="relative">
       <div class="mt-3">
         <template v-if="state === constants.LOADING">
           <UtLoaderIndicator message="Fetching Your Influencers" />
@@ -201,7 +204,7 @@
         </template>
 
         <template v-else-if="influencers.length">
-          <div class="my-[1.25rem]">
+          <div class="my-[1.25rem] sticky top-0">
             <h1 class="font-bold mt-[1.25rem]">Search Result(s):</h1>
           </div>
           <div
@@ -262,8 +265,12 @@ const {
   action: () =>
     api.searchInfluencers({
       ...form,
-      audienceDemographics: [form.audienceDemographics as any],
-      category: [form.category as any],
+      ...(form.audienceDemographics && {
+        audienceDemographics: [form.audienceDemographics as any],
+      }),
+      ...(form.category && {
+        category: [form.category as any],
+      }),
     }),
   onSuccess: (response) => {
     influencers.value = response.data;
