@@ -1,5 +1,14 @@
 <template>
   <div class="p-6">
+    <div class="flex items-center justify-end mb-4">
+      <div>
+        <UiInputText
+          v-model="search"
+          placeholder="Search for influencers"
+          @keydown.enter="() => searches.execute()"
+        />
+      </div>
+    </div>
     <div v-for="(section, index) in sections" :key="index" class="mb-4">
       <template
         v-if="section.state !== RequestState.LOADING && section.data.length > 0"
@@ -53,6 +62,8 @@ const api = useAPI();
 const topInfluencers = ref<any[]>([]);
 const recommended = ref<any[]>([]);
 const influencers = ref<any[]>([]);
+const search = ref("");
+const searchResults = ref<any[]>([]);
 
 const mapInfluencerData = (item: any) => ({
   publicId: item.id,
@@ -90,7 +101,24 @@ const { state: influencing } = useRequestState({
   },
 });
 
+const searches = useRequestState({
+  immediately: false,
+  action: () => api.searchInfluencers({ name: search.value }),
+  onSuccess: (response) => {
+    searchResults.value = response.data.map(mapInfluencerData);
+  },
+});
+
 const sections = computed(() => [
+  {
+    title: "Search Results",
+    state: searches.state,
+    data: searchResults.value,
+    loadingText: "search Results",
+    emptyTitle: "No Search Results",
+    emptyText:
+      "We don't have any result influencers for you at the moment. Check back later for new top influencers.",
+  },
   {
     title: "Top Influencers",
     state: topInfluencing.value,
