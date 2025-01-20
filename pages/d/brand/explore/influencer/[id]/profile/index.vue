@@ -215,9 +215,9 @@
       </div>
     </section>
 
-    <!-- <section>
+    <section>
       <UiButtonDefault class="w-full py-2" variant="primary" label="Invite" />
-    </section> -->
+    </section>
   </div>
 </template>
 
