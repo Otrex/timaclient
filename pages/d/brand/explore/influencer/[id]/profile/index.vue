@@ -216,8 +216,45 @@
     </section>
 
     <section>
-      <UiButtonDefault class="w-full py-2" variant="primary" label="Invite" />
+      <UiButtonDefault
+        @click="openCampaigns = true"
+        class="w-full py-2"
+        variant="primary"
+        label="Invite"
+      />
     </section>
+
+    <UtModal v-model:state="openCampaigns">
+      <div class="p-6">
+        <h3 class="text-lg font-medium mb-4">Select Campaign</h3>
+        <UtLoadPresenter
+          :empty="!!!campaigns.length"
+          notFoundMessage="No Campaigns have been created"
+          :state="state"
+        >
+          <template #loading>
+            <UiLoading />
+          </template>
+          <div class="grid grid-cols-2 gap-4">
+            <DashboardCampaignCard
+              v-for="(cam, i) in campaigns"
+              :key="i"
+              @click="viewCampaign(cam as any)"
+              :publicId="cam.campaign_id"
+              :title="cam.campaignName"
+              :image="cam.banner"
+              :category="cam.category"
+              :brand="authStore.profile?.companyName!"
+              :description="cam.campaignAbout || ''"
+              :budget="+cam.planningBudget"
+              :deadline="cam.endDate"
+              :status="cam.statusProgress"
+              :completion="0"
+            />
+          </div>
+        </UtLoadPresenter>
+      </div>
+    </UtModal>
   </div>
 </template>
 
@@ -232,6 +269,7 @@ const props = defineProps<{ publicId: string }>();
 const api = useAPI();
 
 const MAX_DATA_COUNT = 5;
+const openCampaigns = ref(false);
 const cityData = ref<LocaleData[]>([]);
 const countryData = ref<LocaleData[]>([]);
 const ageGenderData = ref<AgeGenderData[]>([]);

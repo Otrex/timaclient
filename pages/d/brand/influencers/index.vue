@@ -83,8 +83,8 @@ const search = ref("");
 const searchResults = ref<any[]>([]);
 
 const mapInfluencerData = (item: any) => ({
-  publicId: item.id,
-  id: item.id,
+  publicId: item.id || item.user_id,
+  id: item?.id || item.user_id,
   username: item.userName,
   email: item.emailAddress,
   profilePicture: item?.profile?.profileImage || item.profileImage,
@@ -126,6 +126,8 @@ const searches = useRequestState({
   immediately: false,
   action: () => api.searchInfluencers({ name: search.value }),
   onSuccess: (response) => {
+    console.log(response);
+
     searchResults.value = response.data.map(mapInfluencerData);
   },
   onError: (error) => {
