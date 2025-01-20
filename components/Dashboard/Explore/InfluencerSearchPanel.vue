@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative px-7">
     <div>
       <UiButtonDefault
         v-show="!viewSearchFilter"
