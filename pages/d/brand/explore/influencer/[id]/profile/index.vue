@@ -228,7 +228,7 @@
       <div class="p-6">
         <h3 class="text-lg font-medium mb-4">Select Campaign</h3>
         <UtLoadPresenter
-          :empty="!!!campaigns.length"
+          :empty="!!!campaigns?.length"
           notFoundMessage="No Campaigns have been created"
           :state="state"
         >

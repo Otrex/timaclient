@@ -71,7 +71,8 @@
       </div>
 
       <div class="bg-[--clr-blue-100] mb-[1.5rem] py-[1.0625rem] text-center">
-        Campaigns completed: 86
+        Campaigns completed:
+        {{ (influencer as any)?.totalCompletedCampaigns }}
       </div>
 
       <div class="mb-[2.1875rem]" v-if="(influencer as any)?.bio">
