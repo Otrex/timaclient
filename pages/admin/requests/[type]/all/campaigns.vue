@@ -68,6 +68,9 @@
             @click="
               navigateTo({
                 name: 'admin.requests.campaign',
+                query: {
+                  id: item.id,
+                },
               })
             "
             class="px-4 py-1 border !text-[0.875rem] rounded-md text-base border-gray-400 hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors"

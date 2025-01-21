@@ -32,7 +32,7 @@
       >
         <h2 class="font-semibold text-lg mb-3">{{ section.title }}</h2>
 
-        <template v-if="(section.state as any) == RequestState.LOADING">
+        <template v-if="section.state.value == RequestState.LOADING">
           <div class="flex flex-col items-center justify-center py-12 px-4">
             <div class="flex space-x-2 animate-pulse">
               <div

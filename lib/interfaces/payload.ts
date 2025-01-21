@@ -154,10 +154,10 @@ export interface ContentReview {
 
 
 export interface GetNotifications {
-  "page"?: number,
-  "limit"?: number,
-  "type": "NEWS" | "ACTIVITIES" | "ALERTS", //Optional NEWS/ACTIVITIES/ALERTS
-  "days": 1 | 7 | 30 //1/7/30 optional
+  page?: number,
+  limit?: number,
+  type?: "NEWS" | "ACTIVITIES" | "ALERTS", //Optional NEWS/ACTIVITIES/ALERTS
+  days: 1 | 7 | 30 //1/7/30 optional
 }
 
 export interface Filter {
