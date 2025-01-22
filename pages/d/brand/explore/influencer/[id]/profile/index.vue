@@ -225,8 +225,11 @@
     </section>
 
     <UtModal v-model:state="openCampaigns">
-      <div class="p-6">
-        <h3 class="text-lg font-medium mb-4">Select Campaign</h3>
+      <div class="p-6 bg-white">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium mb-4">Select Campaign</h3>
+          <X class="w-5 h-5" @click="openCampaigns = false" />
+        </div>
         <UtLoadPresenter
           :empty="!!!campaigns?.length"
           notFoundMessage="No Campaigns have been created"
@@ -239,12 +242,12 @@
             <DashboardCampaignCard
               v-for="(cam, i) in campaigns"
               :key="i"
-              @click="viewCampaign(cam as any)"
+              @click="() => openInviter(cam)"
               :publicId="cam.campaign_id"
               :title="cam.campaignName"
               :image="cam.banner"
               :category="cam.category"
-              :brand="authStore.profile?.companyName!"
+              :brand="authStore?.profile?.companyName!"
               :description="cam.campaignAbout || ''"
               :budget="+cam.planningBudget"
               :deadline="cam.endDate"
@@ -255,6 +258,17 @@
         </UtLoadPresenter>
       </div>
     </UtModal>
+
+    <UtModal
+      m-width="43.75rem"
+      backdrop-color="rgba(0,0,0,.3)"
+      v-model:state="openInvite"
+    >
+      <ModalsInviteInfluencer
+        :campaign_id="invitingCampaign?.campaign_id"
+        @close="openInvite = false"
+      />
+    </UtModal>
   </div>
 </template>
 
@@ -264,9 +278,12 @@ import type { Core } from "~/lib/interfaces";
 import type { AgeGenderData, LocaleData } from "~/lib/interfaces/core";
 import type { GetInfluencerProfileResponse } from "~/lib/interfaces/response";
 import { tools } from "#build/imports";
+import { X } from "lucide-vue-next";
 
 const props = defineProps<{ publicId: string }>();
 const api = useAPI();
+
+const authStore = useAuthStore();
 
 const MAX_DATA_COUNT = 5;
 const openCampaigns = ref(false);
@@ -281,7 +298,14 @@ definePageMeta({
   name: "BrandInfluencerProfile",
 });
 
+const invitingCampaign = ref<any>(null);
+const openInvite = ref(false);
 const route = useRoute();
+
+function openInviter(campaign: any) {
+  invitingCampaign.value = campaign;
+  openInvite.value = true;
+}
 
 const influencer = ref<GetInfluencerProfileResponse["data"] | null>(null);
 
@@ -298,6 +322,8 @@ const metrics = computed(() => {
       .reduce((a, b) => a + b, 0),
   };
 });
+
+const campaigns = ref<Core.Campaign[]>([]);
 const { state } = useRequestState({
   immediately: true,
   action: async () => {
@@ -398,6 +424,14 @@ const getCountriesData = useRequestState({
       percentage: d.value3 || 0,
       name: d.name,
     }));
+  },
+});
+
+const { state: fetch, execute: getCampaigns } = useRequestState({
+  immediately: true,
+  action: () => api.getBrandCampaigns({}),
+  onSuccess(response) {
+    campaigns.value = response.data;
   },
 });
 
@@ -518,6 +552,13 @@ const series = ref([
     })),
   },
 ]);
+
+watch(
+  () => openCampaigns,
+  () => {
+    getCampaigns();
+  }
+);
 </script>
 
 <style></style>
