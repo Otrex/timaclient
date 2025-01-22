@@ -511,6 +511,37 @@ export interface GetSearchCampaignsResponse {
   statusCode: number;
 }
 
+export interface AdminCampaignResponse {
+  data: {
+    campaignObjective: string;
+    audienceLocation: string[];
+    campaignAbout: string;
+    website: string;
+    audienceSize: string[];
+    endDate: string;
+    contentPlacement: string[];
+    campaignRule: string;
+    campaignObjectiveAwareness: string[];
+    companyName: string;
+    creativeBrief: string;
+    campaignObjectiveAcquisition: string[];
+    banner: string;
+    referenceLink: string;
+    audienceAgeGroup: string[];
+    socialMediaPlatform: string[];
+    user_id: string;
+    audienceGender: string[];
+    creativeTone: string;
+    category: string[];
+    campaignName: string;
+    contentType: string[];
+    campaign_id: string;
+    startDate: string;
+  };
+  message: string;
+  statusCode: number;
+}
+
 
 export interface GetNotificationSettingsResponse {
   data: {

@@ -354,6 +354,17 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async viewAdminCampaign(id: string | number) {
+    return this.request<Response.AdminCampaignResponse>({
+      url: '/admin/campaign/single',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        "campaign_id": id
+      }
+    })
+  }
+
   async fetchBookmarks({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/bookmark/fetch',
