@@ -211,6 +211,7 @@
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
           >
             <template v-for="(influencer, idx) in influencers" :key="idx">
+              <NuxtLink :to="{ name: 'BrandInfluencerProfile', params: { id: influencer.user_id } }">
               <DashboardInfluencerCard
                 :name="influencer.userName"
                 :socialMedia="

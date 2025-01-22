@@ -44,12 +44,12 @@
               />
             </div>
             <div class="flex flex-col">
-              <span class="mb-[0.3125rem]"
-                >I want to receive payment notifications</span
-              >
-              <span class="text-[0.75rem]"
-                >Get notified when i have been paid.</span
-              >
+              <span class="mb-[0.3125rem]">
+                I want to receive payment notifications
+              </span>
+              <span class="text-[0.75rem]">
+                Get notified when i have been paid.
+              </span>
             </div>
           </div>
         </div>
