@@ -447,6 +447,7 @@ export interface GetInfluencerProfileResponse {
   data: {
     country: string;
     lastName: string;
+    audienceDemographics?: any,
     socialMediaAccounts: {
       userName: string;
       platformName: string;

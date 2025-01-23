@@ -40,7 +40,12 @@ const { state } = useRequestState({
   immediately: true,
   action: () => api.getInfluencerById(route.params.id as string),
   onSuccess(response) {
-    influencer.value = response.data;
+    influencer.value = {
+      ...response.data,
+      audienceDemographics: tools.parseAudienceDemographics(
+        response.data.audienceDemographics
+      ),
+    };
   },
 });
 

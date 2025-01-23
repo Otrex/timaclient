@@ -904,14 +904,6 @@ export default class TimaAPI extends UploadAPI {
   }
 
 
-  async getCampaign(publicId: string) {
-    return this.request<Response.GetCampaign>({
-      url: `/agency/v1/campaigns/${publicId}`,
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
   async getCampaignMetrics(publicId: string) {
     return this.request<IResponse<Core.CampaignMetrics[]>>({
       url: `/agency/v1/social-media/Instagram/insight/metrics?userPublicId=${publicId}`,

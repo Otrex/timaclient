@@ -12,7 +12,6 @@
   </div>
   <div class="py-[1rem]" v-else>
     <p class="font-semibold text-base mb-[0.75rem]">Social Media Platform</p>
-
     <div class="flex flex-col md:flex-row mb-[2rem] gap-[1.25rem]">
       <template
         v-for="(sm, idx) in influencer?.socialMediaAccounts || []"
@@ -103,21 +102,55 @@
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5 dark:text-black">Likes History</p>
-      <div><UiBar class="w-full" :data="[]" /></div>
+      <div>
+        <UiBar
+          class="w-full"
+          no-labels
+          :data="
+            activePlatformData?.data.likeHistory?.map((e: any) => ({
+              x: e.date.toLocaleDateString(),
+              y: e.likes,
+            })) || []
+          "
+        />
+      </div>
     </section>
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5 dark:text-black">Comments History</p>
-      <div><UiBar class="w-full" :data="[]" /></div>
+      <div>
+        <UiBar
+          class="w-full"
+          no-labels
+          :data="
+            activePlatformData?.data.commentsHistory?.map((e: any) => ({
+              x: e.date.toLocaleDateString(),
+              y: e.comments,
+            })) || []
+          "
+        />
+      </div>
     </section>
 
     <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5 dark:text-black">Views History</p>
-      <div><UiBar class="w-full" :data="[]" /></div>
+      <div>
+        <UiBar
+          class="w-full"
+          no-labels
+          :data="
+            activePlatformData?.data.viewsHistory?.map((e: any) => ({
+              x: e.date.toLocaleDateString(),
+              y: e.views,
+            })) || []
+          "
+        />
+      </div>
     </section>
 
     <section class="mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5">Trending Posts</p>
+
       <div>
         <table
           class="min-w-full bg-white dark:border-gray-800 dark:bg-transparent border border-gray-200"
@@ -132,12 +165,12 @@
               <th
                 class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
               >
-                Post Title
+                Post Date
               </th>
               <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                class="py-3 px-6 whitespace-nowrap text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
               >
-                Post Date
+                Post Description / Caption
               </th>
               <th
                 class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
@@ -162,20 +195,26 @@
             </tr>
           </thead>
 
-          <tbody v-if="postData.length > 0">
+          <tbody
+            v-if="
+              activePlatformData &&
+              activePlatformData?.data?.trendingPosts?.length
+            "
+          >
             <tr
               class="hover:bg-gray-50"
-              v-for="(item, idx) in postData"
+              v-for="(item, idx) in activePlatformData?.data?.trendingPosts ||
+              []"
               :key="idx"
             >
               <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ item.sn }}
+                {{ idx + 1 }}
               </td>
               <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ item.title }}
+                {{ tools.formatDate(item.date) }}
               </td>
               <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ item.date }}
+                {{ item.description }}
               </td>
               <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
                 {{ tools.formatNumber(item.likes) }}
@@ -343,6 +382,26 @@ const { state } = useRequestState({
               avgLikes: res["Average Likes"],
               followers: res["Followers"],
               history: datares,
+              likeHistory: datares.map((d: any) => ({
+                likes: d.Likes,
+                date: new Date(d.Date),
+              })),
+              viewsHistory: datares.map((d: any) => ({
+                views: d.Views,
+                date: new Date(d.Date),
+              })),
+              commentsHistory: datares.map((d: any) => ({
+                comments: d.Comments,
+                date: new Date(d.Date),
+              })),
+              trendingPosts: datares.map((d: any) => ({
+                likes: d.Likes,
+                comments: d.Comments,
+                views: d.Views,
+                description: d.Caption,
+                date: new Date(d.Date),
+                link: null,
+              })),
             },
           ];
         }
@@ -359,7 +418,27 @@ const { state } = useRequestState({
               avgEngagement: res.engagement_metrics?.average_likes_per_video,
               avgLikes: res.engagement_metrics?.total_likes,
               followers: res.follower_count,
-              history: datares,
+              history: datares.posts,
+              likeHistory: datares?.posts?.map((d: any) => ({
+                likes: d.like_count,
+                date: new Date(d.publish_date),
+              })),
+              viewsHistory: datares?.posts?.map((d: any) => ({
+                views: d.play_count,
+                date: new Date(d.publish_date),
+              })),
+              commentsHistory: datares?.posts?.map((d: any) => ({
+                comments: d.comment_count,
+                date: new Date(d.publish_date),
+              })),
+              trendingPosts: datares?.posts?.map((d: any) => ({
+                likes: d.like_count,
+                comments: d.comment_count,
+                views: d.play_count,
+                description: d.description,
+                date: new Date(d.publish_date),
+                link: d.video_url,
+              })),
             },
           ];
         }
@@ -486,6 +565,16 @@ function isActive(tab: string) {
   return route.query.platform == tab;
 }
 
+function getActivePlatform(platform: string) {
+  return (influencer.value?.socialMediaAccounts || []).find(
+    (media: any) => media.platformName.toLowerCase() == platform
+  );
+}
+
+const activePlatformData = computed(() => {
+  return getActivePlatform(route.query.platform as string);
+});
+
 // Heat map
 const chartOptions = ref({
   chart: {
@@ -501,7 +590,76 @@ const chartOptions = ref({
   },
 });
 
-const series = ref([
+interface DataItem {
+  views: number | null;
+  date: string;
+}
+
+function transformData(
+  data: DataItem[]
+): { name: string; data: { x: number; y: number }[] }[] {
+  // Initialize arrays for each day of the week
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const dayData: { [key: string]: number[] } = {};
+
+  // Initialize day data
+  for (const day of daysOfWeek) {
+    dayData[day] = Array.from({ length: 24 }, () => 0); // Initialize 24 hours for each day
+  }
+
+  console.log({ data });
+
+  // Aggregate data by day of the week and hour
+  for (const item of data) {
+    const date = new Date(item.date);
+    const day = daysOfWeek[date.getUTCDay()];
+    const hour = date.getUTCHours();
+    dayData[day][hour]++;
+  }
+
+  // Transform aggregated data into series format
+  const seriesData = daysOfWeek.map((day) => ({
+    name: day,
+    data: dayData[day].map((count, hour) => ({ x: hour, y: count * 3 })),
+  }));
+
+  return seriesData;
+}
+
+const series = ref(
+  transformData(activePlatformData.value?.data?.viewsHistory || []).map(
+    (e) => ({
+      name: e.name,
+      data: e.data.map((d) => ({
+        x: d.x,
+        y: d.y,
+      })),
+    })
+  )
+);
+
+watch(
+  () => activePlatformData.value?.data?.viewsHistory,
+  (data) => {
+    series.value = transformData(data || []).map((e) => ({
+      name: e.name,
+      data: e.data.map((d) => ({
+        x: d.x,
+        y: d.y,
+      })),
+    }));
+  },
+  { immediate: true }
+);
+const _series = ref([
   {
     name: "Monday",
     data: Array.from({ length: 18 }, () => ({

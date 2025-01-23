@@ -8,22 +8,20 @@ import { Bar } from "vue-chartjs";
 const props = defineProps<{
   bg?: string;
   loading?: boolean;
-  data: {
-    values: { [key: string]: number };
-    ageRange: string;
-  }[];
+  noLabels?: boolean;
+  data: { x: string; y: number }[];
   xAxisLabel?: string;
   yAxisLabel?: string;
   colors?: { [key: string]: string };
 }>();
 
 const dataset = computed(() => {
-  const labels = Object.keys(props.data[0]?.values || {});
+  const labels = props.data?.map((e) => e.x);
   return {
-    labels: props.data?.map((e) => e.ageRange),
+    labels: props.data?.map((e) => e.x),
     datasets: labels.map((label) => ({
       label,
-      data: props.data?.map((e) => e.values[label]),
+      data: props.data?.map((e) => e.y),
       backgroundColor: props.colors?.[label] || "#AAD9FB",
       borderWidth: 0,
     })),
@@ -65,6 +63,7 @@ const options = ref<any>({
   aspectRatio: 1.5,
   plugins: {
     legend: {
+      display: !props.noLabels,
       itemSpacing: 10,
       position: "top",
       align: "start",
@@ -72,7 +71,7 @@ const options = ref<any>({
         bottom: 30,
       },
       labels: {
-        boxWidth: 13,
+        boxWidth: 30,
         font: {
           size: 13,
         },

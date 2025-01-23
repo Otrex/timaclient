@@ -206,6 +206,68 @@ export default {
     }
     return inputString;
   },
+
+  parseAudienceDemographics: (demographicsString: string) => {
+    try {
+      // Remove the outer function name and get the content inside parentheses
+      const content = demographicsString.match(/\((.*)\)/)?.[1] || "";
+
+      // Split the content by comma but not within nested parentheses
+      const parts = content.split(/,(?![^(]*\))/);
+
+      const result: Record<string, any> = {};
+
+      parts.forEach((part) => {
+        const [key, value] = part.split("=");
+
+        if (key && value) {
+          const cleanKey = key.trim();
+
+          // Handle nested objects
+          if (value.includes("(") && value.includes(")")) {
+            const nestedContent = value.match(/\((.*)\)/)?.[1] || "";
+            const nestedParts = nestedContent.split(",");
+            const nestedObj: Record<string, string> = {};
+
+            nestedParts.forEach((nestedPart) => {
+              const [nestedKey, nestedValue] = nestedPart.split("=");
+              console.log(nestedValue, nestedKey);
+
+              if (nestedKey && nestedValue) {
+                nestedObj[nestedKey.trim()] = nestedValue.trim() + "xoxox";
+              }
+            });
+
+            result[cleanKey] = nestedObj;
+          }
+          // Handle arrays
+          else if (value.startsWith("[") && value.endsWith("]")) {
+            result[cleanKey] = value
+              .slice(1, -1)
+              .split(",")
+              .map((item) => item.trim());
+          }
+          // Handle simple values
+          else {
+            let cleanValue = value.trim();
+            if (value.includes("GenderDistribution(")) {
+              cleanValue = cleanValue.replace("GenderDistribution(", "");
+            }
+            if (value.includes("AgeDistribution(age")) {
+              cleanValue = cleanValue.replace("AgeDistribution(age", "");
+              cleanValue = cleanValue.replace("to", "-");
+            }
+            result[cleanKey] = cleanValue.trim();
+          }
+        }
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Error parsing demographics string:", error);
+      return null;
+    }
+  },
   formatDate(isoString: string | Date): string {
     const date = new Date(isoString);
     const options: Record<string, any> = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -238,6 +300,8 @@ export default {
       return (number / 1000000).toFixed(1) + ' million';
     } else if (number >= 1000) {
       return (number / 1000).toFixed(1) + 'K';
+    } else if (number == null) {
+      return "---"
     } else {
       return number.toString();
     }
