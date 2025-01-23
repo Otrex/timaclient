@@ -19,7 +19,7 @@
         </UtLoadPresenter>
       </table>
     </div>
-    <div class="w-full">
+    <div v-if="!noCity" class="w-full">
       <h4 class="mb-[1.125rem]">Top cities</h4>
       <table class="w-full">
         <UtLoadPresenter
@@ -47,6 +47,7 @@ defineProps<{
   cities: { name: string; percentage: number }[];
   loadingCities?: boolean;
   loadingCountries?: boolean;
+  noCity?: boolean;
 }>();
 </script>
 

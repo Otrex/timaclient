@@ -75,6 +75,7 @@
     <div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
       <div class="w-full py-5">
         <StatsLocale
+          noCity
           :loading-countries="
             tools.requestState(getCountriesData) === RequestState.LOADING
           "
@@ -253,61 +254,6 @@
         ></apexchart>
       </div>
     </section>
-
-    <section>
-      <UiButtonDefault
-        @click="openCampaigns = true"
-        class="w-full py-2"
-        variant="primary"
-        label="Invite"
-      />
-    </section>
-
-    <UtModal v-model:state="openCampaigns">
-      <div class="p-6 bg-white">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-medium mb-4">Select Campaign</h3>
-          <X class="w-5 h-5" @click="openCampaigns = false" />
-        </div>
-        <UtLoadPresenter
-          :empty="!!!campaigns?.length"
-          notFoundMessage="No Campaigns have been created"
-          :state="state"
-        >
-          <template #loading>
-            <UiLoading />
-          </template>
-          <div class="grid grid-cols-2 gap-4">
-            <DashboardCampaignCard
-              v-for="(cam, i) in campaigns"
-              :key="i"
-              @click="() => openInviter(cam)"
-              :publicId="cam.campaign_id"
-              :title="cam.campaignName"
-              :image="cam.banner"
-              :category="cam.category"
-              :brand="authStore?.profile?.companyName!"
-              :description="cam.campaignAbout || ''"
-              :budget="+cam.planningBudget"
-              :deadline="cam.endDate"
-              :status="cam.statusProgress"
-              :completion="0"
-            />
-          </div>
-        </UtLoadPresenter>
-      </div>
-    </UtModal>
-
-    <UtModal
-      m-width="43.75rem"
-      backdrop-color="rgba(0,0,0,.3)"
-      v-model:state="openInvite"
-    >
-      <ModalsInviteInfluencer
-        :campaign_id="invitingCampaign?.campaign_id"
-        @close="openInvite = false"
-      />
-    </UtModal>
   </div>
 </template>
 
@@ -337,14 +283,7 @@ definePageMeta({
   name: "BrandInfluencerProfile",
 });
 
-const invitingCampaign = ref<any>(null);
-const openInvite = ref(false);
 const route = useRoute();
-
-function openInviter(campaign: any) {
-  invitingCampaign.value = campaign;
-  openInvite.value = true;
-}
 
 const influencer = ref<GetInfluencerProfileResponse["data"] | null>(null);
 
@@ -481,6 +420,10 @@ const { state } = useRequestState({
           data: rres[platformName.toLowerCase()] || {},
         };
       }
+    );
+
+    response.data.audienceDemographics = tools.parseAudienceDemographics(
+      response.data.audienceDemographics
     );
 
     return response;

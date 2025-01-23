@@ -26,8 +26,15 @@
       :to="{
         name: 'admin.requests.all.requests',
         params: {
-          type: 'brand',
+          type: 'brands',
         },
+      }"
+    />
+    <AdminDashboardNavigatorMenuItem
+      label="Subscriptions"
+      icon="nav/brands"
+      :to="{
+        name: 'admin.subscriptions.index',
       }"
     />
     <AdminDashboardNavigatorMenuItem
