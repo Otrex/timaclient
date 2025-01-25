@@ -7,6 +7,7 @@ function capitalize(str: string) {
 
 export default {
   isCertain: <T>(data?: T) => data as T,
+  sttout: (cb: Function, milliseconds: number) => setTimeout(cb, milliseconds),
   trunc: (input: string, numWords: number): string => {
     const words = input.split(' ');
     if (words.length <= numWords) {

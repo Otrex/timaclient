@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="admin">
     <template #main>
-      <div class="py-5 pr-5">
+      <div class="py-5 px-8 pr-5">
         <section class="mb-5">
           <div class="flex flex-row gap-3 items-center">
             <div>

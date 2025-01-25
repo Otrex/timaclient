@@ -1,9 +1,9 @@
 <template>
   <table
-    class="w-full border rounded-lg border-separate border-spacing-0 overflow-hidden"
+    class="w-full border rounded-lg dark:border-gray-500 border-separate border-spacing-0 overflow-hidden"
   >
     <thead>
-      <tr class="bg-gray-200 !font-normal text-left">
+      <tr class="bg-gray-200 dark:bg-gray-700 !font-normal text-left">
         <th class="py-3 px-3">Name</th>
         <th class="py-2 px-3">Request Type</th>
         <th class="py-2 px-3">Date</th>
@@ -52,7 +52,7 @@
         <td class="px-3 text-[0.9375rem]">
           <span
             :class="[
-              'rounded-2xl px-2 py-0.5 text-base',
+              'rounded-2xl px-2 py-0.5 text-base dark:text-gray-800',
               item.status?.toLowerCase() == 'pending' &&
                 'text-white bg-yellow-400',
               item.status?.toLowerCase() == 'completed' &&

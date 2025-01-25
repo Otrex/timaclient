@@ -1,26 +1,29 @@
 <template>
-  <div class="relative dev inline-flex flex-col w-full">
+  <div class="relative mt-0.5 inline-flex flex-col">
     <!-- Trigger Button -->
     <button
-      class="flex items-center justify-between w-full rounded border bg-white text-left hover:border-gray-400 focus:ring-2 focus:ring-blue-500"
+      class="flex items-center justify-between w-full px-3 py-1 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-left hover:border-gray-400 focus:ring-2 focus:ring-blue-500"
       :class="sizeClasses"
       @click="toggleDropdown"
     >
-      <span class="pl-8">{{ selectedLabel || placeholder }}</span>
-      <IconChevronDown class="w-4 h-4 text-gray-400 absolute right-2" />
-      <IconCalendar class="absolute left-2 w-4 h-4 text-gray-400" />
+      <span class="pl-8 px-5" :class="!selectedLabel && 'text-gray-400'">{{
+        selectedLabel || placeholder
+      }}</span>
+      <IconChevronDown class="w-4 h-4 text-gray-400 float-right ml-2 right-2" />
+      <IconCalendar class="absolute w-4 h-4 text-gray-400" />
     </button>
 
     <!-- Dropdown Menu -->
     <div
       v-if="isOpen"
-      class="absolute top-full mt-2 w-full bg-white border rounded shadow-lg z-10"
+      class="absolute top-full mt-2 w-full overflow-clip bg-white dark:bg-gray-800 dark:border-gray-600 border rounded-xl shadow-lg z-10"
     >
       <ul class="max-h-40 overflow-auto">
         <li
           v-for="option in options"
           :key="option.value"
-          class="px-4 py-2 cursor-pointer hover:bg-gray-100"
+          class="px-4 py-2 cursor-pointer capitalize text-gray-600 dark:text-gray-400 hover:dark:text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-300"
+          :class="sizeClasses"
           @click="selectOption(option)"
         >
           {{ option.label }}
@@ -32,9 +35,10 @@
 
 <script setup lang="ts">
 import {
-  ArrowDown as IconChevronDown,
+  ChevronDown as IconChevronDown,
   Calendar as IconCalendar,
 } from "lucide-vue-next";
+import { onMounted, onUnmounted } from "vue";
 
 const emits = defineEmits(["update:modelValue"]);
 const props = defineProps({
@@ -72,14 +76,29 @@ const selectOption = (option: { label: string; value: string | number }) => {
   isOpen.value = false;
 };
 
+const handleClickOutside = (event: MouseEvent) => {
+  const target = event.target as HTMLElement;
+  if (!target.closest(".relative")) {
+    isOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
 const sizeClasses = computed(() => {
   switch (props.size) {
     case "sm":
-      return "py-1 text-sm";
+      return "py-1 text-[0.8125rem]";
     case "lg":
-      return "py-3 text-lg";
+      return "py-3 text-[1.125rem]";
     default:
-      return "py-2 text-md";
+      return "py-2 text-[1rem]";
   }
 });
 </script>

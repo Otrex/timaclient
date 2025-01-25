@@ -1,4 +1,9 @@
-
+export type CardData = {
+  title: string;
+  value: string;
+  description?: string;
+  link?: string;
+};
 export interface InstagramProfileResponse {
   "Account ID": string;
   "Account Type": number;

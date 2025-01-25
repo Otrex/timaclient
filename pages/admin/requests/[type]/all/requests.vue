@@ -1,10 +1,10 @@
 <template>
   <div>
     <table
-      class="w-full border rounded-lg border-separate border-spacing-0 overflow-hidden"
+      class="w-full border rounded-lg dark:border-gray-500 border-separate border-spacing-0 overflow-hidden"
     >
       <thead>
-        <tr class="bg-gray-200 !font-normal text-left">
+        <tr class="bg-gray-200 dark:bg-gray-700 !font-normal text-left">
           <th class="py-3 px-3">Name</th>
           <th class="py-2 px-3">Request Type</th>
           <th class="py-2 px-3">Date</th>
@@ -31,6 +31,9 @@
               @click="
                 navigateTo({
                   name: 'admin.requests.user',
+                  params: {
+                    id: 1,
+                  },
                 })
               "
               class="px-4 py-1 border !text-[0.875rem] rounded-md text-base border-gray-400 hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors"

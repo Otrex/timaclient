@@ -3,7 +3,7 @@
     class="dark:bg-gray-600 rounded-lg px-5 py-5 border dark:border-gray-700"
   >
     <div class="flex justify-between items-center mb-5">
-      <div class="flex gap-2">
+      <div class="flex gap-1">
         <NuxtLink
           active-class="link-style-active"
           class="link-style"
@@ -53,7 +53,7 @@
             id="search"
             type="text"
             placeholder="Search..."
-            class="pl-10"
+            class="pl-10 dark:bg-gray-700 dark:!border-gray-600"
           />
           <span
             class="absolute start-0 inset-y-0 flex items-center justify-center px-3"
@@ -66,7 +66,7 @@
             <KitUiDropdownMenuTrigger class="relative" as-child>
               <KitUiButton
                 variant="outline"
-                class="rounded-2xl !py-[1.125rem] !border-gray-300"
+                class="rounded-2xl !py-[1.125rem] dark:!border-gray-700 !border-gray-300"
               >
                 <Filter />
                 Filter:<b class="capitalize" v-if="filter">{{ filter }}</b>

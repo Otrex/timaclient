@@ -5,8 +5,20 @@
   outline: 1px solid rgba(255, 0, 0, 0.3);
 }
 
+.admin-table thead th {
+  @apply uppercase font-medium text-gray-700 dark:text-gray-400 text-left text-sm p-4;
+}
+
+.admin-table tbody tr {
+  @apply border-t border-gray-300 dark:border-gray-600;
+}
+
+.admin-table tbody tr td {
+  @apply px-5 py-3.5 text-base dark:text-gray-400 text-gray-700;
+}
+
 .link-style {
-  @apply rounded-lg text-sm px-3 py-1 bg-gray-300 dark:bg-gray-800/50;
+  @apply rounded-lg text-sm px-3.5 py-1.5 bg-gray-300 dark:bg-gray-800/50;
 }
 
 .link-style-active {

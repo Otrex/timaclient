@@ -32,7 +32,7 @@
     />
     <AdminDashboardNavigatorMenuItem
       label="Subscriptions"
-      icon="nav/brands"
+      icon="nav/subscribe"
       :to="{
         name: 'admin.subscriptions.index',
       }"
