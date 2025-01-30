@@ -542,7 +542,10 @@ function getActivePlatform(platform: string) {
 }
 
 const activePlatformData = computed(() => {
-  return getActivePlatform(route.query.platform as string);
+  return (
+    getActivePlatform(route.query.platform as string) ||
+    (influencer.value?.socialMediaAccounts || []).at(0)
+  );
 });
 
 // Heat map

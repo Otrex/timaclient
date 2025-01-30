@@ -1,8 +1,7 @@
 <template>
   <div class="px-6">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-2xl font-bold mb-6 text-gray-900">Notifications</h1>
-      <div class="space-y-4">
+      <div class="space-y-4" v-if="notifications.length > 0">
         <div
           v-for="notification in notifications"
           :key="notification.notification_id"
@@ -55,7 +54,7 @@
         <p class="text-gray-500">No notifications found</p>
       </div>
       <!-- Add pagination -->
-      <div class="mt-6 flex justify-center">
+      <div v-if="notifications.length" class="mt-6 flex justify-center">
         <nav class="flex items-center gap-2">
           <button
             @click="pageData.page > 1 && pageData.page--"
@@ -93,7 +92,7 @@ const pageData = reactive({
 const notifications = ref<any[]>([]);
 
 const api = useAPI();
-const {} = useRequestState({
+useRequestState({
   immediately: true,
   async action() {
     return await Promise.all([
