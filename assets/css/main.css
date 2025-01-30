@@ -5,6 +5,10 @@
   outline: 1px solid rgba(255, 0, 0, 0.3);
 }
 
+.Toastify {
+  @apply z-[99999999];
+}
+
 .admin-table thead th {
   @apply uppercase font-medium text-gray-700 dark:text-gray-400 text-left text-sm p-4;
 }

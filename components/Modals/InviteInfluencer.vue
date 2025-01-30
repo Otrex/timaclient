@@ -213,6 +213,7 @@ import { RequestState } from "~/lib/enums";
 import type { GetBrandInfluencer } from "~/lib/interfaces/response";
 
 const api = useAPI();
+const { notify } = useNotification();
 const setPostModal = ref<GetBrandInfluencer["data"][0] | false | null>(false);
 const influencers = ref<GetBrandInfluencer["data"]>([]);
 const selectedInfluencers = ref<GetBrandInfluencer["data"]>([]);
@@ -303,7 +304,11 @@ const { execute: invite, state: invitationState } = useRequestState({
     setPostModal.value = false;
   },
   onError(error) {
-    console.log(error);
+    notify({
+      type: "error",
+      title: "Request Failed",
+      text: error.description,
+    });
   },
 });
 

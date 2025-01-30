@@ -153,7 +153,7 @@ useRequestState({
     );
   },
   onSuccess: (response) => {
-    categories.value = response;
+    categories.value = response as any;
   },
   onError: (error) => {
     console.log(error);

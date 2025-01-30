@@ -125,6 +125,15 @@ function openInviter(campaign: any) {
   invitingCampaign.value = campaign;
   openInvite.value = true;
 }
+
+watch(
+  () => openInvite,
+  () => {
+    if (!openInvite.value) {
+      openCampaigns.value = false;
+    }
+  }
+);
 </script>
 
 <style></style>

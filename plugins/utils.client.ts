@@ -26,7 +26,11 @@ export default defineNuxtPlugin(({ vueApp: app }) => {
     Title, Tooltip, Legend
   );
   // Inject Toastify
-  app.use(Vue3Toastify, { autoClose: 1000 });
+  app.use(Vue3Toastify, {
+    autoClose: 1000, toastStyle: {
+      zIndex: '99999999'
+    }
+  });
 
   app.config.globalProperties.$apexcharts = ApexCharts;
   app.use(VueApexCharts);
