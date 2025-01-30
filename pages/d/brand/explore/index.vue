@@ -24,7 +24,10 @@
               :influencers="buzz.influencers"
               :loading="buzz.loading"
               :see-more="{
-                name: 'Influencers',
+                name: 'BrandViewSpecialInfluencers',
+                params: {
+                  type: buzz.value,
+                },
                 query: {
                   title: buzz.title,
                   type:
@@ -49,7 +52,10 @@
             :bg="buzz.bg"
             :influencers="buzz.data.influencers"
             :see-more="{
-              name: 'Influencers',
+              name: 'BrandViewSpecialInfluencers',
+              params: {
+                type: buzz.title,
+              },
               query: {
                 title: buzz.title,
                 type: 'influencers',
@@ -120,6 +126,42 @@ useRequestState({
 
 useRequestState({
   immediately: true,
+  action: async () => {
+    const res = await api.getTopInfluencerCategories();
+
+    return Promise.all(
+      filterToRequired(res.data).map(async (j, i) => {
+        const res = await api.getInfluencersByCategory(j.category);
+        return {
+          title: j.category,
+          bg: bgColor[i - 1 < 0 ? 0 : i - 1],
+          data: {
+            category: j.category,
+            influencers: filterToRequired(res.data).map((m) => {
+              return {
+                publicId: m.id,
+                username: m.userName,
+                email: m.emailAddress,
+                profilePicture: m.profileImage,
+                phoneNumber: m.phoneNumber,
+                fullName: [m.firstName, m.lastName].filter((e) => e).join(" "),
+              };
+            }),
+          },
+        };
+      })
+    );
+  },
+  onSuccess: (response) => {
+    categories.value = response;
+  },
+  onError: (error) => {
+    console.log(error);
+  },
+});
+
+useRequestState({
+  immediately: true,
   action: () =>
     api.getTopInfluencers({
       page: 1,
@@ -133,30 +175,6 @@ useRequestState({
     buzzes.value[1].loading = false;
   },
 });
-
-// useRequestState({
-//   immediately: true,
-//   action: async () => {
-//     const response = await api.getTopCategories();
-//     const influencers = await Promise.all(
-//       response.data.map((j) => {
-//         return api.getInfluencersByCategory(j);
-//       })
-//     );
-
-//     return [response.data || [], influencers.map((e) => e.data) || []] as const;
-//   },
-//   onSuccess: ([$categories, influencers]) => {
-//     buzzes.value[2].influencers = $categories; // This uses the 5 count number of category to display
-//     categories.value = influencers.map((influencer, i) => {
-//       return {
-//         title: `${$categories[i]} Influencers`,
-//         data: { category: $categories[i], influencers: influencer },
-//         bg: bgColor[i % 3],
-//       };
-//     });
-//   },
-// });
 </script>
 
 <style></style>

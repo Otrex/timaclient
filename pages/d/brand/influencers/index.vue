@@ -12,13 +12,14 @@
     </div>
     <template v-if="searches.state.value == 'LOADING'">
       <div class="flex flex-col items-center justify-center py-12 px-4">
-        <div class="flex space-x-2 animate-pulse">
+        <div class="flex space-x-2 animate-spin">
           <div
             v-for="i in 3"
             :key="i"
+            :style="`--delay: ${(i - 1) * 200}ms`"
             :class="[
               'w-3 h-3 bg-gray-500 rounded-full',
-              i > 1 ? `animation-delay-${(i - 1) * 200}` : '',
+              i > 1 ? `animation-delay-[--delay]` : '',
             ]"
           ></div>
         </div>
@@ -27,28 +28,26 @@
     </template>
 
     <div v-for="(section, index) in sections" :key="index" class="mb-4">
+      <template v-if="section.state == RequestState.LOADING">
+        <div class="flex flex-col items-center justify-center py-12 px-4">
+          <div class="flex space-x-2 animate-pulse">
+            <div
+              v-for="i in 3"
+              :key="i"
+              :style="`--delay: ${(i - 1) * 200}ms`"
+              :class="[
+                'w-3 h-3 bg-gray-500 rounded-full',
+                i > 1 ? `animation-delay-[--delay]` : '',
+              ]"
+            ></div>
+          </div>
+          <p class="mt-4 text-gray-500">Loading {{ section.loadingText }}...</p>
+        </div>
+      </template>
       <template
         v-if="section.state !== RequestState.LOADING && section.data.length > 0"
       >
         <h2 class="font-semibold text-lg mb-3">{{ section.title }}</h2>
-
-        <template v-if="section.state.value == RequestState.LOADING">
-          <div class="flex flex-col items-center justify-center py-12 px-4">
-            <div class="flex space-x-2 animate-pulse">
-              <div
-                v-for="i in 3"
-                :key="i"
-                :class="[
-                  'w-3 h-3 bg-gray-500 rounded-full',
-                  i > 1 ? `animation-delay-${(i - 1) * 200}` : '',
-                ]"
-              ></div>
-            </div>
-            <p class="mt-4 text-gray-500">
-              Loading {{ section.loadingText }}...
-            </p>
-          </div>
-        </template>
 
         <div class="grid grid-cols-1 sm:grid-cols-3">
           <template

@@ -512,6 +512,17 @@ export interface GetSearchCampaignsResponse {
   statusCode: number;
 }
 
+export interface GetTopCategoriesResponse {
+  data: {
+    count: number;
+    category: string;
+  }[];
+  totalCategories: number;
+  message: string;
+  statusCode: number;
+}
+
+
 export interface AdminCampaignResponse {
   data: {
     campaignObjective: string;

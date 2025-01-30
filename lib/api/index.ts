@@ -365,6 +365,14 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getTopInfluencerCategories() {
+    return this.request<Response.GetTopCategoriesResponse>({
+      url: '/brand/top/category',
+      requireAuth: true,
+      method: 'GET',
+    })
+  }
+
   async fetchBookmarks({ page = 1, limit = 10 }: Payload.GetCampaigns) {
     return this.request({
       url: '/influencer/bookmark/fetch',
@@ -849,6 +857,20 @@ export default class TimaAPI extends UploadAPI {
     });
   }
 
+
+  async getInfluencersByCategory(category: string, pageData?: { page: number, limit: number }) {
+    return this.request<IResponse<Core.Influencer[]>>({
+      url: `/brand/influencer/search`,
+      requireAuth: true,
+      method: "POST",
+      data: {
+        page: pageData?.page || 1,
+        limit: pageData?.limit || 5,
+        category: [category]
+      }
+    });
+  }
+
   async brandBasicInformationUpdate(data: Payload.BrandBasicInformation) {
     return this.request<Response.BrandBasicInformation>({
       url: `/user/v1/profile/brand`,
@@ -1211,24 +1233,6 @@ export default class TimaAPI extends UploadAPI {
   }
 
 
-
-
-
-  async getTopCategories() {
-    return this.request<IResponse<string[]>>({
-      url: "/agency/v1/influencer/search/categories",
-      requireAuth: true,
-      method: "GET",
-    });
-  }
-
-  async getInfluencersByCategory(category: string) {
-    return this.request<Response.GetInfluencers>({
-      url: `/agency/v1/influencer/search/categories/${category}`,
-      requireAuth: true,
-      method: "GET",
-    });
-  }
 
   async getInfluencerCampaignExperience(
     data: Partial<Payload.Filter> & { influencerPublicId: string }

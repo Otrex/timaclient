@@ -44,7 +44,7 @@
               class="w-full h-full object-cover"
             /> -->
             <UiImg
-              :src="influencer.profile.profileImage"
+              :src="influencer?.profile?.profileImage"
               class="w-full -mb-3 h-full object-cover bg-white"
             />
           </template>
@@ -58,7 +58,7 @@
     </template>
     <template v-else>
       <div
-        class="h-[calc(100%_-_2.5rem)] py-8 text-white flex items-center justify-center"
+        class="min-h-[220px] py-8 text-white flex items-center justify-center"
       >
         No Influencers
       </div>
@@ -79,12 +79,12 @@ const props = defineProps<{
   title: string;
   images?: string[];
   seeMore?: RouteLocationRaw;
-  influencers?: (Influencer | string)[];
+  influencers?: any[];
 }>();
 
 const bg = computed(() => ({
-  from: props.bg?.from,
-  to: props.bg?.to,
+  from: props.bg?.from || "green",
+  to: props.bg?.to || "red",
 }));
 
 function init(string: string) {
