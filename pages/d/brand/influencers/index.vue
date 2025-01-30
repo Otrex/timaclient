@@ -5,12 +5,12 @@
         <UiInputText
           v-model="search"
           placeholder="Search for influencers"
-          @keydown.enter="() => searches.execute()"
+          @keydown.enter="() => searchExecute()"
         />
         <small>Press enter to search</small>
       </div>
     </div>
-    <template v-if="searches.state.value == 'LOADING'">
+    <template v-if="searching == RequestState.LOADING">
       <div class="flex flex-col items-center justify-center py-12 px-4">
         <div class="flex space-x-2 animate-spin">
           <div
@@ -30,7 +30,7 @@
     <div v-for="(section, index) in sections" :key="index" class="mb-4">
       <template v-if="section.state == RequestState.LOADING">
         <div class="flex flex-col items-center justify-center py-12 px-4">
-          <div class="flex space-x-2 animate-pulse">
+          <div class="flex space-x-2 animate-spin">
             <div
               v-for="i in 3"
               :key="i"
@@ -49,7 +49,7 @@
       >
         <h2 class="font-semibold text-lg mb-3">{{ section.title }}</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <template
             v-for="influencer in section.data"
             :key="influencer.publicId"
@@ -121,7 +121,7 @@ const { state: influencing } = useRequestState({
   },
 });
 
-const searches = useRequestState({
+const { state: searching, execute: searchExecute } = useRequestState({
   immediately: false,
   action: () => api.searchInfluencers({ name: search.value }),
   onSuccess: (response) => {
@@ -137,7 +137,7 @@ const searches = useRequestState({
 const sections = computed(() => [
   {
     title: "Search Results",
-    state: searches.state,
+    state: searching,
     data: searchResults.value,
     loadingText: "search Results",
     emptyTitle: "No Search Results",
