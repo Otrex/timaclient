@@ -350,7 +350,7 @@ const { execute: report, state: isReporting } = useRequestState({
 
 const { state: application, execute: apply } = useRequestState({
   action: () => {
-    if (!authStore.profile.paymentInformation) {
+    if (!authStore.profile?.paymentInformation) {
       throw new Error("Payment information not found");
     }
     return api.applyToCampaign(route.params.id as string);
