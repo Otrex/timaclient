@@ -59,6 +59,7 @@
       >
         <ModalsInviteInfluencer
           :campaign_id="invitingCampaign?.campaign_id"
+          :influencer_id="(route.params.id as string)"
           @close="openInvite = false"
         />
       </UtModal>
@@ -84,7 +85,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Core } from "~/lib/interfaces";
 import type { GetInfluencerProfileResponse } from "~/lib/interfaces/response";
 
 const route = useRoute();

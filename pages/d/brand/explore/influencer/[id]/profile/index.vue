@@ -11,249 +11,276 @@
     </div>
   </div>
   <div class="py-[1rem]" v-else>
-    <p class="font-semibold text-base mb-[0.75rem]">Social Media Platform</p>
-    <div class="flex flex-col md:flex-row mb-[2rem] gap-[1.25rem]">
-      <template
-        v-for="(sm, idx) in influencer?.socialMediaAccounts || []"
-        :key="idx"
-      >
-        <NuxtLink
-          :to="{ query: { platform: sm.platformName.toLowerCase() } }"
-          class="md:w-1/3 w-full"
-          :class="
-            isActive(sm.platformName.toLowerCase())
-              ? '!border-blue-500 rounded-xl !border-2'
-              : ''
-          "
+    <template v-if="(influencer?.socialMediaAccounts || []).length">
+      <p class="font-semibold text-base mb-[0.75rem]">Social Media Platform</p>
+      <div class="flex flex-col md:flex-row mb-[2rem] gap-[1.25rem]">
+        <template
+          v-for="(sm, idx) in influencer?.socialMediaAccounts || []"
+          :key="idx"
         >
-          <DashboardCampaignDataSocialCard
-            :social="sm.platformName.toLowerCase()"
-            :followers="sm?.data?.followers || 0"
-            :engagement-rate="Math.round(sm?.data?.avgEngagement || 0)"
-            :likes="sm?.data?.avgLikes || 0"
+          <NuxtLink
+            :to="{ query: { platform: sm.platformName.toLowerCase() } }"
+            class="md:w-1/3 w-full"
+            :class="
+              isActive(sm.platformName.toLowerCase())
+                ? '!border-blue-500 rounded-xl !border-2'
+                : ''
+            "
+          >
+            <DashboardCampaignDataSocialCard
+              :social="sm.platformName.toLowerCase()"
+              :followers="sm?.data?.followers || 0"
+              :engagement-rate="Math.round(sm?.data?.avgEngagement || 0)"
+              :likes="sm?.data?.avgLikes || 0"
+            />
+          </NuxtLink>
+        </template>
+      </div>
+
+      <div class="mb-5">
+        <p class="font-semibold text-base mb-[0.75rem]">
+          Content Engagement Overview
+        </p>
+
+        <div class="bg-[#F1F9FF] rounded-xl flex md:flex-row flex-col p-6">
+          <div class="w-full flex items-center flex-row gap-3 md:w-1/3">
+            <UtSvg name="thumbs" dim w="2rem" h="2rem" />
+            <div>
+              <p class="-mb-2 dark:text-black">
+                {{ tools.formatNumber(metrics.likes || 0) }}
+              </p>
+              <span class="text-[#777] text-xs">Average Likes</span>
+            </div>
+          </div>
+          <div class="w-full flex flex-row gap-3 md:w-1/3">
+            <UtSvg name="xeye" dim w="2rem" h="2rem" />
+            <div>
+              <p class="-mb-2 dark:text-black">
+                {{
+                  tools.formatNumber(Math.round(metrics.engagementRate || 0))
+                }}
+              </p>
+              <span class="text-[#777] text-xs">Average Views</span>
+            </div>
+          </div>
+          <div class="w-full flex flex-row gap-3 md:w-1/3">
+            <UtSvg name="comments" dim w="2rem" h="2rem" />
+            <div>
+              <p class="-mb-2 dark:text-black">
+                {{ tools.formatNumber(metrics.followers || 0) }}
+              </p>
+              <span class="text-[#777] text-xs">Average followers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
+        <div class="w-full py-5">
+          <StatsLocale
+            noCity
+            :loading-countries="
+              tools.requestState(getCountriesData) === RequestState.LOADING
+            "
+            :loading-cities="
+              tools.requestState(getCitiesData) === RequestState.LOADING
+            "
+            :countries="countryData"
+            :cities="cityData"
           />
-        </NuxtLink>
-      </template>
-    </div>
-
-    <div class="mb-5">
-      <p class="font-semibold text-base mb-[0.75rem]">
-        Content Engagement Overview
-      </p>
-
-      <div class="bg-[#F1F9FF] rounded-xl flex md:flex-row flex-col p-6">
-        <div class="w-full flex items-center flex-row gap-3 md:w-1/3">
-          <UtSvg name="thumbs" dim w="2rem" h="2rem" />
-          <div>
-            <p class="-mb-2 dark:text-black">
-              {{ tools.formatNumber(metrics.likes || 0) }}
-            </p>
-            <span class="text-[#777] text-xs">Average Likes</span>
-          </div>
         </div>
-        <div class="w-full flex flex-row gap-3 md:w-1/3">
-          <UtSvg name="xeye" dim w="2rem" h="2rem" />
-          <div>
-            <p class="-mb-2 dark:text-black">
-              {{ tools.formatNumber(Math.round(metrics.engagementRate || 0)) }}
-            </p>
-            <span class="text-[#777] text-xs">Average Views</span>
-          </div>
-        </div>
-        <div class="w-full flex flex-row gap-3 md:w-1/3">
-          <UtSvg name="comments" dim w="2rem" h="2rem" />
-          <div>
-            <p class="-mb-2 dark:text-black">
-              {{ tools.formatNumber(metrics.followers || 0) }}
-            </p>
-            <span class="text-[#777] text-xs">Average followers</span>
-          </div>
+        <div class="w-full">
+          <StatsAudienceAgeRange
+            :loading="
+              tools.requestState(getAgeAudienceData) === RequestState.LOADING
+            "
+            :data="ageGenderData"
+          />
         </div>
       </div>
-    </div>
 
-    <div class="flex mb-[1.125rem] flex-col md:flex-row gap-[1.125rem]">
-      <div class="w-full py-5">
-        <StatsLocale
-          noCity
-          :loading-countries="
-            tools.requestState(getCountriesData) === RequestState.LOADING
-          "
-          :loading-cities="
-            tools.requestState(getCitiesData) === RequestState.LOADING
-          "
-          :countries="countryData"
-          :cities="cityData"
-        />
-      </div>
-      <div class="w-full">
-        <StatsAudienceAgeRange
-          :loading="
-            tools.requestState(getAgeAudienceData) === RequestState.LOADING
-          "
-          :data="ageGenderData"
-        />
-      </div>
-    </div>
-
-    <!-- <section class="bg-[#F1F9FF] mb-5 rounded-lg p-5 gap-5 items-center">
+      <!-- <section class="bg-[#F1F9FF] mb-5 rounded-lg p-5 gap-5 items-center">
       <p class="text-base mb-5 dark:text-black">Audience Age range</p>
       <div><UiBar class="w-full" :data="[]" /></div>
     </section> -->
 
-    <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5 dark:text-black">Likes History</p>
-      <div>
-        <UiBar
-          class="w-full"
-          no-labels
-          :data="
+      <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
+        <p class="text-base mb-5 dark:text-black">Likes History</p>
+        <div>
+          <UiBar
+            class="w-full"
+            no-labels
+            :data="
             activePlatformData?.data.likeHistory?.map((e: any) => ({
               x: e.date.toLocaleDateString(),
               y: e.likes,
             })) || []
           "
-        />
-      </div>
-    </section>
+          />
+        </div>
+      </section>
 
-    <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5 dark:text-black">Comments History</p>
-      <div>
-        <UiBar
-          class="w-full"
-          no-labels
-          :data="
+      <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
+        <p class="text-base mb-5 dark:text-black">Comments History</p>
+        <div>
+          <UiBar
+            class="w-full"
+            no-labels
+            :data="
             activePlatformData?.data.commentsHistory?.map((e: any) => ({
               x: e.date.toLocaleDateString(),
               y: e.comments,
             })) || []
           "
-        />
-      </div>
-    </section>
+          />
+        </div>
+      </section>
 
-    <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5 dark:text-black">Views History</p>
-      <div>
-        <UiBar
-          class="w-full"
-          no-labels
-          :data="
+      <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
+        <p class="text-base mb-5 dark:text-black">Views History</p>
+        <div>
+          <UiBar
+            class="w-full"
+            no-labels
+            :data="
             activePlatformData?.data.viewsHistory?.map((e: any) => ({
               x: e.date.toLocaleDateString(),
               y: e.views,
             })) || []
           "
-        />
-      </div>
-    </section>
+          />
+        </div>
+      </section>
 
-    <section class="mb-5 rounded-lg p-5 gap-5 items-center">
-      <p class="text-base mb-5">Trending Posts</p>
+      <section class="mb-5 rounded-lg p-5 gap-5 items-center">
+        <p class="text-base mb-5">Trending Posts</p>
 
-      <div>
-        <table
-          class="min-w-full bg-white dark:border-gray-800 dark:bg-transparent border border-gray-200"
-        >
-          <thead class="bg-gray-50 dark:text-white dark:bg-transparent">
-            <tr>
-              <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 dark:text-white dark:border-gray-800 border-b border-gray-200"
-              >
-                Rank
-              </th>
-              <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-              >
-                Post Date
-              </th>
-              <th
-                class="py-3 px-6 whitespace-nowrap text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-              >
-                Post Description / Caption
-              </th>
-              <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-              >
-                Likes
-              </th>
-              <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-              >
-                Comments
-              </th>
-              <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-              >
-                Views
-              </th>
-              <th
-                class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
-              >
-                URL
-              </th>
-            </tr>
-          </thead>
-
-          <tbody
-            v-if="
-              activePlatformData &&
-              activePlatformData?.data?.trendingPosts?.length
-            "
+        <div>
+          <table
+            class="min-w-full bg-white dark:border-gray-800 dark:bg-transparent border border-gray-200"
           >
-            <tr
-              class="hover:bg-gray-50"
-              v-for="(item, idx) in activePlatformData?.data?.trendingPosts ||
-              []"
-              :key="idx"
-            >
-              <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ idx + 1 }}
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ tools.formatDate(item.date) }}
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ item.description }}
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ tools.formatNumber(item.likes) }}
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ tools.formatNumber(item.comments) }}
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
-                {{ tools.formatNumber(item.views) }}
-              </td>
-              <td class="py-4 px-6 border-b border-gray-200 text-blue-500">
-                <a :href="item.link" target="_blank">Link</a>
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <td colspan="100%">
-                <div class="flex py-10 justify-center items-center">
-                  No Data
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+            <thead class="bg-gray-50 dark:text-white dark:bg-transparent">
+              <tr>
+                <th
+                  class="py-3 px-6 text-left text-base font-medium text-gray-700 dark:text-white dark:border-gray-800 border-b border-gray-200"
+                >
+                  Rank
+                </th>
+                <th
+                  class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                >
+                  Post Date
+                </th>
+                <th
+                  class="py-3 px-6 whitespace-nowrap text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                >
+                  Post Description / Caption
+                </th>
+                <th
+                  class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                >
+                  Likes
+                </th>
+                <th
+                  class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                >
+                  Comments
+                </th>
+                <th
+                  class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                >
+                  Views
+                </th>
+                <th
+                  class="py-3 px-6 text-left text-base font-medium text-gray-700 border-b dark:text-white dark:border-gray-800 border-gray-200"
+                >
+                  URL
+                </th>
+              </tr>
+            </thead>
 
-    <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
-      <div>
-        <apexchart
-          type="heatmap"
-          height="350"
-          :options="chartOptions"
-          :series="series"
-        ></apexchart>
+            <tbody
+              v-if="
+                activePlatformData &&
+                activePlatformData?.data?.trendingPosts?.length
+              "
+            >
+              <tr
+                class="hover:bg-gray-50"
+                v-for="(item, idx) in activePlatformData?.data?.trendingPosts ||
+                []"
+                :key="idx"
+              >
+                <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
+                  {{ idx + 1 }}
+                </td>
+                <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
+                  {{ tools.formatDate(item.date) }}
+                </td>
+                <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
+                  {{ item.description }}
+                </td>
+                <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
+                  {{ tools.formatNumber(item.likes) }}
+                </td>
+                <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
+                  {{ tools.formatNumber(item.comments) }}
+                </td>
+                <td class="py-4 px-6 border-b border-gray-200 text-gray-900">
+                  {{ tools.formatNumber(item.views) }}
+                </td>
+                <td class="py-4 px-6 border-b border-gray-200 text-blue-500">
+                  <a :href="item.link" target="_blank">Link</a>
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="100%">
+                  <div class="flex py-10 justify-center items-center">
+                    No Data
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="bg-[#FFFDF9] mb-5 rounded-lg p-5 gap-5 items-center">
+        <div>
+          <apexchart
+            type="heatmap"
+            height="350"
+            :options="chartOptions"
+            :series="series"
+          ></apexchart>
+        </div>
+      </section>
+    </template>
+    <template v-else>
+      <div class="flex items-center justify-center py-8 text-gray-500">
+        <span class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+          <span class="font-bold"
+            >Influencer hasn't added any social media platforms yet</span
+          >
+        </span>
       </div>
-    </section>
+    </template>
   </div>
 </template>
 

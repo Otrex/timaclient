@@ -1,6 +1,9 @@
 <template>
   <div class="bg-white dark:bg-slate-700 max-w-[43.75rem] w-full rounded-2xl">
-    <header class="py-4 text-center dark:border-slate-500 border-b relative">
+    <header
+      v-if="!influencer_id"
+      class="py-4 text-center dark:border-slate-500 border-b relative"
+    >
       <span class="text-lg font-semibold">
         Invite Influencers to this campaign
       </span>
@@ -13,7 +16,7 @@
         @click="$emit('close')"
       />
     </header>
-    <section class="">
+    <section v-if="!influencer_id" class="">
       <div class="py-3 px-5">
         <UiInputText
           search
@@ -77,8 +80,8 @@
       </div>
     </section>
     <UtModal
-      v-model:state="setPostModal"
       m-width="32.25rem"
+      v-model:state="setPostModal"
       content-class="mx-auto mt-[10%]"
     >
       <div
@@ -216,7 +219,20 @@ const selectedInfluencers = ref<GetBrandInfluencer["data"]>([]);
 
 const props = defineProps<{
   campaign_id: string;
+  influencer_id?: string;
 }>();
+
+const $emit = defineEmits(["close"]);
+
+watch(
+  () => setPostModal.value,
+  () => {
+    if (setPostModal.value === false && props.influencer_id) {
+      $emit("close");
+    }
+  },
+  { immediate: true }
+);
 
 const q = ref("");
 const costForm = reactive<any>({});
@@ -315,4 +331,10 @@ function showPostCountModal(value: any) {
     setPostModal.value = false;
   }
 }
+
+onMounted(() => {
+  if (props.influencer_id) {
+    showPostCountModal({ id: props.influencer_id });
+  }
+});
 </script>

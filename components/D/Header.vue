@@ -117,6 +117,7 @@ const routeNameMap: Record<string, string> = {
   BrandNotification: "Notification",
   InfluencerDashboard: "Dashboard",
   BrandFinance: "Finance",
+  BrandInfluencerCampaignInfo: `Influencer >>> <span class="text-[#B0B0B0] font-normal">Campaign</span>`,
   InfluencerSettingPersonal: "Settings",
   InfluencerSettingPassword: "Settings",
   InfluencerSettingPayment: "Settings",
