@@ -368,8 +368,9 @@ const { state: application, execute: apply } = useRequestState({
   },
   onError: (response) => {
     if (
-      "message" in response &&
-      response.message === "Payment information not found"
+      ("message" in response &&
+        response.message === "Payment information not found") ||
+      response.__error?.response?.data?.message?.includes("Payment information")
     ) {
       alert.on = true;
       alert.type = "error";
