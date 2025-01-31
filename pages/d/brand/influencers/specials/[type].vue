@@ -1,8 +1,10 @@
 <template>
   <div class="px-8">
-    <div class="text-lg font-bold mb-3">{{ label }}</div>
+    <div class="text-lg font-bold mb-3">
+      {{ category ? `Category: ${category}` : label }}
+    </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3">
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
       <template v-for="influencer in influencers" :key="influencer.publicId">
         <NuxtLink
           :to="{
@@ -10,7 +12,7 @@
             params: { id: influencer.publicId },
           }"
         >
-          <UiInfluencerInfo v-bind="influencer" />
+          <UiInfluencerInfo class="h-full" v-bind="influencer" />
         </NuxtLink>
       </template>
     </div>
@@ -27,12 +29,15 @@ const route = useRoute();
 const influencers = ref<any>();
 
 const mapInfluencerData = (item: any) => ({
-  publicId: item.id,
+  publicId: item?.id || item.user_id,
   username: item.userName,
   email: item.emailAddress,
-  profilePicture: item.profile.profileImage,
+  profilePicture: item?.profile?.profileImage || item.profileImage,
   phoneNumber: item.phoneNumber,
-  fullName: [item.profile.firstName, item.profile.lastName]
+  fullName: [
+    item?.profile?.firstName || item.firstName || item.userName,
+    item?.profile?.lastName || item.lastName,
+  ]
     .filter((e) => e)
     .join(" "),
 });
@@ -47,7 +52,7 @@ const label = computed(() => {
     case "trending":
       return "Trending Influencers";
     default:
-      return "Influencers";
+      return "";
   }
 });
 
@@ -68,8 +73,27 @@ const recommending = useRequestState({
   },
 });
 
+const category = computed(() => route.query.category as string);
+const bycategory = useRequestState({
+  immediately: false,
+  action: () =>
+    api.getInfluencersByCategory(category.value, {
+      page: 1,
+      limit: 6,
+    }),
+  onSuccess: ({ data }) => {
+    console.log(data);
+
+    influencers.value = data.map(mapInfluencerData);
+  },
+});
+
 onMounted(() => {
   const type = route.params.type as string;
+  if (category.value) {
+    bycategory.execute();
+    return;
+  }
 
   if (type === "top100") {
     topInfluencing.execute();
