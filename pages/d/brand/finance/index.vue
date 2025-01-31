@@ -37,11 +37,11 @@
         <h4 class="font-semibold mb-5">Campaigns</h4>
         <div class="mb-5">
           <p class="uppercase text-sm">ALL Campaigns</p>
-          <p class="text-[#058EF8] font-semibold">120</p>
+          <p class="text-[#058EF8] font-semibold">0</p>
         </div>
         <div class="mb-5">
           <p class="uppercase text-sm">Total Spent</p>
-          <p class="text-[#058EF8] font-semibold">120</p>
+          <p class="text-[#058EF8] font-semibold">0</p>
         </div>
       </div>
       <!-- <div
@@ -85,6 +85,9 @@
             </tr>
           </thead>
           <tbody>
+            <tr v-if="transactions.length === 0">
+              <td colspan="100%" class="text-center">No transaction found</td>
+            </tr>
             <tr
               v-for="transaction in transactions"
               :key="transaction.transaction_id"
