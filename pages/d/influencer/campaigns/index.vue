@@ -91,6 +91,7 @@
       </DLoadingState>
     </section>
 
+    {{ invites }}
     <section v-if="currentTab === 'invitations'">
       <DashboardNotifySection :invites="invites" />
     </section>

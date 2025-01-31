@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    {{ invites }}
     <div class="">
       <div
         v-if="data.length === 0"
