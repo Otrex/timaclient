@@ -11,6 +11,16 @@
         </tr>
       </thead>
       <tbody>
+        <template v-if="fetchingContent === 'LOADING'">
+          <div class="flex items-center justify-center py-8">
+            <div
+              class="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-500"
+            ></div>
+            <span class="ml-4 text-gray-600 dark:text-gray-300 text-lg"
+              >Loading content...</span
+            >
+          </div>
+        </template>
         <template v-for="(content, idx) in contents" :key="idx">
           <tr
             @click="content.opened = !content.opened"
@@ -58,6 +68,8 @@
               <span
                 :class="[
                   content.applicationStatus === 'PENDING' && '!text-yellow-500',
+                  content.applicationStatus === 'DECLINED' && '!text-red-500',
+                  content.applicationStatus === 'APPROVED' && '!text-green-500',
                   'text-sm dark:text-gray-400 text-gray-500',
                 ]"
                 >{{ content.applicationStatus }}</span
@@ -153,17 +165,28 @@
                 <div class="mt-5 flex justify-end">
                   <UiButtonDefault
                     variant="secondary"
-                    :loading="approving === constants.LOADING"
-                    :disabled="approving === constants.LOADING"
-                    @click="() => approveOrReject('DECLINED', content)"
+                    :loading="
+                      approving === constants.LOADING && state === 'DECLINED'
+                    "
+                    :disabled="
+                      approving === constants.LOADING && state === 'DECLINED'
+                    "
+                    @click="
+                      () => {
+                        reasonModal = true;
+                        state = 'DECLINED';
+                        barrel = content;
+                      }
+                    "
                     class="px-6 py-2"
                     label="Reject"
                   />
+
                   <UiButtonDefault
                     variant="primary"
                     :loading="approving === constants.LOADING"
                     :disabled="approving === constants.LOADING"
-                    @click="reasonModal = content"
+                    @click="() => approveOrReject('APPROVED', content)"
                     class="px-6 py-2"
                     label="Approve"
                   />
@@ -196,9 +219,9 @@
         <div>
           <UiButtonDefault
             variant="primary"
-            @click="() => approveOrReject('APPROVED', reasonModal)"
-            :loading="approving === constants.LOADING"
-            :disabled="approving === constants.LOADING"
+            @click="() => approveOrReject('DECLINED', barrel)"
+            :loading="approving === constants.LOADING && state === 'DECLINED'"
+            :disabled="approving === constants.LOADING && state === 'DECLINED'"
             class="w-full py-2"
             label="Submit"
           />
@@ -223,7 +246,7 @@ const route = useRoute();
 const { notify } = useNotification();
 const contents = ref<GetInfluencerContentApplicationsResponse["data"]>([]);
 //
-useRequestState({
+const { state: fetchingContent, execute: fetchContent } = useRequestState({
   immediately: true,
   async action() {
     return api.getCampaignContents(route.params.id as string, "", {
@@ -237,8 +260,12 @@ useRequestState({
   },
 });
 
+const barrel = ref<any>(null);
+const state = ref<"APPROVED" | "DECLINED" | "PENDING" | null>(null);
+
 const { state: approving, execute: approveOrReject } = useRequestState({
   async action(status: ContentReview["status"], content: any) {
+    state.value = status;
     return api.reviewContent({
       campaign_id: content.campaign_id,
       content_id: content.application_id,
@@ -249,11 +276,13 @@ const { state: approving, execute: approveOrReject } = useRequestState({
 
   onSuccess(response) {
     reason.value = "";
+    reasonModal.value = null;
     notify({
       type: "success",
       title: "Content reviewed successfully",
       text: "The content has been reviewed successfully",
     });
+    fetchContent();
   },
 
   onError(error) {
