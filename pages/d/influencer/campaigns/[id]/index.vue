@@ -195,7 +195,16 @@
           <UiButtonDefault
             variant="primary"
             class="w-full py-2"
-            @click="() => navigateTo({ name: 'SignUpSocials' })"
+            @click="
+              () =>
+                navigateTo({
+                  name:
+                    alert.title === 'Payment information'
+                      ? 'InfluencerSettingPayment'
+                      : 'SignUpSocials',
+                  query: { redirect: route.fullPath },
+                })
+            "
             label="Link Account"
           />
         </div>
