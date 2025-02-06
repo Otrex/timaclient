@@ -360,6 +360,13 @@ const { execute: report, state: isReporting } = useRequestState({
 const { state: application, execute: apply } = useRequestState({
   action: () => {
     if (
+      !authStore.profile?.socialMediaAccounts ||
+      authStore.profile?.socialMediaAccounts.length === 0
+    ) {
+      throw new Error("Social media accounts not found");
+    }
+
+    if (
       !authStore.profile?.paymentInformation ||
       Object.keys(authStore.profile?.paymentInformation).length === 0
     ) {

@@ -265,6 +265,7 @@ const fullForm = reactive({
 
 const isEditable = inject<boolean>("isEditable");
 const { notify } = useNotification();
+const route = useRoute();
 
 const { state, execute: resolve } = useRequestState({
   action: async () =>
@@ -316,6 +317,10 @@ const { state: updatingPaymentInfo, execute: updatePaymentInfo } =
         title: "Request Successful",
         type: "success",
       });
+
+      if (route.query.redirect) {
+        navigateTo(route.query.redirect as string);
+      }
     },
     onError: (res) => {
       notify({
