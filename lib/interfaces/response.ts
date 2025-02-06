@@ -522,7 +522,6 @@ export interface TiktokSocialInfo {
   total_videos: number;
   follower_count: number;
 }
-
 export interface GetInfluencerProfileResponse {
   data: {
     totalCompletedCampaigns: number;
@@ -551,7 +550,7 @@ export interface GetInfluencerProfileResponse {
     role: string;
     city: string;
     socialPost?: {
-      data: InstagramSocialPost[] | { posts: TiktokSocialPost[] };
+      data: InstagramSocialPost[] | { posts: TiktokSocialPost[] } | TwitterSocialPost[];
       platform: string;
     }[];
     profileImage: string;
@@ -565,12 +564,52 @@ export interface GetInfluencerProfileResponse {
     id: string;
     state: string;
     socialInfo?: {
-      data: InstagramSocialInfo | TiktokSocialInfo;
+      data: InstagramSocialInfo | TiktokSocialInfo | TwitterSocialInfo;
       platform: string;
     }[];
   };
   message: string;
   statusCode: number;
+}
+
+export interface TwitterSocialPost {
+  Retweets: number;
+  Bookmarks: number;
+  Language: string;
+  Comments: number;
+  Media?: {
+    photo?: {
+      sizes: {
+        w: number;
+        h: number;
+      };
+      media_url_https: string;
+      id: string;
+    }[];
+  };
+  Quotes: number;
+  Date: string;
+  Caption: string;
+  Favorites: number;
+}
+
+export interface TwitterSocialInfo {
+  "Average Quotes": number;
+  "Average Comments": number;
+  "Estimated Reach": number;
+  Following: number;
+  "Total Comments": number;
+  Followers: number;
+  Name: string;
+  "Total Likes": number;
+  "Average Likes": number;
+  user_id: string;
+  Username: string;
+  "Profile Image": string;
+  "Engagement Rate": number;
+  "Total Retweets": number;
+  "Average Retweets": number;
+  "Total Quotes": number;
 }
 
 export interface GetWithdrawalBanksResponse {

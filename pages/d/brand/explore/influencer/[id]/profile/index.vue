@@ -294,6 +294,8 @@ import type {
   InstagramSocialPost,
   TiktokSocialInfo,
   TiktokSocialPost,
+  TwitterSocialInfo,
+  TwitterSocialPost,
 } from "~/lib/interfaces/response";
 import { tools } from "#build/imports";
 import { X } from "lucide-vue-next";
@@ -444,13 +446,63 @@ const { state } = useRequestState({
         }
 
         if (sm.platformName.toLowerCase() === "twitter") {
-          const res = await api.socials.getXByUsername(sm.userName);
+          // const res = await api.socials.getXByUsername(sm.userName);
+          const [res, datares] = await Promise.all([
+            // api.socials.getTiktokByUsername(sm.userName),
+            // api.socials.getTiktokPostByUsername(sm.userName),
+            Promise.resolve(
+              response.data.socialInfo?.find(
+                (e) => e.platform?.toLowerCase() == "x"
+              )?.data as TwitterSocialInfo
+            ),
+            Promise.resolve(
+              response.data.socialPost?.find(
+                (e) => e.platform?.toLowerCase() == "x"
+              )?.data as TwitterSocialPost[]
+            ),
+          ]);
           return [
             "twitter",
             {
               avgEngagement: res["Engagement Rate"],
               avgLikes: res["Average Likes"],
               followers: res.Followers,
+
+              history: datares,
+              likeHistory:
+                datares?.map((d) => ({
+                  likes: d.Favorites,
+                  date: new Date(d.Date),
+                })) || [],
+              viewsHistory:
+                datares?.map((d) => ({
+                  views: Math.max(
+                    d.Favorites,
+                    d.Quotes,
+                    d.Retweets,
+                    d.Bookmarks
+                  ),
+                  date: new Date(d.Date),
+                })) || [],
+              commentsHistory:
+                datares?.map((d) => ({
+                  comments: d.Comments,
+                  date: new Date(d.Date),
+                })) || [],
+              trendingPosts:
+                datares?.map((d) => ({
+                  likes: d.Favorites,
+                  comments: d.Comments,
+                  views: Math.max(
+                    d.Favorites,
+                    d.Quotes,
+                    d.Retweets,
+                    d.Bookmarks
+                  ),
+                  description: d.Caption,
+                  date: new Date(d.Date),
+                  link: d.Media?.photo?.[0].media_url_https,
+                })) || [],
             },
           ];
         }
