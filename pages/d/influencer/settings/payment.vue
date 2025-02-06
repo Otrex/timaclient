@@ -332,13 +332,16 @@ const { state: updatingPaymentInfo, execute: updatePaymentInfo } =
   });
 
 const { execute: addBank, state: addingBank } = useRequestState({
-  action: async () =>
-    api.createWithdrawalBanks({
+  action: async () => {
+    await api.createWithdrawalBanks({
       accountNumber: form.accountNumber,
       accountName: form.accountName,
       bankName: optionsStore.getBankNameByCode(form.bank)!,
       bankCode: form.bank,
-    }),
+    });
+
+    await optionsStore.getWithdrawalBanks();
+  },
 
   onSuccess: () => {
     showAddBankModal.value = false;

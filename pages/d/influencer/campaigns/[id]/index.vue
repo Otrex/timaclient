@@ -205,7 +205,11 @@
                   query: { redirect: route.fullPath },
                 })
             "
-            label="Link Account"
+            :label="
+              alert.title === 'Payment information'
+                ? 'Update Payment Information'
+                : 'Link Account'
+            "
           />
         </div>
       </template>
