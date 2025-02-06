@@ -518,23 +518,24 @@ const { state, execute, v$, validate } = useRequestState({
   },
 });
 
+const router = useRouter();
 function toProfileReview() {
+  if (authStore?.profile?.profileSetupProgress === "PROFILE_APPROVED") {
+    return router.back();
+  }
+
   navigateTo({
     name: "SignUpDemographicInfo",
   });
 }
 
-function toLogin() {
-  notify({
-    type: "success",
-    title: "Signup Completed!",
-    text: "Proceed to login to your account",
-  });
-
-  setTimeout(() => {
-    navigateTo("/auth/login");
-  }, 2000);
-}
+onMounted(async () => {
+  try {
+    await authStore.getProfile();
+  } catch (error) {
+    alert("something went wrong");
+  }
+});
 </script>
 
 <style></style>

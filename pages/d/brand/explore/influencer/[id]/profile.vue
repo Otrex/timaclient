@@ -108,9 +108,6 @@ const { state } = useRequestState({
   onSuccess(response) {
     influencer.value = {
       ...response.data,
-      audienceDemographics: tools.parseAudienceDemographics(
-        response.data.audienceDemographics
-      ),
     };
   },
 });

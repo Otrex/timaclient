@@ -111,7 +111,7 @@
             class="w-full"
             no-labels
             :data="
-            activePlatformData?.data.likeHistory?.map((e: any) => ({
+            activePlatformData?.data?.likeHistory?.map((e: any) => ({
               x: e.date.toLocaleDateString(),
               y: e.likes,
             })) || []
@@ -533,10 +533,6 @@ const { state } = useRequestState({
           data: rres[platformName.toLowerCase()] || {},
         };
       }
-    );
-
-    response.data.audienceDemographics = tools.parseAudienceDemographics(
-      response.data.audienceDemographics
     );
 
     return response;
