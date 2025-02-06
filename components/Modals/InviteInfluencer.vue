@@ -221,6 +221,7 @@ const selectedInfluencers = ref<GetBrandInfluencer["data"]>([]);
 const props = defineProps<{
   campaign_id: string;
   influencer_id?: string;
+  controller?: boolean;
 }>();
 
 const $emit = defineEmits(["close"]);
@@ -233,6 +234,18 @@ watch(
     }
   },
   { immediate: true }
+);
+
+watch(
+  () => props.controller,
+  () => {
+    if (props.controller == undefined) return;
+    if (props.controller) {
+      setPostModal.value = temp.value;
+    } else {
+      setPostModal.value = false;
+    }
+  }
 );
 
 const q = ref("");
@@ -313,6 +326,7 @@ const { execute: invite, state: invitationState } = useRequestState({
 });
 
 const loading = ref(false);
+const temp = ref<any>();
 
 function showPostCountModal(value: any) {
   if (value) {
@@ -328,6 +342,8 @@ function showPostCountModal(value: any) {
             ...data,
           },
         };
+
+        temp.value = setPostModal.value;
       })
       .finally(() => {
         loading.value = false;

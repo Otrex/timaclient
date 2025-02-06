@@ -60,7 +60,8 @@
         <ModalsInviteInfluencer
           :campaign_id="invitingCampaign?.campaign_id"
           :influencer_id="(route.params.id as string)"
-          @close="openInvite = false"
+          :controller="openInvite"
+          @close="closeInviter"
         />
       </UtModal>
     </aside>
@@ -122,18 +123,31 @@ const openInvite = ref(false);
 const authStore = useAuthStore();
 
 function openInviter(campaign: any) {
+  console.log(
+    campaign,
+    openInvite.value,
+    invitingCampaign.value,
+    openCampaigns
+  );
+
   invitingCampaign.value = campaign;
   openInvite.value = true;
 }
 
-watch(
-  () => openInvite,
-  () => {
-    if (!openInvite.value) {
-      openCampaigns.value = false;
-    }
-  }
-);
+function closeInviter() {
+  openInvite.value = false;
+  invitingCampaign.value = null;
+}
+
+// watch(
+//   () => openInvite,
+//   () => {
+//     if (!openInvite.value) {
+//       invitingCampaign.value = null;
+//       openCampaigns.value = false;
+//     }
+//   }
+// );
 </script>
 
 <style></style>

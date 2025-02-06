@@ -442,9 +442,90 @@ export interface GetInfluencerApplicationsWithCampaignResponse {
 }
 
 
+export interface InstagramSocialPost {
+  Views: number | null;
+  Comments: number;
+  Hashtags: string[];
+  Duration: number | null;
+  City: string | null;
+  Likes: number;
+  "Media Type": string;
+  Shares: number | null;
+  Date: string;
+  Caption: string;
+  Location: string | null;
+}
+
+export interface TiktokSocialPost {
+  comment_count: number;
+  share_count: number;
+  duration: number;
+  like_count: number;
+  video_url: string;
+  hashtags: string[];
+  description: string;
+  play_count: number;
+  publish_date: number;
+  video_id: string;
+}
+
+export interface InstagramSocialInfo {
+  Category: string | null;
+  Email: string | null;
+  "Average Comments": number;
+  "Estimated Reach": number;
+  "Full Name": string;
+  "Profile Url": string;
+  "Average Views": number;
+  Verified: boolean;
+  "Average Likes": number;
+  "Igtv Videos": number;
+  Biography: string;
+  "Engagement Rate": number;
+  "Account Type": number;
+  "Account ID": string;
+  "Link in Bio": string;
+  Following: number;
+  Posts: number;
+  "Total Comments": number;
+  "Total Shares": number;
+  Followers: number;
+  "Average Shares": number;
+  "Total Views": number;
+  "Total Likes": number;
+  Username: string;
+  "Profile Pic": string;
+}
+
+export interface TiktokSocialInfo {
+  unique_id: string;
+  avatar_url: string;
+  user_id: string;
+  signature: string;
+  following_count: number;
+  engagement_metrics: {
+    total_comments: number;
+    average_views_per_video: number;
+    average_shares_per_video: number;
+    average_comments_per_video: number;
+    total_views: number;
+    engagement_rate: number;
+    total_likes: number;
+    estimated_reach: number;
+    total_shares: number;
+    average_likes_per_video: number;
+    estimated_impressions: number;
+  };
+  nickname: string;
+  verified: boolean;
+  total_hearts: number;
+  total_videos: number;
+  follower_count: number;
+}
 
 export interface GetInfluencerProfileResponse {
   data: {
+    totalCompletedCampaigns: number;
     country: string;
     lastName: string;
     audienceDemographics?: any,
@@ -469,6 +550,10 @@ export interface GetInfluencerProfileResponse {
     }
     role: string;
     city: string;
+    socialPost?: {
+      data: InstagramSocialPost[] | { posts: TiktokSocialPost[] };
+      platform: string;
+    }[];
     profileImage: string;
     userName: string;
     firstName: string;
@@ -479,6 +564,10 @@ export interface GetInfluencerProfileResponse {
     otherName: string;
     id: string;
     state: string;
+    socialInfo?: {
+      data: InstagramSocialInfo | TiktokSocialInfo;
+      platform: string;
+    }[];
   };
   message: string;
   statusCode: number;

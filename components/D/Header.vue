@@ -126,6 +126,7 @@ const routeNameMap: Record<string, string> = {
   InfluencerSettingIndustry: "Settings",
   InfluencerSettingAccount: "Settings",
   BrandSettingPassword: "Settings",
+  CampaignApplicationInfluencer: "Campaign Application",
   BrandSettingBillingTransactions: "Settings",
   BrandSettingBillingSubscription: "Settings",
   BrandSettingPersonal: "Settings",

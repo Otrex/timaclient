@@ -4,12 +4,12 @@
       class="mt-[0.6875rem] p-[1.25rem]"
       style="background: rgba(228, 243, 255, 0.5)"
     >
-      <div class="flex flex-row">
-        <UiInputText
+      <div class="flex flex-row justify-end">
+        <!-- <UiInputText
           search
           placeholder="Search Influencers"
           class="mr-[1.75rem] max-w-[26.9375rem] placeholder:text-[color:--clr-grey-500] w-full !border-[#808080ad]"
-        />
+        /> -->
 
         <!-- ewfwe -->
         <!--<UiInputSelect
@@ -94,24 +94,34 @@
               v-for="application in pendingApplication"
               :key="application.applicationId"
             >
-              <DashboardCampaignApplication
-                :id="application.application_id"
-                type="Independent"
-                :name="
-                  [
-                    application?.userProfile?.firstName,
-                    application?.userProfile?.lastName,
-                  ]
-                    .filter((e) => e)
-                    .join(' ')
-                "
-                :socials="[]"
-                :profilePicture="application?.userProfile?.profilePicture"
-                :questionAndAnswers="QandA"
-                @create-contract="
-                  () => triggerAccept(application?.influencer_id)
-                "
-              />
+              <NuxtLink
+                :to="{
+                  name: 'CampaignApplicationInfluencer',
+                  params: {
+                    appid: application.application_id,
+                    id: route.params.id,
+                  },
+                }"
+              >
+                <DashboardCampaignApplication
+                  :id="application.application_id"
+                  type="Independent"
+                  :name="
+                    [
+                      application?.userProfile?.firstName,
+                      application?.userProfile?.lastName,
+                    ]
+                      .filter((e) => e)
+                      .join(' ')
+                  "
+                  :socials="[]"
+                  :profilePicture="application?.userProfile?.profilePicture"
+                  :questionAndAnswers="QandA"
+                  @create-contract="
+                    () => triggerAccept(application?.influencer_id)
+                  "
+                />
+              </NuxtLink>
             </template>
           </div>
           <UiModalConfirmAction

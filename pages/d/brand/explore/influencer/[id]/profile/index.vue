@@ -288,7 +288,13 @@
 import { DemographyType, RequestState } from "~/lib/enums";
 import type { Core } from "~/lib/interfaces";
 import type { AgeGenderData, LocaleData } from "~/lib/interfaces/core";
-import type { GetInfluencerProfileResponse } from "~/lib/interfaces/response";
+import type {
+  GetInfluencerProfileResponse,
+  InstagramSocialInfo,
+  InstagramSocialPost,
+  TiktokSocialInfo,
+  TiktokSocialPost,
+} from "~/lib/interfaces/response";
 import { tools } from "#build/imports";
 import { X } from "lucide-vue-next";
 
@@ -337,45 +343,69 @@ const { state } = useRequestState({
       try {
         if (sm.platformName.toLowerCase() === "instagram") {
           const [res, datares] = await Promise.all([
-            api.socials.getInstagramByUsername(sm.userName),
-            api.socials.getInstagramPostByUsername(sm.userName),
+            // api.socials.getInstagramByUsername(sm.userName),
+            // api.socials.getInstagramPostByUsername(sm.userName),
+            Promise.resolve(
+              response.data.socialInfo?.find(
+                (e) => e.platform?.toLowerCase() == "instagram"
+              )?.data as InstagramSocialInfo
+            ),
+            Promise.resolve(
+              response.data.socialPost?.find(
+                (e) => e.platform?.toLowerCase() == "instagram"
+              )?.data as InstagramSocialPost[]
+            ),
           ]);
 
           return [
             "instagram",
             {
-              avgEngagement: res["Engagement Rate"],
-              avgLikes: res["Average Likes"],
-              followers: res["Followers"],
+              avgEngagement: res && res["Engagement Rate"],
+              avgLikes: res && res["Average Likes"],
+              followers: res && res["Followers"],
               history: datares,
-              likeHistory: datares.map((d: any) => ({
-                likes: d.Likes,
-                date: new Date(d.Date),
-              })),
-              viewsHistory: datares.map((d: any) => ({
-                views: d.Views,
-                date: new Date(d.Date),
-              })),
-              commentsHistory: datares.map((d: any) => ({
-                comments: d.Comments,
-                date: new Date(d.Date),
-              })),
-              trendingPosts: datares.map((d: any) => ({
-                likes: d.Likes,
-                comments: d.Comments,
-                views: d.Views,
-                description: d.Caption,
-                date: new Date(d.Date),
-                link: null,
-              })),
+              likeHistory:
+                datares?.map((d: any) => ({
+                  likes: d.Likes,
+                  date: new Date(d.Date),
+                })) || [],
+              viewsHistory:
+                datares?.map((d: any) => ({
+                  views: d.Views,
+                  date: new Date(d.Date),
+                })) || [],
+              commentsHistory:
+                datares?.map((d: any) => ({
+                  comments: d.Comments,
+                  date: new Date(d.Date),
+                })) || [],
+              trendingPosts:
+                datares?.map((d: any) => ({
+                  likes: d.Likes,
+                  comments: d.Comments,
+                  views: d.Views,
+                  description: d.Caption,
+                  date: new Date(d.Date),
+                  link: null,
+                })) || [],
             },
           ];
         }
 
         if (sm.platformName.toLowerCase() === "tiktok") {
           const [res, datares] = await Promise.all([
-            api.socials.getTiktokByUsername(sm.userName),
-            api.socials.getTiktokPostByUsername(sm.userName),
+            // api.socials.getTiktokByUsername(sm.userName),
+            // api.socials.getTiktokPostByUsername(sm.userName),
+            Promise.resolve(
+              response.data.socialInfo?.find(
+                (e) => e.platform?.toLowerCase() == "tiktok"
+              )?.data as TiktokSocialInfo
+            ),
+            Promise.resolve(
+              response.data.socialPost?.find(
+                (e) => e.platform?.toLowerCase() == "tiktok"
+              )?.data as { posts: TiktokSocialPost[] }
+            ),
           ]);
 
           return [
@@ -385,26 +415,30 @@ const { state } = useRequestState({
               avgLikes: res.engagement_metrics?.total_likes,
               followers: res.follower_count,
               history: datares.posts,
-              likeHistory: datares?.posts?.map((d: any) => ({
-                likes: d.like_count,
-                date: new Date(d.publish_date),
-              })),
-              viewsHistory: datares?.posts?.map((d: any) => ({
-                views: d.play_count,
-                date: new Date(d.publish_date),
-              })),
-              commentsHistory: datares?.posts?.map((d: any) => ({
-                comments: d.comment_count,
-                date: new Date(d.publish_date),
-              })),
-              trendingPosts: datares?.posts?.map((d: any) => ({
-                likes: d.like_count,
-                comments: d.comment_count,
-                views: d.play_count,
-                description: d.description,
-                date: new Date(d.publish_date),
-                link: d.video_url,
-              })),
+              likeHistory:
+                datares?.posts?.map((d: any) => ({
+                  likes: d.like_count,
+                  date: new Date(d.publish_date),
+                })) || [],
+              viewsHistory:
+                datares?.posts?.map((d: any) => ({
+                  views: d.play_count,
+                  date: new Date(d.publish_date),
+                })) || [],
+              commentsHistory:
+                datares?.posts?.map((d: any) => ({
+                  comments: d.comment_count,
+                  date: new Date(d.publish_date),
+                })) || [],
+              trendingPosts:
+                datares?.posts?.map((d: any) => ({
+                  likes: d.like_count,
+                  comments: d.comment_count,
+                  views: d.play_count,
+                  description: d.description,
+                  date: new Date(d.publish_date),
+                  link: d.video_url,
+                })) || [],
             },
           ];
         }
@@ -459,7 +493,6 @@ const { state } = useRequestState({
     influencer.value = response.data;
   },
 });
-
 const getCountriesData = useRequestState({
   immediately: true,
   action: () =>

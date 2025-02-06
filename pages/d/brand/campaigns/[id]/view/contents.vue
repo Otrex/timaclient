@@ -12,14 +12,16 @@
       </thead>
       <tbody>
         <template v-if="fetchingContent === 'LOADING'">
-          <div class="flex items-center justify-center py-8">
-            <div
-              class="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-500"
-            ></div>
-            <span class="ml-4 text-gray-600 dark:text-gray-300 text-lg"
-              >Loading content...</span
-            >
-          </div>
+          <tr class="flex items-center justify-center py-8">
+            <td colspan="100%">
+              <div
+                class="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-500"
+              ></div>
+              <span class="ml-4 text-gray-600 dark:text-gray-300 text-lg"
+                >Loading content...</span
+              >
+            </td>
+          </tr>
         </template>
         <template v-for="(content, idx) in contents" :key="idx">
           <tr

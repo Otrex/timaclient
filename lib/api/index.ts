@@ -1302,24 +1302,4 @@ export default class TimaAPI extends UploadAPI {
   async createApplication(data: Payload.CreateApplication) {
     throw new Error("Not implemented");
   }
-
-  async reviewApplication(data: Payload.ReviewApplication) {
-    const { status, applicationId } = data;
-    return this.request<Response.GetApplication>({
-      url: this.querify(`/agency/v1/applications/review/${status}`, {
-        applicationId,
-      }),
-      requireAuth: true,
-      method: "PUT",
-    });
-  }
-
-  async createContract(data: Payload.CreateContract) {
-    return this.request<IResponse<Core.ApplicationContract>>({
-      url: "/payment/v1/contracts",
-      requireAuth: true,
-      method: "POST",
-      data,
-    });
-  }
 }
