@@ -71,7 +71,10 @@
             v-for="campaign in applications"
             :key="campaign.campaign_id"
           >
-            <DAppCardMini :campaign="campaign" />
+            <DAppCardMini
+              :campaign="campaign"
+              :status="campaign.applicationStatus"
+            />
           </template>
         </div>
       </DLoadingState>
@@ -91,7 +94,6 @@
       </DLoadingState>
     </section>
 
-    {{ invites }}
     <section v-if="currentTab === 'invitations'">
       <DashboardNotifySection :invites="invites" />
     </section>
