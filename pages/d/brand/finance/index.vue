@@ -37,6 +37,7 @@
           </div>
         </div>
       </div>
+
       <div
         class="bg-gray-100 dark:text-black border dark:border-gray-800 w-full p-6 rounded-lg"
       >
@@ -210,6 +211,28 @@
         </table>
       </div>
     </section> -->
+    <UtModal m-width="20rem" v-model:state="fundModal">
+      <div
+        class="bg-white flex flex-col shadow gap-4 dark:text-black p-7 rounded-3xl"
+      >
+        <div>
+          <h3 class="font-semibold text-xl">Enter Amount to Fund Account</h3>
+        </div>
+        <div>
+          <UiInputText v-model="amount" type="number" label="Amount" />
+        </div>
+        <div class="flex flex-row justify-center">
+          <UiButtonDefault
+            class="py-2 px-5"
+            @click="() => fund()"
+            :loading="funding == 'LOADING'"
+            :disabled="funding == 'LOADING'"
+            variant="primary"
+            label="Fund Account"
+          />
+        </div>
+      </div>
+    </UtModal>
 
     <UtModal
       m-width="40rem"
@@ -321,6 +344,7 @@ definePageMeta({
 });
 
 const payment = ref(false);
+const amount = ref(0);
 const filter = ref("");
 const walletStats = ref<any>({});
 
@@ -345,6 +369,19 @@ onMounted(async () => {
   } catch (error) {}
 });
 
+const { state: funding, execute: fund } = useRequestState({
+  immediately: true,
+  action: async () =>
+    api.fundWallet({
+      amount: amount.value,
+      paymentGateway: "PAYSTACK",
+    }),
+  onSuccess: (res) => {
+    fundModal.value = false;
+    window.open(res.data.authorization_url, "_blank");
+  },
+});
+
 useRequestState({
   immediately: true,
   action: async () => api.getWalletStats(),
@@ -355,13 +392,13 @@ useRequestState({
       datasets: [
         {
           data: [
-            +(walletStats.value?.totalCompletedPayments || 0) + 10,
-            +(walletStats.value?.balance || 0) + 10,
+            +(walletStats.value?.totalCompletedPayments || 0) + 1,
+            +(walletStats.value?.balance || 0) + 1,
           ],
           backgroundColor: ["#F02727", "#058EF8"],
           hoverBackgroundColor: ["#FF6384", "#36A2EB"],
-          borderWidth: 0,
           pointStyle: "circle",
+          borderWidth: 0,
         },
       ],
     };
@@ -440,8 +477,6 @@ const getTransactions = useRequestState({
     }),
   immediately: true,
   onSuccess: (response) => {
-    console.log(response);
-
     transactions.value = response.data;
   },
 });
