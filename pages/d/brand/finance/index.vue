@@ -1,28 +1,42 @@
 <template>
   <div class="p-[1.25rem] px-8">
-    <div class="flex justify-end">
-      <UiInputDropdown
-        class="max-w-[17.5rem] inline-flex w-full"
-        view-class="!py-1.5 !px-5"
-        v-model="filter"
-        :options="[
-          'Last 7 days',
-          'Last 14 days',
-          'Last 30 days',
-          'Last 90 days',
-        ]"
-      >
-        <template #select="{ data, isOpen }">
-          <div class="flex flex-row gap-2 items-center">
-            <div>
-              <UtSvg name="logo/calendar" class="w-[1.5rem] mb-1 h-[1.5rem]" />
-            </div>
-            <div class="text-center w-full text-gray-600">{{ data }}</div>
-          </div>
-        </template>
-      </UiInputDropdown>
-    </div>
     <section class="grid grid-cols-3 dark:text-black my-5 sm:flex-row gap-5">
+      <div class="w-full">
+        <div
+          class="bg-[#F7FCFF] border border-[#2BA2FD33] rounded-lg px-8 py-6 h-full flex items-center w-full"
+        >
+          <div class="flex gap-3 justify-between w-full">
+            <div class="flex gap-2 justify-between">
+              <div
+                class="bg-[#058EF8] px-3 py-2 flex items-center rounded-full"
+              >
+                <UtSvg name="wallet" dim w="30px" h="30px" />
+              </div>
+
+              <div>
+                <h1 class="font-semibold text-xl text-[#333333]">My Wallet</h1>
+                <p class="flex items-end gap-2 text-[#333333]">
+                  <span class="text-base text-[#545454]"> NGN </span>
+                  {{ tools.formatCurrency(wallet) }}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <UiButtonDefault
+                class="w-full px-3 py-2"
+                variant="primary"
+                @click="fundModal = true"
+              >
+                <div class="flex gap-3">
+                  <UtSvg name="send" dim w="21px" h="21px" />
+                  <span>Fund Wallet</span>
+                </div>
+              </UiButtonDefault>
+            </div>
+          </div>
+        </div>
+      </div>
       <div
         class="bg-gray-100 dark:text-black border dark:border-gray-800 w-full p-6 rounded-lg"
       >
@@ -36,27 +50,18 @@
       >
         <h4 class="font-semibold mb-5">Campaigns</h4>
         <div class="mb-5">
-          <p class="uppercase text-sm">ALL Campaigns</p>
-          <p class="text-[#058EF8] font-semibold">0</p>
+          <p class="uppercase text-sm">All Campaigns</p>
+          <p class="text-[#058EF8] font-semibold">
+            {{ tools.formatCurrency(walletStats.totalCompletedCampaigns || 0) }}
+          </p>
         </div>
         <div class="mb-5">
           <p class="uppercase text-sm">Total Spent</p>
-          <p class="text-[#058EF8] font-semibold">0</p>
+          <p class="text-[#058EF8] font-semibold">
+            {{ tools.formatCurrency(walletStats?.totalCompletedPayments || 0) }}
+          </p>
         </div>
       </div>
-      <!-- <div
-        class="bg-gray-100 w-full border dark:border-gray-800 p-6 rounded-lg"
-      >
-        <h4 class="font-semibold mb-5">Platforms</h4>
-        <div class="mb-5">
-          <p class="uppercase text-sm">ALL Platforms</p>
-          <p class="text-[#058EF8] font-semibold">120</p>
-        </div>
-        <div class="mb-5">
-          <p class="uppercase text-sm">Total Spent</p>
-          <p class="text-[#058EF8] font-semibold">120</p>
-        </div>
-      </div> -->
     </section>
 
     <section>
@@ -317,6 +322,51 @@ definePageMeta({
 
 const payment = ref(false);
 const filter = ref("");
+const walletStats = ref<any>({});
+
+const ddata = ref({
+  labels: ["Spent", "Available"],
+  datasets: [
+    {
+      data: [300, 50],
+      backgroundColor: ["#F02727", "#058EF8"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB"],
+      borderWidth: 0,
+      pointStyle: "circle",
+    },
+  ],
+});
+
+const wallet = ref<any>(null);
+onMounted(async () => {
+  try {
+    const { data } = await api.getWalletBalance();
+    wallet.value = +data.balance;
+  } catch (error) {}
+});
+
+useRequestState({
+  immediately: true,
+  action: async () => api.getWalletStats(),
+  onSuccess: ({ data }) => {
+    walletStats.value = data;
+    ddata.value = {
+      labels: ["Spent", "Available"],
+      datasets: [
+        {
+          data: [
+            +(walletStats.value?.totalCompletedPayments || 0) + 10,
+            +(walletStats.value?.balance || 0) + 10,
+          ],
+          backgroundColor: ["#F02727", "#058EF8"],
+          hoverBackgroundColor: ["#FF6384", "#36A2EB"],
+          borderWidth: 0,
+          pointStyle: "circle",
+        },
+      ],
+    };
+  },
+});
 const doptions = ref<any>({
   responsive: true,
   rotation: -90,
@@ -335,19 +385,6 @@ const doptions = ref<any>({
       },
     },
   },
-});
-
-const ddata = ref({
-  labels: ["Spent", "Available"],
-  datasets: [
-    {
-      data: [300, 50],
-      backgroundColor: ["#F02727", "#058EF8"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB"],
-      borderWidth: 0,
-      pointStyle: "circle",
-    },
-  ],
 });
 
 const BG_COLORS = ["#AAD9FB", "#2AA2FD", "#FFB009", "#AA7506", "#FFE5AD"];
@@ -387,6 +424,7 @@ const options = ref<any>({
 });
 
 const api = useAPI();
+const fundModal = ref(false);
 const transactions = ref<Core.InfluencerTransaction[]>([]);
 
 const searchQuery = ref<string>("");

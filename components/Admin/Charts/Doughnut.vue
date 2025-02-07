@@ -24,17 +24,17 @@ const props = defineProps<{
   data: number[];
 }>();
 
-const data = computed(() => ({
-  labels: ["Women", "Men"],
-  datasets: [
-    {
-      data: [52, 48],
-      backgroundColor: ["#2BA2FD", "#00487F"],
-      borderWidth: 0,
-      pointStyle: "circle",
-    },
-  ],
-}));
+// const data = computed(() => ({
+//   labels: ["Women", "Men"],
+//   datasets: [
+//     {
+//       data: [52, 48],
+//       backgroundColor: ["#2BA2FD", "#00487F"],
+//       borderWidth: 0,
+//       pointStyle: "circle",
+//     },
+//   ],
+// }));
 
 const options = ref<any>({
   responsive: true,
