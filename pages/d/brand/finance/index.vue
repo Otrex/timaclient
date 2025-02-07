@@ -362,27 +362,19 @@ const ddata = ref({
 });
 
 const wallet = ref<any>(null);
-onMounted(async () => {
+const getBalance = async () => {
   try {
     const { data } = await api.getWalletBalance();
     wallet.value = +data.balance;
   } catch (error) {}
-});
+};
 
-const { state: funding, execute: fund } = useRequestState({
-  immediately: true,
-  action: async () =>
-    api.fundWallet({
-      amount: amount.value,
-      paymentGateway: "PAYSTACK",
-    }),
-  onSuccess: (res) => {
-    fundModal.value = false;
-    window.open(res.data.authorization_url, "_blank");
-  },
-});
+onMounted(getBalance);
 
-useRequestState({
+const timer = ref(0);
+const timerRef = ref<any>(null);
+
+const stats = useRequestState({
   immediately: true,
   action: async () => api.getWalletStats(),
   onSuccess: ({ data }) => {
@@ -486,6 +478,29 @@ const searchTransactions = useRequestState({
   immediately: true,
   onSuccess: (response) => {
     transactions.value = response.data;
+  },
+});
+
+const { state: funding, execute: fund } = useRequestState({
+  immediately: true,
+  action: async () =>
+    api.fundWallet({
+      amount: amount.value,
+      paymentGateway: "PAYSTACK",
+    }),
+  onSuccess: (res) => {
+    fundModal.value = false;
+    window.open(res.data.authorization_url, "_blank");
+
+    timerRef.value = setInterval(() => {
+      if (timer.value > 20) {
+        clearInterval(timerRef.value);
+      }
+      getTransactions.execute();
+      stats.execute();
+      getBalance();
+      timer.value = timer.value + 1;
+    }, 10000);
   },
 });
 
