@@ -25,12 +25,48 @@
 
           <span>{{ time }}</span>
         </div>
+
+        <div v-if="$slots.content">
+          <button
+            @click="viewMore = !viewMore"
+            class="text-sm py-1 px-3 mt-2 rounded-lg"
+            :class="
+              viewMore ? 'bg-red-400 text-white' : 'bg-blue-400 text-white'
+            "
+          >
+            {{ viewMore ? "Hide current" : "View More" }}
+            <span :class="viewMore ? 'text-red-200' : 'text-blue-200'">>></span>
+          </button>
+        </div>
+
+        <Transition
+          enter-active-class="transition duration-200 ease-out"
+          enter-from-class="transform scale-95 opacity-0"
+          enter-to-class="transform scale-100 opacity-100"
+          leave-active-class="transition duration-200 ease-in"
+          leave-from-class="transform scale-100 opacity-100"
+          leave-to-class="transform scale-95 opacity-0"
+        >
+          <template v-if="viewMore">
+            <div>
+              <slot name="content" />
+              <UiButtonDefault
+                variant="info-outline"
+                class="border-gray-300 text-gray-500 text-sm !px-5 !py-2"
+                label="Accept"
+                @click="$emit('accept')"
+              />
+            </div>
+          </template>
+        </Transition>
       </div>
 
       <UiButtonDefault
+        v-if="!viewMore"
         variant="info-outline"
         class="border-gray-300 text-gray-500 text-sm !px-5 !py-2"
-        label="Review"
+        label="Accept"
+        @click="$emit('accept')"
       />
     </div>
   </div>
@@ -42,6 +78,8 @@ const props = defineProps({
   message: String,
   time: String,
 });
+
+const viewMore = ref(false);
 </script>
 
 <style scoped></style>

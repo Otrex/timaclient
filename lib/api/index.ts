@@ -723,6 +723,17 @@ export default class TimaAPI extends UploadAPI {
       }
     })
   }
+
+  async acceptCampaignInvite(inviteId: string | number) {
+    return this.request({
+      url: '/influencer/accept-invite',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        invite_id: inviteId
+      }
+    })
+  }
   async updateAudienceDemographics(data: Payload.Demographics) {
     return this.request<any>({
       url: `/users/audience-demographic`,
