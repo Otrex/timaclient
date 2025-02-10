@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="admin">
     <template #main>
-      <div>
+      <div class="pb-10">
         <transition mode="out-in">
           <div class="text-center relative" v-if="state === constants.LOADING">
             <UtLoaderIndicator
@@ -35,7 +35,7 @@
               />
             </div>
 
-            <section>
+            <section class="px-8">
               <h2 class="mb-[1rem] font-bold">Campaign Information</h2>
               <h3 class="mb-[1rem]">
                 {{ campaign.campaignName || "Nike" }}
@@ -68,7 +68,7 @@
               </div>
             </section>
 
-            <section class="mb-[1.75rem]">
+            <section class="mb-[1.75rem] px-8">
               <h2 class="mb-[0.75rem] font-bold">Influencer requirement</h2>
               <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
                 <p class="nl">
@@ -90,7 +90,7 @@
               </div>
             </section>
 
-            <section>
+            <section class="px-8">
               <h2 class="mb-[0.75rem] font-bold">Creatives</h2>
               <div class="flex flex-col gap-[0.875rem] mb-[2.625rem]">
                 <p class="nl">
@@ -132,7 +132,9 @@
               </div>
             </section>
 
-            <section class="text-center flex gap-3 items-center justify-center">
+            <section
+              class="text-center px-8 flex gap-3 items-center justify-center"
+            >
               <UiButtonDefault
                 variant="info-outline"
                 :loading="reviewing == RequestState.LOADING"

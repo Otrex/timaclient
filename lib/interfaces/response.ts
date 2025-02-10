@@ -171,6 +171,27 @@ export interface UpdateIndustries extends IResponse<{
   createdOn: Date;
 }> { }
 
+
+export interface UpdatePricingPlan {
+  planId?: string;
+  planName: string;
+  features: string[];
+  locationEnabled: boolean;
+  locationBasedPricing: {
+    [key: string]: {
+      monthlyPrice: number;
+      yearlyPrice: number;
+      currency: string;
+    };
+  };
+  defaultPrice: {
+    monthlyPrice: number;
+    yearlyPrice: number;
+    currency: string;
+  };
+}
+
+
 export interface GetPaymentStats extends IResponse<{
   totalBudget: number;
   totalClientPaid: number;

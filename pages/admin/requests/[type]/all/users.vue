@@ -13,28 +13,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="px-3 text-[0.9375rem]">MTN NG</td>
+        <tr v-for="item in tbody" :key="item.id">
+          <td class="px-3 text-[0.9375rem]">{{ item.name }}</td>
           <td class="px-3 text-[0.9375rem]">New User</td>
-          <td class="px-3 text-[0.9375rem]">15 Oct 2024</td>
+          <td class="px-3 text-[0.9375rem]">{{ item.created_at }}</td>
           <td class="px-3 text-[0.9375rem]">
             <span
               :class="[
                 'rounded-2xl px-2 py-0.5 text-base',
-                true && 'text-white bg-yellow-400',
+                item.status === 'PROFILE_APPROVED' && 'text-white bg-green-600',
               ]"
-              >Pending</span
+              >{{ item.status }}</span
             >
           </td>
           <td class="py-2 text-[0.9375rem] px-3">
             <button
               @click="
-                navigateTo({
-                  name: 'admin.requests.user',
-                  params: {
-                    id: 1,
-                  },
-                })
+                () => {
+                  formStore(item);
+                  navigateTo({
+                    name: 'admin.requests.user',
+                    params: {
+                      id: item.id,
+                    },
+                  });
+                }
               "
               class="px-4 py-1 border !text-[0.875rem] rounded-md text-base border-gray-400 hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors"
             >
@@ -53,6 +56,11 @@ definePageMeta({
 });
 
 const api = useAPI();
+const route = useRoute();
+
+const formStore = (item: any) => {
+  localStorage.setItem("formStore", JSON.stringify({ value: item }));
+};
 const pageData = ref({
   page: 1,
   limit: 10,
@@ -76,7 +84,8 @@ const { state, execute } = useRequestState({
     api.fetchAdminUsers({
       limit: pageData.value.limit,
       page: pageData.value.page,
-      role: "BRAND",
+      role:
+        (route.params.type as any)?.toUpperCase().replace("S", "") || "BRAND",
     }),
   immediately: true,
   onSuccess: (response) => {
@@ -86,12 +95,20 @@ const { state, execute } = useRequestState({
 
     tbody.value = response.data.map((e: any) => {
       return {
-        name: e.profile.companyName,
-        phone: e.phoneNumber,
+        name:
+          e.profile.companyName ||
+          [e.profile.firstName, e.profile.lastName].filter(Boolean).join(" "),
+        phone: e.phoneNumber || e.phone,
         email: e.emailAddress,
         created_at: new Date(e.profile.createdAt),
         status: e.profile.profileSetupProgress,
         action: { ...e.profile, userId: e.id },
+        address: e.profile.address,
+        industries: e.profile.industries,
+        state: e.profile.state,
+        city: e.profile.city,
+        role: (route.params.type as any)?.toUpperCase().replace("S", ""),
+        profileImage: e.profile.profileImage,
         id: e.id,
       };
     });

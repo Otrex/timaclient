@@ -1,6 +1,6 @@
 import type { Core, Payload, Response } from "../interfaces";
 import type { InfluencerProfileSetup } from "../interfaces/payload";
-import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerApplicationsWithCampaignResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, GetTransactionsResponse, PaymentAuthorizationResponse } from "../interfaces/response";
+import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerApplicationsWithCampaignResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, GetTransactionsResponse, PaymentAuthorizationResponse, UpdatePricingPlan } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
 import UploadAPI from "./upload";
@@ -1011,35 +1011,24 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
-  async getBankDetails() {
-    return this.request<Response.BankDetailUpdate>({
-      url: "/payment/v1/bank/customers/_self",
+  async fetchAdminPlans(page = 1, limit = 10) {
+    return this.request<any>({
+      url: "/admin/fetch-plans",
       requireAuth: true,
-      method: "GET",
-    });
+      method: "POST",
+      data: {
+        page, limit
+      }
+    })
   }
 
-  async getSocials() {
-    return this.request<Response.GetSocialTypes>({
-      url: "/agency/v1/social-media/_public",
-      method: "GET",
-    });
-  }
-
-  async getCreativesOptions() {
-    return this.request<Response.GetCreativesOptions>({
-      url: "/agency/v1/settings/creative",
+  async saveAdminPlan(data: UpdatePricingPlan) {
+    return this.request<any>({
+      url: "/admin/create-plans",
       requireAuth: true,
-      method: "GET",
-    });
-  }
-
-  async getPaymentMethods() {
-    return this.request<Response.GetPaymentMethods>({
-      url: "/payment/v1/methods/_public",
-      requireAuth: true,
-      method: "GET",
-    });
+      method: "POST",
+      data
+    })
   }
 
   async getUserIndustries() {

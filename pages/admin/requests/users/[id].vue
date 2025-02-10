@@ -6,12 +6,15 @@
           <div class="flex flex-row gap-3 items-center">
             <div>
               <img
-                src="https://i.pravatar.cc/100"
+                x-src="https://i.pravatar.cc/100"
+                :src="recordData?.profileImage"
                 class="w-[3.75rem] h-[3.75rem] rounded-full object-cover"
                 alt="User avatar"
               />
             </div>
-            <div class="text-[1.75rem] font-semibold">Soma Gains</div>
+            <div class="text-[1.75rem] capitalize font-semibold">
+              {{ recordData?.name }}
+            </div>
           </div>
         </section>
 
@@ -24,7 +27,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">Username</p>
-                  <p>Somadina</p>
+                  <p>--</p>
                 </div>
               </div>
 
@@ -34,7 +37,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">Email</p>
-                  <p>ben@ben.com</p>
+                  <p>{{ recordData?.email }}</p>
                 </div>
               </div>
 
@@ -44,7 +47,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">Phone</p>
-                  <p>+234 905 658 8693</p>
+                  <p>{{ recordData?.phone }}</p>
                 </div>
               </div>
 
@@ -74,7 +77,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">User Type</p>
-                  <p>Brand</p>
+                  <p>{{ recordData?.role }}</p>
                 </div>
               </div>
 
@@ -86,12 +89,10 @@
                   <p class="text-gray-500 text-sm">Industry Selection</p>
                   <div class="flex flex-wrap gap-2">
                     <span
+                      v-for="(industry, idx) in recordData?.industries || []"
+                      :key="idx"
                       class="px-2 py-1 bg-gray-500 text-white text-sm rounded-md"
-                      >Bread</span
-                    >
-                    <span
-                      class="px-2 py-1 bg-gray-500 text-white text-sm rounded-md"
-                      >Coy fish</span
+                      >{{ industry }}</span
                     >
                   </div>
                 </div>
@@ -103,7 +104,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">Account Created</p>
-                  <p>{{ new Date().toLocaleString() }}</p>
+                  <p>{{ new Date(recordData?.created_at).toLocaleString() }}</p>
                 </div>
               </div>
             </div>
@@ -126,7 +127,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">City</p>
-                  <p>Lagos</p>
+                  <p class="capitalize">{{ recordData?.city }}</p>
                 </div>
               </div>
 
@@ -136,7 +137,7 @@
                 </div>
                 <div>
                   <p class="text-gray-500 text-sm">Address</p>
-                  <p>9 Ben Lokoja</p>
+                  <p class="capitalize">{{ recordData?.address }}</p>
                 </div>
               </div>
             </div>
@@ -162,7 +163,10 @@
               </div>
             </div>
 
-            <div class="flex flex-row gap-5">
+            <div
+              v-if="recordData?.status !== 'PROFILE_APPROVED'"
+              class="flex flex-row gap-5"
+            >
               <div class="w-full">
                 <UiButtonDefault
                   @click="showDecline = true"
@@ -174,7 +178,9 @@
               </div>
               <div class="w-full">
                 <UiButtonDefault
-                  @click="successModal.open()"
+                  @click="review"
+                  :loading="reviewing == 'LOADING'"
+                  :disabled="reviewing == 'LOADING'"
                   variant="primary"
                   class="w-full py-3 text-sm"
                 >
@@ -253,11 +259,44 @@ import {
   LocateFixedIcon,
 } from "lucide-vue-next";
 
+const route = useRoute();
+const api = useAPI();
 const successModal = ref();
 const showDecline = ref(false);
+const recordData = ref<any>(null);
 definePageMeta({
   name: "admin.requests.user",
 });
+
+onMounted(() => {
+  const data = JSON.parse(localStorage.getItem("formStore") || "{}")?.value;
+  recordData.value = data;
+});
+
+const { state: reviewing, execute: review } = useRequestState({
+  action: async (review: any) => {
+    return api.reviewUser({
+      user_id: recordData.value?.userId,
+      review: review,
+    });
+  },
+  onSuccess: () => {
+    successModal.value.open();
+  },
+  onError: () => {},
+});
+
+async function updateStatus(e: any, item: any) {
+  item.loading = true;
+  await api
+    .reviewUser({
+      user_id: item.userId,
+      review: e.target.value,
+    })
+    .finally(() => {
+      item.loading = false;
+    });
+}
 </script>
 
 <style></style>

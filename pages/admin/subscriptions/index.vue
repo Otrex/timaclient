@@ -15,6 +15,8 @@
           />
         </div>
 
+        {{ plans }}
+
         <div class="mb-4">
           <div
             class="grid grid-cols-1 md:grid-cols-3 mb-4 lg:grid-cols-4 gap-4"
@@ -57,15 +59,17 @@
               <tbody>
                 <tr v-for="(plan, index) in plans" :key="index">
                   <td class="font-semibold">{{ plan.plan }}</td>
-                  <td>{{ plan.pricing.monthly }}, {{ plan.pricing.yearly }}</td>
+                  <td>
+                    {{ plan?.pricing?.monthly }}, {{ plan?.pricing?.yearly }}
+                  </td>
                   <td>{{ plan.generatedRevenue }}</td>
                   <td>
                     <div
                       class="flex items-center flex-row gap-1.5"
                       :class="[
-                        plan.activationStatus.toLocaleLowerCase() ===
+                        plan?.activationStatus?.toLocaleLowerCase() ===
                           'successful' && 'text-green-700',
-                        plan.activationStatus.toLocaleLowerCase() ===
+                        plan?.activationStatus?.toLocaleLowerCase() ===
                           'pending' && 'text-yellow-500',
                       ]"
                     >
@@ -117,20 +121,30 @@
 
           <section class="flex flex-col gap-3 mb-12">
             <div>
-              <UiInputText placeholder="Enter plan name" />
+              <UiInputText
+                v-model="form.planName"
+                placeholder="Enter plan name"
+              />
             </div>
             <div>
               <label class="text-sm font-semibold">Plan features</label>
               <div class="flex flex-col gap-2">
-                <UiInputText placeholder="Enter plan feature" />
-                <template v-for="(item, idx) in features" :key="idx">
-                  <UiInputText placeholder="Enter plan feature" />
+                <UiInputText
+                  v-model="form.features[0]"
+                  placeholder="Enter plan feature"
+                />
+                <template v-for="(item, idx) in form.features" :key="idx">
+                  <UiInputText
+                    v-if="idx > 0"
+                    v-model="form.features[idx]"
+                    placeholder="Enter plan feature"
+                  />
                 </template>
               </div>
               <div class="flex justify-end px-5">
                 <button
                   type="button"
-                  @click="features.push('')"
+                  @click="form.features.push('')"
                   class="inline-flex items-center py-1 text-sm gap-1 font-semibold text-blue-600 bg-transparent border-none hover:text-blue-700 hover:underline active:text-blue-800 focus:outline-none transition-colors"
                 >
                   <Plus class="size-4" :stroke-width="3" /> Add more
@@ -150,7 +164,11 @@
             >
               Cancel
             </UiButtonDefault>
-            <UiButtonDefault variant="primary" class="w-full text-base py-2">
+            <UiButtonDefault
+              variant="primary"
+              @click="() => savePlans()"
+              class="w-full text-base py-2"
+            >
               Create new plan
             </UiButtonDefault>
           </footer>
@@ -214,7 +232,7 @@ definePageMeta({
 
 const dateRange = ref<string>("");
 const isAddingPlan = ref(false);
-const isSuccessful = ref(true);
+const isSuccessful = ref(false);
 const features = ref<string[]>([]);
 
 const cardData: CardData[] = [
@@ -259,45 +277,91 @@ const plansCard: CardData[] = [
 ];
 
 const plans = ref([
-  {
-    id: 1,
-    plan: "Free Plan",
-    pricing: {
-      monthly: "$0/Month",
-      yearly: "$0/Year",
-    },
-    generatedRevenue: "$0.00",
-    activationStatus: "Successful",
-  },
-  {
-    id: 2,
-    plan: "Basic Plan",
-    pricing: {
-      monthly: "$0/Month",
-      yearly: "$0/Year",
-    },
-    generatedRevenue: "$0.00",
-    activationStatus: "Pending",
-  },
-  {
-    id: 3,
-    plan: "Pro Plan",
-    pricing: {
-      monthly: "$0/Month",
-      yearly: "$0/Year",
-    },
-    generatedRevenue: "$0.00",
-    activationStatus: "Pending",
-  },
-  {
-    id: 4,
-    plan: "Premium Plan",
-    pricing: {
-      monthly: "$0/Month",
-      yearly: "$0/Year",
-    },
-    generatedRevenue: "$0.00",
-    activationStatus: "Successful",
-  },
+  // {
+  //   id: 1,
+  //   plan: "Free Plan",
+  //   pricing: {
+  //     monthly: "$0/Month",
+  //     yearly: "$0/Year",
+  //   },
+  //   generatedRevenue: "$0.00",
+  //   activationStatus: "Successful",
+  // },
+  // {
+  //   id: 2,
+  //   plan: "Basic Plan",
+  //   pricing: {
+  //     monthly: "$0/Month",
+  //     yearly: "$0/Year",
+  //   },
+  //   generatedRevenue: "$0.00",
+  //   activationStatus: "Pending",
+  // },
+  // {
+  //   id: 3,
+  //   plan: "Pro Plan",
+  //   pricing: {
+  //     monthly: "$0/Month",
+  //     yearly: "$0/Year",
+  //   },
+  //   generatedRevenue: "$0.00",
+  //   activationStatus: "Pending",
+  // },
+  // {
+  //   id: 4,
+  //   plan: "Premium Plan",
+  //   pricing: {
+  //     monthly: "$0/Month",
+  //     yearly: "$0/Year",
+  //   },
+  //   generatedRevenue: "$0.00",
+  //   activationStatus: "Successful",
+  // },
 ]);
+
+const form = reactive({
+  planName: "",
+  price: 0,
+  features: [] as string[],
+  duration: 1,
+  durationType: "month",
+});
+
+const api = useAPI();
+const { state: fetching, execute: getPlans } = useRequestState({
+  immediately: true,
+  action: () => api.fetchAdminPlans(),
+  onSuccess: (data) => {
+    console.log(data);
+
+    plans.value = data.data;
+  },
+  onError: (error) => {
+    console.log(error);
+  },
+});
+
+const { state: planing, execute: savePlans } = useRequestState({
+  immediately: false,
+  action: () =>
+    api.saveAdminPlan({
+      planName: form.planName,
+      features: form.features,
+      defaultPrice: {
+        monthlyPrice: form.price,
+        yearlyPrice: form.price * 12,
+        currency: "USD",
+      },
+      locationEnabled: false,
+      locationBasedPricing: {},
+    }),
+  onSuccess: (data) => {
+    console.log(data);
+
+    plans.value = data.data;
+  },
+  onError: (error) => {
+    console.log(error);
+  },
+});
 </script>

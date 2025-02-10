@@ -161,7 +161,7 @@ const statusCard = ref([
 
 const filter = ref("all");
 const tabFilters = ref("all");
-const thead = ["Name", "Phone", "Email", "Created At", "Status", "Action"].map(
+const thead = ["Name", "Phone", "Email", "Created At", "Status", "Action"]?.map(
   (e) => ({
     label: e,
     key: e.toLowerCase().replace(" ", "_"),
@@ -403,7 +403,7 @@ const { state, execute } = useRequestState({
     pageData.value.page = response.page;
     pageData.value.limit = response.limit;
 
-    tbody.value = response.data.map((e: any) => {
+    tbody.value = response.data?.map((e: any) => {
       return {
         name: e.profile.companyName,
         phone: e.phoneNumber,
