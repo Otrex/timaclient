@@ -167,6 +167,7 @@
             <UiButtonDefault
               variant="primary"
               @click="() => savePlans()"
+              :loading="planing"
               class="w-full text-base py-2"
             >
               Create new plan
