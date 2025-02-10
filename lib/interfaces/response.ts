@@ -191,6 +191,17 @@ export interface UpdatePricingPlan {
   };
 }
 
+export interface GetCampaignAnalytics extends IResponse<{
+  audienceAgeGroup: string[];
+  audienceLocation: string[];
+  socialMediaPlatform: string[];
+  planningBudget: string;
+  audienceSize: string[];
+  audienceGender: string[];
+  category: string[];
+}> { }
+
+
 
 export interface GetPaymentStats extends IResponse<{
   totalBudget: number;

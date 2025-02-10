@@ -1,5 +1,18 @@
 <template>
-  <section>
+  <section v-if="state === 'LOADING'">
+    <div class="flex flex-col items-center justify-center min-h-[60vh]">
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mb-4"
+      ></div>
+      <div class="text-gray-600 text-lg font-medium">
+        Loading campaign data...
+      </div>
+      <div class="text-gray-400 text-sm mt-2">
+        Please wait while we fetch your statistics
+      </div>
+    </div>
+  </section>
+  <section v-else>
     <div
       style="--clr: rgba(228, 243, 255, 0.5)"
       class="bg-[--clr] rounded-b-md p-[1.25rem] mt-[0.375rem]"
@@ -20,9 +33,7 @@
     >
       <div class="w-full">
         <StatsAudienceAgeRange
-          :loading="
-            tools.requestState(getAgeAudienceData) === constants.LOADING
-          "
+          :loading="true"
           :data="ageGenderData"
           bg="rgba(228, 243, 255, 0.5)"
           class="w-full"
@@ -51,6 +62,7 @@
 import { DemographyType } from "~/lib/enums";
 import { Core } from "~/lib/interfaces";
 import type { AgeGenderData } from "~/lib/interfaces/core";
+import type { GetCampaignAnalytics } from "~/lib/interfaces/response";
 
 definePageMeta({
   name: "ViewBrandCampaignAnalytics",
@@ -145,23 +157,38 @@ const api = useAPI();
 const route = useRoute();
 const { notify } = useNotification();
 const influencers = ref<Core.Application[]>([]);
-
+// Depricate
 const ageGenderData = ref<AgeGenderData[]>([]);
 
-const getAgeAudienceData = useRequestState({
-  action: (influencerId: string) =>
-    api.getDemographyInsights({
-      type: DemographyType.AGE_GENDER,
-      socialMedia: "Instagram",
-      influencerId,
-    }),
+const campaignAnalytics = ref<GetCampaignAnalytics["data"] | null>(null);
+
+const { state, execute } = useRequestState({
+  immediately: true,
+  action: () => api.fetchCampaignAnalytics(route.params.id as any),
   onSuccess(response) {
-    ageGenderData.value = response.data.map((d) => ({
-      ageRange: d.name,
-      male: d.value2 || 0,
-      female: d.value1 || 0,
-      percentage: d.value3 || 0,
-    }));
+    campaignAnalytics.value = response.data;
+    metrics.value[2].socials = response.data.socialMediaPlatform;
+    metrics.value[2].data = [
+      {
+        label: "Top Countries",
+        value: response.data.audienceLocation.join(", "),
+      },
+      {
+        label: "Top Genders",
+        value: response.data.audienceGender.join(", "),
+      },
+    ];
+
+    metrics.value[3].data = [
+      {
+        label: "Campaign budget",
+        value: tools.formatCurrency(+(response.data.planningBudget || 0)),
+      },
+      {
+        label: "Amount spent",
+        value: "Not given",
+      },
+    ];
   },
 });
 

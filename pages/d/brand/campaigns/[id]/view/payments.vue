@@ -1,6 +1,6 @@
 <template>
   <section class="mt-[0.375rem]">
-    <div
+    <!-- <div
       style="--clr: rgba(228, 243, 255, 0.5)"
       class="bg-[--clr] p-[1.25rem] mb-[1.5rem]"
     >
@@ -12,25 +12,32 @@
           justified
         />
       </div>
-    </div>
+    </div> -->
 
     <div>
-      <div class="mb-[1.875rem] flex gap-3">
+      <div class="mb-[1.875rem] flex items-center justify-between gap-3">
         <div class="max-w-[26.9375rem] w-full">
           <UiInputText
             search
             placeholder="Search Transactions"
-            class="mr-[1.75rem] placeholder:text-[color:--clr-grey-500] w-full border-[color:--clr-grey-500]"
+            class="mr-[1.75rem] placeholder:text-[color:--clr-grey-500] py-1.5 w-full border-[color:--clr-grey-500]"
           />
         </div>
-        <UiInputSelect
+        <!-- <UiInputSelect
           class="max-w-[8.9375rem] w-full text-center border-[color:--clr-grey-500]"
           v-model="searchFilter"
           :options="[
             { value: '', label: 'ALL' },
             ...optionsStore.$paymentStatus,
           ]"
-        />
+        /> -->
+        <div>
+          <UiButtonDefault
+            label="Make payment"
+            variant="primary"
+            class="px-5 py-1.5"
+          />
+        </div>
       </div>
 
       <div>

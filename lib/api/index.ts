@@ -1031,6 +1031,17 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async fetchCampaignAnalytics(campaignId: string) {
+    return this.request<Response.GetCampaignAnalytics>({
+      url: `/brand/campaign-analytics`,
+      requireAuth: true,
+      method: "POST",
+      data: {
+        campaign_id: campaignId
+      }
+    });
+  }
+
   async getUserIndustries() {
     return this.request<Response.UpdateIndustries>({
       url: "/agency/v1/user/industry",
