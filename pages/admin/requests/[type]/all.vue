@@ -4,7 +4,7 @@
   >
     <div class="flex justify-between items-center mb-5">
       <div class="flex gap-1">
-        <NuxtLink
+        <!-- <NuxtLink
           active-class="link-style-active"
           class="link-style"
           :to="{
@@ -13,7 +13,7 @@
           }"
         >
           All Requests
-        </NuxtLink>
+        </NuxtLink> -->
         <NuxtLink
           active-class="link-style-active"
           class="link-style"

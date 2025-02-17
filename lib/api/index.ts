@@ -691,6 +691,58 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async getSubscriptionStats(data: {
+    dateFilter: 'today' | '7days' | '30days' | 'custom',
+    startDate?: string,
+    endDate?: string
+  }) {
+    return this.request<Response.GetSubscriptionStats>({
+      url: '/admin/subscribe-overview-stats',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
+  async getPlanStats(data: {
+    planId: string
+    dateFilter: 'today' | '7days' | '30days' | 'custom',
+    startDate?: string,
+    endDate?: string
+  }) {
+    return this.request<any>({
+      url: '/admin/plan/subscribe-overview-stats',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
+  async getSubscribers({ planId, limit = 10, page = 1 }: any) {
+    return this.request<any>({
+      url: '/admin/fetch-subscribers',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        planId,
+        page,
+        limit
+      }
+    })
+  }
+
+  async cancelSubscription({ user_id, reason }: any) {
+    return this.request({
+      url: '/admin/cancel-subscription',
+      requireAuth: true,
+      method: 'POST',
+      data: {
+        user_id,
+        reason
+      }
+    })
+  }
+
   async reviewCampaign(id: string | number, data: {
     review: string,
     reason?: string

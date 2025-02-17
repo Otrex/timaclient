@@ -1,6 +1,19 @@
 import * as Core from "./core";
 import type { IResponse } from "./utils";
 
+
+export interface GetSubscriptionStats extends IResponse<{
+  data: {
+    pendingRenewals: number;
+    basicPlanUsers: number;
+    premiumPlanUsers: number;
+    freePlanUsers: number;
+    totalRevenue: number;
+    totalPayingUsers: number;
+    proPlanUsers: number;
+  };
+}> { }
+
 export interface CreateUser extends IResponse<{
   user: Core.User
   token: string

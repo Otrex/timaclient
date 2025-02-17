@@ -15,8 +15,6 @@
           />
         </div>
 
-        {{ plans }}
-
         <div class="mb-4">
           <div
             class="grid grid-cols-1 md:grid-cols-3 mb-4 lg:grid-cols-4 gap-4"
@@ -58,9 +56,10 @@
               </thead>
               <tbody>
                 <tr v-for="(plan, index) in plans" :key="index">
-                  <td class="font-semibold">{{ plan.plan }}</td>
+                  <td class="font-semibold">{{ plan.planName }}</td>
                   <td>
-                    {{ plan?.pricing?.monthly }}, {{ plan?.pricing?.yearly }}
+                    {{ plan?.defaultPrice?.monthlyPrice }}/mo,
+                    {{ plan?.defaultPrice?.yearlyPrice }}/yr
                   </td>
                   <td>{{ plan.generatedRevenue }}</td>
                   <td>
@@ -73,7 +72,7 @@
                           'pending' && 'text-yellow-500',
                       ]"
                     >
-                      <Dot /> {{ plan.activationStatus }}
+                      <Dot /> {{ plan?.activationStatus }}
                     </div>
                   </td>
 
@@ -87,7 +86,7 @@
                             () =>
                               navigateTo({
                                 name: 'admin.subscriptions.view',
-                                params: { planId: plan.id },
+                                params: { planId: plan?.id },
                               })
                           "
                           class="inline-flex dark:text-gray-400 items-center text-sm gap-3 justify-center rounded-full border border-gray-300 p-2 pr-4 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
@@ -115,7 +114,7 @@
       <UtModal m-width="41rem" v-model:state="isAddingPlan">
         <div class="bg-white shadow-lg rounded-2xl p-6">
           <header class="pb-4 border-b mb-4">
-            <h2 class="font-semibold">Add new Plan</h2>
+            <h2 class="font-semibold dark:text-black">Add new Plan</h2>
             <p class="text-sm">Enter the details of your new plan</p>
           </header>
 
@@ -236,16 +235,16 @@ const isAddingPlan = ref(false);
 const isSuccessful = ref(false);
 const features = ref<string[]>([]);
 
-const cardData: CardData[] = [
+const cardData = ref<CardData[]>([
   {
     title: "Generated Subscription Revenue",
-    value: "$45,823",
+    value: "--",
     description: "10% Compared to last month",
   },
   {
     title: "Total Paying Users",
     value: "45,823",
-    description: "45,823 as at last month",
+    description: "0 as at last month",
   },
   {
     title: "Pending Renewals",
@@ -255,11 +254,11 @@ const cardData: CardData[] = [
   {
     title: "Free Tier Users",
     value: "45,823",
-    description: "10% Compared to last month",
+    description: "0% Compared to last month",
   },
-];
+]);
 
-const plansCard: CardData[] = [
+const plansCard = ref<CardData[]>([
   {
     title: "Premium Plan Users",
     value: "45,823",
@@ -275,7 +274,7 @@ const plansCard: CardData[] = [
     value: "45,823",
     link: "View more details",
   },
-];
+]);
 
 const plans = ref([
   // {
@@ -357,9 +356,28 @@ const { state: planing, execute: savePlans } = useRequestState({
       locationBasedPricing: {},
     }),
   onSuccess: (data) => {
-    console.log(data);
+    getPlans();
+  },
+  onError: (error) => {
+    console.log(error);
+  },
+});
 
-    plans.value = data.data;
+const { state: statsLoading, execute: getStats } = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getSubscriptionStats({
+      dateFilter: "today",
+    }),
+  onSuccess: (data) => {
+    cardData.value[0].value = data.data.totalRevenue;
+    cardData.value[2].value = data.data.pendingRenewals;
+    cardData.value[1].value = data.data.totalPayingUsers;
+    cardData.value[3].value = data.data.freePlanUsers;
+
+    plansCard.value[0].value = data.data.premiumPlanUsers;
+    plansCard.value[1].value = data.data.proPlanUsers;
+    plansCard.value[2].value = data.data.basicPlanUsers;
   },
   onError: (error) => {
     console.log(error);

@@ -169,14 +169,14 @@
                 </tr>
               </tbody>
             </table>
-            <footer
+            <!-- <footer
               class="flex border-t dark:border-gray-600 border-gray-300 flex-wrap justify-between py-3 px-4"
             >
               <div class="text-base">Page 1 of 30</div>
               <div>
                 <UiPagination :total-pages="10" v-model="page.current" />
               </div>
-            </footer>
+            </footer> -->
           </section>
           <UtModal m-width="32rem" v-model:state="cancellingSubscription">
             <div
@@ -258,25 +258,24 @@ const page = reactive({
 });
 const dateRange = ref<string>("");
 const filter = ref<string>("");
-const cardData: CardData[] = [
+const cardData = ref<CardData[]>([
   {
     title: "Generated Subscription Revenue",
     value: "$45,823",
-    description: "10% Compared to last month",
+    description: "0% Compared to last month",
   },
   {
     title: "Total Paying Users",
     value: "45,823",
-    description: "45,823 as at last month",
+    description: "0 as at last month",
   },
   {
     title: "Pending Renewals",
     value: "45,823",
     link: "View pending renewals",
   },
-];
-
-const data = [
+]);
+const data = ref([
   {
     username: "Olamide Olaikan",
     email: "Ola40@gmail.com",
@@ -340,7 +339,7 @@ const data = [
     nextBillingDate: "05 Dec 2025",
     status: "Active",
   },
-];
+]);
 
 const cancellingSubscription = ref(false);
 const dataCheckbox = ref<HTMLInputElement[] | null>([]);
@@ -349,6 +348,40 @@ const handleSelectAll = (e: any) => {
     checkbox.checked = e.target.checked;
   });
 };
+
+const api = useAPI();
+const route = useRoute();
+const { state: statsLoading, execute: getStats } = useRequestState({
+  immediately: true,
+  action: () =>
+    api.getPlanStats({
+      dateFilter: "today",
+      planId: route.params.planId as string,
+    }),
+  onSuccess: (data) => {
+    cardData.value[0].value = data.data.totalRevenue;
+    cardData.value[2].value = data.data.pendingRenewals;
+    cardData.value[1].value = data.data.totalPayingUsers;
+  },
+  onError: (error) => {
+    console.log(error);
+  },
+});
+
+const { state: loadingSubscribers, execute: fetchSubscribers } =
+  useRequestState({
+    immediately: true,
+    action: () =>
+      api.getSubscribers({
+        planId: route.params.planId as string,
+      }),
+    onSuccess: (response) => {
+      data.value = response.data;
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 </script>
 
 <style></style>

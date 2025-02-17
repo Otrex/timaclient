@@ -24,7 +24,7 @@
       label="Requests"
       icon="nav/requests"
       :to="{
-        name: 'admin.requests.all.requests',
+        name: 'admin.requests.all.users',
         params: {
           type: 'brands',
         },
