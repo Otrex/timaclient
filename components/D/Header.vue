@@ -71,7 +71,7 @@
     </div>
     <div class="flex justify-end">
       <div class="flex flex-row gap-[0.625rem] items-center">
-        <NuxtLink
+        <!-- <NuxtLink
           :to="`/d/${user?.role?.toLowerCase()}/calendar`"
           class="p-[.8rem] hover:outline-slate-200 hover:outline outline-solid active:ring-4 dark:hover:bg-slate-600 active:ring-slate-200 rounded-md"
         >
@@ -79,7 +79,7 @@
             name="calendar"
             class="text-[#05091C] dark:text-white w-[1.5rem] h-[1.5rem]"
           />
-        </NuxtLink>
+        </NuxtLink> -->
         <DashboardNotification />
         <DashboardUserMenu
           :image="profile?.profileImage || '#'"

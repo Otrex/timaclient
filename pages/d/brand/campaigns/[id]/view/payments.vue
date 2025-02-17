@@ -35,10 +35,22 @@
           <UiButtonDefault
             label="Make payment"
             variant="primary"
+            @click="openInfluencers = true"
             class="px-5 py-1.5"
           />
         </div>
       </div>
+
+      <UtModal
+        m-width="43.75rem"
+        backdrop-color="rgba(0,0,0,.3)"
+        v-model:state="openInfluencers"
+      >
+        <ModalsPayInfluencer
+          :campaign_id="(route.params.id as string)"
+          @close="openInfluencers = false"
+        />
+      </UtModal>
 
       <div>
         <table class="w-full x-table no-clr">
@@ -139,6 +151,8 @@ type Transactions = Core.CampaignTransaction & { profilePicture?: string };
 
 const optionsStore = useOptionsStore();
 const searchFilter = ref<string>("");
+const openInfluencers = ref(false);
+const route = useRoute();
 
 const metric = ref({
   title: "PAYMENTS",

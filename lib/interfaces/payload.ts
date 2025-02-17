@@ -15,6 +15,15 @@ export interface CampaignApplication {
   }[];
 }
 
+export interface TransferFunds {
+  amount: number;
+  toUser_id: string;
+  transactionPin: string;
+  description: string;
+  campaignID: string;
+}
+
+
 export interface WithdrawFunds {
   amount: number;
   transactionPin: string;

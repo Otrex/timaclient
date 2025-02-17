@@ -89,27 +89,27 @@ const metrics = ref([
     data: [
       {
         label: "Engagement",
-        value: "6%",
+        value: "0%",
       },
       {
         label: "Reach",
-        value: "20,000",
+        value: "0",
       },
       {
         label: "Likes",
-        value: "10,000",
+        value: "0",
       },
       {
         label: "Comment",
-        value: "20",
+        value: "0",
       },
       {
         label: "Shared",
-        value: "200",
+        value: "0",
       },
       {
         label: "Impressions",
-        value: "200",
+        value: "0",
       },
     ],
   },

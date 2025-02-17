@@ -661,6 +661,15 @@ export default class TimaAPI extends UploadAPI {
     })
   }
 
+  async transferFunds(data: Payload.TransferFunds) {
+    return this.request({
+      url: '/wallet/transfer',
+      requireAuth: true,
+      method: 'POST',
+      data
+    })
+  }
+
   async getAdminOverview() {
     return this.request<GetOverviewStats>({
       url: '/admin/overview-stats',

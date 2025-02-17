@@ -43,7 +43,7 @@
             </button>
             <button
               @click="confirmAccept.open()"
-              class="text-sm rounded-xl bg-slate-200 !px-[0.9375rem] p-[0.625rem]"
+              class="text-sm rounded-xl bg-slate-200 dark:bg-slate-500 !px-[0.9375rem] p-[0.625rem]"
             >
               Delete Campaign
             </button>

@@ -5,7 +5,7 @@
         <div
           class="bg-[#F7FCFF] border border-[#2BA2FD33] rounded-lg px-8 py-6 h-full flex items-center w-full"
         >
-          <div class="flex gap-3 justify-between w-full">
+          <div class="flex gap-3 justify-between items-center w-full">
             <div class="flex gap-2 justify-between">
               <div
                 class="bg-[#058EF8] px-3 py-2 flex items-center rounded-full"
@@ -28,9 +28,9 @@
                 variant="primary"
                 @click="fundModal = true"
               >
-                <div class="flex gap-3">
+                <div class="flex items-center pr-4 gap-3">
                   <UtSvg name="send" dim w="21px" h="21px" />
-                  <span>Fund Wallet</span>
+                  <span class="text-sm">Fund Wallet</span>
                 </div>
               </UiButtonDefault>
             </div>
@@ -56,7 +56,7 @@
             {{ tools.formatCurrency(walletStats.totalCompletedCampaigns || 0) }}
           </p>
         </div>
-        <div class="mb-5">
+        <div class="mb-1">
           <p class="uppercase text-sm">Total Spent</p>
           <p class="text-[#058EF8] font-semibold">
             {{ tools.formatCurrency(walletStats?.totalCompletedPayments || 0) }}
@@ -117,7 +117,10 @@
                 <DStatusView :status="transaction.status" />
               </td>
               <td>
-                <div class="inline-flex items-center">
+                <div
+                  v-if="transaction.status != 'SUCCESSFUL'"
+                  class="inline-flex items-center"
+                >
                   <UiButtonDefault
                     variant="primary"
                     class="text-sm py-2 px-5"
@@ -158,6 +161,7 @@
                     </svg>
                   </button>
                 </div>
+                <div>--</div>
               </td>
             </tr>
           </tbody>
