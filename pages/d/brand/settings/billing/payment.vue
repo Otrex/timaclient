@@ -1,6 +1,9 @@
 <template>
   <div class="mt-8">
-    <h4 class="font-bold">Select a Payment Method</h4>
+    <div class="flex items-center justify-between">
+      <h4 class="font-bold">Select a Payment Method</h4>
+      <UiButtonDefault variant="primary" @click="triggerSetPin" />
+    </div>
 
     <div class="max-w-[666px] mx-auto">
       <button
@@ -31,10 +34,16 @@
 </template>
 
 <script lang="ts" setup>
+import { UiButtonDefault } from "#build/components";
+
 const isEditable = inject<boolean>("isEditable");
 definePageMeta({
   name: "BrandSettingBillingPayment",
 });
+
+const triggerSetPin = () => {
+  window.dispatchEvent(new Event("show:pinadding"));
+};
 </script>
 
 <style></style>

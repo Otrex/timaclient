@@ -65,6 +65,11 @@ const pinModals = reactive({
   pin: "",
 });
 
+onMounted(() => {
+  window.addEventListener("show:pinadding", (event) => {
+    pinModals.set = true;
+  });
+});
 function onSubmit(pin: string) {
   pinModals.pin = pin;
   pinModals.confirm = true;
