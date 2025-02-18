@@ -2,7 +2,9 @@
   <div class="mt-8">
     <div class="flex items-center justify-between">
       <h4 class="font-bold">Select a Payment Method</h4>
-      <UiButtonDefault variant="primary" @click="triggerSetPin" />
+      <UiButtonDefault variant="primary" @click="triggerSetPin">
+        Reset Pin
+      </UiButtonDefault>
     </div>
 
     <div class="max-w-[666px] mx-auto">
