@@ -36,8 +36,6 @@
 </template>
 
 <script lang="ts" setup>
-import { UiButtonDefault } from "#build/components";
-
 const isEditable = inject<boolean>("isEditable");
 definePageMeta({
   name: "BrandSettingBillingPayment",

@@ -27,7 +27,7 @@
       }"
     />
     <DashboardNavigatorMenuItem
-      label="Payment"
+      label="Finance"
       icon="nav/payment"
       :to="{
         name: 'BrandFinance',
