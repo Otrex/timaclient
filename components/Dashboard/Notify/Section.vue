@@ -12,7 +12,7 @@
         class="flex flex-col items-center justify-center py-8"
       >
         <div
-          class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"
+          class="animate-spin rounded-full h-8 w-8 border-b-2 dark:border-gray-700 border-primary"
         ></div>
         <p class="text-gray-500 mt-2">Accepting invite...</p>
       </div>
@@ -23,7 +23,7 @@
           :class="{ 'mt-8': date !== 'Today' }"
         >
           <h2 class="text-lg font-semibold">{{ date }}</h2>
-          <div class="border-b w-full"></div>
+          <div class="border-b dark:border-gray-600 w-full"></div>
         </div>
         <DashboardNotifyCard
           v-for="invite in (invites as any[])"
@@ -43,11 +43,15 @@
           "
         >
           <template #content>
-            <div class="bg-white rounded-lg p-6 space-y-6">
+            <div
+              class="bg-white dark:bg-gray-800 rounded-lg p-6 my-3 space-y-6"
+            >
               <div class="grid grid-cols-2 gap-6">
                 <div class="space-y-4">
-                  <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-500">
+                  <div class="bg-gray-50 dark:bg-gray-500 p-4 rounded-lg">
+                    <h3
+                      class="text-sm font-medium dark:text-gray-300 text-gray-500"
+                    >
                       Campaign Duration
                     </h3>
                     <p class="mt-1 text-sm text-gray-900">
@@ -63,15 +67,30 @@
                     </p>
                   </div>
 
-                  <div class="bg-gray-50 p-4 rounded-lg">
+                  <div class="bg-gray-50 dark:bg-gray-500 p-4 rounded-lg">
+                    <h3
+                      class="text-sm font-medium dark:text-gray-300 text-gray-500"
+                    >
+                      Campaign Brief
+                    </h3>
+                    <p class="mt-2 text-sm text-gray-900">
+                      {{ invite?.campaign?.creativeBrief }}
+                    </p>
+                  </div>
+
+                  <!-- <div class="bg-gray-50 p-4 rounded-lg">
                     <h3 class="text-sm font-medium text-gray-500">Budget</h3>
                     <p class="mt-1 text-sm text-gray-900">
                       {{ invite?.campaign?.planningBudget }}
                     </p>
-                  </div>
+                  </div> -->
 
-                  <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-500">Platforms</h3>
+                  <div class="bg-gray-50 dark:bg-gray-500 p-4 rounded-lg">
+                    <h3
+                      class="text-sm font-medium dark:text-gray-300 text-gray-500"
+                    >
+                      Platforms
+                    </h3>
                     <div class="mt-2 flex flex-wrap gap-2">
                       <span
                         v-for="platform in invite?.campaign
@@ -86,8 +105,10 @@
                 </div>
 
                 <div class="space-y-4">
-                  <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-500">
+                  <div class="bg-gray-50 dark:bg-gray-500 p-4 rounded-lg">
+                    <h3
+                      class="text-sm font-medium dark:text-gray-300 text-gray-500"
+                    >
                       Target Audience
                     </h3>
                     <div class="mt-2 space-y-2">
@@ -106,8 +127,10 @@
                     </div>
                   </div>
 
-                  <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-500">
+                  <div class="bg-gray-50 dark:bg-gray-500 p-4 rounded-lg">
+                    <h3
+                      class="text-sm font-medium dark:text-gray-300 text-gray-500"
+                    >
                       Content Requirements
                     </h3>
                     <div class="mt-2 space-y-2">
@@ -127,15 +150,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h3 class="text-sm font-medium text-gray-500">
-                  Campaign Brief
-                </h3>
-                <p class="mt-2 text-sm text-gray-900">
-                  {{ invite?.campaign?.creativeBrief }}
-                </p>
               </div>
 
               <div class="flex justify-end space-x-4">

@@ -50,7 +50,7 @@ const variants = {
   secondary:
     "bg-transparent hover:bg-[#D9D9D9] outline outline-solid outline-[#D9D9D9] rounded-[40px] focus:ring-4 focus:ring-[#D9D9D9] text-black",
   "info-outline":
-    "inf leading-0 border border-solid border-[--clr-blue-500] rounded-[0.625rem] text-[--clr-blue-500]",
+    "inf leading-0 border dark:border-gray-500 border-solid border-[--clr-blue-500] rounded-[0.625rem] dark:text-gray-200 text-[--clr-blue-500]",
   info: "bg-[--clr-blue-100] inf rounded-[0.625rem] text-[--clr-blue-700]",
   "inverse-primary":
     "hover:bg-slate-50 focus:ring-4 !text-[#EC2B29] focus:ring-red-100 text-white rounded-[40px] disabled:opacity-[.5]",

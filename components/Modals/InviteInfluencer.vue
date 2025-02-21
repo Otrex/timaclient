@@ -124,11 +124,7 @@
 
           <template v-if="setPostModal?.profile?.socialMediaAccounts?.length">
             <div class="grid grid-cols-5 items-center gap-2">
-              <template
-                v-for="(platform, idx) in setPostModal?.profile
-                  ?.socialMediaAccounts"
-                :key="idx"
-              >
+              <template v-for="(platform, idx) in platforms" :key="idx">
                 <div
                   class="mb-2 col-span-2 flex flex-row gap-1 items-center text-base whitespace-nowrap"
                 >
@@ -250,6 +246,21 @@ watch(
 
 const q = ref("");
 const costForm = reactive<any>({});
+const platforms = computed(() => {
+  const el = setPostModal.value?.profile?.socialMediaAccounts || [];
+  let list: any[] = [];
+
+  el.forEach((e: any) => {
+    if (list.find((e: any) => e.platformName === e.platformName)) {
+      return;
+    }
+
+    list.push(e);
+  });
+
+  return list;
+});
+
 const totalCost = computed(() => {
   return Object.entries(costForm).reduce((acc, [key, value]) => {
     const prices = setPostModal.value?.paymentInformation?.platformPrices || [];

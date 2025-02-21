@@ -27,14 +27,14 @@
                   {{ application?.influencer?.firstName }}
                   {{ application?.influencer?.lastName }}
                 </p>
-                <p>
+                <!-- <p>
                   <span class="font-medium">Email:</span>
                   {{ application?.influencer?.emailAddress }}
-                </p>
-                <p>
+                </p> -->
+                <!-- <p>
                   <span class="font-medium">Phone:</span>
                   {{ application?.influencer?.phoneNumber }}
-                </p>
+                </p> -->
                 <p>
                   <span class="font-medium">Location:</span>
                   {{ application?.influencer?.city }},
@@ -43,18 +43,19 @@
                 </p>
               </div>
             </div>
-            <div>
-              <h3 class="font-semibold mb-2">Professional Details</h3>
-              <div class="space-y-2">
-                <p>
-                  <span class="font-medium">Industries:</span>
-                  {{ application?.influencer?.industries?.join(", ") }}
-                </p>
-                <p>
-                  <span class="font-medium">Completed Campaigns:</span>
-                  {{ application?.influencer?.totalCompletedCampaigns }}
-                </p>
-              </div>
+          </div>
+
+          <div class="mb-5">
+            <h3 class="font-semibold mb-2">Professional Details</h3>
+            <div class="space-y-2">
+              <p>
+                <span class="font-medium">Industries:</span>
+                {{ application?.influencer?.industries?.join(", ") }}
+              </p>
+              <p>
+                <span class="font-medium">Completed Campaigns:</span>
+                {{ application?.influencer?.totalCompletedCampaigns }}
+              </p>
             </div>
           </div>
 
@@ -65,7 +66,7 @@
                 v-for="(account, index) in application?.influencer
                   ?.socialMediaAccounts"
                 :key="index"
-                class="bg-gray-50 p-4 rounded-lg"
+                class="bg-gray-50 dark:bg-gray-600 p-4 rounded-lg"
               >
                 <h4 class="font-medium mb-2">{{ account.platformName }}</h4>
                 <p class="text-sm">Username: @{{ account.userName }}</p>
@@ -80,7 +81,7 @@
             </div>
           </div>
 
-          <div v-if="application?.influencer?.paymentInformation">
+          <!-- <div v-if="application?.influencer?.paymentInformation">
             <h3 class="font-semibold mb-2">Payment Information</h3>
             <div class="grid grid-cols-2 gap-6">
               <div>
@@ -123,7 +124,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -148,7 +149,7 @@
       </template>
 
       <div class="w-full">
-        <div
+        <!--  <div
           class="bg-[color:--clr-grey-700] mb-[2.5rem] rounded-[1.1875rem] p-[2.25rem]"
         >
           <p class="uppercase text-white mb-[1.875rem]">CONTENT SAMPLES</p>
@@ -173,7 +174,7 @@
               />
             </div>
           </div>
-        </div>
+        </div> -->
         <div
           v-if="!application?.approvedBy"
           class="flex justify-end gap-5 items-center"
@@ -184,18 +185,18 @@
             label="Decline"
             @click="triggerDecline"
           />
-          <!--<UiButtonDefault
-              variant="primary"
-              class="py-[0.625rem] px-[2.5rem]"
-              label="Accept"
-              @click="triggerAccept"
-            /> -->
           <UiButtonDefault
             variant="primary"
             class="py-[0.625rem] px-[2.5rem]"
             label="Accept"
-            @click="triggerCreateContract"
+            @click="triggerAccept"
           />
+          <!-- <UiButtonDefault
+            variant="primary"
+            class="py-[0.625rem] px-[2.5rem]"
+            label="Accept"
+            @click="triggerCreateContract"
+          /> -->
         </div>
       </div>
       <UiModalConfirmAction
