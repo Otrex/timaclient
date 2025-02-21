@@ -199,8 +199,107 @@
           /> -->
         </div>
       </div>
+      <UtModal
+        m-width="32.25rem"
+        v-model:state="setPostModal"
+        content-class="mx-auto mt-[10%]"
+      >
+        <div
+          class="bg-white dark:bg-slate-700 shadow-md max-w-[43.75rem] w-full rounded-2xl"
+        >
+          <header class="text-center py-3 border-b px-3">
+            <h3 class="font-bold !text-xl">Select post required</h3>
+            <p class="text-sm">
+              Enter the number of post required per platform
+            </p>
+          </header>
+          <main class="p-6 pt-3">
+            <div class="flex mb-3 flex-row justify-end items-center gap-2">
+              <div class="text-sm">
+                {{
+                  [setPostModal?.firstName, setPostModal?.lastName]
+                    .filter((e) => e)
+                    .join(" ")
+                }}
+              </div>
+              <div
+                class="w-[1.5rem] h-[1.5rem] border rounded-full overflow-hidden"
+              >
+                <img
+                  :src="setPostModal?.profileImage"
+                  alt="Placeholder avatar"
+                  class="object-cover w-full h-full"
+                />
+              </div>
+            </div>
+            <p class="text-sm mb-3">
+              Input number of post required per platform:
+            </p>
+
+            <template v-if="setPostModal?.socialMediaAccounts?.length">
+              <div class="grid grid-cols-5 items-center gap-2">
+                <template v-for="(platform, idx) in platforms" :key="idx">
+                  <div
+                    class="mb-2 col-span-2 flex flex-row gap-1 items-center text-base whitespace-nowrap"
+                  >
+                    <UtSvg
+                      dim
+                      w="1.5rem"
+                      h="1.5rem"
+                      :name="`so/${platform.platformName.toLowerCase()}`"
+                    />
+                    {{ platform.platformName }} Posts:
+                  </div>
+                  <div class="col-span-3">
+                    <UiInputText
+                      type="number"
+                      size="sm"
+                      class="!py-2 text-base"
+                      v-model="costForm[platform.platformName]"
+                    />
+                  </div>
+                </template>
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="flex flex-col items-center justify-center py-12 animate-fade-in"
+              >
+                <p class="text-gray-500 dark:text-gray-400 text-center text-lg">
+                  No social media accounts connected
+                </p>
+                <p
+                  class="text-gray-400 dark:text-gray-500 text-center text-sm mt-2"
+                >
+                  This influencer hasn't connected any social media platforms
+                  yet
+                </p>
+              </div>
+            </template>
+            <div class="text-right my-1 font-semibold text-base">
+              Total Amount: {{ tools.formatCurrency(totalCost) }}
+            </div>
+          </main>
+          <footer class="flex border-t flex-row p-4 gap-2">
+            <UiButtonDefault
+              variant="outline-primary"
+              class="w-full"
+              label="Cancel"
+              @click="setPostModal = false"
+            />
+            <UiButtonDefault
+              variant="primary"
+              class="w-full !py-2"
+              label="Confirm"
+              :disabled="state === 'LOADING'"
+              :loading="state === 'LOADING'"
+              @click="() => confirmAccept.open()"
+            />
+          </footer>
+        </div>
+      </UtModal>
       <UiModalConfirmAction
-        :loading="state === constants.LOADING"
+        :loading="state === 'LOADING'"
         @onapprove="decline"
         ref="confirmDecline"
       >
@@ -212,7 +311,7 @@
         </template>
       </UiModalConfirmAction>
       <UiModalConfirmAction
-        :loading="state === constants.LOADING"
+        :loading="state === 'LOADING'"
         @onapprove="accept"
         ref="confirmAccept"
       >
@@ -229,6 +328,9 @@
 
 <script setup lang="ts">
 import type { GetInfluencerApplicationsResponse } from "~/lib/interfaces/response";
+import type { GetBrandInfluencer } from "~/lib/interfaces/response";
+
+const setPostModal = ref<GetBrandInfluencer["data"][0] | false | null>(false);
 
 definePageMeta({
   name: "CampaignApplicationInfluencer",
@@ -244,6 +346,7 @@ const route = useRoute();
 const contractModal = ref(false);
 const confirmAccept = ref();
 const confirmDecline = ref();
+const costForm = reactive<any>({});
 const application = ref<Partial<Application>>({});
 const { notify } = useNotification();
 
@@ -288,6 +391,33 @@ const { state: applicationRequestState } = useRequestState({
   },
 });
 
+const totalCost = computed(() => {
+  return Object.entries(costForm).reduce((acc, [key, value]) => {
+    const prices = setPostModal.value?.paymentInformation?.platformPrices || [];
+    const platformPrice = prices.find((e: any) => e.platform === key);
+
+    if (value && platformPrice) {
+      return acc + +value * +platformPrice.price;
+    }
+    return acc;
+  }, 0);
+});
+
+const platforms = computed(() => {
+  const el = setPostModal.value?.socialMediaAccounts || [];
+  let list: any[] = [];
+
+  el.forEach((e: any) => {
+    if (list.find((e: any) => e.platformName === e.platformName)) {
+      return;
+    }
+
+    list.push(e);
+  });
+
+  return list;
+});
+
 const { state, execute: review } = useRequestState({
   action: (status: "APPROVED" | "DECLINED" | "PENDING") => {
     return api.reviewInfluencerApplication({
@@ -322,7 +452,9 @@ const { state, execute: review } = useRequestState({
 });
 
 const triggerAccept = () => {
-  confirmAccept.value.open();
+  setPostModal.value = application.value.influencer;
+
+  // confirmAccept.value.open();
 };
 
 const triggerCreateContract = () => {
@@ -341,6 +473,7 @@ const decline = () => {
 const accept = () => {
   review("APPROVED").then(() => {
     confirmAccept.value.close();
+    setPostModal.value = false;
   });
 };
 
