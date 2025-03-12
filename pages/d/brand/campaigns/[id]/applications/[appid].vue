@@ -35,12 +35,12 @@
                   <span class="font-medium">Phone:</span>
                   {{ application?.influencer?.phoneNumber }}
                 </p> -->
-                <p>
+                <!-- <p>
                   <span class="font-medium">Location:</span>
                   {{ application?.influencer?.city }},
                   {{ application?.influencer?.state }},
                   {{ application?.influencer?.country }}
-                </p>
+                </p> -->
               </div>
             </div>
           </div>
