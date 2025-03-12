@@ -55,10 +55,10 @@
             <p class="nl" v-if="campaign.campaignWebsite">
               <b>Campaign website:</b> {{ campaign.campaignWebsite }}
             </p>
-            <p class="nl" v-if="+campaign.planningBudget">
+            <!-- <p class="nl" v-if="+campaign.planningBudget">
               <b>Planned Budget:</b>
               {{ tools.formatCurrency(+campaign.planningBudget) }}
-            </p>
+            </p> -->
 
             <div>
               <p class="nl"><b>Social media platform:</b></p>

@@ -72,12 +72,12 @@
           </p>
         </div>
         <div>
-          <p class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]">
+          <!-- <p class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]">
             Budget:
             <span class="text-black dark:text-slate-50">{{
               tools.formatCurrency(props.budget, "&#8358;")
             }}</span>
-          </p>
+          </p> -->
           <p
             v-if="props.deadline"
             class="text-[--clr-grey-500] dark:text-slate-300 nl mb-[0.75rem]"
