@@ -2,7 +2,7 @@
   <NuxtLayout name="admin">
     <template #main>
       <div class="px-14">
-        <div class="text-right mt-6 mb-[3.75rem]">
+        <!-- <div class="text-right mt-6 mb-[3.75rem]">
           <UiInputDropdown
             class="max-w-[17.5rem] inline-flex w-full"
             v-model="filter"
@@ -34,7 +34,7 @@
               </button>
             </template>
           </UiInputDropdown>
-        </div>
+        </div> -->
 
         <div class="flex flex-col gap-11 md:grid md:grid-cols-3">
           <template v-for="(item, idx) in statusCard" :key="idx">
@@ -46,7 +46,7 @@
           </template>
         </div>
 
-        <div
+        <!-- <div
           class="flex flex-col items-stretch justify-stretch md:flex-row gap-[50px] mt-10"
         >
           <div class="w-full md:w-8/12 h-full max-h-[320px]">
@@ -83,10 +83,10 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <section class="flex flex-col md:flex-row gap-[50px] mt-10">
-          <div class="w-full md:w-8/12">
+          <div class="w-full">
             <UtDataTable
               label="Campaigns"
               variant="secondary"
@@ -200,11 +200,11 @@
             </UtDataTable>
           </div>
 
-          <div class="w-full md:w-4/12">
+          <!-- <div class="w-full md:w-4/12">
             <div class="bg-[#F7F7F7] rounded-xl p-6">
               <AdminChartsDoughnut :data="DoughnutChartData" />
             </div>
-          </div>
+          </div> -->
         </section>
       </div>
     </template>

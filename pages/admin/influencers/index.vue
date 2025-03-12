@@ -12,7 +12,7 @@
           </template>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-[50px] mt-10">
+        <!-- <div class="flex flex-col md:flex-row gap-[50px] mt-10">
           <div class="w-full md:w-8/12 h-full">
             <h4 class="text-[20px] font-bold text-[#898989]">Influencers</h4>
             <Bar
@@ -45,13 +45,14 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <section class="mt-10 flex flex-row gap-[50px]">
-          <div class="sm:w-2/3 pb-5">
+          <div class="w-full h-full pb-5">
             <UtDataTable
               label="Influencers"
               variant="secondary"
+              class="h-full"
               :searchField="{}"
               :thead="thead"
               :page="pageData"
@@ -99,37 +100,12 @@
                     >{{ statusMap[item] || item }}</span
                   >
                 </div>
-                <div v-else-if="field === 'action'">
-                  <template
-                    v-if="item.profileSetupProgress === 'PROFILE_APPROVED'"
-                  >
-                    ---
-                  </template>
-                  <template v-else>
-                    <select
-                      class="bg-transparent text-sm py-1 px-2 rounded-xl text-gray-500 outline outline-gray-400"
-                      v-if="!item.loading"
-                      @change="(e) => updateStatus(e, item)"
-                    >
-                      <option value="">-- Action --</option>
-                      <option value="APPROVED">Approve</option>
-                      <option value="DECLINED">Disaprove</option>
-                    </select>
-                    <UtSpinner size="18px" :noText="true" v-else />
-                  </template>
-                </div>
+
                 <!-- <div v-else-if="field === 'action'">
                   <UiTransactionAction :transaction="row" />
                 </div> -->
               </template>
             </UtDataTable>
-          </div>
-          <div class="sm:w-1/3">
-            <div class="w-full">
-              <div class="bg-[#F7F7F7] rounded-xl p-6">
-                <AdminChartsDoughnut :data="DoughnutChartData" />
-              </div>
-            </div>
           </div>
         </section>
       </div>
@@ -179,12 +155,10 @@ const statusCard = ref([
 ]);
 
 const tabFilters = ref("all");
-const thead = ["Name", "Phone", "Email", "Created At", "Status", "Action"].map(
-  (e) => ({
-    label: e,
-    key: e.toLowerCase().replace(" ", "_"),
-  })
-);
+const thead = ["Name", "Phone", "Email", "Created At", "Status"]?.map((e) => ({
+  label: e,
+  key: e.toLowerCase().replace(" ", "_"),
+}));
 
 const data = ref<any[]>([]);
 
@@ -423,7 +397,7 @@ const { state, execute } = useRequestState({
     pageData.value.page = response.page;
     pageData.value.limit = response.limit;
 
-    tbody.value = response.data.map((e: any) => {
+    tbody.value = response.data?.map((e: any) => {
       return {
         name: [e.profile.firstName, e.profile.otherName, e.profile.lastName]
           .filter(Boolean)

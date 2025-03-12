@@ -37,11 +37,11 @@
         name: 'admin.subscriptions.index',
       }"
     />
-    <AdminDashboardNavigatorMenuItem
+    <!-- <AdminDashboardNavigatorMenuItem
       label="Finance"
       icon="nav/payment"
       to="/admin/dashboard/finance"
-    />
+    /> -->
   </div>
 </template>
 

@@ -66,9 +66,10 @@
           <th
             :style="colWidth"
             :class="[
-              'w-[--ww] !font-medium py-3',
+              'w-[--ww] !font-medium py-6',
               tclass?.thead,
-              variant === 'secondary' && 'text-[#898989] text-base text-center',
+              variant === 'secondary' &&
+                'text-[#898989] text-base text-center py-8',
             ]"
             v-for="(item, index) in thead"
             :key="index"
