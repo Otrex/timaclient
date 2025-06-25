@@ -4,6 +4,26 @@ export type CardData = {
   description?: string;
   link?: string;
 };
+
+export interface WithdrawalResponse {
+  data: {
+    date: string;
+    withdrawalId: string;
+    amount: number;
+    user: {
+      role: string;
+      userId: string;
+      email: string;
+    };
+    status: string;
+  }[];
+  totalWithdrawals: number;
+  limit: number;
+  page: number;
+  message: string;
+  statusCode: number;
+}
+
 export interface InstagramProfileResponse {
   "Account ID": string;
   "Account Type": number;

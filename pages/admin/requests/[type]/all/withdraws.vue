@@ -48,8 +48,29 @@
 </template>
 
 <script setup lang="ts">
+import type { WithdrawalResponse } from "~/lib/api/types/responses";
+
 definePageMeta({
   name: "admin.requests.all.withdraws",
+});
+
+const api = useAPI();
+const requests = ref<WithdrawalResponse["data"]>([]);
+
+const pageData = reactive({
+  page: 1,
+  limit: 10,
+});
+
+useRequestState({
+  action: async () => {
+    return api.getWithdrawalRequests(pageData);
+  },
+  onSuccess: (data) => {
+    requests.value = data.data;
+    pageData.page = data.page;
+    pageData.limit = data.limit;
+  },
 });
 </script>
 

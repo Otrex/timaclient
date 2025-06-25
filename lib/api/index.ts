@@ -3,6 +3,7 @@ import type { InfluencerProfileSetup } from "../interfaces/payload";
 import type { GetAdminUsersResponse, GetCampaignsResponse, GetInfluencerApplicationsResponse, GetInfluencerApplicationsWithCampaignResponse, GetInfluencerCampaignsResponse, GetInfluencerContentApplicationsResponse, GetOverviewStats, GetPlansResponse, GetTransactionsResponse, PaymentAuthorizationResponse, UpdatePricingPlan } from "../interfaces/response";
 import type { IResponse } from "../interfaces/utils";
 import SocialsAPI from "./socials";
+import type { WithdrawalResponse } from "./types/responses";
 import UploadAPI from "./upload";
 
 const defaultFilter = {
@@ -725,6 +726,18 @@ export default class TimaAPI extends UploadAPI {
       method: 'POST',
       data: {
         planId,
+        page,
+        limit
+      }
+    })
+  }
+
+  async getWithdrawalRequests({ page = 1, limit = 10 }: { page: number, limit: number }) {
+    return this.request<WithdrawalResponse>({
+      url: '/admin/withdrawal-request',
+      requireAuth: true,
+      method: 'POST',
+      data: {
         page,
         limit
       }
